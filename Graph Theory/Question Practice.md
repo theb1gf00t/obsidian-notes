@@ -1,4 +1,470 @@
 
+## Assignment 2
+
+> [!question] Q1: Inequalities for $\beta_0$, $\alpha_0$, $\omega$, and $\delta$
+> For any graph $G$, show the following inequalities:
+> (a) $\beta_0(G) + \beta_0(G^c) \ge \alpha_0(G) + \alpha_0(G^c)$.
+> (b) $\beta_0(G) \ge \omega(G)$, where $\omega(G) = \max\{|V(H)| : H \text{ is a complete subgraph of } G\}$ is the clique number of $G$.
+> (c) $\beta_0(G) \ge \delta(G)$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a)** The given inequality is **not correct**.
+> >
+> > **Counter example:**
+> >
+> > For $G = K_2$: $\beta_0(G) = 1$, but $\omega = 2$, $G^c = K_2^c$ (empty graph), so $\beta_0(G^c) = 0$, $\alpha_0(G^c) = 2$.
+> >
+> > So $\beta_0(G) + \beta_0(G^c) = 1 + 0 = 1$
+> > $\alpha_0(G) + \alpha_0(G^c) = 1 + 2 = 3$
+> >
+> > $\Rightarrow \beta_0(G) + \beta_0(G^c) < \alpha_0(G) + \alpha_0(G^c)$, which is contradicting the inequality given in question.
+> >
+> > Instead the inequality $\beta_0(G) \ge \omega(G) - 1$ holds for every graph.
+> >
+> > **Proof:**
+> >
+> > Let $K$ be a clique with $\omega(G)$ vertices and let $C$ be any vertex cover of $G$.
+> >
+> > Now suppose two vertices $u, v \in V(K)$ are both outside $C$. Then the edge $uv$ has neither endpoint in $C$. This contradicts the definition of a vertex cover.
+> >
+> > Therefore at most one vertex of $K$ can lie outside $C$. Hence at least $\omega(G) - 1$ vertices of $K$ must belong to $C$.
+> >
+> > $$\therefore |C| \ge \omega(G) - 1$$
+> >
+> > This is true for every vertex cover, including the minimum vertex cover:
+> >
+> > $$\therefore \beta_0(G) \ge \omega(G) - 1$$
+> >
+> > **(b)** In this also the given inequality is **not correct**.
+> >
+> > **Counter example:**
+> >
+> > $G = K_2$: $\beta_0(G) = 1$, but $\omega(G) = 2$.
+> >
+> > $\Rightarrow \beta_0(G) < \omega(G)$, which is a contradiction to inequality $\beta_0(G) \ge \omega(G)$.
+> >
+> > **(c)** Let $C$ be a minimum vertex cover of $G$. Therefore $|C| = \beta_0(G)$.
+> >
+> > Since $C$ is minimum vertex cover, there exists at least one vertex $v \notin C^\wedge$.
+> >
+> > Now because $C$ covers every edge, every neighbour of $v$ must belong to $C$.
+> >
+> > $$\therefore \deg(v) \le |C| \quad \cdots(1)$$
+> >
+> > Also $\delta(G) \le \deg(v) \quad \cdots(2)$
+> >
+> > Combining (1) and (2), we get:
+> >
+> > $$\delta(G) \le \deg(v) \le |C| = \beta_0$$
+> >
+> > $$\Rightarrow \boxed{\delta(G) \le \beta_0} \quad \text{Hence proved.}$$
+
+> [!question] Q2: Disjoint Matchings Exchange
+> Let $M$, $N$ be disjoint matchings of a graph $G$ with $|M| > |N|$. Show that there are disjoint matchings $M'$ and $N'$ of $G$ such that $|M'| = |M| - 1$ and $|N'| = |N| + 1$ and $M' \cup N' = M \cup N$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Consider the graph formed by $M \cup N$.
+> >
+> > $M$ and $N$ are both matchings, every vertex is incident to at most one edge of $M$ and at most one edge of $N$.
+> >
+> > $\therefore$ Every vertex has degree at most 2 in the subgraph formed by $M \cup N$.
+> >
+> > Moreover, edges in each component must alternate between $M$ and $N$.
+> >
+> > Also every component of $M \cup N$ is an alternating path or an alternating cycle.
+> >
+> > On an alternating cycle, the numbers of $M$ edges and $N$ edges are equal, otherwise two adjacent edges would belong to the same matching which is a contradiction to the fact that the edges in one matching are not adjacent.
+> >
+> > On an alternating path, two cases:
+> >
+> > **Case 1:** If end edges belong to different matchings, the two numbers are equal.
+> >
+> > **Case 2:** If end edges belong to the same matching, then the matching to which they belong will be more and there is exactly one more $M$-edge than $N$-edge.
+> >
+> > Since $|M| > |N|$, the total numbers of $M$ edges exceeds the total number of $N$ edges. Therefore, at least one component must be alternating path with one more $M$-edge than $N$-edge.
+> >
+> > Let this path be $P$.
+> >
+> > Let $|M \cap E(P)| = r+1$, $|N \cap E(P)| = r$.
+> >
+> > Now define:
+> >
+> > $$M' = (M \setminus E(P)) \cup (N \cap E(P))$$
+> > $$N' = (N \setminus E(P)) \cup (M \cap E(P))$$
+> >
+> > In other words, swap the membership of every edge along $P$: edges that belonged to $M$ now belong to $N'$, and edges that belonged to $N$ now belong to $M'$.
+> >
+> > Because the edges still alternate along $P$, both new sets are still matchings.
+> >
+> > For $M'$:
+> > $$|M'| = |M| - (r+1) + r = \boxed{|M| - 1}$$
+> >
+> > For $N'$:
+> > $$|N'| = |N| - r + (r+1) = \boxed{|N| + 1}$$
+> >
+> > We have only transferred edges between the two matchings. No edge has been added to or removed from their combined set.
+> >
+> > $$\boxed{M' \cup N' = M \cup N}$$
+
+> [!question] Q3: Greedy Algorithm for Maximal Independent Set
+> Illustrate the greedy algorithm to get a maximal independent set for the simple graph whose vertices are $a, b, c, d, e, f$ and whose edges are $(a,b)$, $(b,c)$, $(c,d)$, $(d,e)$, $(e,f)$, $(f,a)$, $(b,f)$, $(c,e)$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > The given graph in the question has vertices $\{a, b, c, d, e, f\}$ with edges $(a,b), (b,c), (c,d), (d,e), (e,f), (f,a), (b,f), (c,e)$.
+> >
+> > **(a)** $G_1$, $I \leftarrow \emptyset$
+> >
+> > **(b)** $I \leftarrow \{a\}$, $G_1 = G - \{a\} - \{b, f\}$
+> >
+> > Remaining graph has vertices $\{c, d, e\}$ (triangle: $c$-$d$-$e$-$c$).
+> >
+> > **(c)** $I \leftarrow \{a, d\}$, $G_2 = G_1 - \{e, c, d\}$
+> >
+> > Now $G_2$ graph with no vertices.
+> >
+> > $$\therefore I = \{a, d\}, \quad |I| = 2$$
+
+> [!question] Q4: Greedy Algorithm for Maximal Matching and Vertex Cover
+> Apply greedy algorithm to get a maximal matching and a vertex cover of the graphs shown below.
+>
+> (Graph 1: vertices 1–6, with visible edges forming a diamond/octahedron-like structure with vertices 1,2,3,4,5,6)
+>
+> (Graph 2: vertices 1–10, with visible edges forming a larger diamond structure with vertices 1–10)
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **For Graph 1** (vertices labeled $a, b, c, d, e, f, 1, 2, 3, 4, 5, 6$ internally):
+> >
+> > **(a)** $M \leftarrow \{a\}$, $K \leftarrow \{4, 5\}$, $G_1 = G - \{4, 5\}$
+> >
+> > **(b)** $M \leftarrow \{a, i\}$, $K \leftarrow \{4, 5, 6, 3\}$, $G_2 = G_1 - \{3, 6\}$
+> >
+> > **(c)** $M \leftarrow \{a, i, d\}$, $K \leftarrow \{1, 2, 3, 4, 5, 6\}$, $G_3 = G_2 - \{1, 2\}$
+> >
+> > $G_3$ is graph left with no vertices.
+> >
+> > $$M = \{a, i, d\}, \quad K = \{1, 2, 3, 4, 5, 6\}$$
+> >
+> > **For Graph 2** (vertices 1–10):
+> >
+> > **(a)** $M \leftarrow \{c\}$, $K \leftarrow \{10, 9\}$, $G_1 = G - \{10, 9\}$
+> >
+> > **(b)** $M \leftarrow \{c, g\}$, $K \leftarrow \{6, 8, 9, 10\}$, $G_2 = G_1 - \{6, 8\}$
+> >
+> > **(c)** $M \leftarrow \{c, g, k\}$, $K \leftarrow \{2, 3, 5, 6, 8, 9, 10\}$, $G_3 = G_2 - \{2, 5\}$
+> >
+> > **(d)** $M \leftarrow \{c, g, k, n\}$, $K \leftarrow \{2, 3, 5, 6, 7, 8, 9, 10\}$, $G_4 = G_3 - \{3, 7\}$
+> >
+> > $G_4$ is graph left with no edges.
+> >
+> > **(e)** $M \leftarrow \{c, g, k, n\}$, $K \leftarrow \{2, 3, 5, 6, 7, 8, 9, 10\}$
+> >
+> > $$M = \{c, g, k, n\}, \quad K = \{2, 3, 5, 6, 7, 8, 9, 10\}$$
+
+> [!question] Q5: Order Vertices for 4-Color Greedy Coloring
+> Order the vertices of the graph shown below, in such a way that the greedy algorithm uses 4 colors.
+>
+> (Graph: complete bipartite-like graph with vertices $u_1, u_2, u_3, u_4$ on top and $v_1, v_2, v_3, v_4$ on bottom, with all cross edges)
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Order: Take $S = \{u_1, v_1, u_2, v_2, u_3, v_3, u_4, v_4\}$
+> >
+> > In the greedy algorithm, each vertex receives the smallest colour not used on its already-coloured neighbours.
+> >
+> > | Vertex | Neighbours | Coloured Neighbours | Colour |
+> > |:--|:--|:--|:-:|
+> > | $u_1$ | $v_2, v_3, v_4$ | none | 1 |
+> > | $v_1$ | $u_2, u_3, u_4$ | none | 1 |
+> > | $u_2$ | $v_1, v_3, v_4$ | $v_1(1)$ | 2 |
+> > | $v_2$ | $u_1, u_3, u_4$ | $u_1(1)$ | 2 |
+> > | $u_3$ | $v_1, v_2, v_4$ | $v_1(1), v_2(2)$ | 3 |
+> > | $v_3$ | $u_1, u_2, u_4$ | $u_1(1), u_2(2)$ | 3 |
+> > | $u_4$ | $v_1, v_2, v_3$ | $v_1(1), v_2(2), v_3(3)$ | 4 |
+> > | $v_4$ | $u_1, u_2, u_3$ | $u_1(1), u_2(2), u_3(3)$ | 4 |
+
+> [!question] Q6: Greedy Coloring of $Q_3$ with 2, 3, and 4 Colors
+> Let $G$ be the graph 3-cube $Q_3$. Order the vertices of $G$ in 3 different ways, say $S_1$, $S_2$ and $S_3$ so that the greedy algorithm
+> (a) uses 2 colors, if $S_1$ is the input,
+> (b) uses 3 colors, if $S_2$ is the input, and
+> (c) uses 4 colors, if $S_3$ is the input.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > $Q_3$ is bipartite with parts $X = \{v_1, v_3, v_6, v_8\}$ and $Y = \{v_2, v_4, v_5, v_7\}$.
+> >
+> > In the greedy algorithm, each vertex receives the smallest colour not used on its already-coloured neighbours.
+> >
+> > **(a) 2 colours.** Take $S_1 = (v_1, v_3, v_6, v_8, v_2, v_5, v_7)$
+> > That is, all of $X$ first and then all of $Y$.
+> >
+> > - The vertices of $X$ are pairwise non-adjacent, so each gets colour 1.
+> > - Each vertex of $Y$ has a neighbour in $X$ coloured 1 and no neighbour in $Y$, so each gets colour 2.
+> >
+> > Only Colours 1 and 2 are used.
+> >
+> > **(b) 3 colours.** Take $S_2 = (v_1, v_7, v_2, v_6, v_3, v_4, v_5, v_8)$
+> >
+> > | Vertex | Coloured neighbours | Colour |
+> > |:--|:--|:-:|
+> > | $v_1$ | none | 1 |
+> > | $v_7$ | none ($v_7$ is not adjacent to $v_1$) | 1 |
+> > | $v_2$ | $v_1(1)$ | 2 |
+> > | $v_6$ | $v_2(2), v_7(1)$ | 3 |
+> > | $v_3$ | $v_2(2), v_7(1)$ | 3 |
+> > | $v_4$ | $v_1(1), v_3(3)$ | 2 |
+> > | $v_5$ | $v_1(1), v_6(3)$ | 2 |
+> > | $v_8$ | $v_5(2), v_7(1), v_4(2)$ | 3 |
+> >
+> > The maximum colour is 3, so exactly 3 colours are used.
+> >
+> > **(c) 4 colours.** Take $S_3 = (v_2, v_8, v_4, v_6, v_5, v_1, v_3, v_7)$
+> >
+> > | Vertex | Coloured neighbours | Colour |
+> > |:--|:--|:-:|
+> > | $v_2$ | none | 1 |
+> > | $v_8$ | none ($v_8$ is not adjacent to $v_2$) | 1 |
+> > | $v_4$ | $v_8(1)$ | 2 |
+> > | $v_6$ | $v_2(1)$ | 2 |
+> > | $v_5$ | $v_8(1), v_6(2)$ | 3 |
+> > | $v_1$ | $v_2(1), v_4(2), v_5(3)$ | 4 |
+> > | $v_3$ | $v_2(1), v_4(2)$ | 3 |
+> > | $v_7$ | $v_6(2), v_8(1), v_3(3)$ | 4 |
+> >
+> > Here 4 colours are used.
+
+> [!question] Q7: Edge-Chromatic Number
+> Find the edge-chromatic number of the following graphs.
+> (a) $T_k + C_{2k+1}$, where $T_k$ is a tree on $k$ vertices.
+> (b) $C_5 + C_5$.
+> (c) $C_{2s} + C_{2t}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a)** Let $d = \Delta(T_k)$, $q = 2k+1$.
+> >
+> > Finding the maximum degree: A vertex $x$ in the tree is connected to all $q$ cycle vertices, in addition to its original tree neighbours. A cycle vertex is connected to all $k$ tree vertices and its two cycle neighbours.
+> >
+> > $$\therefore \Delta(G) = \max\{q + d, k + 2\}$$
+> >
+> > Since $q = 2k+1$, $2k+1+d \ge k+2$ always, so $\Delta(G) = 2k+1+d$.
+> >
+> > Let the tree vertices be $t_0, t_1, \ldots, t_{k-1}$ and cycle vertices be $c_0, c_1, \ldots, c_k$.
+> >
+> > The cross edges form $K_{k, 2k+1}$. Use $2k+1$ colours. For each $i \in \{0,1,\ldots,2k\}$, define the matching:
+> >
+> > $$M_i = \{t_j\, c_{(i+j)\bmod(2k+1)} : 0 \le j \le k-1\}$$
+> >
+> > Each matching contains exactly one edge incident with every vertex. Moreover, these matchings partition all the cross edges; every cross-edge $t_j c_l$ appears exactly once in the matching with $i \equiv l - j \pmod{2k+1}$.
+> >
+> > Notice that $M_i$ uses the cycle vertices $c_i, c_{i+1}, \ldots, c_{i+k-1}$ with indices taken modulo $2k+1$. Consequently, the vertices $c_{i+k}, c_{i+k+1}, \ldots, c_{i+2k}$ are not incident with any cross edge of colour $i$. In particular, both endpoints of the cycle edge $c_{i+k}\, c_{i+k+1}$ are free of colour $i$. Add that cycle edge to $M_i$. As $i$ runs through all $2k+1$ values, these are precisely all the edges of the cycle. So the cross edges and cycle edges have been properly coloured using $2k+1$ colours. Now, the tree has maximum degree $d$ and it is bipartite, so its internal edges can be coloured by using additional $d$ colours.
+> >
+> > Total no. of colors $= 2k+1+d = \Delta(G)$
+> >
+> > $$\boxed{\chi_1(T_k + C_{2k+1}) = 2k+1+\Delta(T_k)}$$
+> >
+> > **(b)** $C_5 + C_5 = G$. This graph is the join of two 5-cycles.
+> >
+> > Let the vertices of the two cycles be $A = \{a_1, a_2, a_3, a_4, a_5\}$ and $B = \{b_1, b_2, b_3, b_4, b_5\}$.
+> >
+> > Each vertex has 2 neighbours in its own cycle and 5 neighbours in its own cycle.
+> >
+> > $$\therefore \Delta(G) = 2 + 5 = 7$$
+> >
+> > Hence $\chi_1(G) \ge 7$.
+> >
+> > We will partition all edges into seven matchings. Use the following seven colour classes:
+> >
+> > $$M_1 = \{a_1a_2, a_3a_4, a_5b_1, b_2b_3, b_4b_5\}$$
+> > $$M_2 = \{a_1a_5, a_2a_3, a_4b_2, b_1b_5, b_3b_4\}$$
+> > $$M_3 = \{a_1b_3, a_2b_4, a_3b_5, a_4a_5, b_1b_2\}$$
+> > $$M_4 = \{a_1b_1, a_2b_2, a_3b_3, a_4b_4, a_5b_5\}$$
+> > $$M_5 = \{a_1b_2, a_2b_1, a_3b_4, a_4b_5, a_5b_3\}$$
+> > $$M_6 = \{a_1b_4, a_2b_5, a_3b_1, a_4b_3, a_5b_2\}$$
+> > $$M_7 = \{a_1b_5, a_2b_3, a_3b_2, a_4b_1, a_5b_4\}$$
+> >
+> > Thus they form a proper 7-edge colouring. Therefore $\chi_1(G) = 7$.
+> >
+> > **(c)** Without loss of generality, assume $s \le t$.
+> >
+> > Let the two cycles $A = C_{2s}$ and $B = C_{2t}$.
+> >
+> > A vertex in $A$ has 2 neighbours in $A$ and $2t$ neighbours in $B$. Its degree is $2 + 2t$.
+> >
+> > Similarly, a vertex in $B$ has degree $2 + 2s$.
+> >
+> > $$\therefore \Delta(G) = 2t + 2$$
+> >
+> > **Case 1:** $s = t$.
+> >
+> > The cross-edges form $K_{2s, 2s}$. Since this graph is bipartite and $2s$-regular, its edges can be partitioned into $2s$ perfect matchings. Use $2s$ colours for the cross edges. Now both cycles have even length. An even cycle can be properly edge-coloured using two colours alternately. Use two additional colours for the internal edges of both cycles.
+> >
+> > Total no. of colors $= 2s + 2 = 2t + 2$.
+> >
+> > **Case 2:** $s < t$.
+> >
+> > Let $A = \{a_0, \ldots, a_{2s-1}\}$, $B = \{b_0, \ldots, b_{2t-1}\}$.
+> >
+> > The cross edges form $K_{2s, 2t}$. We use $2t$ colours indexed by $i = 0, 1, \ldots, 2t-1$.
+> >
+> > For each $i$, construct the matching $M_i = \{a_j b_{(i+j)\bmod 2t} : 0 \le j \le 2s-1\}$.
+> >
+> > Each matching saturates all vertices of $A$ and these $2t$ matchings partition cross edges. Matching $M_i$ uses the vertices $b_i, b_{i+1}, \ldots, b_{i+2s-1}$. Therefore, it does not use $b_{i+2s}, b_{i+2s+1}, \ldots, b_{i+2t-1}$.
+> >
+> > Since $s < t$, the vertices $b_{i+2s}$ and $b_{i+2s+1}$ are both unused in $M_i$. So we can add the cycle edge $b_{i+2s} b_{i+2s+1}$ to $M_i$, giving it the same colour $i$.
+> >
+> > As $i$ ranges over all $2t$ values, we colour every edge of cycle $B$ exactly once. Finally, the remaining cycle $A = C_{2s}$ is even, so its edges can be coloured alternately using two new colours.
+> >
+> > Thus, the total no. of colors is $2t + 2$.
+> >
+> > $$\Delta(G) = 2t + 2, \text{ we conclude.}$$
+> >
+> > $$\boxed{\chi_1(C_{2s} + C_{2t}) = 2\max(s,t) + 2}$$
+
+> [!question] Q8: School Staffing Problem
+> In a school there are seven vacancies, one each in the departments of Chemistry, English, French, Geography, History, Mathematics and Physics. There are seven applicants $A_1, \ldots, A_7$ for the vacancies. The applicants and their specializations are listed in the table below. Determine the maximum number of suitably qualified teachers the school can employ. Justify your claim.
+>
+> | Teachers | Specialization |
+> |:--|:--|
+> | $A_1$ | Mathematics, Physics |
+> | $A_2$ | Chemistry, English, Mathematics |
+> | $A_3$ | Chemistry, French, History, Physics |
+> | $A_4$ | English, French, History, Physics |
+> | $A_5$ | Chemistry, Mathematics |
+> | $A_6$ | Mathematics, Physics |
+> | $A_7$ | English, Geography, History |
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Form the bipartite graph $G[A, D]$ where $A = \{A_1, \ldots, A_7\}$ and $D = \{\text{Chemistry, English, French, Geography, History, Mathematics, Physics}\}$.
+> >
+> > A feasible staffing is a matching, and the maximum number of teachers employed equals the matching number of $G$. Since $|D| = 7$, the matching number is at most 7.
+> >
+> > **Claim:** The maximum is 7, so every vacancy can be filled.
+> >
+> > **Justification.** The following matching saturates both sides:
+> >
+> > - $A_1 \to$ Mathematics
+> > - $A_6 \to$ Physics
+> > - $A_5 \to$ Chemistry
+> > - $A_2 \to$ English
+> > - $A_7 \to$ Geography
+> > - $A_3 \to$ French
+> > - $A_4 \to$ History
+
+> [!question] Q9: Edge-Chromatic Number When $2m > (n-1)\Delta(G)$
+> Consider a graph $G$ with $n$ vertices and $m$ edges, where $n$ is odd. If $2m > (n-1)\Delta(G)$, then prove that $\chi_1(G) - 1 = \Delta(G)$. Hence, compute $\chi_1(G)$ for the graph $G$ in the Figure shown below. Also label the edges of $G$ with $\chi_1(G)$ colors.
+>
+> (Figure: graph on vertices $v_1, v_2, v_3, v_4, v_5, v_6, v_7$ with $n = 7$ (odd) and $\Delta = 5$, $m = 16$)
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Assumption:** Considering the graph to be loopless.
+> >
+> > By handshaking lemma: $\sum_{v \in V(G)} \deg(v) = 2|E(G)|$
+> >
+> > Since every vertex has degree at most $\Delta(G)$: $2|E(G)| \le n \cdot \Delta(G)$
+> >
+> > Suppose $G$ has a $\Delta(G)$ edge colouring. Since $n$ is odd, the maximum size of matching is $\frac{n-1}{2}$. Each colour class is a matching. Therefore, the maximum number of edges that can be covered by $\Delta(G)$ colours is:
+> >
+> > $$(\Delta(G)) \cdot \frac{n-1}{2}$$
+> >
+> > But the assumed number of edges is greater than this: $[2|E(G)| > (n-1)\Delta(G)]$.
+> >
+> > Hence there is contradiction. Thus $\chi_1(G) > \Delta(G)$. Since $G$ is simple, Vizing's theorem gives $\chi_1(G) \le \Delta(G) + 1$.
+> >
+> > Combining: $\boxed{\chi_1(G) = \Delta(G) + 1}$
+> >
+> > In the given graph, $n = 7$ (odd) and $\Delta = 5$. Then $2m = 32 > 30 = (n-1)\Delta$, so the statement applies and $\chi_1(G) = \Delta + 1 = 6$.
+> >
+> > A proper 6-edge colouring (colours on edges in drawing):
+> >
+> > | Colour | Edges |
+> > |:-:|:--|
+> > | 1 | $v_1v_2, v_3v_4, v_5v_6$ |
+> > | 2 | $v_1v_4, v_2v_3, v_6v_7$ |
+> > | 3 | $v_1v_5, v_2v_4, v_3v_6$ |
+> > | 4 | $v_1v_6, v_2v_7, v_4v_5$ |
+> > | 5 | $v_2v_6, v_3v_5, v_4v_7$ |
+> > | 6 | $v_5v_7$ |
+
+> [!question] Q10: Planarity of 3-Regular Graphs on 10 Vertices
+> (a) Show that there exists no 3-regular simple planar graph on 10 vertices whose girth is 5.
+> (b) Draw a plane 3-regular simple graph on 10 vertices whose girth is 4.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a)** Suppose $G$ is a simple 3-regular planar graph with $n = 10$ and girth 5. Then $m = \frac{3n}{2} = 15$.
+> >
+> > $G$ is connected. Fix a vertex $v$. Its 3 neighbours are distinct and each has 2 further neighbours. These $1 + 3 + 6 = 10$ vertices are pairwise distinct, because a coincidence would create a cycle of length at most 4. So the component of $v$ already contains all 10 vertices.
+> >
+> > Fix a plane embedding with $f$ faces. Euler's formula gives $n - m + f = 2$, so $f = 2 - 10 + 15 = 7$.
+> >
+> > $G$ contains cycles and every face boundary has length at least girth 5. Each edge lies on the boundaries of faces with total multiplicity 2, so:
+> >
+> > $$2m = \sum(\text{face lengths}) \ge 5f, \text{ that is, } 30 \ge 35.$$
+> >
+> > This is a contradiction. Hence no such graph exists.
+> >
+> > **(b)** Pentagonal prism (vertices 1–10, two pentagons connected by 5 edges).
+
+> [!question] Q11: Pentagonal and Hexagonal Faces in 3-Regular Plane Graphs
+> Let $G$ be a simple plane connected 3-regular graph with every face having degree 5 or 6. If $p$ is the number of pentagonal faces and $h$ is the number of hexagonal faces in $G$, show that $p = 12$ and $n(G) = 20 + 2h$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > We are given the graph is 3-regular. Every vertex has degree 3.
+> >
+> > By Handshaking Lemma: $\sum \deg(v) = 2m \Rightarrow 3n = 2m \Rightarrow \boxed{m = \frac{3n}{2}} \quad \cdots(1)$
+> >
+> > There are $p$ pentagons each of degree 5, $h$ hexagons each of degree 6.
+> >
+> > $\therefore 5p + 6h$ is the sum of degrees of all faces.
+> >
+> > In a plane graph, every edge belongs to exactly two faces, so $\sum \deg(\text{faces}) = 2m$.
+> >
+> > Thus $5p + 6h = 2m$. From (1): $\boxed{5p + 6h = 3n} \quad \cdots(2)$
+> >
+> > For a connected plane graph, by Euler's formula $n - m + f = 2$ and we have no. of faces $f = p + h$.
+> >
+> > So, $n - m + p + h = 2$. Substitute $m = \frac{3n}{2}$:
+> >
+> > $$n - \frac{3n}{2} + p + h = 2 \Rightarrow -\frac{n}{2} + p + h = 2 \Rightarrow \boxed{n = 2p + 2h - 4} \quad \cdots(3)$$
+> >
+> > From combining Eqn. (2) and (3), we get:
+> >
+> > $$3(2p + 2h - 4) = 5p + 6h \Rightarrow \boxed{p = 12}$$
+> >
+> > Now substitute $p = 12$ into (3):
+> >
+> > $$n = 2(12) + 2h - 4 \Rightarrow \boxed{n = 20 + 2h}$$
+
+> [!question] Q12: Complement of Planar Graph with $\ge 11$ Vertices is Nonplanar
+> Prove that the complement of simple planar graph with at least 11 vertices is nonplanar. Construct a self-complementary simple planar graph with 8 vertices.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be a simple planar graph with $n \ge 11$ vertices. We need to prove $\bar{G}$ is nonplanar.
+> >
+> > The key fact is: A simple planar graph with $n > 3$ vertices has at most $3n - 6$ edges:
+> >
+> > $$|E(G)| \le 3n - 6$$
+> >
+> > Now $G$ and its complement together contain all possible edges of $K_n$.
+> >
+> > $$|E(\bar{G})| = \binom{n}{2} - |E(G)| \ge \frac{n(n-1)}{2} - (3n-6) = \frac{(n-3)(n-4)}{2}$$
+> >
+> > For $n \ge 11$:
+> >
+> > $$\frac{(n-3)(n-4)}{2} \ge 3n - 6$$
+> >
+> > Hence $\bar{G}$ has more than $3n - 6$ edges which is impossible for a simple planar graph. Thus $\bar{G}$ is nonplanar.
+
+---
+
 ## Chapter 7
 
 > [!question] Q1: Simple Bipartite Graph Edge Bound
