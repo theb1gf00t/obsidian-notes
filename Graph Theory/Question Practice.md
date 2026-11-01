@@ -505,6 +505,140 @@
 
 > [!question] Q8: Disjoint Matchings Exchange
 > Let $M$, $N$ be disjoint matchings of a graph $G$ with $\vert{}M\vert{} > \vert{}N\vert{}$. Show that there are disjoint matchings $M_0$ and $N_0$ of $G$ such that $\vert{}M_0\vert{} = \vert{}M\vert{} - 1$ and $\vert{}N_0\vert{} = \vert{}N\vert{} + 1$ and $M_0 \cup N_0 = M \cup N$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### 1. Subgraph Construction
+> >
+> > Consider the subgraph $H = (V, M \cup N)$ of $G$ induced by the edge set $M \cup N$.
+> >
+> > - Since $M$ and $N$ are matchings, no vertex in $G$ can be incident to more than one edge from $M$ and at most one edge from $N$.
+> > - Because $M$ and $N$ are disjoint ($M \cap N = \emptyset$), every vertex $v \in V(H)$ has degree at most $2$ ($\Delta(H) \le 2$).
+> >
+> > ### 2. Structural Analysis of Components in $H$
+> >
+> > A graph with maximum degree at most $2$ decomposes completely into a union of vertex-disjoint **paths** and **cycles**:
+> >
+> > 1. **Cycle Components:** Because edges in $H$ alternate between $M$ and $N$, any cycle component must be an **even cycle**. In every even cycle $C$, the edges alternate evenly between $M$ and $N$, so:
+> >
+> >    $$|C \cap M| = |C \cap N|$$
+> >
+> > 2. **Path Components:** For any path component $P$:
+> >
+> >    - **Even-length path:** The path contains an equal number of $M$-edges and $N$-edges ($|P \cap M| = |P \cap N|$).
+> >    - **Odd-length path starting and ending with $N$:** Contains one more $N$-edge than $M$-edge ($|P \cap N| = |P \cap M| + 1$).
+> >    - **Odd-length path starting and ending with $M$:** Contains one more $M$-edge than $N$-edge ($|P \cap M| = |P \cap N| + 1$).
+> >
+> > ### 3. Existence of an $M$-Dominating Path
+> >
+> > Summing the edge counts over all connected components of $H$:
+> >
+> > $$|M| - |N| = \sum_{P \text{ path component}} \left( |P \cap M| - |P \cap N| \right)$$
+> >
+> > - Cycle components and even-length paths contribute $0$ to the sum.
+> > - Paths starting/ending with $N$ contribute $-1$.
+> > - Paths starting/ending with $M$ contribute $+1$.
+> >
+> > Since $|M| > |N|$, we have $|M| - |N| \ge 1$. Therefore, there must exist **at least one path component $P$ in $H$ that starts and ends with an edge from $M$**. For this path $P$, we have:
+> >
+> > $$|P \cap M| = |P \cap N| + 1$$
+> >
+> > ### 4. Construction of $M_0$ and $N_0$
+> >
+> > We construct the new edge sets $M_0$ and $N_0$ by swapping the roles of $M$ and $N$ along the path component $P$:
+> >
+> > - **$M_0 = (M \setminus P) \cup (N \cap P)$**
+> > - **$N_0 = (N \setminus P) \cup (M \cap P)$**
+> >
+> > ### 5. Verification of Required Properties
+> >
+> > 1. **Disjoint Matchings:** Since $P$ is a connected component of $H = M \cup N$, interchanging $M$ and $N$ along $P$ ensures that no vertex is incident with two edges from $M_0$ or two edges from $N_0$. Thus, $M_0$ and $N_0$ are valid matchings, and $M_0 \cap N_0 = \emptyset$.
+> >
+> > 2. **Union Preservation:**
+> >
+> >    $$M_0 \cup N_0 = (M \setminus P) \cup (N \cap P) \cup (N \setminus P) \cup (M \cap P) = M \cup N$$
+> >
+> > 3. **Cardinalities:** Using $|P \cap M| = |P \cap N| + 1$:
+> >
+> >    - **Size of $M_0$:**
+> >
+> >      $$|M_0| = |M| - |P \cap M| + |P \cap N| = |M| - (|P \cap N| + 1) + |P \cap N| = |M| - 1$$
+> >
+> >    - **Size of $N_0$:**
+> >
+> >      $$|N_0| = |N| - |P \cap N| + |P \cap M| = |N| - |P \cap N| + (|P \cap N| + 1) = |N| + 1$$
+> >
+> > This completes the proof. $\blacksquare$
+> >
+> > ### Alternative Proof: Swapping Technique (Symmetric Difference / Path Flipping)
+> >
+> > #### Step 1: Construct the Overlay Graph
+> >
+> > Consider the subgraph $H = (V, M \cup N)$ induced by all edges in $M \cup N$.
+> >
+> > - Because $M$ and $N$ are matchings, no vertex in $G$ can be incident to more than one edge from $M$ and at most one edge from $N$.
+> > - Since $M \cap N = \emptyset$, the maximum degree of $H$ satisfies $\Delta(H) \le 2$.
+> > - Therefore, $H$ decomposes into a set of vertex-disjoint **paths** and **even cycles**.
+> >
+> > #### Step 2: Classify the Connected Components
+> >
+> > In every connected component of $H$, edges alternate between $M$ and $N$:
+> >
+> > 1. **Even Cycles ($C$):** An alternating cycle must have equal numbers of $M$-edges and $N$-edges, so $|C \cap M| = |C \cap N|$.
+> > 2. **Even-length Paths ($P_{even}$):** An even path has equal numbers of $M$-edges and $N$-edges ($|P \cap M| = |P \cap N|$).
+> > 3. **Odd-length Paths ($P_{odd}$):**
+> >    - An $N$-dominant path starts and ends with $N$-edges, so $|P \cap N| = |P \cap M| + 1$.
+> >    - An $M$-dominant path starts and ends with $M$-edges, so $|P \cap M| = |P \cap N| + 1$.
+> >
+> > Counting the net excess of $M$-edges over $N$-edges across all components of $H$:
+> >
+> > $$|M| - |N| = \sum_{P \text{ path component}} \left( |P \cap M| - |P \cap N| \right)$$
+> >
+> > Since $|M| > |N|$, we have $|M| - |N| \ge 1$. Therefore, **there must exist at least one $M$-dominant path component $P$ in $H$** that starts and ends with an edge from $M$.
+> >
+> > #### Step 3: Define the Swapping Operation
+> >
+> > Along this $M$-dominant path $P$, we perform a **role swap** between $M$ and $N$:
+> >
+> > $$M_0 = (M \setminus P) \cup (N \cap P)$$
+> > $$N_0 = (N \setminus P) \cup (M \cap P)$$
+> >
+> > - **Outside $P$:** Edges retain their original matching assignment.
+> > - **Inside $P$:** All edges previously belonging to $M$ are reassigned to $N_0$, and all edges previously belonging to $N$ are reassigned to $M_0$.
+> >
+> > #### Step 4: Verify the Required Properties
+> >
+> > 1. **Size of $M_0$:** Since $P$ is an $M$-dominant path, $|P \cap M| = |P \cap N| + 1$.
+> >
+> >    $$|M_0| = |M| - |P \cap M| + |P \cap N| = |M| - (|P \cap N| + 1) + |P \cap N| = |M| - 1$$
+> >
+> > 2. **Size of $N_0$:**
+> >
+> >    $$|N_0| = |N| - |P \cap N| + |P \cap M| = |N| - |P \cap N| + (|P \cap N| + 1) = |N| + 1$$
+> >
+> > 3. **Union Preservation ($M_0 \cup N_0 = M \cup N$):**
+> >
+> >    $$M_0 \cup N_0 = \big((M \setminus P) \cup (N \cap P)\big) \cup \big((N \setminus P) \cup (M \cap P)\big) = M \cup N$$
+> >
+> > 4. **Validity and Disjointness:** Because $P$ is a self-contained connected component of $H$, flipping edge roles inside $P$ does not create any incident edge conflicts at the endpoints of $P$ or anywhere else in $G$. Thus, $M_0$ and $N_0$ remain valid, disjoint matchings. $\blacksquare$
+> >
+> > #### Concrete Visual Example of the Swap
+> >
+> > Let $M = \{e_1, e_2, e_3\}$ ($|M| = 3$) and $N = \{f_1\}$ ($|N| = 1$), where $P = e_1 - f_1 - e_2$ forms a path component.
+> >
+> > Original Matching Allocation:
+> > ```
+> > Path P:    (v1) ==e1(M)== (v2) --f1(N)-- (v3) ==e2(M)== (v4)     Independent: (v5) ==e3(M)== (v6)
+> > ```
+> >
+> > After swapping roles on path $P$:
+> > ```
+> > Path P:    (v1) --e1(N0)-- (v2) ==f1(M0)== (v3) --e2(N0)-- (v4)   Independent: (v5) ==e3(M0)== (v6)
+> > ```
+> >
+> > Resulting Allocation:
+> > - $M_0 = \{f_1, e_3\}$ ($|M_0| = 2 = |M| - 1$)
+> > - $N_0 = \{e_1, e_2\}$ ($|N_0| = 2 = |N| + 1$)
 
 > [!question] Q9: Connected 4-Regular Graph with No Perfect Matching
 > Draw a connected 4-regular graph with no perfect matching on $n$-vertices where $n$ is an even integer. What is the minimum value of $n$. Justify your graph indeed has no perfect matching.
