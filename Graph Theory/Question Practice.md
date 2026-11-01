@@ -431,6 +431,77 @@
 
 > [!question] Q7: Parameters of $K_{1,2,...,n}$
 > Find $\alpha_0$, $\beta_0$, $\alpha_1$ and $\beta_1$ of $K_{1,2,...,n}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### 1. Graph Setup & Total Vertex Count
+> >
+> > Let $G = K_{1, 2, \dots, n}$ be a complete $n$-partite graph with partition sets $V_1, V_2, \dots, V_n$, where $|V_i| = i$ for $i = 1, 2, \dots, n$.
+> >
+> > 1. **Adjacency:** Two vertices are adjacent if and only if they belong to **different** partition sets $V_i$ and $V_j$ ($i \neq j$).
+> > 2. **Total Number of Vertices $N = n(G)$:**
+> >
+> >    $$N = \sum_{i=1}^n |V_i| = \sum_{i=1}^n i = \frac{n(n+1)}{2}$$
+> >
+> > ### 2. Vertex Parameters: $\alpha_0(G)$ and $\beta_0(G)$
+> >
+> > #### A. Vertex Independence Number $\alpha_0(G)$
+> >
+> > - An **independent set** $I \subseteq V(G)$ contains no adjacent vertices.
+> > - Since every vertex in $V_i$ is adjacent to every vertex in $V_j$ for all $i \neq j$, an independent set can contain vertices from **at most one** partition set $V_i$.
+> > - To maximize $|I|$, we select the largest partition set, which is $V_n$ (having size $n$).
+> > - Therefore:
+> >
+> >   $$\alpha_0(K_{1,2,\dots,n}) = n$$
+> >
+> > #### B. Vertex Covering Number $\beta_0(G)$
+> >
+> > By **Gallai's Theorem** for vertex parameters:
+> >
+> > $$\alpha_0(G) + \beta_0(G) = N$$
+> >
+> > Substituting $N = \frac{n(n+1)}{2}$ and $\alpha_0(G) = n$:
+> >
+> > $$\beta_0(G) = \frac{n(n+1)}{2} - n = \frac{n(n+1) - 2n}{2} = \frac{n(n-1)}{2}$$
+> >
+> > (Direct Construction: Taking all vertices from $V_1 \cup V_2 \cup \dots \cup V_{n-1}$ forms a vertex cover of size $\frac{n(n-1)}{2}$, leaving only the independent set $V_n$ uncovered).
+> >
+> > ### 3. Edge Parameters: $\alpha_1(G)$ and $\beta_1(G)$
+> >
+> > #### A. Maximum Matching Number $\alpha_1(G)$
+> >
+> > - **Case $n = 1$ ($K_1$):** $G$ has $1$ vertex and $0$ edges, so $\alpha_1(K_1) = 0$.
+> >
+> > - **Case $n \ge 2$:** By Tutte's condition for complete multipartite graphs, a maximum matching saturates as many vertices as possible unless one partition set contains strictly more than half of all vertices. Let's check the largest set $V_n$ (size $n$) against the total vertex count $N = \frac{n(n+1)}{2}$:
+> >
+> >   - For $n = 2$ ($K_{1,2}$): $N = 3$, $|V_2| = 2 > \frac{3}{2}$. Matching can pick at most $|V_1| = 1$ edge, so $\alpha_1(K_{1,2}) = 1$.
+> >   - For $n \ge 3$: The condition $n \le \frac{N}{2} \iff n \le \frac{n(n+1)}{4} \iff 4 \le n+1 \iff n \ge 3$ holds! No partition set has more than half the total vertices.
+> >
+> >   Thus, for all $n \ge 2$, the maximum matching size is simply half of $N$ (rounded down for parity):
+> >
+> >   $$\alpha_1(K_{1,2,\dots,n}) = \left\lfloor \frac{N}{2} \right\rfloor = \left\lfloor \frac{n(n+1)}{4} \right\rfloor$$
+> >
+> >   (Note: For $n = 2$, $\lfloor \frac{2(3)}{4} \rfloor = \lfloor 1.5 \rfloor = 1$, which perfectly aligns).
+> >
+> > #### B. Minimum Edge Covering Number $\beta_1(G)$
+> >
+> > - **Case $n = 1$ ($K_1$):** Since $K_1$ has an isolated vertex, **no edge cover exists** ($\beta_1$ is undefined).
+> >
+> > - **Case $n \ge 2$:** By **Gallai's Theorem** for edge parameters ($\alpha_1(G) + \beta_1(G) = N$):
+> >
+> >   $$\beta_1(G) = N - \alpha_1(G) = \frac{n(n+1)}{2} - \left\lfloor \frac{n(n+1)}{4} \right\rfloor = \left\lceil \frac{n(n+1)}{4} \right\rceil$$
+> >
+> > ### Summary of Results
+> >
+> > For $G = K_{1, 2, \dots, n}$:
+> >
+> > | Parameter | $n = 1$ ($K_1$) | $n \ge 2$ ($K_{1,2,\dots,n}$) |
+> > |:--|:-:|:-:|
+> > | **Total Vertices $N$** | $1$ | $\frac{n(n+1)}{2}$ |
+> > | **Independence Number $\alpha_0$** | $1$ | $n$ |
+> > | **Vertex Covering Number $\beta_0$** | $0$ | $\frac{n(n-1)}{2}$ |
+> > | **Matching Number $\alpha_1$** | $0$ | $\left\lfloor \frac{n(n+1)}{4} \right\rfloor$ |
+> > | **Edge Covering Number $\beta_1$** | Undefined | $\left\lceil \frac{n(n+1)}{4} \right\rceil$ |
 
 > [!question] Q8: Disjoint Matchings Exchange
 > Let $M$, $N$ be disjoint matchings of a graph $G$ with $\vert{}M\vert{} > \vert{}N\vert{}$. Show that there are disjoint matchings $M_0$ and $N_0$ of $G$ such that $\vert{}M_0\vert{} = \vert{}M\vert{} - 1$ and $\vert{}N_0\vert{} = \vert{}N\vert{} + 1$ and $M_0 \cup N_0 = M \cup N$.
@@ -553,5 +624,3 @@
 > > | **Vertex-Covering Number $\beta_0$** | $0$ | $2$ | $k(k-1)$ |
 > > | **Edge-Covering Number $\beta_1$** | Undefined | $4$ | $\frac{k(k+1)}{2}$ |
 > 
-
-
