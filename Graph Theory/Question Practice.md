@@ -624,5 +624,66 @@
 > > | **Vertex-Covering Number $\beta_0$** | $0$ | $2$ | $k(k-1)$ |
 > > | **Edge-Covering Number $\beta_1$** | Undefined | $4$ | $\frac{k(k+1)}{2}$ |
 
-ques. Find the matching number of C5 + C7.
-answer:
+> [!question] Q16: Matching Number of $C_5 + C_7$
+> Find the matching number of $C_5 + C_7$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### 1. Graph Definitions & Setup
+> >
+> > 1. **Components:**
+> >
+> >    - $G_1 = C_5$: an odd cycle on $5$ vertices ($V(C_5) = \{u_1, u_2, u_3, u_4, u_5\}$).
+> >    - $G_2 = C_7$: an odd cycle on $7$ vertices ($V(C_7) = \{v_1, v_2, v_3, v_4, v_5, v_6, v_7\}$).
+> >
+> > 2. **Graph Join $G = C_5 + C_7$:**
+> >
+> >    - **Total Number of Vertices $n(G)$:**
+> >
+> >      $$n(G) = |V(C_5)| + |V(C_7)| = 5 + 7 = 12 \quad \text{(an even integer)}$$
+> >
+> >    - **Edges:** Contains all internal edges of $C_5$, all internal edges of $C_7$, plus an edge connecting **every** vertex of $C_5$ to **every** vertex of $C_7$.
+> >
+> > ### 2. Upper Bound on the Matching Number
+> >
+> > By definition, each edge in a matching connects $2$ distinct vertices. Therefore, for any graph $G$ with $n(G)$ vertices, the maximum number of independent edges is bounded by:
+> >
+> > $$\alpha_1(G) \le \left\lfloor \frac{n(G)}{2} \right\rfloor = \left\lfloor \frac{12}{2} \right\rfloor = 6$$
+> >
+> > ### 3. Explicit Construction of a Perfect Matching
+> >
+> > We can construct a matching $M$ of size $6$ as follows:
+> >
+> > 1. **Inside $C_5$:**
+> >
+> >    - The matching number of an odd cycle $C_{2m+1}$ is $\alpha_1(C_{2m+1}) = m$. For $C_5$, $\alpha_1(C_5) = 2$.
+> >    - Select $2$ disjoint edges in $C_5$:
+> >
+> >      $$M_1 = \{(u_1, u_2), (u_3, u_4)\}$$
+> >
+> >    - This covers $4$ vertices of $C_5$, leaving $1$ vertex ($u_5$) unmatched.
+> >
+> > 2. **Inside $C_7$:**
+> >
+> >    - For $C_7$, $\alpha_1(C_7) = 3$.
+> >    - Select $3$ disjoint edges in $C_7$:
+> >
+> >      $$M_2 = \{(v_1, v_2), (v_3, v_4), (v_5, v_6)\}$$
+> >
+> >    - This covers $6$ vertices of $C_7$, leaving $1$ vertex ($v_7$) unmatched.
+> >
+> > 3. **Inter-Graph Edge:**
+> >
+> >    - By the definition of the graph sum/join $C_5 + C_7$, every vertex in $C_5$ is adjacent to every vertex in $C_7$.
+> >    - Therefore, the edge $(u_5, v_7)$ exists in $G$.
+> >
+> > 4. **Union of Edges:**
+> >
+> >    $$M = M_1 \cup M_2 \cup \{(u_5, v_7)\} = \{(u_1, u_2), (u_3, u_4), (v_1, v_2), (v_3, v_4), (v_5, v_6), (u_5, v_7)\}$$
+> >
+> >    - **Size:** $|M| = 2 + 3 + 1 = 6$.
+> >    - **Coverage:** $M$ saturates all $12$ vertices of $C_5 + C_7$, making $M$ a **perfect matching**.
+> >
+> > ### Final Answer
+> >
+> > $$\alpha_1(C_5 + C_7) = 6$$
