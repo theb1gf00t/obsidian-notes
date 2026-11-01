@@ -271,3 +271,363 @@ graph TD
 > > - *Explicit flaw:* Drawing a solvus as a strictly vertical line aligned with the pure component axis (0% B), implying zero solubility of B in A.
 
 
+
+
+
+## Lecture 4: Ternary Phase Diagrams — Gibbs Triangle, Tie-Lines & Lever Rules
+
+### 1. Underlying Theory & Foundations
+
+#### A. Thermodynamic & Kinetic Principles
+
+- A **ternary system** ($A$–$B$–$C$) is represented at constant temperature and pressure by the **Gibbs triangle**, a two-dimensional simplex embedded in the mole-fraction plane $c_A + c_B + c_C = 1$, $c_i \ge 0$.
+- **Viviani's Theorem** (geometric foundation): In an equilateral triangle of altitude $h$, the sum of perpendicular distances from any interior point $P$ to the three sides equals $h$. The perpendicular distance $d_A$ from $P$ to side $BC$ is proportional to $c_A$ ($d_A = c_A \cdot h$), so lines parallel to $BC$ are iso-$c_A$ lines.
+- **Two-phase equilibrium** on the Gibbs triangle is governed by the same mass-balance vector algebra as in binary systems: the overall composition must be a convex combination of the two phase compositions, forcing **collinearity** (all three points lie on a single tie-line).
+- **Three-phase equilibrium** produces a **tie-triangle** $\triangle\alpha\beta\gamma$. The overall composition $\mathbf{c}^0$ must lie inside this triangle; phase fractions are given by the **Center of Gravity (Barycentric) Rule** — each fraction equals the area of the sub-triangle opposite that vertex divided by the total triangle area.
+
+#### B. Governing Formulations & Derivations
+
+- **Mole-fraction plane constraint:**
+  $$c_A + c_B + c_C = 1, \quad c_A, c_B, c_C \ge 0$$
+
+- **Direction vector of side $BC$** (used in the parallel-line proof):
+  $$\vec{v}_{BC} = C - B = (0,0,1) - (0,1,0) = (0,-1,1)$$
+
+- **Parametric line parallel to $BC$ from point $P_0 = (c_A^0, c_B^0, 0)$:**
+  $$\vec{r}(t) = \left(c_A^0,\; c_B^0 - t,\; t\right), \quad 0 \le t \le c_B^0$$
+  The first component $c_A(t) = c_A^0$ is constant for all $t$.
+
+- **Two-phase mass balance (vector form):**
+  $$m^0 \mathbf{c}^0 = m^\alpha \mathbf{c}^\alpha + m^\beta \mathbf{c}^\beta$$
+  Dividing by $m^0$ and letting $f^\alpha = m^\alpha/m^0$, $f^\beta = 1 - f^\alpha$:
+  $$\mathbf{c}^0 - \mathbf{c}^\beta = f^\alpha (\mathbf{c}^\alpha - \mathbf{c}^\beta)$$
+
+- **Ternary lever rule** (distance-ratio and component-wise forms):
+  $$f^\alpha = \frac{|\mathbf{c}^0 - \mathbf{c}^\beta|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|}, \qquad f^\beta = \frac{|\mathbf{c}^\alpha - \mathbf{c}^0|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|}$$
+  Projecting onto component $A$:
+  $$f^\alpha = \frac{c_A^0 - c_A^\beta}{c_A^\alpha - c_A^\beta}, \qquad f^\beta = \frac{c_A^\alpha - c_A^0}{c_A^\alpha - c_A^\beta}$$
+
+- **Three-phase mass balance:**
+  $$\mathbf{c}^0 = f^\alpha \mathbf{c}^\alpha + f^\beta \mathbf{c}^\beta + f^\gamma \mathbf{c}^\gamma, \qquad f^\alpha + f^\beta + f^\gamma = 1, \quad f^i \ge 0$$
+
+- **Center of Gravity (Barycentric) Rule** — total tie-triangle area via determinant:
+  $$\text{Area}(\triangle\alpha\beta\gamma) = \frac{1}{2}\begin{vmatrix} c_A^\alpha & c_B^\alpha & 1 \\ c_A^\beta & c_B^\beta & 1 \\ c_A^\gamma & c_B^\gamma & 1 \end{vmatrix}$$
+  Phase fractions via Cramer's rule:
+  $$f^\alpha = \frac{\text{Area}(\triangle 0\beta\gamma)}{\text{Area}(\triangle\alpha\beta\gamma)}, \quad f^\beta = \frac{\text{Area}(\triangle\alpha 0\gamma)}{\text{Area}(\triangle\alpha\beta\gamma)}, \quad f^\gamma = \frac{\text{Area}(\triangle\alpha\beta 0)}{\text{Area}(\triangle\alpha\beta\gamma)}$$
+
+- **Parameter definitions:**
+  - $c_A, c_B, c_C$ — mole fractions of components $A$, $B$, $C$ respectively.
+  - $m^0, m^\alpha, m^\beta, m^\gamma$ — total moles and moles of each phase.
+  - $f^i = m^i / m^0$ — mole fraction (phase fraction) of phase $i$.
+  - $\mathbf{c}^0, \mathbf{c}^\alpha, \mathbf{c}^\beta, \mathbf{c}^\gamma$ — composition vectors in the Gibbs triangle.
+
+#### C. Phase & Microstructural Evolution
+
+```mermaid
+graph TD
+    A["Overall composition c⁰ on Gibbs triangle"] --> B{How many phases?}
+    B -->|Two phases α + β| C["c⁰ lies on tie-line between cᵅ and cᵝ\nLever rule gives fᵅ and fᵝ"]
+    B -->|Three phases α + β + γ| D["c⁰ must lie inside tie-triangle △αβγ\nArea rule gives fᵅ, fᵝ, fᵞ"]
+    C --> E["Collinearity: cᵅ, c⁰, cᵝ collinear by mass balance"]
+    D --> F["Convex combination: negative fractions impossible outside triangle"]
+```
+
+#### D. Literature References
+
+- [[A Prince2.pdf]]
+- [[P Gordon.pdf]]
+- [[Phase Transformations in met...pdf]]
+
+---
+
+### 2. Professor's Summarizing Questions & Solutions
+
+> [!question] Q1: Show that on the Gibbs triangle, starting from a point on the $AB$ line, if a line is drawn parallel to the $BC$ line, the mole fraction of $A$ does not change for the entire line.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The mole fraction $c_A$ is constant along any line parallel to side $BC$ of the Gibbs triangle.
+> >
+> > **Theoretical Justification:**
+> >
+> > ![[ternary_tieline_explanation.png]]
+> >
+> > **A. Vector Derivation in 3D Cartesian Coordinates**
+> >
+> > Consider a ternary system $A$–$B$–$C$ on the Gibbs triangle lying in the mole-fraction plane $c_A + c_B + c_C = 1$. The three pure-component vertices are $A = (1,0,0)$, $B = (0,1,0)$, $C = (0,0,1)$.
+> >
+> > 1. **Boundary $AB$:** Any point $P_0$ on the $AB$ baseline has $c_C = 0$, so $P_0 = (c_A^0, c_B^0, 0)$ with $c_A^0 + c_B^0 = 1$.
+> > 2. **Direction vector of $BC$:** $\vec{v}_{BC} = C - B = (0,-1,1)$.
+> > 3. **Parametric line parallel to $BC$ from $P_0$:**
+> >    $$\vec{r}(t) = (c_A^0,\; c_B^0 - t,\; t), \quad 0 \le t \le c_B^0$$
+> > 4. **Conclusion:** The first component of $\vec{r}(t)$ is $c_A(t) = c_A^0 = \text{constant}$. Therefore, along the entire line parallel to $BC$, the mole fraction of $A$ remains fixed at $c_A^0$.
+> >
+> > **B. Geometric Proof (Viviani's Distance Theorem)**
+> >
+> > - **Viviani's Theorem** states that the sum of perpendicular distances from any interior point $P$ to the three sides of an equilateral triangle of altitude $h$ equals $h$.
+> > - The perpendicular distance $d_A$ from $P(c_A, c_B, c_C)$ to side $BC$ is directly proportional to $c_A$: $d_A = c_A \cdot h$.
+> > - A line parallel to side $BC$ is by definition the locus of all points at constant perpendicular distance $d_A$ from $BC$. Because $d_A$ is constant along this line, $c_A$ does not change for the entire line.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.2, pp. 120–121, Figs. 105 & 106; Porter & Easterling, Chapter 1, Section 1.7, pp. 56–57, Fig. 1.40.
+
+> [!question] Q2: If an alloy of overall composition $\mathbf{c}^0$ on the Gibbs triangle splits into two homogeneous phases $\alpha$ and $\beta$, show that all three compositions must lie on the same straight line.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The overall composition $\mathbf{c}^0$ and the two phase compositions $\mathbf{c}^\alpha$ and $\mathbf{c}^\beta$ are collinear — they all lie on the same tie-line.
+> >
+> > ![[collinearity_and_lever_rule.png]]
+> >
+> > **Theoretical Justification:**
+> >
+> > Consider total moles $m^0$ and overall composition $\mathbf{c}^0 = (c_A^0, c_B^0, c_C^0)$ splitting into phases $\alpha$ and $\beta$ with mole amounts $m^\alpha$, $m^\beta$ and compositions $\mathbf{c}^\alpha$, $\mathbf{c}^\beta$.
+> >
+> > 1. **Total molar balance:** $m^0 = m^\alpha + m^\beta$.
+> > 2. **Component mass balance (vector form):** $m^0 \mathbf{c}^0 = m^\alpha \mathbf{c}^\alpha + m^\beta \mathbf{c}^\beta$.
+> > 3. Dividing by $m^0$, letting $f^\alpha = m^\alpha/m^0$ and $f^\beta = 1 - f^\alpha$:
+> >    $$\mathbf{c}^0 = f^\alpha \mathbf{c}^\alpha + (1 - f^\alpha) \mathbf{c}^\beta$$
+> >    $$\mathbf{c}^0 - \mathbf{c}^\beta = f^\alpha (\mathbf{c}^\alpha - \mathbf{c}^\beta)$$
+> > 4. **Vector collinearity:** This states that the displacement vector $(\mathbf{c}^0 - \mathbf{c}^\beta)$ is a scalar multiple ($f^\alpha$) of $(\mathbf{c}^\alpha - \mathbf{c}^\beta)$. Therefore $\mathbf{c}^0$ lies on the line through $\mathbf{c}^\alpha$ and $\mathbf{c}^\beta$ — the **tie-line**.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.3, pp. 122–123, Fig. 108; P. Gordon, Chapter 4, Section 4.7, p. 64 & p. 91, Fig. 4.27; Callister, Chapter 9, Section 9.8, pp. 263–264, Fig. 9.3b.
+
+> [!question] Q3: Derive the lever rule for ternary systems.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The ternary lever rule gives phase fractions as distance ratios along the tie-line, directly from the two-phase collinearity relation.
+> >
+> > **Theoretical Justification:**
+> >
+> > From the collinearity relation: $\mathbf{c}^0 - \mathbf{c}^\beta = f^\alpha (\mathbf{c}^\alpha - \mathbf{c}^\beta)$.
+> >
+> > **A. Distance-Ratio Formulation (Euclidean Norm)**
+> >
+> > Taking the vector length along the tie-line:
+> > $$|\mathbf{c}^0 - \mathbf{c}^\beta| = f^\alpha |\mathbf{c}^\alpha - \mathbf{c}^\beta|$$
+> > $$f^\alpha = \frac{|\mathbf{c}^0 - \mathbf{c}^\beta|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|} = \frac{\text{Distance from } \mathbf{c}^0 \text{ to phase } \beta \text{ boundary}}{\text{Total tie-line length between } \alpha \text{ and } \beta}$$
+> > $$f^\beta = \frac{|\mathbf{c}^\alpha - \mathbf{c}^0|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|} = \frac{\text{Distance from phase } \alpha \text{ boundary to } \mathbf{c}^0}{\text{Total tie-line length between } \alpha \text{ and } \beta}$$
+> >
+> > **B. Component-Wise Algebraic Formulation**
+> >
+> > Projecting along component $A$:
+> > $$c_A^0 = f^\alpha c_A^\alpha + (1 - f^\alpha) c_A^\beta \implies c_A^0 - c_A^\beta = f^\alpha (c_A^\alpha - c_A^\beta)$$
+> > $$f^\alpha = \frac{c_A^0 - c_A^\beta}{c_A^\alpha - c_A^\beta}, \qquad f^\beta = \frac{c_A^\alpha - c_A^0}{c_A^\alpha - c_A^\beta}$$
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.3, p. 123, Fig. 108; Callister, Chapter 9, Section 9.8, pp. 264–265, Example 9.1; Porter & Easterling, Chapter 1, Section 1.7, p. 58, Fig. 1.41c.
+
+> [!question] Q4: If an alloy of overall composition $\mathbf{c}^0$ splits into three homogeneous phases $\alpha$, $\beta$, $\gamma$, show that the starting composition must necessarily lie inside the triangle $\triangle\alpha\beta\gamma$.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** $\mathbf{c}^0$ must lie inside (or on the boundary of) the tie-triangle $\triangle\alpha\beta\gamma$ because physical phase fractions cannot be negative, and lying outside the triangle forces at least one negative fraction.
+> >
+> > ![[ternary_three_phase_triangle.png]]
+> >
+> > **Theoretical Justification:**
+> >
+> > Consider $\mathbf{c}^0$ splitting into three phases with moles $m^\alpha, m^\beta, m^\gamma$ and compositions $\mathbf{c}^\alpha, \mathbf{c}^\beta, \mathbf{c}^\gamma$.
+> >
+> > 1. **Mass conservation:**
+> >    $$m^0 = m^\alpha + m^\beta + m^\gamma, \qquad m^0 \mathbf{c}^0 = m^\alpha \mathbf{c}^\alpha + m^\beta \mathbf{c}^\beta + m^\gamma \mathbf{c}^\gamma$$
+> > 2. Dividing by $m^0$:
+> >    $$\mathbf{c}^0 = f^\alpha \mathbf{c}^\alpha + f^\beta \mathbf{c}^\beta + f^\gamma \mathbf{c}^\gamma, \qquad f^\alpha + f^\beta + f^\gamma = 1, \quad f^i \ge 0$$
+> > 3. **Convex combination property:** A point expressed as a linear combination of three vertices with non-negative coefficients summing to 1 is a **convex combination** — it lies inside or on the boundary of the triangle those vertices define.
+> > 4. **Geometric result:** The set of all convex combinations of three non-collinear points in 2D is the closed triangle $\triangle\alpha\beta\gamma$.
+> > 5. **Physical constraint:** If $\mathbf{c}^0$ were outside $\triangle\alpha\beta\gamma$, solving the mass balance equations would require at least one $f^i < 0$, which is physically impossible. Therefore $\mathbf{c}^0$ **must lie inside or on the boundary of $\triangle\alpha\beta\gamma$**.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.3, pp. 123–124, Figs. 109 & 110; Porter & Easterling, Chapter 1, Section 1.7, pp. 58–59, Fig. 1.42f & g.
+
+> [!question] Q5: Derive the phase fractions $f^\alpha$, $f^\beta$, $f^\gamma$ for a three-phase equilibrium in a ternary system.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The three phase fractions are found by solving the simultaneous mass balance equations; geometrically they equal the ratio of each sub-triangle area to the total tie-triangle area (Center of Gravity / Barycentric Rule).
+> >
+> > **Theoretical Justification:**
+> >
+> > Write the simultaneous mass balance equations:
+> > $$f^\alpha + f^\beta + f^\gamma = 1$$
+> > $$c_A^\alpha f^\alpha + c_A^\beta f^\beta + c_A^\gamma f^\gamma = c_A^0$$
+> > $$c_B^\alpha f^\alpha + c_B^\beta f^\beta + c_B^\gamma f^\gamma = c_B^0$$
+> >
+> > **Solution via Cramer's Rule (Barycentric Coordinates)**
+> >
+> > The total area of the tie-triangle $\triangle\alpha\beta\gamma$:
+> > $$\text{Area}(\triangle\alpha\beta\gamma) = \frac{1}{2}\begin{vmatrix} c_A^\alpha & c_B^\alpha & 1 \\ c_A^\beta & c_B^\beta & 1 \\ c_A^\gamma & c_B^\gamma & 1 \end{vmatrix}$$
+> >
+> > Applying Cramer's rule:
+> > $$f^\alpha = \frac{\text{Area}(\triangle 0\beta\gamma)}{\text{Area}(\triangle\alpha\beta\gamma)} = \frac{\text{Area of sub-triangle opposite vertex } \alpha}{\text{Total area of } \triangle\alpha\beta\gamma}$$
+> > $$f^\beta = \frac{\text{Area}(\triangle\alpha 0\gamma)}{\text{Area}(\triangle\alpha\beta\gamma)} = \frac{\text{Area of sub-triangle opposite vertex } \beta}{\text{Total area of } \triangle\alpha\beta\gamma}$$
+> > $$f^\gamma = \frac{\text{Area}(\triangle\alpha\beta 0)}{\text{Area}(\triangle\alpha\beta\gamma)} = \frac{\text{Area of sub-triangle opposite vertex } \gamma}{\text{Total area of } \triangle\alpha\beta\gamma}$$
+> >
+> > This geometric formulation is the **Center of Gravity Rule** or **Barycentric Coordinates Rule** for three-phase equilibrium in ternary systems.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.3, pp. 123–124, Fig. 109; Porter & Easterling, Chapter 1, Section 1.7, p. 59, Fig. 1.42f & g.
+
+
+
+## Lecture 5: Isomorphous Ternary Phase Diagrams — Isothermal Sections & Tie-Line Uniqueness
+
+### 1. Underlying Theory & Foundations
+
+#### A. Thermodynamic & Kinetic Principles
+
+- An **isomorphous ternary system** ($A$–$B$–$C$) has complete mutual solubility in both liquid and solid states across all compositions. The 3D isobaric space model is a triangular prism with the Gibbs triangle as its base and temperature as the vertical axis.
+- **Melting point ordering:** $T_A > T_B > T_C$. The **liquidus surface** (upper) and **solidus surface** (lower) are smooth surfaces meeting only at the three pure-component vertical edges.
+- The two-phase ($L + \alpha$) region is the lens-shaped volume between the liquidus and solidus surfaces. Horizontal isothermal slices through this prism produce a sequence of 2D Gibbs-triangle sections showing how the single-phase and two-phase regions evolve with temperature.
+- **Tie-line uniqueness** in a two-phase region follows from: (1) the common-tangent-plane construction on the Gibbs free-energy surfaces — there is exactly one common tangent plane at a given temperature per pair of coexisting compositions; and (2) the Gibbs Phase Rule — at fixed $T$ and $P$ in a ternary two-phase field, $F = 1$, leaving no additional freedom once $\mathbf{c}^0$ is specified.
+- **Non-intersection of tie-lines** follows by contradiction: if two tie-lines intersected at $\mathbf{c}^*$, the system would require two simultaneous common tangent planes — violating the uniqueness of the Gibbs free-energy minimum — and would imply three phases coexisting at an arbitrary composition, violating the Phase Rule.
+
+#### B. Governing Formulations & Derivations
+
+- **Condensed Gibbs Phase Rule** (constant pressure, $C = 3$):
+  $$P + F = C + 1 = 4$$
+  - Single-phase ($P = 1$): $F = 3$ (trivariant — $T$, and two composition variables free).
+  - Two-phase ($P = 2$): $F = 2$ (bivariant — at fixed $T$, one composition variable fixes all others).
+  - Three-phase ($P = 3$): $F = 1$ (monovariant — at fixed $T$, all phase compositions are fixed at the three vertices of the tie-triangle).
+
+- **Chemical equilibrium condition for two-phase coexistence** ($\alpha$ and $\beta$):
+  $$\mu_A^\alpha = \mu_A^\beta, \qquad \mu_B^\alpha = \mu_B^\beta, \qquad \mu_C^\alpha = \mu_C^\beta$$
+  Geometrically this is the **common tangent plane** touching both $G^\alpha(c_A, c_B)$ and $G^\beta(c_A, c_B)$ surfaces simultaneously.
+
+- **Mass balance (tie-line constraint):**
+  $$\mathbf{c}^0 = f^\alpha \mathbf{c}^\alpha + f^\beta \mathbf{c}^\beta, \qquad f^\alpha + f^\beta = 1$$
+
+#### C. Phase & Microstructural Evolution
+
+```mermaid
+graph TD
+    A["T > T_A: Entire triangle = Liquid L"] --> B["T = T_A: Vertex A freezes — point contact"]
+    B --> C["T_A > T > T_B: Solid α corner at A + (L+α) lens + Liquid L"]
+    C --> D["T = T_B: Solid α reaches Vertex B along AB edge"]
+    D --> E["T_B > T > T_C: (L+α) band spans AC to BC edge"]
+    E --> F["T = T_C: Liquid collapses to point at Vertex C"]
+    F --> G["T < T_C: Entire triangle = Solid α"]
+```
+
+#### D. Literature References
+
+- [[A Prince2.pdf]]
+- [[P Gordon.pdf]]
+- [[Phase Transformations in met...pdf]]
+
+---
+
+### 2. Professor's Summarizing Questions & Solutions
+
+> [!question] Q1: Draw an isomorphous ternary phase diagram (3D space model).
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** An isomorphous ternary phase diagram is a triangular prism with a smooth liquidus surface above and a smooth solidus surface below, enclosing a lens-shaped two-phase ($L + \alpha$) region.
+> >
+> > ![[isomorphous_ternary_isotherms.png]]
+> >
+> > **Theoretical Justification:**
+> > - **Base:** The Gibbs concentration triangle $ABC$ with vertices at the three pure components.
+> > - **Vertical axis:** Temperature $T$, with $T_A > T_B > T_C$.
+> > - **Liquidus surface:** Smooth upper surface; every point on it is the temperature at which liquid of that ternary composition begins to freeze on cooling.
+> > - **Solidus surface:** Smooth lower surface; every point on it is the temperature at which the last liquid disappears on cooling.
+> > - **Two-phase ($L + \alpha$) region:** Lens-like volume between the two surfaces, containing horizontal tie-lines linking coexisting liquid and solid compositions.
+> > - **Coincident points:** The liquidus and solidus surfaces meet only at the three pure-component vertical edges at $(T_A, A)$, $(T_B, B)$, and $(T_C, C)$.
+> > - **References:** A. Prince, Chapter 8, Section 8.4, pp. 128–137, Fig. 111; Porter & Easterling, Chapter 1, Section 1.7, pp. 56–58, Fig. 1.41 & 1.42; P. Gordon, Chapter 4, Section 4.10, pp. 77–81.
+
+> [!question] Q2: Draw the isothermal sections of an isomorphous ternary phase diagram for (i) $T > T_A$, (ii) $T = T_A$, (iii) $T_A > T > T_B$, (iv) $T = T_B$, (v) $T_B > T > T_C$, (vi) $T = T_C$, and (vii) $T < T_C$.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** As temperature drops from above $T_A$ to below $T_C$, the single-phase liquid region shrinks and is replaced by a growing two-phase lens and finally a complete single-phase solid.
+> >
+> > **Theoretical Justification:**
+> >
+> > **(i) $T > T_A$**
+> > ![[isotherm_1_above_TA.png]]
+> > - The isotherm lies above all three melting points. The entire Gibbs triangle is a single-phase **Liquid ($L$)**. No solid exists anywhere.
+> >
+> > **(ii) $T = T_A$**
+> > ![[isotherm_2_at_TA.png]]
+> > - The isothermal plane just touches the apex of the liquidus/solidus at pure vertex $A$. The triangle is filled with liquid ($L$), except at **Vertex $A$** where pure solid $\alpha$ is in point equilibrium with pure liquid $A$.
+> >
+> > **(iii) $T_A > T > T_B$**
+> > ![[isotherm_3_TA_to_TB.png]]
+> > - The isotherm intersects the lens-shaped two-phase region near corner $A$. Three zones appear:
+> >   - **Corner $A$ region:** Small single-phase **Solid ($\alpha$)** zone.
+> >   - **Interior:** Curved lens-shaped **Two-Phase ($L + \alpha$)** region with tie-lines linking the solidus boundary to the liquidus boundary.
+> >   - **Remainder:** Single-phase **Liquid ($L$)** extending toward corners $B$ and $C$.
+> >
+> > **(iv) $T = T_B$**
+> > ![[isotherm_4_at_TB.png]]
+> > - The solid $\alpha$ region expands along the $AB$ binary edge and **touches Vertex $B$**. The two-phase ($L + \alpha$) region extends fully along the $AB$ baseline to $B$ while curving into the ternary interior. The liquid ($L$) region remains in the $C$-rich corner.
+> >
+> > **(v) $T_B > T > T_C$**
+> > ![[isotherm_5_TB_to_TC.png]]
+> > - The $AB$ binary edge is now 100% solid. A broad **Two-Phase ($L + \alpha$) band** stretches entirely across the Gibbs triangle from the $AC$ binary edge to the $BC$ binary edge. The solid ($\alpha$) region occupies the $AB$-rich side; liquid ($L$) occupies the $C$-rich corner.
+> >
+> > **(vi) $T = T_C$**
+> > ![[isotherm_6_at_TC.png]]
+> > - Solidification is nearly complete. The single-phase **Liquid ($L$)** region collapses to a single point at **Vertex $C$**. Virtually the entire triangle is single-phase **Solid ($\alpha$)**, with only a vanishingly thin ($L + \alpha$) boundary at corner $C$.
+> >
+> > **(vii) $T < T_C$**
+> > ![[isotherm_7_below_TC.png]]
+> > - Below all three melting points, solidification is complete for every possible composition. The entire Gibbs triangle is a single-phase homogeneous **Solid Solution ($\alpha$)**.
+> >
+> > **References:** A. Prince, Chapter 8, Section 8.4, pp. 128–137, Figs. 111 & 116; Porter & Easterling, Chapter 1, Section 1.7, pp. 56–58, Fig. 1.42; P. Gordon, Chapter 4, Section 4.10, pp. 77–81.
+
+> [!question] Q3: Show that in the two-phase coexistence region of a ternary phase diagram, the tie-lines are chosen by the system itself — a composition splits into exactly one combination of coexisting phase compositions.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The system uniquely selects exactly one tie-line for any overall composition $\mathbf{c}^0$ in a two-phase field, determined by the common tangent plane construction and enforced by the Gibbs Phase Rule.
+> >
+> > **Theoretical Justification:**
+> >
+> > **A. Thermodynamic Basis (Common Tangent Plane)**
+> >
+> > At fixed $T$ and $P$, each phase has a molar Gibbs free energy surface $G^\alpha(c_A, c_B)$ and $G^\beta(c_A, c_B)$ over the Gibbs triangle. Two-phase equilibrium requires equal chemical potentials in both phases:
+> > $$\mu_A^\alpha = \mu_A^\beta, \qquad \mu_B^\alpha = \mu_B^\beta, \qquad \mu_C^\alpha = \mu_C^\beta$$
+> > Geometrically this is a **common tangent plane** touching both free-energy surfaces simultaneously. The contact points fix $\mathbf{c}^\alpha$ and $\mathbf{c}^\beta$ uniquely — rolling this plane across the surfaces traces a continuous non-overlapping family of tie-lines spanning the two-phase region.
+> >
+> > **B. Uniqueness via Gibbs Phase Rule**
+> >
+> > In a ternary system ($C = 3$) at constant pressure with two phases ($P = 2$):
+> > $$F = C - P + 1 = 3 - 2 + 1 = 2$$
+> > At a fixed temperature $T$, $F = 1$ — specifying one composition variable in one phase automatically fixes all remaining composition variables in both phases. Therefore, the positions of $\mathbf{c}^\alpha$ and $\mathbf{c}^\beta$ on the phase boundaries are fully determined once $T$ and the location of $\mathbf{c}^0$ are given.
+> >
+> > **C. Mass Balance Uniqueness**
+> >
+> > By the collinearity result (Lecture 4, Q2), $\mathbf{c}^0$ must lie on the tie-line $\mathbf{c}^\alpha$–$\mathbf{c}^\beta$:
+> > $$\mathbf{c}^0 = f^\alpha \mathbf{c}^\alpha + f^\beta \mathbf{c}^\beta, \qquad f^\alpha + f^\beta = 1$$
+> > Since tie-lines in a two-phase field cannot intersect (proven in Q5), there passes exactly one tie-line through any interior point $\mathbf{c}^0$. Therefore the system selects **exactly one pair** ($\mathbf{c}^\alpha$, $\mathbf{c}^\beta$).
+> >
+> > **References:** A. Prince, Chapter 8, Sections 8.3 & 8.4, pp. 122–123, Fig. 108 & p. 128; Porter & Easterling, Chapter 1, Section 1.7, pp. 57–58, Fig. 1.41a, b, c.
+
+> [!question] Q4: Frame the "BIG THREE" counterpart for the ternary phase diagram.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The ternary "Big Three" asks the same questions as the binary version — phases present, their compositions, and their relative amounts — but the answers now use tie-lines, tie-triangles, the ternary lever rule, and the area (center-of-gravity) rule.
+> >
+> > **Theoretical Justification:**
+> >
+> > In binary phase diagrams the "Big Three" are: (1) What phases are present? (2) What are their compositions? (3) What are their relative amounts? Expanded to ternary systems on a 2D Gibbs-triangle isothermal section:
+> >
+> > **1. Phases Present** — determine from the phase field containing $\mathbf{c}^0$:
+> > - Single-phase region ($P = 1$): one phase.
+> > - Two-phase region ($P = 2$): two phases ($\alpha + \beta$).
+> > - Three-phase tie-triangle ($P = 3$): three phases ($\alpha + \beta + \gamma$).
+> >
+> > **2. Phase Compositions** — read from the phase boundaries:
+> > - Single-phase: composition equals $\mathbf{c}^0$ itself.
+> > - Two-phase: construct the unique **tie-line** through $\mathbf{c}^0$; its endpoints on the phase boundaries give $\mathbf{c}^\alpha$ and $\mathbf{c}^\beta$.
+> > - Three-phase: compositions are fixed at the **three vertices** $\mathbf{c}^\alpha$, $\mathbf{c}^\beta$, $\mathbf{c}^\gamma$ of the tie-triangle enclosing $\mathbf{c}^0$.
+> >
+> > **3. Relative Phase Amounts** — calculated from geometry:
+> > - Single-phase: 100% of that phase.
+> > - Two-phase: apply the **ternary lever rule** along the tie-line:
+> >   $$f^\alpha = \frac{|\mathbf{c}^0 - \mathbf{c}^\beta|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|}, \qquad f^\beta = \frac{|\mathbf{c}^\alpha - \mathbf{c}^0|}{|\mathbf{c}^\alpha - \mathbf{c}^\beta|}$$
+> > - Three-phase: apply the **Center of Gravity / Area Rule**:
+> >   $$f^\alpha = \frac{\text{Area}(\triangle \mathbf{c}^0 \mathbf{c}^\beta \mathbf{c}^\gamma)}{\text{Area}(\triangle \mathbf{c}^\alpha \mathbf{c}^\beta \mathbf{c}^\gamma)}$$
+> >   (and similarly for $f^\beta$ and $f^\gamma$).
+> >
+> > **References:** A. Prince, Chapter 8, Section 8.3, pp. 122–124, Figs. 108–110; Callister, Chapter 9, Sections 9.8 & 9.17, pp. 263–265 & 284–285; Porter & Easterling, Chapter 1, Section 1.7, pp. 56–59, Figs. 1.40–1.42.
+
+> [!question] Q5: Show that two tie-lines of a coexistence region cannot intersect.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** Two tie-lines in a two-phase region cannot intersect because doing so would simultaneously violate thermodynamic uniqueness (two distinct Gibbs free-energy minima at the same state) and the Gibbs Phase Rule (three phases coexisting at an arbitrary bivariant composition).
+> >
+> > **Theoretical Justification (Proof by Contradiction)**
+> >
+> > 1. **Hypothesis:** Suppose two distinct tie-lines $T_1$ (linking $l_1$ and $s_1$) and $T_2$ (linking $l_2$ and $s_2$) intersect at interior point $\mathbf{c}^*$ within a two-phase field at constant $T$ and $P$.
+> >
+> > 2. **Thermodynamic violation:** A physical system at fixed $T$, $P$, $\mathbf{c}^*$ has a unique state of minimum Gibbs free energy ($dG = 0$). If both $T_1$ and $T_2$ were valid, the alloy would simultaneously equilibrate as $(l_1 + s_1)$ and $(l_2 + s_2)$, requiring two distinct common tangent planes. Two distinct common tangent planes cannot both be the global free-energy minimum — contradiction.
+> >
+> > 3. **Phase Rule violation:** At the intersection point $\mathbf{c}^*$, the compositions $l_1$, $l_2$, and a shared phase boundary point would imply three phases coexisting simultaneously. By the condensed Phase Rule:
+> >    $$P + F = C + 1 \implies 3 + F = 4 \implies F = 1$$
+> >    At fixed temperature, $F = 0$ — three phases can only coexist at the fixed vertices of a **tie-triangle**, not at an arbitrary interior point of a bivariant two-phase field. This is a direct contradiction.
+> >
+> > 4. **Conclusion:** Both contradictions are irresolvable, so the hypothesis is false. Tie-lines across a two-phase field form a continuous, **non-intersecting** sequence.
+> >
+> > **References:** A. Prince, Chapter 8, Section 8.4, p. 128, Item (3) & Fig. 115; P. Gordon, Chapter 3, Section 3.3, pp. 21–23.
