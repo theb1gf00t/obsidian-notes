@@ -1,0 +1,1166 @@
+{
+  "userId": "422a49b8-5fa5-426a-b8b0-0a059ff8e7e5",
+  "isPaidUser": false,
+  "isPlusUser": false,
+  "entitlementToken": "",
+  "entitlementExpiresAt": 0,
+  "plusLicenseKey": "",
+  "openAIApiKey": "",
+  "openAIOrgId": "",
+  "huggingfaceApiKey": "",
+  "cohereApiKey": "",
+  "anthropicApiKey": "",
+  "googleApiKey": "",
+  "openRouterAiApiKey": "",
+  "xaiApiKey": "",
+  "mistralApiKey": "",
+  "deepseekApiKey": "",
+  "siliconflowApiKey": "",
+  "defaultChainType": "llm_chain",
+  "defaultModelKey": "b4445c4b-7b39-42fc-8fb0-405b3b8d7a71",
+  "contextTurns": 15,
+  "userSystemPrompt": "",
+  "openAIProxyBaseUrl": "",
+  "stream": true,
+  "copilotFolder": "copilot",
+  "copilotRootHistory": [
+    "copilot"
+  ],
+  "upgradedToV8FromLegacy": false,
+  "defaultSaveFolder": "copilot/copilot-conversations",
+  "defaultConversationTag": "copilot-conversation",
+  "autosaveChat": true,
+  "autoAttachActiveNote": true,
+  "defaultOpenArea": "view",
+  "defaultSendShortcut": "enter",
+  "customPromptsFolder": "copilot/copilot-custom-prompts",
+  "qaExclusions": "copilot",
+  "qaInclusions": "",
+  "chatNoteContextPath": "",
+  "chatNoteContextTags": [],
+  "debug": false,
+  "maxSourceChunks": 30,
+  "enableInlineCitations": true,
+  "groqApiKey": "",
+  "activeModels": [],
+  "lexicalSearchRamLimit": 100,
+  "promptUsageTimestamps": {},
+  "promptSortStrategy": "timestamp",
+  "chatHistorySortStrategy": "recent",
+  "projectsFolder": "copilot/projects",
+  "defaultConversationNoteName": "{$topic}@{$date}_{$time}",
+  "inlineEditCommands": [],
+  "projectList": [],
+  "lastDismissedVersion": null,
+  "lastShownStartupVersion": null,
+  "passMarkdownImages": true,
+  "enableAutonomousAgent": true,
+  "enableCustomPromptTemplating": true,
+  "enableSelfHostMode": false,
+  "enableMiyo": false,
+  "enableMiyoSearchSkill": true,
+  "miyoSearchAll": false,
+  "miyoExtraSearchFolders": [],
+  "miyoSearchMaxResults": 20,
+  "miyoSearchMaxVariants": 2,
+  "relevantNotesLiveUpdate": true,
+  "miyoServerUrl": "",
+  "selfHostSearchProvider": "firecrawl",
+  "firecrawlApiKey": "",
+  "perplexityApiKey": "",
+  "parallelApiKey": "",
+  "exaApiKey": "",
+  "supadataApiKey": "",
+  "enableMiyoDocumentProcessing": true,
+  "enableLexicalBoosts": true,
+  "suggestedDefaultCommands": false,
+  "autonomousAgentEnabledToolIds": [
+    "localSearch",
+    "readNote",
+    "webSearch",
+    "pomodoro",
+    "youtubeTranscription",
+    "writeFile",
+    "editFile",
+    "updateMemory"
+  ],
+  "reasoningEffort": "low",
+  "verbosity": "medium",
+  "memoryFolderName": "copilot/memory",
+  "enableRecentConversations": true,
+  "maxRecentConversations": 30,
+  "enableSavedMemory": true,
+  "quickCommandIncludeNoteContext": true,
+  "autoAcceptEdits": false,
+  "diffViewMode": "split",
+  "userSystemPromptsFolder": "copilot/system-prompts",
+  "defaultSystemPromptTitle": "",
+  "autoCompactThreshold": 128000,
+  "convertedDocOutputFolder": "",
+  "agentMode": {
+    "byok": {},
+    "activeBackend": "claude",
+    "backends": {
+      "codex": {
+        "defaultModel": {
+          "baseModelId": "gpt-5.6-luna",
+          "effort": "low"
+        }
+      },
+      "claude": {
+        "defaultModel": {
+          "baseModelId": "claude-sonnet-4-6",
+          "effort": "low"
+        }
+      },
+      "opencode": {
+        "defaultModel": {
+          "baseModelId": "google/gemini-3.8-flash",
+          "effort": "low"
+        }
+      }
+    },
+    "debugFullFrames": true,
+    "offerFeedbackCards": true,
+    "notificationSound": true,
+    "notificationSoundId": "piano",
+    "welcomeDismissed": true,
+    "skills": {
+      "folder": "copilot/skills",
+      "builtinPreferences": {
+        "copilot-web-search": {
+          "disabled": true
+        },
+        "copilot-web-fetch": {
+          "disabled": true
+        },
+        "obsidian-markdown": {
+          "disabledAgents": [
+            "claude"
+          ]
+        },
+        "obsidian-bases": {
+          "disabledAgents": [
+            "claude"
+          ]
+        },
+        "json-canvas": {
+          "disabledAgents": [
+            "claude",
+            "codex"
+          ]
+        },
+        "obsidian-cli": {
+          "disabledAgents": [
+            "claude",
+            "codex"
+          ]
+        }
+      }
+    },
+    "deviceProfiles": {
+      "ed3bd72a-c4a1-4ce0-b962-599350dd72d7": {
+        "codex": {
+          "binaryPath": "/home/b1gf00t/.obsidian-copilot/codex/2.2.2/codex-acp",
+          "binaryVersion": "2.2.2",
+          "binarySource": "managed"
+        },
+        "opencode": {
+          "binaryPath": "/home/b1gf00t/.obsidian-copilot/opencode/2.0.32/bin/opencode",
+          "binaryVersion": "2.0.32",
+          "binarySource": "managed",
+          "probeSessionId": "ses_e6d87bf2cffeHhDTMvHm6r6o5Y"
+        }
+      }
+    }
+  },
+  "providers": {
+    "c70166c4-bf9a-457d-9907-0e84ed2fc383": {
+      "providerType": "anthropic",
+      "displayName": "Claude",
+      "origin": {
+        "kind": "agent",
+        "agentType": "claude"
+      },
+      "requiresApiKey": false,
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "addedAt": 1793458494886,
+      "apiKeyKeychainId": null
+    },
+    "784cdc06-44d5-4b94-a05d-2c274d9ce798": {
+      "providerType": "openai-compatible",
+      "displayName": "OpenCode",
+      "origin": {
+        "kind": "agent",
+        "agentType": "opencode"
+      },
+      "requiresApiKey": false,
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "addedAt": 1793458716897,
+      "apiKeyKeychainId": null
+    },
+    "08821d0d-833e-4103-8f3a-7ff958803ac1": {
+      "providerType": "google",
+      "displayName": "Google",
+      "baseUrl": "https://generativelanguage.googleapis.com",
+      "enableCors": false,
+      "requiresApiKey": true,
+      "origin": {
+        "kind": "byok",
+        "catalogProviderId": "google"
+      },
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "addedAt": 1793459004950,
+      "apiKeyKeychainId": "copilot-vc589ef94-provider-google-api-key"
+    },
+    "d056c9a8-0065-49e5-9363-6b4ea77a91c9": {
+      "providerType": "openai-compatible",
+      "displayName": "Codex",
+      "origin": {
+        "kind": "agent",
+        "agentType": "codex"
+      },
+      "requiresApiKey": false,
+      "providerId": "d056c9a8-0065-49e5-9363-6b4ea77a91c9",
+      "addedAt": 1793459911771,
+      "apiKeyKeychainId": null
+    }
+  },
+  "configuredModels": [
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "default",
+        "displayName": "Default (recommended)",
+        "description": "Opus 5.5 · Best for everyday, complex tasks"
+      },
+      "configuredModelId": "0d8a2ce9-7158-432a-8521-64f538048896",
+      "configuredAt": 1793458495287
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "opus",
+        "displayName": "Opus 5.5",
+        "description": "For complex work and everyday tasks"
+      },
+      "configuredModelId": "7ec6adcd-49a9-4669-9a31-865f85df2435",
+      "configuredAt": 1793458495288
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "sonnet",
+        "displayName": "Sonnet 5.5",
+        "description": "Most efficient for simpler tasks"
+      },
+      "configuredModelId": "9fe1105f-0b95-4748-a17c-13b0e255d8c4",
+      "configuredAt": 1793458495288
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "fable",
+        "displayName": "Fable 5.1",
+        "description": "For your toughest challenges"
+      },
+      "configuredModelId": "8cd0397b-2c27-4c5c-9b3e-5e613754e2a9",
+      "configuredAt": 1793458495288
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "haiku",
+        "displayName": "Haiku 5.5",
+        "description": "Fastest for quick answers"
+      },
+      "configuredModelId": "d491f4ce-51fe-41be-aab8-1acaf07264ba",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-haiku-4-5-20251001",
+        "displayName": "Haiku 4.5",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 200000,
+          "output": 64000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2025-10-15",
+        "cost": {
+          "input": 1,
+          "output": 5,
+          "cacheRead": 0.1,
+          "cacheWrite": 1.25
+        },
+        "description": "Fastest for quick answers"
+      },
+      "configuredModelId": "85a07343-d206-4da5-b09b-b9ae34e4e980",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-sonnet-5",
+        "displayName": "Sonnet 5",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-06-29",
+        "cost": {
+          "input": 2,
+          "output": 10,
+          "cacheRead": 0.2,
+          "cacheWrite": 2.5
+        },
+        "description": "Efficient for routine tasks"
+      },
+      "configuredModelId": "7af958b0-e6b2-49ae-978a-d0d0dbd3ce38",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-opus-5",
+        "displayName": "Opus 5",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-07-24",
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cacheRead": 0.5,
+          "cacheWrite": 6.25
+        },
+        "description": "Best for everyday, complex tasks"
+      },
+      "configuredModelId": "c4081928-cc0c-4cc7-9b9e-37d54c5b0d97",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-fable-5",
+        "displayName": "Fable 5",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-06-07",
+        "cost": {
+          "input": 10,
+          "output": 50,
+          "cacheRead": 1,
+          "cacheWrite": 12.5
+        },
+        "description": "Most capable for your hardest and longest-running tasks"
+      },
+      "configuredModelId": "bd35718b-f8ed-46bb-986f-645d01816e1f",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-opus-4-8",
+        "displayName": "Opus 4.8",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-05-28",
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cacheRead": 0.5,
+          "cacheWrite": 6.25
+        },
+        "description": "Best for everyday, complex tasks"
+      },
+      "configuredModelId": "e347f039-be25-4168-9b6c-63c3b7e97473",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-opus-4-7",
+        "displayName": "Opus 4.7",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-04-14",
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cacheRead": 0.5,
+          "cacheWrite": 6.25
+        },
+        "description": "Best for everyday, complex tasks"
+      },
+      "configuredModelId": "92d81d51-8688-4cfb-8f3a-68b9c538159d",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-opus-4-6",
+        "displayName": "Opus 4.6",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-02-04",
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cacheRead": 0.5,
+          "cacheWrite": 6.25
+        },
+        "description": "Best for everyday, complex tasks"
+      },
+      "configuredModelId": "7d6c4e55-d8a5-4103-842f-0b5007cba198",
+      "configuredAt": 1793458495289
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-sonnet-4-6",
+        "displayName": "Sonnet 4.6",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-02-17",
+        "cost": {
+          "input": 3,
+          "output": 15,
+          "cacheRead": 0.3,
+          "cacheWrite": 3.75
+        },
+        "description": "Efficient for routine tasks"
+      },
+      "configuredModelId": "52a4594b-b50a-4bd5-9cfd-a41f088fd4bc",
+      "configuredAt": 1793458495290
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/big-pickle",
+        "displayName": "opencode/Big Pickle"
+      },
+      "configuredModelId": "99c57ce1-8af4-4558-a1a5-79f04f187ff3",
+      "configuredAt": 1793458716912
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/deepseek-v4.1-flash-free",
+        "displayName": "opencode/DeepSeek V4.1 Flash Free"
+      },
+      "configuredModelId": "5869f4ba-b808-4beb-91d7-98ac8b79370d",
+      "configuredAt": 1793458716913
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/glm-5.3-flash-free",
+        "displayName": "opencode/GLM-5.3-Flash Free"
+      },
+      "configuredModelId": "0f34ab32-99a7-4a80-81a2-31d9e9fe96a9",
+      "configuredAt": 1793458716913
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/mimo-v2.6-flash-free",
+        "displayName": "opencode/MiMo-V2.6-Flash Free"
+      },
+      "configuredModelId": "ec534592-92be-4c4a-b4e2-b5107804fcb9",
+      "configuredAt": 1793458716913
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/nemotron-3.5-lightning-free",
+        "displayName": "opencode/Nemotron 3.5 Lightning Free"
+      },
+      "configuredModelId": "eb844d31-2f4d-4159-b726-7d7da7da8f53",
+      "configuredAt": 1793458716914
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/nemotron-3.5-super-vl-free",
+        "displayName": "opencode/Nemotron 3.5 Super VL Free"
+      },
+      "configuredModelId": "55e195d0-486c-4f68-9c4c-e69e397cc72e",
+      "configuredAt": 1793458716914
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/beam-free",
+        "displayName": "opencode/Beam Free"
+      },
+      "configuredModelId": "ac2b62a0-3a64-4aff-bb2e-867020d20294",
+      "configuredAt": 1793458717637
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/flint-40b-free",
+        "displayName": "opencode/Flint 40B Free"
+      },
+      "configuredModelId": "40628128-d93c-446e-9d79-b0302f19345e",
+      "configuredAt": 1793458717638
+    },
+    {
+      "configuredModelId": "2c265779-276d-4caf-9022-0e286a390a02",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-2.5-flash",
+        "displayName": "Gemini 2.5 Flash",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2025-06-17",
+        "cost": {
+          "input": 0.3,
+          "output": 2.5,
+          "cacheRead": 0.03
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "811e39ba-0c14-44c7-86bb-e9b974afa1bd",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-2.5-flash-lite",
+        "displayName": "Gemini 2.5 Flash-Lite",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2025-06-17",
+        "cost": {
+          "input": 0.1,
+          "output": 0.4,
+          "cacheRead": 0.01
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "b4445c4b-7b39-42fc-8fb0-405b3b8d7a71",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-3.8-flash",
+        "displayName": "Gemini 3.8 Flash",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-09-02",
+        "cost": {
+          "input": 0.75,
+          "output": 3.75,
+          "cacheRead": 0.075
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "5d6dd277-31a9-46e0-a676-01fac4003b8b",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-flash-lite-latest",
+        "displayName": "Gemini Flash-Lite Latest",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-07-21",
+        "cost": {
+          "input": 0.3,
+          "output": 2.5,
+          "cacheRead": 0.03
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "2684249f-784b-4366-9973-609bac1297d8",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-3.1-flash-lite-image",
+        "displayName": "Nano Banana 2 Lite",
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text",
+            "image"
+          ]
+        },
+        "limits": {
+          "context": 65536,
+          "output": 4096
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-06-30",
+        "cost": {
+          "input": 0.25,
+          "output": 30
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "47f5755f-9a55-4082-a2b8-8b6dd89df517",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-3.1-pro-preview",
+        "displayName": "Gemini 3.1 Pro Preview",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-02-19",
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cacheRead": 0.2
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "configuredModelId": "eec9d658-707b-45f4-b942-3c3cfc1622a5",
+      "providerId": "08821d0d-833e-4103-8f3a-7ff958803ac1",
+      "info": {
+        "id": "gemini-2.5-pro",
+        "displayName": "Gemini 2.5 Pro",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576,
+          "output": 65536
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2025-06-17",
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cacheRead": 0.125
+        }
+      },
+      "configuredAt": 1793459004953
+    },
+    {
+      "providerId": "d056c9a8-0065-49e5-9363-6b4ea77a91c9",
+      "info": {
+        "id": "gpt-6-luna",
+        "displayName": "6 Luna",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1050000,
+          "output": 128000,
+          "input": 922000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-09-22",
+        "cost": {
+          "input": 0.1,
+          "output": 0.5,
+          "cacheRead": 0.01,
+          "cacheWrite": 0.125
+        },
+        "description": "Fast and affordable model for easier tasks."
+      },
+      "configuredModelId": "6136191b-49ff-4f77-8243-5680b336dea9",
+      "configuredAt": 1793459911774
+    },
+    {
+      "providerId": "d056c9a8-0065-49e5-9363-6b4ea77a91c9",
+      "info": {
+        "id": "gpt-5.6-terra",
+        "displayName": "5.6 Terra",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1050000,
+          "output": 128000,
+          "input": 922000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-07-09",
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cacheRead": 0.2
+        },
+        "description": "Older balanced model for straightforward work."
+      },
+      "configuredModelId": "9618f85c-2eba-4515-ae0a-e6f35603a019",
+      "configuredAt": 1793459911775
+    },
+    {
+      "providerId": "d056c9a8-0065-49e5-9363-6b4ea77a91c9",
+      "info": {
+        "id": "gpt-5.6-luna",
+        "displayName": "5.6 Luna",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1050000,
+          "output": 128000,
+          "input": 922000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-07-09",
+        "cost": {
+          "input": 0.2,
+          "output": 1.2,
+          "cacheRead": 0.02
+        },
+        "description": "Older fast and efficient model."
+      },
+      "configuredModelId": "f8a0a19a-0b09-4086-a761-e361faae14b9",
+      "configuredAt": 1793459911775
+    }
+  ],
+  "backends": {
+    "claude": {
+      "enabledModels": [
+        "0d8a2ce9-7158-432a-8521-64f538048896",
+        "7ec6adcd-49a9-4669-9a31-865f85df2435",
+        "9fe1105f-0b95-4748-a17c-13b0e255d8c4",
+        "8cd0397b-2c27-4c5c-9b3e-5e613754e2a9",
+        "d491f4ce-51fe-41be-aab8-1acaf07264ba",
+        "85a07343-d206-4da5-b09b-b9ae34e4e980",
+        "7af958b0-e6b2-49ae-978a-d0d0dbd3ce38",
+        "c4081928-cc0c-4cc7-9b9e-37d54c5b0d97",
+        "bd35718b-f8ed-46bb-986f-645d01816e1f",
+        "e347f039-be25-4168-9b6c-63c3b7e97473",
+        "92d81d51-8688-4cfb-8f3a-68b9c538159d",
+        "7d6c4e55-d8a5-4103-842f-0b5007cba198",
+        "52a4594b-b50a-4bd5-9cfd-a41f088fd4bc"
+      ]
+    },
+    "opencode": {
+      "enabledModels": [
+        "99c57ce1-8af4-4558-a1a5-79f04f187ff3",
+        "5869f4ba-b808-4beb-91d7-98ac8b79370d",
+        "2c265779-276d-4caf-9022-0e286a390a02",
+        "811e39ba-0c14-44c7-86bb-e9b974afa1bd",
+        "b4445c4b-7b39-42fc-8fb0-405b3b8d7a71",
+        "5d6dd277-31a9-46e0-a676-01fac4003b8b",
+        "2684249f-784b-4366-9973-609bac1297d8",
+        "47f5755f-9a55-4082-a2b8-8b6dd89df517",
+        "eec9d658-707b-45f4-b942-3c3cfc1622a5"
+      ]
+    },
+    "chat": {
+      "enabledModels": [
+        "2c265779-276d-4caf-9022-0e286a390a02",
+        "811e39ba-0c14-44c7-86bb-e9b974afa1bd",
+        "b4445c4b-7b39-42fc-8fb0-405b3b8d7a71",
+        "5d6dd277-31a9-46e0-a676-01fac4003b8b",
+        "2684249f-784b-4366-9973-609bac1297d8",
+        "47f5755f-9a55-4082-a2b8-8b6dd89df517",
+        "eec9d658-707b-45f4-b942-3c3cfc1622a5"
+      ]
+    },
+    "codex": {
+      "enabledModels": [
+        "6136191b-49ff-4f77-8243-5680b336dea9",
+        "9618f85c-2eba-4515-ae0a-e6f35603a019",
+        "f8a0a19a-0b09-4086-a761-e361faae14b9"
+      ]
+    }
+  },
+  "copilotPlusCatalog": {
+    "models": [
+      {
+        "id": "copilot-plus-flash",
+        "displayName": "Copilot Plus Flash",
+        "description": "The default model: fastest responses and the most quota.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "glm-5.2",
+        "displayName": "GLM-5.2",
+        "description": "A frontier open-weight model.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "glm-5.3-flash",
+        "displayName": "GLM-5.3-Flash",
+        "description": "Fast, cost-efficient coding and long-horizon agent tasks.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "displayName": "DeepSeek V4 Pro",
+        "description": "A top-tier model for the hardest reasoning and agentic tasks.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "deepseek-v4-flash-0731",
+        "displayName": "DeepSeek V4 Flash 0731",
+        "description": "The July 2026 DeepSeek V4 Flash snapshot: fast, cheap, and broadly capable.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "deepseek-v4.1-flash",
+        "displayName": "DeepSeek V4.1 Flash",
+        "description": "Fast multimodal reasoning for coding and agentic tasks.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "mimo-v2.6-flash",
+        "displayName": "MiMo V2.6 Flash",
+        "description": "Cost-effective model for everyday use.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1048576
+        }
+      },
+      {
+        "id": "minimax-m3",
+        "displayName": "MiniMax M3",
+        "description": "Long-context model for coding and agentic tasks.",
+        "toolCall": true,
+        "reasoning": true,
+        "reasoningEfforts": [],
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 524288
+        }
+      }
+    ],
+    "defaultEnabledIds": [
+      "copilot-plus-flash",
+      "glm-5.2",
+      "glm-5.3-flash",
+      "deepseek-v4-pro",
+      "deepseek-v4.1-flash",
+      "minimax-m3"
+    ]
+  },
+  "miyoConnectionMode": "local",
+  "_keychainVaultId": "c589ef94",
+  "settingsVersion": 16
+}
