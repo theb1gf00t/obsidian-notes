@@ -340,6 +340,94 @@
 
 > [!question] Q6: $\alpha_0$ and $\beta_1$ of Joins
 > Find $\alpha_0$ and $\beta_1$ of $C_{2m+1} + C_{2n}$ and $K_n + C_{2m+1}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### 1. Key Preliminaries & Properties
+> >
+> > 1. **Graph Join Property:** For any two graphs $G_1$ and $G_2$, every vertex in $V(G_1)$ is adjacent to every vertex in $V(G_2)$. Therefore, an independent set $I$ in $G_1 + G_2$ **cannot** contain vertices from both $G_1$ and $G_2$. Consequently:
+> >
+> >    $$\alpha_0(G_1 + G_2) = \max\{\alpha_0(G_1), \alpha_0(G_2)\}$$
+> >
+> > 2. **Gallai's Identity for Edge Parameters:** For any graph without isolated vertices:
+> >
+> >    $$\alpha_1(G) + \beta_1(G) = n(G)$$
+> >
+> >    where $n(G)$ is the total number of vertices and $\alpha_1(G)$ is the maximum matching number.
+> >
+> > ### 2. Part 1: Parameters for $G = C_{2m+1} + C_{2n}$
+> >
+> > #### Vertex Count:
+> >
+> > - $n(G) = |V(C_{2m+1})| + |V(C_{2n})| = (2m + 1) + 2n = 2m + 2n + 1$ (an **odd** integer).
+> >
+> > #### A. Vertex Independence Number $\alpha_0(G)$:
+> >
+> > - For the odd cycle $C_{2m+1}$: $\alpha_0(C_{2m+1}) = \lfloor \frac{2m+1}{2} \rfloor = m$.
+> > - For the even cycle $C_{2n}$: $\alpha_0(C_{2n}) = \frac{2n}{2} = n$.
+> > - Using the join independence property:
+> >
+> >   $$\alpha_0(C_{2m+1} + C_{2n}) = \max(m, n)$$
+> >
+> > #### B. Minimum Edge-Covering Number $\beta_1(G)$:
+> >
+> > - Since total vertices $n(G) = 2m + 2n + 1$ is odd, no matching can cover all vertices. The maximum matching size is bounded by:
+> >
+> >   $$\alpha_1(G) \le \left\lfloor \frac{2m + 2n + 1}{2} \right\rfloor = m + n$$
+> >
+> > - **Matching Construction:**
+> >   - Pick $m$ independent edges inside $C_{2m+1}$ (covering $2m$ vertices, leaving $1$ vertex unmatched).
+> >   - Pick $n$ independent edges inside $C_{2n}$ (covering all $2n$ vertices).
+> >   - This yields a set of $m + n$ disjoint edges. Thus, $\alpha_1(G) = m + n$.
+> > - **Applying Gallai's Identity:**
+> >
+> >   $$\beta_1(G) = n(G) - \alpha_1(G) = (2m + 2n + 1) - (m + n) = m + n + 1$$
+> >
+> > ### 3. Part 2: Parameters for $H = K_n + C_{2m+1}$
+> >
+> > #### Vertex Count:
+> >
+> > - $n(H) = |V(K_n)| + |V(C_{2m+1})| = n + 2m + 1$.
+> >
+> > #### A. Vertex Independence Number $\alpha_0(H)$:
+> >
+> > - For the complete graph $K_n$: $\alpha_0(K_n) = 1$.
+> > - For the odd cycle $C_{2m+1}$: $\alpha_0(C_{2m+1}) = m$.
+> > - Using the join independence property (for $m \ge 1$):
+> >
+> >   $$\alpha_0(K_n + C_{2m+1}) = \max(1, m) = m$$
+> >
+> > #### B. Minimum Edge-Covering Number $\beta_1(H)$:
+> >
+> > We analyze by the parity of $n$:
+> >
+> > - **Case 1: $n$ is odd** (Total vertices $n(H) = n + 2m + 1$ is **even**):
+> >
+> >   - Pick $m$ edges inside $C_{2m+1}$ (leaving $1$ vertex $u \in V(C_{2m+1})$ unmatched).
+> >   - Pick $\frac{n-1}{2}$ edges inside $K_n$ (leaving $1$ vertex $w \in V(K_n)$ unmatched).
+> >   - Join $u$ and $w$ via the inter-graph edge $(u, w)$.
+> >   - Total matching edges $\alpha_1(H) = m + \frac{n-1}{2} + 1 = m + \frac{n+1}{2}$, which forms a **perfect matching**.
+> >   - By Gallai's Identity:
+> >
+> >     $$\beta_1(H) = n(H) - \alpha_1(H) = (n + 2m + 1) - \left(m + \frac{n+1}{2}\right) = m + \frac{n+1}{2}$$
+> >
+> > - **Case 2: $n$ is even** (Total vertices $n(H) = n + 2m + 1$ is **odd**):
+> >
+> >   - Maximum possible matching is $\alpha_1(H) = \frac{n(H)-1}{2} = m + \frac{n}{2}$ (achieved by picking $m$ edges in $C_{2m+1}$ and $\frac{n}{2}$ edges in $K_n$).
+> >   - By Gallai's Identity:
+> >
+> >     $$\beta_1(H) = n(H) - \alpha_1(H) = (n + 2m + 1) - \left(m + \frac{n}{2}\right) = m + \frac{n}{2} + 1$$
+> >
+> > - **Unified Expression for All $n$:**
+> >
+> >   $$\beta_1(K_n + C_{2m+1}) = m + \left\lceil \frac{n+1}{2} \right\rceil = \left\lceil \frac{n + 2m + 1}{2} \right\rceil$$
+> >
+> > ### Summary of Results
+> >
+> > | Graph | Vertex Count $n(G)$ | $\alpha_0$ (Independence No.) | $\beta_1$ (Edge Cover No.) |
+> > |:--|:-:|:-:|:-:|
+> > | **$C_{2m+1} + C_{2n}$** | $2m + 2n + 1$ | $\max(m, n)$ | $m + n + 1$ |
+> > | **$K_n + C_{2m+1}$** | $n + 2m + 1$ | $m$ | $m + \left\lceil \frac{n+1}{2} \right\rceil$ |
 
 > [!question] Q7: Parameters of $K_{1,2,...,n}$
 > Find $\alpha_0$, $\beta_0$, $\alpha_1$ and $\beta_1$ of $K_{1,2,...,n}$.
@@ -464,3 +552,6 @@
 > > |:--|:-:|:-:|:-:|
 > > | **Vertex-Covering Number $\beta_0$** | $0$ | $2$ | $k(k-1)$ |
 > > | **Edge-Covering Number $\beta_1$** | Undefined | $4$ | $\frac{k(k+1)}{2}$ |
+> 
+
+
