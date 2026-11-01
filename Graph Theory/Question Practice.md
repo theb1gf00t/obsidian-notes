@@ -623,4 +623,6 @@
 > > |:--|:-:|:-:|:-:|
 > > | **Vertex-Covering Number $\beta_0$** | $0$ | $2$ | $k(k-1)$ |
 > > | **Edge-Covering Number $\beta_1$** | Undefined | $4$ | $\frac{k(k+1)}{2}$ |
-> 
+
+ques. Find the matching number of C5 + C7.
+answer:
