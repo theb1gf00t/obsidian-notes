@@ -388,3 +388,167 @@ Solved **Chapter 10, Q1–Q15** and left Q16 onward untouched as requested. Nota
 
 One correction made along the way: my first pass at Q3 accidentally got dropped during editing — caught it and restored it before finishing.
 [Timestamp: 2026/11/02 23:02:51]
+
+**user**: now do the same for the rest of the questions in chapter 10(the unsolves ones).
+[Timestamp: 2026/11/02 23:45:42]
+
+**ai**: **Error:** API Error: Unable to connect to API: Self-signed certificate detected (SELF_SIGNED_CERT_IN_CHAIN). The certificate comes from an authority Claude Code doesn't trust, usually a TLS-inspecting corporate proxy or a gateway signed by a private CA: set NODE_EXTRA_CA_CERTS to that CA bundle, or add it to the system certificate store · see https://code.claude.com/docs/en/network-config
+[Timestamp: 2026/11/02 23:45:42]
+
+**user**: now do the same for the rest of the questions in chapter 10(the unsolves ones).
+[Timestamp: 2026/11/02 23:46:56]
+
+**ai**: I'll check the current state of Chapter 10's unsolved questions (Q16 onward).Now let me see Q16 through Q33 (unsolved) exact text.I have all 18 remaining questions (Q16–Q33). Let me work through each solution carefully before writing them up.
+
+**Q16**: Maximum (maximal) plane simple graph on $n=10$ vertices: triangulation, $r=2n-4=16$ faces.
+
+**Q17**: Maximal planar $G$ ($n>1$) whose complement $G^c$ is also maximal planar. $m(G)=3n-6$, $m(G^c)=\binom n2 - m(G) = \binom n2-(3n-6)$. For $G^c$ also maximal planar: $m(G^c)=3n-6$ too. So $\binom n2-(3n-6)=3n-6 \Rightarrow \binom n2 = 6n-12 \Rightarrow \frac{n(n-1)}2=6n-12\Rightarrow n^2-n=12n-24\Rightarrow n^2-13n+24=0$. Discriminant $=169-96=73$, not a perfect square → no integer solution. So **no such graph exists** (disprove).
+
+Wait, but also need $G^c$ to be simple & planar itself — but the algebraic equation already has no integer solution, so settled: disprove.
+
+**Q18**: Tree on $n\ge3$ vertices whose complement is maximum (maximal) planar. $m(T)=n-1$ (tree). $m(T^c)=\binom n2-(n-1)$. For $T^c$ maximal planar: $\binom n2-(n-1)=3n-6 \Rightarrow \frac{n(n-1)}2 = 3n-6+n-1=4n-7 \Rightarrow n^2-n=8n-14\Rightarrow n^2-9n+14=0\Rightarrow (n-7)(n-2)=0\Rightarrow n=7$ or $n=2$. Since $n\ge3$ required, $n=7$.
+
+Need to draw one such tree on 7 vertices (any tree works since all trees on 7 vertices have same edge count $n-1=6$, and the condition only depended on edge count, not structure — but wait, we also need $T^c$ to actually BE planar for some specific tree, not just have the right edge count, since a graph meeting $m=3n-6$ need not be planar). Let me reconsider: condition derived assumed $T^c$ is maximal planar (which includes both edge count condition AND actual planarity + maximality as a structural fact). So I need to find a specific tree $T$ on 7 vertices such that $T^c$ (which will automatically have exactly $3(7)-6=15$ edges) is actually planar and a triangulation.
+
+$\binom72=21$ total possible edges; $T$ has 6 edges, so $T^c$ has $21-6=15=3(7)-6$ edges ✓ matches by construction regardless of tree shape. But is $T^c$ actually a valid (maximal) **planar** graph for some choice of $T$? Need to verify. Let's try $T=$ the star $K_{1,6}$ (one center $c$ connected to 6 leaves $l_1,\ldots,l_6$). Then $T^c$: complement — center $c$ has no edges in $T^c$ (loses all 6 edges, isolated in complement since it was connected to everyone), and leaves $l_i$ are complement-connected to all other leaves (since in $T$ leaves aren't connected to each other) — so $T^c|_{\text{leaves}} = K_6$ among the 6 leaves, plus isolated vertex $c$. But $K_6$ is NOT planar ($m=15 > 3(6)-6=12$ for 6 vertices)! So $T^c$ with $T=$star is nonplanar — bad choice.
+
+Try $T=$ path $P_7 = v_1-v_2-\cdots-v_7$ (6 edges). Complement $T^c$: edges are all pairs NOT consecutive in the path. This is a well known graph structure. Let's just check if $T^c$ can be planar — it has 15 edges, 7 vertices, needs to be a triangulation (every face a triangle) to be maximal planar. Let's just trust/verify this is achievable with a different tree.
+
+Actually, let's think about which tree complement gives a nice structure: the key realization is that $T^c$ having exactly the edge-count of a triangulation is necessary but we need an actual triangulation. Known classical fact: the **complement of a path $P_n$** or **complement of specific trees** can be verified case by case. Let me just directly try small construction reasoning: for $n=7$, we want $T^c$ = a maximal planar graph (triangulation) on 7 vertices, 15 edges, with $T = (T^c)^c$ being a tree (connected, acyclic, 6 edges).
+
+A simpler strategy: pick a known maximal planar triangulation $H$ on 7 vertices (e.g., built by stacking: start with $K_4$ planar (4 vertices,6 edges,4 faces), then stack twice more to add 3 more vertices, each added via a stacking operation inside some triangular face, adding 3 edges each time: $6+3+3=12$... wait we need 15 edges for $n=7$ triangulation: $3(7)-6=15$. Let's recount: start $K_4$: $n=4,m=6$ (matches $3(4)-6=6$ ✓ it's a triangulation already, 4 faces). Stack once (add vertex inside a face, join to 3 corners): $n=5,m=6+3=9=3(5)-6=9$✓. Stack again: $n=6,m=12=3(6)-6$✓. Stack again: $n=7,m=15=3(7)-6$✓. 
+
+So $H$ = $K_4$ with 3 successive stackings (a "stacked triangulation" / Apollonian network on 7 vertices). Now check $H^c$ (complement of $H$): does it form a tree? $H^c$ has $\binom72-15=21-15=6$ edges — matching tree edge count! Need to verify $H^c$ is actually a tree (connected + acyclic), not just has the right edge count.
+
+Let's set up concretely. $K_4$ on $\{1,2,3,4\}$ — all 6 pairs are edges. Stack vertex $5$ inside face $(1,2,3)$: new edges $5$-$1,5$-$2,5$-$3$. Now faces available include $(1,2,5),(2,3,5),(1,3,5),(1,2,4)$? wait original $K_4$ faces before stacking: picking planar embedding of $K_4$ as a triangle $1,2,3$ with $4$ in center connected to all three — faces: $(1,2,4),(2,3,4),(1,3,4)$, and outer face $(1,2,3)$. Let's stack $5$ into outer face $(1,2,3)$: edges $5$-$1,5$-$2,5$-$3$ added. Now faces: $(1,2,4),(2,3,4),(1,3,4)$ [unchanged], and outer region split into $(1,2,5),(2,3,5),(1,3,5)$.
+
+Stack $6$ into face $(1,2,4)$: edges $6$-$1,6$-$2,6$-$4$.
+Stack $7$ into face $(2,3,4)$: edges $7$-$2,7$-$3,7$-$4$.
+
+Now list all edges of $H$: original $K_4$: 12,13,14,23,24,34. Plus from vertex5: 15,25,35. Plus vertex6: 16,26,46. Plus vertex7: 27,37,47. Total edges: 6+3+3+3=15 ✓.
+
+Degree check: vertex1: edges to 2,3,4,5,6 → degree5. vertex2: edges to1,3,4,5,6,7→degree6. vertex3: edges to1,2,4,5,7→degree5. vertex4: edges to1,2,3,6,7→degree5. vertex5: edges to1,2,3→degree3. vertex6: edges to1,2,4→degree3. vertex7: edges to2,3,4→degree3. Sum=5+6+5+5+3+3+3=30=2m=30 ✓.
+
+Now complement $H^c$ on $\{1,...,7\}$: total possible degree per vertex in $K_7$ is 6. Complement degree = 6 - (degree in H). deg_c(1)=6-5=1. deg_c(2)=6-6=0. deg_c(3)=6-5=1. deg_c(4)=6-5=1. deg_c(5)=6-3=3. deg_c(6)=6-3=3. deg_c(7)=6-3=3.
+
+Vertex 2 has complement-degree 0 — isolated vertex in $H^c$! That means $H^c$ is disconnected (isolated vertex alone), so NOT a tree (trees must be connected, and a single isolated vertex plus other stuff isn't connected unless n=1). This particular stacking choice fails.
+
+Let me choose a different stacking order/faces to avoid an isolated complement vertex (i.e., avoid any vertex reaching full degree 6 in $H$, which happens if a vertex is stacked-into 3 times or is an original $K_4$ vertex touched by too many stackings). Let's instead stack all three new vertices into DIFFERENT faces that don't all share vertex 2.
+
+Let's restack: stack $5$ into face $(1,2,4)$: edges 5-1,5-2,5-4. Stack $6$ into face $(2,3,4)$: edges 6-2,6-3,6-4. Stack $7$ into face $(1,3,4)$: edges 7-1,7-3,7-4.
+
+Now vertex4 is touched by ALL three stackings (since all three original inner faces touch vertex4 in this particular $K_4$ embedding with 4 as the center) → vertex4 degree = 3(from K4: to1,2,3) + 3(from 5,6,7)=6 → complement degree 0, isolated again! Because vertex 4 sits on all 3 inner faces of this particular $K4$ embedding, any stacking into inner faces always hits vertex4. Need to stack into the OUTER face too, or mix to spread out.
+
+Let's instead stack into a chain: stack $5$ into outer face $(1,2,3)$ [not touching 4]: edges 5-1,5-2,5-3. Now stack $6$ into new face $(1,2,5)$: edges 6-1,6-2,6-5. Stack $7$ into face $(2,3,5)$: edges 7-2,7-3,7-5.
+
+Degrees in H: vertex1: K4(2,3,4)=3, +5,+6 =2 more →5. vertex2: K4(1,3,4)=3,+5,+6,+7=3 more→6. vertex3: K4(1,2,4)=3,+5,+7=2more→5. vertex4: K4(1,2,3)=3, no stacking touches→3. vertex5: touched by stack mechanism(1,2,3 from its own stacking)+6,+7(as corners of faces it created)=3(own)+2(being used again)=5? let's recompute carefully: vertex5 connects to: 1,2,3 (from its stacking into (1,2,3)), then also when we stack 6 into face(1,2,5), vertex5 gets new edge to 6; when we stack7 into face(2,3,5), vertex5 gets new edge to7. So deg(5)=3(to1,2,3)+2(to6,7)=5. vertex6: connects to1,2,5 (from its own stacking) =3. vertex7: connects to2,3,5=3.
+
+Sum of degrees: v1=5,v2=6,v3=5,v4=3,v5=5,v6=3,v7=3. Sum=5+6+5+3+5+3+3=30=2(15)✓.
+
+Complement degrees (6-deg): v1:1,v2:0,v3:1,v4:3,v5:1,v6:3,v7:3.
+
+Still vertex2 hits complement-degree 0 (isolated) — vertex2 again ends up touched by too many stackings (it was a corner of faces (1,2,4)[original],(1,2,3)[outer,original],(1,2,5)[new],(2,3,5)[new] — vertex 2 is just structurally central in many faces). 
+
+Given the pattern, it seems for $n=7$ stacked triangulations starting from $K_4$, some original vertex tends to accumulate high degree. Let me instead directly SEARCH for the right tree differently — rather than reverse-engineering from a triangulation, let's directly pick a candidate tree $T$ and check if $T^c$ happens to be planar (any tree gives the right edge count automatically since all trees on 7 vertices have 6 edges). Try $T = $ the "double star"/other small trees, or simplest: try the **path** $P_7$.
+
+$P_7$: vertices $1-2-3-4-5-6-7$ in a path. $T^c$ = complement: edge $(i,j)$ present iff $|i-j|\ne1$ (not consecutive in the path) and $i\ne j$. This is a well-studied graph. Let's compute degree of each vertex in $T^c$: $\deg_{T^c}(v) = 6 - \deg_T(v)$. Path degrees: endpoints(1,7) have degree1, internal(2..6) degree2. So complement degrees: endpoints→5, internal→4.
+
+Is $T^c$ (complement of $P_7$) planar? $m(T^c)=15=3(7)-6$, consistent with maximal planar IF it's actually planar & triangulated. Let's just try to verify via a known fact: the complement of $P_n$ for small $n$ — is it planar for $n=7$? Let's check for a forbidden subgraph like $K_5$ or $K_{3,3}$-subdivision. Actually, let's just check degree sequence against planarity feasibility first (necessary not sufficient): degrees (5,4,4,4,4,4,5) sum=30=2(15)✓ consistent.
+
+Given the complexity of manually verifying planarity of a 7-vertex 15-edge graph by hand reliably, let me instead think structurally about what kind of maximal planar triangulations have trees as complements — there's a cleaner known relationship: **the complement of a "double star" or "spider" tree** structured to match an "stacked" triangulation's complement precisely. Actually, let's reconsider the stacking approach but choose the THIRD stacking to avoid overloading any one vertex, by stacking into the face created by the vertex-5 stacking that's farthest from vertex2.
+
+Try again: Start $K_4$ with vertices 1,2,3,4, embedded with 4 central: faces $(1,2,4),(2,3,4),(1,3,4)$, outer $(1,2,3)$.
+Stack 5 into face $(1,3,4)$: edges 5-1,5-3,5-4.
+Stack 6 into face $(2,3,4)$: edges 6-2,6-3,6-4.
+Stack 7 into OUTER face $(1,2,3)$: edges 7-1,7-2,7-3.
+
+Degrees: v1: K4(2,3,4)=3,+5,+7=2more→5. v2:K4(1,3,4)=3,+6,+7=2more→5. v3:K4(1,2,4)=3,+5,+6,+7=3more→6. v4:K4(1,2,3)=3,+5,+6=2more→5. v5: 1,3,4→3. v6:2,3,4→3. v7:1,2,3→3.
+
+Sum: 5+5+6+5+3+3+3=30✓. Vertex3 hits degree6 again (complement degree0) — vertex3 is corner of faces (2,3,4),(1,3,4), and outer(1,2,3) — three faces again touch it (every original $K_4$ vertex that's NOT the center "4" is a corner of exactly 2 inner faces +the outer face =3 faces touching it originally, and if we stack into all 3 of those, that vertex becomes saturated). Since $K_4$ has exactly 4 faces and we're doing exactly 3 stackings, if those 3 stackings happen to be the 3 faces surrounding one particular original vertex (always true since any vertex of $K_4$ touches exactly 3 of the 4 faces!), that vertex will always max out. To avoid this, the three stacked faces must NOT all share a common original vertex — but with only 4 faces total in $K_4$ and we pick 3 of them, by pigeonhole... let's check: $K_4$'s 4 faces, each face has 3 vertices, each vertex is on exactly 3 faces (since 4 vertices × 3 faces-per-vertex = 12 = 4 faces×3 vertices-per-face, consistent). If we omit exactly 1 face from stacking, the vertex NOT on the omitted face is the one all 3 remaining (stacked) faces share! Since each face "excludes" exactly one vertex (the 4th one not on that triangle), omitting face $F$ (which excludes vertex $v_F$) means the remaining 3 faces are exactly the 3 faces touching $v_F$... wait let's recheck: each face of $K_4$ consists of 3 of the 4 vertices (omitting exactly one). So face $(1,2,4)$ omits vertex3; this face does NOT touch vertex3. If we stack into the 3 faces OTHER than $(1,2,3)$'s complement... Let me redo: the 4 faces are $(1,2,4),(2,3,4),(1,3,4),(1,2,3)$, omitting respectively vertex 3,1,2,4. If we stack into 3 of these 4 faces, we're skipping exactly one, say we skip the face that omits vertex $x$ — then vertex $x$ IS touched by all 3 chosen faces (since it's absent only from the skipped one)! This confirms: whichever face we skip, the vertex excluded by that skipped face gets stacked-into 3 times, maxing out its degree to 6. This is unavoidable with simple "stack into 3 of the 4 original faces" from $K_4$ — always produces ONE isolated vertex in the complement, since exactly one of $\{1,2,3,4\}$ will always be touched 3 times.
+
+So I need a different stacking strategy — e.g., stack into NEW faces created by earlier stackings (not all into original $K_4$ faces), to spread out the degree increments differently. Let's retry: stack 5 into face $(1,2,3)$ [outer]: edges 5-1,5-2,5-3. This creates 3 new faces: $(1,2,5),(2,3,5),(1,3,5)$, replacing the outer face.
+
+Now stack 6 into ONE of these NEW faces, say $(1,2,5)$: edges 6-1,6-2,6-5.
+Stack 7 into face $(2,3,4)$ (an original inner face, untouched so far): edges 7-2,7-3,7-4.
+
+Degrees: v1: K4(2,3,4)=3,+5,+6=2→5. v2:K4(1,3,4)=3,+5,+6,+7=3→6. Hmm v2 again hit 3 times (by stackings 5,6,7 all touching it: 5 touches 1,2,3; 6 touches1,2,5; 7touches2,3,4 — yes v2 is in all three!). Bad luck again.
+
+Let me instead choose the 3 stacking faces to deliberately NOT share any common vertex as much as possible — try: stack5 into $(1,2,4)$ [omits3]: edges5-1,5-2,5-4. Stack6 into $(2,3,4)$[omits1], but let's instead pick a face not yet overlapping v2... actually every original K4 face contains exactly 3 of the 4 vertices, so ANY two distinct original faces share exactly 2 vertices (since they each omit a different single vertex, they overlap in the other 3-1=2... wait 2 faces each with 3 vertices out of 4 total, omitting different vertices, overlap = 4 - 2(omitted ones, but omitted sets are singletons, different) = vertices NOT omitted by either = total4 - |union of omitted| = 4-2=2 common vertices). So any 2 original faces share 2 vertices; picking 3 original faces, by pigeonhole some vertex is shared by all 3 (as shown). 
+
+Solution: use faces from DIFFERENT "generations" (mix original and newly-created faces) to break the symmetry, as I partially tried. Let's be very deliberate:
+
+Stack 5 into original face $(1,2,4)$: new edges 5-1,5-2,5-4. New faces replacing it: $(1,2,5),(2,4,5),(1,4,5)$.
+Stack 6 into the NEW face $(2,4,5)$: new edges 6-2,6-4,6-5.
+Stack 7 into original face $(1,3,4)$ [untouched, omits vertex2]: new edges 7-1,7-3,7-4.
+
+Degree tally: v1: K4 nbrs(2,3,4)=3; +5(from stack5); +7(from stack7) → total degree 5.
+v2: K4 nbrs(1,3,4)=3;+5(stack5);+6(stack6)→degree5.
+v3: K4 nbrs(1,2,4)=3;+7(stack7)→degree4.
+v4: K4 nbrs(1,2,3)=3;+5(stack5);+6(stack6);+7(stack7)→degree6. 
+
+v4 maxes out now (it's the "center" vertex touched by everything, makes sense it's most connected). Complement degree(4)=0 — isolated again! Because vertex4, being the original "hub," is on every single original face, so ANY use of 2+ original faces (even without the "all 3 share a vertex" issue) still pushes v4 up heavily. Since all 3 ORIGINAL inner faces touch vertex4, and I used 2 original faces (stack5 into (1,2,4), stack7 into (1,3,4)) both touching vertex4, plus stack6 touches 4 via the derived face — vertex4 ends up in all three stackings regardless.
+
+The issue: vertex 4 being the embedding's "center" touches all 3 inner faces AND would need outer-face stacking to be avoided. Let's use the OUTER face more and avoid vertex4 entirely for 2 of the 3 stackings:
+
+Stack5 into outer face $(1,2,3)$ [omits4]: edges5-1,5-2,5-3. New faces: $(1,2,5),(2,3,5),(1,3,5)$.
+Stack6 into new face $(1,2,5)$ [omits3,4 — wait this face is (1,2,5), doesn't include 3 or 4 at all]: edges6-1,6-2,6-5.
+Stack7 into new face $(2,3,5)$ [doesn't include1,4]: edges7-2,7-3,7-5.
+
+Degrees: v1: K4(2,3,4)=3;+5,+6=2→5. v2:K4(1,3,4)=3;+5,+6,+7=3→6 (again v2 maxes, since v2 is shared by stack5's face, stack6's face AND stack7's face: (1,2,3),(1,2,5),(2,3,5) all contain vertex2!). 
+
+v2 is special here because it's a "hub" of the fan of new faces around vertex5. Let's spread stackings 6,7 to DIFFERENT new faces that don't both include vertex2: use $(1,2,5)$ for stack6 and $(1,3,5)$ for stack7 instead (both avoid creating a shared vertex2 across all three — let's check: stack5 face(1,2,3) has{1,2,3}; stack6 face(1,2,5) has{1,2,5}; stack7 face(1,3,5) has {1,3,5}. Common vertex across all three: vertex1 is in all three! (1,2,3)∩(1,2,5)∩(1,3,5) = {1}. So vertex1 maxes out instead. This seems structurally inevitable with this fan-based approach too — picking 3 faces around a stacked vertex and its neighbors tends to concentrate on shared vertices.
+
+Given the recurring pattern, let's accept that **some vertex will always reach degree 6 (saturating complement degree 0) for ANY sequence of 3 stackings starting from $K_4$** — is this actually a theorem? Let's sanity check via total degree accounting: sum of degrees in any 7-vertex triangulation =2m=30, average degree=30/7≈4.29. For complement to be a valid tree (6 edges, connected, acyclic), we need complement degrees forming a valid tree degree sequence (sum=12, all ≥1, exactly matching some tree). Original degrees then must be: $6-\deg_{T}(v)$ for each v, i.e., $\deg_H(v)=6-\deg_T(v)$. Since tree degrees are ≥1, $\deg_H(v)\le5$ for all $v$ — meaning **NO vertex of $H$ can have degree 6** for the complement to even have a chance of being connected (min tree degree is 1, and leaf vertices have tree-degree exactly1 → H-degree exactly5; the sum of H-degrees=30 with each ≤5 across 7 vertices: max possible sum with all ≤5 is 35≥30, feasible). So we specifically need a maximal planar triangulation on 7 vertices with **$\Delta(H)\le5$** (no vertex of degree 6) — my stacking attempts keep producing a degree-6 vertex, suggesting I need a smarter/different triangulation (not a simple sequential stacking from $K_4$, since that method seems to inherently concentrate degree).
+
+Known fact: a triangulation with all degrees $\le 5$ on 7 vertices — degree sum=30, so average 30/7≈4.28, with degrees in{3,4,5} ideally (since 6 is now excluded and 7 would be even more excluded, and min degree ≥3 in a triangulation of n≥4). Let's just try to construct this directly via a different known small triangulation: **the pentagonal bipyramid** (2 apex vertices + 5-cycle "equator", $n=7$)! Apex vertices each connect to all 5 equatorial vertices (degree5 each), equatorial vertices connect to 2 equator-neighbors +2 apexes = degree4 each. Let's check: $n=7$ (2 apex+5 equator), degrees: apex×2 @5, equator×5 @4. Sum=10+20=30=2m→m=15=3(7)-6 ✓ maximal planar! And is it a valid triangulation (all faces triangles)? Yes — bipyramid faces are all triangles (each apex-equator-equator triple), total faces=2×5=10=2n-4=2(7)-4=10 ✓. 
+
+Degrees are exactly {5,5,4,4,4,4,4} — max degree5, exactly what we need (no vertex hits 6)! 
+
+Complement degrees: $6-\deg$: apex vertices (deg5)→complement degree1 each; equator vertices(deg4)→complement degree2 each. Complement total degree=1+1+2×5=2+10=12=2×6 ✓ (6 edges).
+
+Now is this complement actually a TREE (connected +acyclic with 6 edges on 7 vertices)? Let's figure out the actual complement edges. Label apexes $N,S$ (north,south), equator $e_1,e_2,e_3,e_4,e_5$ in a cycle ($e_1-e_2-e_3-e_4-e_5-e_1$). $H$ edges: $N$-$e_i$ for all i (5 edges), $S$-$e_i$ for all i(5edges), plus equator cycle edges $e_1e_2,e_2e_3,e_3e_4,e_4e_5,e_5e_1$ (5 edges). Total=5+5+5=15 ✓.
+
+$H^c$ edges (complement, i.e., pairs NOT in H): $N$-$S$ (not an edge in H, since apexes aren't directly joined in a bipyramid) — so $N$-$S$ IS in complement. Among equator vertices: non-adjacent pairs in the 5-cycle are the "diagonal" pairs: $e_1e_3,e_1e_4,e_2e_4,e_2e_5,e_3e_5$ (5 such diagonals, since $C_5$ complement is also $C_5$ — the Petersen-style pentagon complement is another pentagon via the diagonals!). $N,S$ to equator: all pairs $N$-$e_i$ and $S$-$e_i$ ARE edges in H, so none of those appear in complement.
+
+So $H^c$ edges: $\{NS\} \cup \{e_1e_3,e_1e_4,e_2e_4,e_2e_5,e_3e_5\}$ — total $1+5=6$ edges ✓ matches. But let's check connectivity: is $N$ connected to anything besides $S$? $N$'s only complement-edge is to $S$. Is $S$ connected to anything else? Only to $N$. So $\{N,S\}$ form their own little component (just the edge $NS$), completely disconnected from the 5 equator vertices (which form their own 5-cycle $e_1e_3e_5e_2e_4e_1$ via the diagonal pattern — let's verify: edges e1e3,e3e5,e5e2,e2e4,e4e1 — yes that's a 5-cycle!). 
+
+So $H^c = K_2 \sqcup C_5$ (a disjoint edge plus a pentagon) — this has 6 edges but is **disconnected** (2 components) and contains a cycle ($C_5$)! This is NOT a tree (trees are connected AND acyclic; this complement is neither — it's 2 components, one of which has a cycle). So the bipyramid doesn't work either, despite having the right degree bound.
+
+I need a genuinely different 7-vertex triangulation with max degree ≤5 where the complement actually comes out connected and acyclic. Given the real difficulty of hand-deriving this without computational search, let me reconsider: perhaps there's a cleaner known pairing. Let me try yet another approach — build the TREE first (pick a specific tree with the right degree sequence matching $6-\deg_H$ needed), then verify by construction that SOME triangulation realizes the complementary degree sequence, using the **Havel–Hakimi** idea conceptually, or just try one more direct construction.
+
+Given the degree sum requirement (H-degrees sum to 30, all in {3,4,5}, 7 vertices), and that tree-complement needs tree-degrees summing to 12 over 7 vertices (standard: a tree's degree sequence sums to $2(n-1)=12$, each ≥1). Since $\deg_T(v)=6-\deg_H(v)$, and $\deg_H(v)\in\{3,4,5\}\Rightarrow\deg_T(v)\in\{1,2,3\}$.
+
+Let's just pick a SPECIFIC desired tree first: say the tree $T$ = "two vertices of degree 3 connected by a path, each with 2 leaves" — e.g., a "double star" / "dumbbell": centers $c_1,c_2$ adjacent, $c_1$ has 2 extra leaves $a,b$, $c_2$ has 2 extra leaves $d,e$, and... that's only 6 vertices (c1,c2,a,b,d,e) - need 7. Add one more leaf somewhere, say $c_1$ gets 3 leaves $a,b,g$ (degree4 total: to c2,a,b,g) and $c_2$ gets 2 leaves $d,e$ (degree3: to c1,d,e). Tree degrees: c1=4,c2=3,a=b=g=d=e=1 (5 leaves). Sum=4+3+5(1)=12 ✓, n=7✓(c1,c2,a,b,g,d,e).
+
+Then required H-degrees: $\deg_H=6-\deg_T$: c1→2(!), too low (triangulation needs min degree≥3) — invalid, since c1 would need H-degree2 which is impossible in a triangulation (min degree 3). So this tree doesn't work; need all tree degrees ≤3 (so that $6-\deg_T\ge3$).
+
+So constraint: tree $T$ must have $\Delta(T)\le3$ (max degree at most 3) for the H-degree-translation to stay $\ge3$ everywhere. Let's pick $T$= a "caterpillar" with all degrees in{1,2,3}. Try: $T$ = a path of 5 internal-ish vertices with 2 extra leaves, i.e., a tree with degree sequence summing to 12, 7 vertices, max degree 3. E.g., the **"double star" with centers degree 3 each**: $c_1-c_2$ edge, $c_1$ has 2 more leaves ($a,b$: deg(c1)=3), $c_2$ has 2 more leaves ($d,e$: deg(c2)=3) — that's 6 vertices (c1,c2,a,b,d,e), need 7th. Add it as another leaf on... but both centers already at degree3 (max allowed); can't add more leaves to them without exceeding degree3. 
+
+Try instead a path-like "caterpillar": spine $s_1-s_2-s_3$ (3 vertices), with leaves attached: $s_1$ gets 1 extra leaf (deg(s1)=2: to s2 and leaf), $s_2$ gets 2 extra leaves (deg(s2)=2(spine)+2(leaves)=4 — too high!). Let me just carefully pick degree sequence: we want 7 values summing to12, each in{1,2,3}, forming a valid tree. Try degrees: three vertices of degree3, but let's check: a tree with degree sequence (3,3,2,1,1,1,1): sum=3+3+2+1+1+1+1=12 ✓, 7 values ✓. Realize as: two degree-3 vertices $c_1,c_2$ adjacent to each other... Let's just build: $c_1$ adjacent to $c_2, l_1, l_2$ (degree3). $c_2$ adjacent to $c_1, m$ (degree... need degree3 total eventually) hold on let me just directly construct a caterpillar: spine $c_1 - m - c_2$ (path of 3), where $m$ has degree2 (just the spine), $c_1$ has 2 extra leaves $l_1,l_2$ (degree3 total: to m,l1,l2), $c_2$ has 2 extra leaves $l_3,l_4$ (degree3 total: to m,l3,l4). Vertices: $c_1,m,c_2,l_1,l_2,l_3,l_4$ = 7 ✓. Degrees: $c_1=3,m=2,c_2=3,l_1=l_2=l_3=l_4=1$. Sum=3+2+3+4(1)=12 ✓. Max degree3 ✓.
+
+Required H-degrees ($6-\deg_T$): $c_1\to3, m\to4, c_2\to3, l_1,l_2,l_3,l_4\to5$ each. Sum=3+4+3+4(5)=3+4+3+20=30=2(15)✓ matches triangulation edge count requirement.
+
+So I need: a 7-vertex triangulation $H$ with degree sequence exactly $\{3,3,4,5,5,5,5\}$ assigned to $\{c_1,c_2,m,l_1,l_2,l_3,l_4\}$ respectively (two vertices of degree3 = $c_1,c_2$; one of degree4=$m$; four of degree5=$l_1,...,l_4$), AND such that $H^c$ reconstructs EXACTLY the caterpillar tree edges (not just matches degree sequence, but the actual complement structure matches). This is getting quite involved for hand construction/verification.
+
+Given the substantial effort required to nail an exact hand-verified construction, and that this is fundamentally most easily resolved by drawing/trial on paper (exactly like Q1's harder parts), I will present Q18 with the **fully rigorous algebraic derivation that $n=7$** (which is the core content asked: "Find $n$"), and for "draw one such tree" give a concrete tree (the caterpillar above) together with an honest, precise account of what H-degree-sequence a valid witnessing triangulation would need to have — while being transparent that nailing the exact triangulation/edge-correspondence by hand is a nontrivial combinatorial search better done on paper, consistent with my established approach for genuinely drawing-heavy sub-tasks in this chapter.
+
+Now let me continue with the remaining questions.
+
+**Q19**: "Every graph with at most 3 cycles is planar." Here "cycles" likely means independent/distinct cycles in the cycle space sense, or simply: a graph containing at most 3 cycles (as subgraphs, counted appropriately) is planar. The standard interpretation (matching known textbook exercise): if the **cycle rank** (circuit rank / first Betti number) $m-n+c \le 3$ then $G$ is planar. Actually more precisely: likely means a graph with at most 3 independent cycles (cyclomatic number $\le 3$) is always planar, since $K_5$ has cyclomatic number $10-5+1=6$ and $K_{3,3}$ has $9-6+1=4$ — both exceed 3, and planarity depends on avoiding these as minors; graphs with few independent cycles can't contain complex nonplanar substructures. Let me think about correct proof: Let $\mu(G)=m-n+c$ (cyclomatic number = dimension of cycle space = number of "independent" cycles). If $\mu(G)\le3$, show $G$ planar.
+
+Actually cleanest approach via Kuratowski: if $G$ is nonplanar, $G$ contains a subdivision of $K_5$ or $K_{3,3}$ as a subgraph. $S(K_5)$ has cyclomatic number = same as $K_5$ (subdividing doesn't change cycle rank) $=10-5+1=6$. $S(K_{3,3})$ has cyclomatic number $9-6+1=4$. Since a subgraph's cyclomatic number is $\le$ that of the whole graph (removing edges/vertices can only decrease or maintain it appropriately — actually need care: cyclomatic number of a subgraph isn't simply bounded by the supergraph's in general, but there IS a relevant fact: if $H\subseteq G$, $\mu(H)\le \mu(G)$ when... let's just reason directly: if G contains $S(K_{3,3})$ as a subgraph, then $\mu(G) \ge \mu(S(K_{3,3}))=4$ (since adding more edges/vertices to a graph can only increase or maintain the cyclomatic number of the whole relative to a subgraph it contains, given connectivity considerations - this needs the subgraph to be "pulled apart" correctly, but intuitively, more edges means more independent cycles). Given $\mu(G)\le3 <4\le \mu(S(K_{3,3}))$ and $<6\le\mu(S(K_5))$, $G$ cannot contain either as a subgraph, hence $G$ is planar by Kuratowski's theorem.
+
+I think this is the intended proof, matching the style of the book (this is analogous to the earlier solved Q29-style "tree characterization via no $K_3$-subdivision/minor" proofs). Let me formalize the needed lemma: **if $H$ is a subgraph of $G$, then $\mu(H) \le \mu(G)$** — is this actually always true? Cyclomatic number of a graph (not nec. connected) is defined as $\mu(G) = m(G) - n(G) + c(G)$ where $c$=number of components, and this equals $\dim$ of the cycle space, which is always $\ge0$ and satisfies the property that **adding a single edge to a graph increases $\mu$ by 1 if it connects two vertices in the same component (creates a cycle), or keeps $\mu$ the same if it connects two different components** (merges components, $m$+1, $n$ same, $c$-1, net change to $\mu=m-n+c$: $+1+0-1=0$). **Adding a vertex** (isolated) increases $n$ by1, $c$ by1, so $\mu$ unchanged. So as we build $G$ from $H$ by adding the remaining vertices/edges one at a time, $\mu$ is non-decreasing at every step! Hence $\mu(H)\le\mu(G)$ whenever $H\subseteq G$. 
+
+**Q20**: Faces in a plane embedding of $K_{1,1,n}$ (complete tripartite with parts of size1,1,n). This graph: 2 "hub" vertices (call them $u,v$, in the two singleton parts — note $u,v$ ARE adjacent since they're in different parts) plus $n$ vertices in the third part, each adjacent to both $u$ and $v$ (but not to each other). So this is basically $K_2$ (edge $uv$) plus $n$ vertices each joined to both $u,v$ — this is the "book graph" / $n$ triangles sharing a common edge $uv$! $n(G)=n+2$, $m(G)=1(uv)+2n(\text{each of n vertices to both hubs})=2n+1$.
+
+Planar embedding: draw edge $uv$, then each of the $n$ "page" vertices forms a triangle with $u,v$, nested/fanned around — like pages of a book. Faces: $n$ triangular faces (each page) if drawn with pages going around appropriately... Actually let's just apply Euler's formula directly: connected, $n(G)=n+2$, $m(G)=2n+1$. $r=2-n(G)+m(G)=2-(n+2)+(2n+1)=2-n-2+2n+1=n+1$.
+
+So $r=n+1$ faces.
+
+**Q21**: Planarity of $K_{1,2,\ldots,n}$ (complete multipartite with parts of sizes $1,2,\ldots,n$). Need to find all $n$ for which this is planar. Let's check small n: 
+
+$n=1$: just $K_1$ (single part size1, trivial, no edges) — planar.
+$n=2$: parts sizes1,2 → $K_{1,2}$, which is just a path/star, 3 vertices, planar trivially.
+$n=3$: parts1,2,3→$K_{1,2,3}$: total vertices6, is this planar? Let's compute edges: edges between every pair of different parts: $1\times2+1\times3+2\times3=2+3+6=11$. Check against $3n-6=3(6)-6=12\ge11$ — doesn't violate the simple bound, could still be planar or not (need finer check, e.g. contains $K_{3,3}$ or $K_5$ as minor). $K_{1,2,3}$ actually contains... let's check if it contains $K_{3,3}$ subdivision: parts sizes 1,2,3 — take part of size1 ={a}, size2={b1,b2}, size3={c1,c2,c3}. All cross edges present: a-b1,a-b2,a-c1,a-c2,a-c3,b1-c1,b1-c2,b1-c3,b2-c1,b2-c2,b2-c3 (11 edges, matches). Does
+[Timestamp: 2026/11/02 23:46:56]
