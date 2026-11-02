@@ -1610,3 +1610,10 @@
 > > $$\alpha_1(C_5 + C_7) = 6$$
 > 
 
+
+
+
+CHAPTER 8:
+
+questions:
+
