@@ -1348,27 +1348,53 @@
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > ### **Part (a): If $n$ is even, $K_{n,n,n}$ has a perfect matching. ✓ TRUE**
+> > ### **Proof for Part (a): If $n$ is even, $K_{n,n,n}$ has a perfect matching.**
 > >
-> > **Proof:** Let $V(K_{n,n,n}) = V_1 \cup V_2 \cup V_3$, where each part has $n$ vertices.
+> > **Status: TRUE (PROVED)**
 > >
-> > Total vertices: $N = 3n$ (even, since $n$ is even).
+> > #### **Proof:**
 > >
-> > By Tutte's 1-Factor Theorem (or direct construction), $K_{n,n,n}$ contains a perfect matching if no single part has more than half the vertices:
+> > 1. **Total Number of Vertices:** Let the three vertex partitions of $K_{n,n,n}$ be $A$, $B$, and $C$, where $|A| = |B| = |C| = n$. The total number of vertices is: $$|V(K_{n,n,n})| = n + n + n = 3n$$ Since $n$ is even, we can write $n = 2k$ for some integer $k \ge 1$. Thus, $|V(K_{n,n,n})| = 6k$, which is an even integer.
+> >     
+> > 2. **Partitioning each set into two equal halves:** Divide each partition of size $n = 2k$ into two disjoint subsets of size $k$:
+> >     
+> >     - $A = A_1 \cup A_2$, with $|A_1| = k$ and $|A_2| = k$
+> >     - $B = B_1 \cup B_2$, with $|B_1| = k$ and $|B_2| = k$
+> >     - $C = C_1 \cup C_2$, with $|C_1| = k$ and $|C_2| = k$
+> > 3. **Explicit Construction of the Matching:** Since $K_{n,n,n}$ is a complete tripartite graph, every vertex in $A$ is adjacent to every vertex in $B$, every vertex in $B$ is adjacent to every vertex in $C$, and every vertex in $C$ is adjacent to every vertex in $A$.
+> >     
+> >     We construct a matching $M = M_{AB} \cup M_{BC} \cup M_{CA}$ of size $3k$:
+> >     
+> >     - **$M_{AB}$:** Pair each of the $k$ vertices in $A_1$ with a unique vertex in $B_1$ ($k$ independent edges).
+> >     - **$M_{BC}$:** Pair each of the $k$ vertices in $B_2$ with a unique vertex in $C_1$ ($k$ independent edges).
+> >     - **$M_{CA}$:** Pair each of the $k$ vertices in $C_2$ with a unique vertex in $A_2$ ($k$ independent edges).
+> > 4. **Verification:**
+> >     
+> >     - **Disjointness:** $A_1 \cap A_2 = \emptyset$, $B_1 \cap B_2 = \emptyset$, and $C_1 \cap C_2 = \emptyset$. Thus, no vertex is incident to more than one edge in $M$.
+> >     - **Coverage:** The matching $M$ covers all $k$ vertices of $A_1$, $k$ vertices of $A_2$, $k$ vertices of $B_1$, $k$ vertices of $B_2$, $k$ vertices of $C_1$, and $k$ vertices of $C_2$. In total, all $6k = 3n$ vertices are saturated.
 > >
-> > $$\max(n, n, n) = n \le \frac{3n}{2}$$
+> > Therefore, **$M$ is a valid perfect matching of size $\frac{3n}{2}$**, proving that $K_{n,n,n}$ has a perfect matching whenever $n$ is even. $\blacksquare$
 > >
-> > This is true for all $n \ge 1$. Therefore, $K_{n,n,n}$ has a perfect matching. **Explicitly:** Pair each vertex in $V_1$ with a vertex in $V_2$, using $n$ disjoint edges. Then pair all $n$ uncovered vertices in $V_3$ with themselves—wait, this doesn't work. **Better construction:** Use a **Latin rectangle** approach: for $i, j \in [n]$, match $(v^{(1)}_i, v^{(2)}_j, v^{(3)}_{(i+j) \mod n})$ in cycles.
+> > ---
 > >
-> > ### **Part (b): If $n$ is odd, $K_{n,n,n}$ has no perfect matching. ✓ TRUE**
+> > ### **Proof for Part (b): If $n$ is odd, $K_{n,n,n}$ has no perfect matching.**
 > >
-> > **Proof:** Let $V(K_{n,n,n}) = V_1 \cup V_2 \cup V_3$, where each part has $n$ vertices.
+> > **Status: TRUE (PROVED)**
 > >
-> > Total vertices: $N = 3n$ (odd, since $n$ is odd).
+> > #### **Proof:**
 > >
-> > A perfect matching requires pairing all vertices into disjoint edges. But with $N = 3n$ vertices (an odd number), no perfect matching can exist, as a matching consists of disjoint edges covering exactly an even number of vertices.
+> > 1. **Total Vertex Parity:** The graph $K_{n,n,n}$ has total vertices $|V| = 3n$. Since $n$ is an odd integer, $3n$ is the product of two odd integers, which is **odd**.
+> >     
+> > 2. **Matching Cardinality Property:** Every edge in a graph connects exactly $2$ distinct vertices. Therefore, any matching $M$ in a graph saturates an **even number of vertices** ($2|M|$).
+> >     
+> > 3. **Impossibility of Perfect Saturated Coverage:** A perfect matching must saturate all $|V|$ vertices of the graph. However:
+> >     
+> >     - The number of vertices saturated by any matching is always **even**.
+> >     - The total number of vertices $|V(K_{n,n,n})| = 3n$ is **odd**.
 > >
-> > Therefore, $K_{n,n,n}$ has **no perfect matching** when $n$ is odd.
+> > Since an even number cannot equal an odd number, no matching in $K_{n,n,n}$ can saturate all $3n$ vertices when $n$ is odd.
+> >
+> > Therefore, **$K_{n,n,n}$ cannot contain a perfect matching when $n$ is odd.** $\blacksquare$
 
 > [!question] Q14: Matching Saturating $X$ in Bipartite Graph
 > Prove or disprove: If $G[X, Y]$ is a simple connected bipartite graph such that the degree of every vertex in $X$ is at least 3 and the degree of every vertex in $Y$ is at most 3, then $G$ has a matching saturating every vertex in $X$.
@@ -1582,4 +1608,4 @@
 > >
 > > ### Final Answer
 > >
-> > $$\alpha_1(C_5 + C_7) = 6$$A
+> > $$\alpha_1(C_5 + C_7) = 6$$
