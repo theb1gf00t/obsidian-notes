@@ -1739,23 +1739,171 @@ Here is the complete list of all 14 exercises from the end of Chapter 8 (Vertex 
 
 > [!question] Q2: Chromatic Number of a Join
 > **Prove:** $\chi(G_1 + G_2) = \chi(G_1) + \chi(G_2)$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $a = \chi(G_1)$ and $b = \chi(G_2)$. We show $\chi(G_1+G_2) \le a+b$ and $\chi(G_1+G_2) \ge a+b$.
+> >
+> > **Upper bound $\chi(G_1+G_2) \le a+b$.**
+> >
+> > Let $c_1 : V(G_1) \to \{1,\dots,a\}$ be a proper $a$-coloring of $G_1$, and let $c_2 : V(G_2) \to \{a+1,\dots,a+b\}$ be a proper $b$-coloring of $G_2$ (shifted to use a disjoint color set). Define $c : V(G_1+G_2) \to \{1,\dots,a+b\}$ by $c(v) = c_1(v)$ if $v \in V(G_1)$ and $c(v) = c_2(v)$ if $v \in V(G_2)$.
+> >
+> > - Any edge inside $G_1$ is properly colored since $c_1$ is proper.
+> > - Any edge inside $G_2$ is properly colored since $c_2$ is proper.
+> > - Any edge between $V(G_1)$ and $V(G_2)$ has one endpoint colored from $\{1,\dots,a\}$ and the other from $\{a+1,\dots,a+b\}$, hence distinctly colored.
+> >
+> > So $c$ is a proper $(a+b)$-coloring, giving $\chi(G_1+G_2) \le a+b$.
+> >
+> > **Lower bound $\chi(G_1+G_2) \ge a+b$.**
+> >
+> > Let $c$ be any proper coloring of $G_1+G_2$ using $\chi(G_1+G_2)$ colors. Since every vertex of $G_1$ is adjacent to every vertex of $G_2$ in the join, no color used on $V(G_1)$ can also be used on $V(G_2)$:
+> >
+> > $$c(V(G_1)) \cap c(V(G_2)) = \emptyset$$
+> >
+> > The restriction of $c$ to $V(G_1)$ is a proper coloring of $G_1$ (edges inside $G_1$ are unaffected by the join), so it uses at least $\chi(G_1) = a$ distinct colors. Likewise the restriction to $V(G_2)$ uses at least $\chi(G_2) = b$ distinct colors. Since these two color sets are disjoint:
+> >
+> > $$\chi(G_1+G_2) = |c(V(G_1+G_2))| = |c(V(G_1))| + |c(V(G_2))| \ge a+b$$
+> >
+> > Combining both bounds:
+> >
+> > $$\boxed{\chi(G_1+G_2) = \chi(G_1)+\chi(G_2)}$$
 
 > [!question] Q3: Bounds on the Chromatic Number
 > **For every graph $G$, show that:**
 >
 > $$\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)$$
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Lower bound $\dfrac{n(G)}{\alpha_0(G)} \le \chi(G)$.**
+> >
+> > Let $k = \chi(G)$. By definition of a proper $k$-coloring, $V(G)$ partitions into $k$ color classes $V_1, V_2, \dots, V_k$ that are pairwise disjoint, with $V(G) = V_1 \cup \cdots \cup V_k$.
+> >
+> > Since no two vertices in the same color class are adjacent, each $V_i$ is an independent set of $G$. By definition of $\alpha_0(G)$ as the maximum independent set size:
+> >
+> > $$|V_i| \le \alpha_0(G) \quad \text{for every } i \in \{1,\dots,k\}$$
+> >
+> > Summing over all $k$ classes:
+> >
+> > $$n(G) = \sum_{i=1}^{k}|V_i| \le \sum_{i=1}^{k}\alpha_0(G) = k\cdot\alpha_0(G) = \chi(G)\cdot \alpha_0(G)$$
+> >
+> > Since $\alpha_0(G) \ge 1$ for any nonempty graph, dividing both sides gives:
+> >
+> > $$\boxed{\chi(G) \ge \frac{n(G)}{\alpha_0(G)}}$$
+> >
+> > **Upper bound $\chi(G) \le n(G) + 1 - \alpha_0(G)$.**
+> >
+> > Let $I \subseteq V(G)$ be a maximum independent set, so $|I| = \alpha_0(G)$. Construct a proper coloring explicitly:
+> >
+> > - Assign **color 1** to every vertex in $I$. This is proper since $I$ is independent, so no edge has both endpoints in $I$.
+> > - Assign a **distinct new color** to each of the remaining $n(G) - \alpha_0(G)$ vertices in $V(G) \setminus I$. Since every vertex outside $I$ gets its own unique color, no edge among them can be monochromatic either.
+> >
+> > This coloring is proper and uses exactly:
+> >
+> > $$1 + \big(n(G) - \alpha_0(G)\big) = n(G) + 1 - \alpha_0(G) \text{ colors}$$
+> >
+> > Since $\chi(G)$ is the minimum number of colors over all proper colorings, and we have exhibited one proper coloring with this many colors:
+> >
+> > $$\boxed{\chi(G) \le n(G) + 1 - \alpha_0(G)}$$
+> >
+> > Combining both bounds gives the required inequality for every graph $G$:
+> >
+> > $$\boxed{\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)}$$
 
 > [!question] Q4: Graphs with $\chi(G) = k$
 > **Show that every graph with $\chi(G) = k$ contains:**
 >
 > 1. At least $\frac{k(k - 1)}{2}$ edges.
 > 2. A cycle of length at least $k$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $\chi(G) = k$.
+> >
+> > **(1) $G$ has at least $\dfrac{k(k-1)}{2}$ edges.**
+> >
+> > Every graph $G$ with $\chi(G) = k$ contains a $k$-critical subgraph $H$ (a subgraph with $\chi(H) = k$ and $\chi(H - v) < k$ for every $v \in V(H)$), obtained by repeatedly deleting vertices that do not lower the chromatic number below $k$, until no further deletion is possible. It suffices to prove the edge bound for $H$, since $|E(G)| \ge |E(H)|$.
+> >
+> > **Claim:** $\delta(H) \ge k-1$.
+> >
+> > Suppose some vertex $v \in V(H)$ has $\deg_H(v) \le k-2$. Since $H$ is $k$-critical, $H - v$ has a proper $(k-1)$-coloring. In this coloring, $v$'s neighbors use at most $\deg_H(v) \le k-2$ distinct colors out of the $k-1$ available, so at least one color is free for $v$. Extending the coloring by assigning $v$ this free color gives a proper $(k-1)$-coloring of $H$, contradicting $\chi(H) = k$. Hence $\delta(H) \ge k-1$.
+> >
+> > By the handshaking lemma:
+> >
+> > $$2|E(H)| = \sum_{v \in V(H)} \deg_H(v) \ge n(H)\cdot \delta(H) \ge n(H)(k-1)$$
+> >
+> > Since $H$ is $k$-chromatic, $n(H) \ge k$ (a graph on fewer than $k$ vertices cannot need $k$ colors). So:
+> >
+> > $$2|E(H)| \ge k(k-1) \implies |E(H)| \ge \frac{k(k-1)}{2}$$
+> >
+> > Therefore:
+> >
+> > $$\boxed{|E(G)| \ge |E(H)| \ge \frac{k(k-1)}{2}}$$
+> >
+> > **(2) $G$ contains a cycle of length at least $k$.**
+> >
+> > Again work with the $k$-critical subgraph $H \subseteq G$, where $\delta(H) \ge k-1$ as shown above. If $k \le 2$, the claim holds trivially, so assume $k \ge 3$; then $\delta(H) \ge 2$, so $H$ contains a cycle.
+> >
+> > A $k$-critical graph with $k \ge 3$ is 2-connected (this strengthens the connectivity result of Q11: if a cut-vertex $v$ existed, each "block" attached at $v$ would be a proper subgraph, colourable with $<k$ colours, and these colourings could be consistently glued at $v$ by permuting colours, again producing a $(k-1)$-colouring of all of $H$ — a contradiction). Using the standard lemma for 2-connected graphs — *in a 2-connected graph with minimum degree $\delta$, the longest cycle has length at least $\min(n, \delta+1)$* — with $\delta = \delta(H) \ge k-1$ and $n(H) \ge k$:
+> >
+> > $$\text{length of longest cycle in } H \ \ge\ \min(n(H), k) = k$$
+> >
+> > Hence $H$, and therefore $G$, contains a cycle of length at least $k$:
+> >
+> > $$\boxed{G \text{ contains a cycle of length} \ge k}$$
 
 > [!question] Q5: Number of Vertices in Mycielski Graphs
 > **Find $n(G_k)$, where $G_k$ is the $k$-vertex-chromatic, triangle-free graph constructed using Mycielski’s method**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Mycielski's construction.** Given a triangle-free graph $G_{k-1}$ on vertex set $\{u_1,\dots,u_m\}$ with $\chi(G_{k-1}) = k-1$, the **Mycielskian** $G_k$ is built as follows:
+> >
+> > - Keep the original vertices $u_1,\dots,u_m$ with their original edges.
+> > - Add a "shadow" copy $v_1,\dots,v_m$, where $v_i$ is joined to every neighbor of $u_i$ in $G_{k-1}$ (but $v_i$ is **not** adjacent to $v_j$, and not adjacent to $u_i$ itself).
+> > - Add one new apex vertex $z$, joined to every shadow vertex $v_1,\dots,v_m$.
+> >
+> > This construction preserves triangle-freeness and raises the chromatic number by exactly 1: $\chi(G_k) = \chi(G_{k-1}) + 1 = k$.
+> >
+> > **Counting vertices.** If $n(G_{k-1}) = m$, then $G_k$ has $m$ original vertices, $m$ shadow vertices, and $1$ apex vertex:
+> >
+> > $$n(G_k) = 2m + 1 = 2\,n(G_{k-1}) + 1$$
+> >
+> > **Base case.** The smallest triangle-free graph with $\chi = 2$ is $K_2$ (a single edge), so $G_2 = K_2$ and $n(G_2) = 2$.
+> >
+> > **Solving the recursion.** Let $a_k = n(G_k)$. Then $a_2 = 2$ and $a_k = 2a_{k-1}+1$ for $k \ge 3$. Adding $1$ to both sides: $a_k + 1 = 2(a_{k-1}+1)$, so $\{a_k+1\}$ is geometric with ratio $2$:
+> >
+> > $$a_k + 1 = (a_2+1)\cdot 2^{k-2} = 3\cdot 2^{k-2}$$
+> >
+> > $$\therefore \boxed{n(G_k) = 3\cdot 2^{k-2} - 1} \quad (k \ge 2)$$
+> >
+> > **Check:** $G_2 = K_2$ has $n=2 = 3(1)-1$ ✓. $G_3$ equals $C_5$, with $n = 5 = 3(2)-1$ ✓. $G_4$ is the Grötzsch graph, with $n = 11 = 3(4)-1$ ✓.
 
 > [!question] Q6: Maximum Edges in a 4-Chromatic Graph
 > **Draw a graph having maximum number of edges with $\chi(G) = 4$ and $n(G) = 10$**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > We want the graph on $10$ vertices with $\chi(G)=4$ that has the **maximum** possible number of edges.
+> >
+> > **Idea.** Since $\chi(G) = 4$, $V(G)$ can be partitioned into (at most) $4$ independent sets, and to maximize edges we want every possible edge between different color classes to be present — i.e., $G$ should be a **complete 4-partite graph** $K_{n_1,n_2,n_3,n_4}$ with $n_1+n_2+n_3+n_4 = 10$. As shown earlier (Chapter 8, Q1 part 6, and Q2), $\chi(K_{n_1,n_2,n_3,n_4}) = 4$ exactly, regardless of the part sizes, as long as all $n_i \ge 1$.
+> >
+> > **Maximizing edges over partitions of $10$ into $4$ positive parts.** The edge count of a complete multipartite graph is:
+> >
+> > $$|E| = \binom{n}{2} - \sum_{i=1}^{4}\binom{n_i}{2}$$
+> >
+> > where $n = 10$. To maximize $|E|$, we must **minimize** $\sum \binom{n_i}{2}$ subject to $\sum n_i = 10$. Since $\binom{x}{2}$ is convex, this sum is minimized when the parts are as equal as possible. Splitting $10 = 3+3+2+2$ gives the most balanced partition into $4$ positive parts.
+> >
+> > $$\sum\binom{n_i}{2} = \binom{3}{2}+\binom{3}{2}+\binom{2}{2}+\binom{2}{2} = 3+3+1+1 = 8$$
+> >
+> > $$|E| = \binom{10}{2} - 8 = 45 - 8 = 37$$
+> >
+> > **Construction.** Take $G = K_{3,3,2,2}$: partition the $10$ vertices into classes $V_1=\{a_1,a_2,a_3\}$, $V_2=\{b_1,b_2,b_3\}$, $V_3=\{c_1,c_2\}$, $V_4=\{d_1,d_2\}$. Join every pair of vertices lying in **different** classes; no edges within a class.
+> >
+> > - Each $V_i$ is independent, and vertices in different classes are always adjacent, so this is a proper coloring using exactly the $4$ classes, giving $\chi(G) \le 4$.
+> > - Since $G$ contains $K_4$ as a subgraph (one vertex from each class), $\chi(G) \ge \omega(G) \ge 4$.
+> >
+> > $$\therefore \chi(G) = 4, \qquad \boxed{|E(G)| = 37 \text{ (maximum, achieved by } K_{3,3,2,2}\text{)}}$$
 
 > [!question] Q7: Greedy Coloring of the $P_2 \square P_4$ Ladder Graph
 > **Let $G$ be the graph shown in the text ($P_2 \square P_4$ ladder graph). Order the vertices of $G$ in 3 different ways, say $S_1, S_2,$ and $S_3$, so that the greedy algorithm:**
@@ -1763,26 +1911,222 @@ Here is the complete list of all 14 exercises from the end of Chapter 8 (Vertex 
 > 1. Uses 2 colors, if $S_1$ is the input.
 > 2. Uses 3 colors, if $S_2$ is the input.
 > 3. Uses 4 colors, if $S_3$ is the input.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G = P_2 \,\square\, P_4$: top row $u_1,u_2,u_3,u_4$, bottom row $v_1,v_2,v_3,v_4$, with rungs $u_iv_i$ ($1\le i\le4$) and rails $u_iu_{i+1}$, $v_iv_{i+1}$ ($1\le i\le3$). $G$ is bipartite with parts $X=\{u_1,u_3,v_2,v_4\}$, $Y=\{u_2,u_4,v_1,v_3\}$, so $\chi(G)=2$.
+> >
+> > **(a) 2 colors.** Take $S_1 = (u_1,u_3,v_2,v_4,\,u_2,u_4,v_1,v_3)$ — all of $X$ first, then all of $Y$.
+> >
+> > | Vertex | Neighbours | Coloured Neighbours | Colour |
+> > |:--|:--|:--|:-:|
+> > | $u_1$ | $u_2, v_1$ | none | 1 |
+> > | $u_3$ | $u_2, u_4, v_3$ | none | 1 |
+> > | $v_2$ | $v_1, v_3, u_2$ | none | 1 |
+> > | $v_4$ | $v_3, u_4$ | none | 1 |
+> > | $u_2$ | $u_1, u_3, v_2$ | all coloured 1 | 2 |
+> > | $u_4$ | $u_3, v_4$ | all coloured 1 | 2 |
+> > | $v_1$ | $u_1, v_2$ | all coloured 1 | 2 |
+> > | $v_3$ | $v_2, v_4, u_3$ | all coloured 1 | 2 |
+> >
+> > Only colours 1 and 2 are used.
+> >
+> > **(b) 3 colors.** Take $S_2 = (u_1, v_1, u_2, v_3, u_3, v_2, u_4, v_4)$.
+> >
+> > | Vertex | Neighbours | Coloured Neighbours | Colour |
+> > |:--|:--|:--|:-:|
+> > | $u_1$ | $u_2, v_1$ | none | 1 |
+> > | $v_1$ | $u_1, v_2$ | $u_1(1)$ | 2 |
+> > | $u_2$ | $u_1, u_3, v_2$ | $u_1(1)$ | 2 |
+> > | $v_3$ | $v_2, v_4, u_3$ | none | 1 |
+> > | $u_3$ | $u_2, u_4, v_3$ | $u_2(2), v_3(1)$ | 3 |
+> > | $v_2$ | $v_1, v_3, u_2$ | $v_1(2), v_3(1), u_2(2)$ | 3 |
+> > | $u_4$ | $u_3, v_4$ | $u_3(3)$ | 1 |
+> > | $v_4$ | $v_3, u_4$ | $v_3(1), u_4(1)$ | 2 |
+> >
+> > Maximum colour used is 3.
+> >
+> > **(c) 4 colors.** Take $S_3 = (u_2, v_4, u_1, v_3, u_3, v_1, u_4, v_2)$.
+> >
+> > | Vertex | Neighbours | Coloured Neighbours | Colour |
+> > |:--|:--|:--|:-:|
+> > | $u_2$ | $u_1, u_3, v_2$ | none | 1 |
+> > | $v_4$ | $v_3, u_4$ | none | 1 |
+> > | $u_1$ | $u_2, v_1$ | $u_2(1)$ | 2 |
+> > | $v_3$ | $v_2, v_4, u_3$ | $v_4(1)$ | 2 |
+> > | $u_3$ | $u_2, u_4, v_3$ | $u_2(1), v_3(2)$ | 3 |
+> > | $v_1$ | $u_1, v_2$ | $u_1(2)$ | 1 |
+> > | $u_4$ | $u_3, v_4$ | $u_3(3), v_4(1)$ | 2 |
+> > | $v_2$ | $v_1, v_3, u_2$ | $v_1(1), v_3(2), u_2(1)$ | 4 |
+> >
+> > Maximum colour used is 4.
 
 > [!question] Q8: Greedy Coloring of the Crown Graph $K_{4,4} - 4e$
 > **Order the vertices of the graph shown in the text (crown graph $K_{4,4} - 4e$) in such a way that the greedy algorithm uses 4 colors**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G = K_{4,4} - 4e$: parts $\{u_1,u_2,u_3,u_4\}$ and $\{v_1,v_2,v_3,v_4\}$, with $u_i$ adjacent to $v_j$ for all $j \ne i$ (the perfect matching $u_iv_i$ removed). $G$ is bipartite, so $\chi(G) = 2$; we force the greedy algorithm to use $4$ colors.
+> >
+> > Take ordering $S = (u_1, v_1, u_2, v_2, u_3, v_3, u_4, v_4)$.
+> >
+> > | Vertex | Neighbours | Coloured Neighbours | Colour |
+> > |:--|:--|:--|:-:|
+> > | $u_1$ | $v_2,v_3,v_4$ | none | 1 |
+> > | $v_1$ | $u_2,u_3,u_4$ | none | 1 |
+> > | $u_2$ | $v_1,v_3,v_4$ | $v_1(1)$ | 2 |
+> > | $v_2$ | $u_1,u_3,u_4$ | $u_1(1)$ | 2 |
+> > | $u_3$ | $v_1,v_2,v_4$ | $v_1(1),v_2(2)$ | 3 |
+> > | $v_3$ | $u_1,u_2,u_4$ | $u_1(1),u_2(2)$ | 3 |
+> > | $u_4$ | $v_1,v_2,v_3$ | $v_1(1),v_2(2),v_3(3)$ | 4 |
+> > | $v_4$ | $u_1,u_2,u_3$ | $u_1(1),u_2(2),u_3(3)$ | 4 |
+> >
+> > The greedy algorithm uses $4$ colours on this ordering.
 
 > [!question] Q9: Greedy Coloring of $k$-Degenerate Graphs
 > **Let $G$ be a simple graph such that $\delta(H) \le k$, for every subgraph $H$ of $G$ (such a graph is called a $k$-degenerate graph). Order the vertices of $G$ so that if one applies the greedy algorithm to color the vertices of $G$, then it uses at most $k + 1$ colors**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be $k$-degenerate: $\delta(H) \le k$ for every subgraph $H$ of $G$.
+> >
+> > **Constructing the ordering (degeneracy ordering).** Build the ordering $v_n, v_{n-1}, \dots, v_1$ in reverse, by repeatedly peeling off a minimum-degree vertex:
+> >
+> > 1. Let $H_n = G$. Since $\delta(H_n) \le k$, choose a vertex $v_n$ with $\deg_{H_n}(v_n) \le k$.
+> > 2. Let $H_{n-1} = H_n - v_n$. Since $H_{n-1}$ is a subgraph of $G$, $\delta(H_{n-1}) \le k$; choose $v_{n-1}$ with $\deg_{H_{n-1}}(v_{n-1}) \le k$.
+> > 3. Continue: at step $i$, let $H_i = H_{i+1} - v_{i+1}$, and choose $v_i$ with $\deg_{H_i}(v_i) \le k$ (possible since $H_i \subseteq G$ is a subgraph, so $\delta(H_i)\le k$).
+> > 4. Repeat until all vertices are removed, producing $v_1, v_2, \dots, v_n$.
+> >
+> > Feed the greedy algorithm the ordering $S = (v_1, v_2, \dots, v_n)$ — i.e., process $v_1$ first.
+> >
+> > **Why this bounds the number of colours.** By construction, $v_i$ was chosen as a minimum-degree vertex of $H_i = G[\{v_1,\dots,v_i\}]$, since all later-removed vertices $v_{i+1},\dots,v_n$ had already been deleted before $v_i$ was chosen. Hence when the greedy algorithm processes $v_i$, its only possible **already-coloured** neighbours are those among $v_1,\dots,v_{i-1}$ — exactly its neighbours within $H_i$. Since $\deg_{H_i}(v_i) \le k$, at most $k$ already-coloured neighbours exist.
+> >
+> > The greedy algorithm assigns $v_i$ the smallest colour not used among its (at most $k$) coloured neighbours, which must be found among colours $\{1,\dots,k+1\}$ by pigeonhole.
+> >
+> > Since this holds for every vertex $v_i$, the greedy algorithm never uses a colour higher than $k+1$:
+> >
+> > $$\boxed{\text{Greedy algorithm on the ordering } (v_1,\dots,v_n) \text{ uses at most } k+1 \text{ colours.}}$$
 
 > [!question] Q10: Chemical Storage Problem
 > **There are 7 chemicals $A, B, C, D, E, F, G$. For safety reasons, the following pairs of chemicals cannot be stored in one room:** $A\&B, A\&C, A\&G, B\&C, B\&D, C\&D, D\&E, D\&F, E\&F, E\&G, F\&G$. **If the problem is to find the minimum number of rooms (say $k$) required to store all the chemicals, how would you model it as a graph theoretical problem and find $k$?**
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Modeling as graph coloring.** Build a conflict graph $G$ with $V(G) = \{A,B,C,D,E,F,G\}$, and join two vertices by an edge exactly when the corresponding chemicals cannot share a room:
+> >
+> > $$E(G) = \{AB, AC, AG, BC, BD, CD, DE, DF, EF, EG, FG\}$$
+> >
+> > A valid room assignment is precisely a **proper vertex coloring** of $G$ (rooms = colours; chemicals sharing a room get the same colour, and incompatible chemicals, i.e., adjacent vertices, must receive different colours). The minimum number of rooms needed is $\chi(G)$.
+> >
+> > **Lower bound.** Note $\deg(A)=3,\deg(B)=3,\deg(C)=3,\deg(D)=4,\deg(E)=3,\deg(F)=3,\deg(G)=3$. Observe $\{A,B,C\}$ is a triangle ($AB,AC,BC \in E$), and $\{D,E,F\}$ is also a triangle ($DE,DF,EF \in E$). So $\omega(G) \ge 3$, giving $\chi(G) \ge 3$.
+> >
+> > **No proper 3-coloring exists.** In any 3-coloring, the triangle $\{A,B,C\}$ must occupy all 3 colours; relabel colours so $A=1, B=2, C=3$. Since $D$ is adjacent to both $B(2)$ and $C(3)$, $D$ is forced to colour $1$. Since $\{D,E,F\}$ is also a triangle with $D=1$, the pair $\{E,F\}$ must occupy the remaining two colours $\{2,3\}$ (in either order). But now $G$ is adjacent to $A(1)$, $E$, and $F$, and $\{E,F\}=\{2,3\}$ — so $G$'s neighbours already use all three colours $\{1,2,3\}$, leaving no colour available for $G$. Hence $\chi(G) \ge 4$.
+> >
+> > **Explicit proper 4-coloring (rooms).**
+> >
+> > | Chemical | A | B | C | D | E | F | G |
+> > |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+> > | Room | 1 | 2 | 3 | 1 | 2 | 3 | 4 |
+> >
+> > Verify every conflicting pair gets different rooms: $AB(1,2)$, $AC(1,3)$, $AG(1,4)$, $BC(2,3)$, $BD(2,1)$, $CD(3,1)$, $DE(1,2)$, $DF(1,3)$, $EF(2,3)$, $EG(2,4)$, $FG(3,4)$ — all distinct. Valid.
+> >
+> > $$\boxed{k = \chi(G) = 4 \text{ rooms}}$$
+> >
+> > **Room assignment:** Room 1: $\{A, D\}$; Room 2: $\{B, E\}$; Room 3: $\{C, F\}$; Room 4: $\{G\}$.
 
 _(Note: A graph $G$ is said to be $k$-critical if $\chi(G) = k$, and $\chi(H) < k$ for every proper subgraph $H$ of $G$.)_
 
 > [!question] Q11: Properties of $k$-Critical Graphs
 > **If $G$ is $k$-critical, then show that $G$ is connected and that $\delta(G) \ge k - 1$**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be $k$-critical: $\chi(G)=k$ and $\chi(H) < k$ for every proper subgraph $H \subsetneq G$.
+> >
+> > **$G$ is connected.**
+> >
+> > Suppose, for contradiction, $G$ is disconnected, with components $G_1, G_2, \dots, G_r$ ($r \ge 2$). Each $G_i$ is a proper subgraph of $G$ (since $r\ge2$, no single component equals all of $G$), so by criticality $\chi(G_i) < k$ for each $i$.
+> >
+> > But colouring each component independently and optimally, the overall chromatic number of a disconnected graph is the **maximum** over its components (colours can be freely reused across different components, since there are no edges between them):
+> >
+> > $$\chi(G) = \max_{1\le i \le r} \chi(G_i) < k$$
+> >
+> > This contradicts $\chi(G) = k$. Hence $G$ must be connected.
+> >
+> > **$\delta(G) \ge k-1$.**
+> >
+> > Suppose some vertex $v$ has $\deg_G(v) \le k-2$. Since $G - v$ is a proper subgraph, criticality gives $\chi(G-v) < k$, i.e., $\chi(G-v) \le k-1$. Fix a proper $(k-1)$-colouring of $G - v$.
+> >
+> > In this colouring, the neighbours of $v$ (all lying in $G-v$) use at most $\deg_G(v) \le k-2$ distinct colours among the $k-1$ available. By pigeonhole, at least one colour in $\{1,\dots,k-1\}$ is unused among $v$'s neighbours. Assign that colour to $v$.
+> >
+> > This extends the $(k-1)$-colouring of $G-v$ to a proper $(k-1)$-colouring of all of $G$, contradicting $\chi(G) = k$.
+> >
+> > Hence every vertex of $G$ has degree at least $k-1$:
+> >
+> > $$\boxed{\delta(G) \ge k-1}$$
 
 > [!question] Q12: Chromatic Number of $G - S$
 > **If $S$ is a set of independent vertices in a $k$-critical graph, then what is the chromatic number of $G - S$?**
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be $k$-critical and $S \subseteq V(G)$ an independent set.
+> >
+> > **Claim:** $\chi(G - S) = k - 1$.
+> >
+> > **Upper bound $\chi(G-S) \le k-1$.** We show this by induction on $|S|$.
+> >
+> > - **Base case $|S|=1$:** $S=\{v\}$ for some vertex $v$. Since $G-v$ is a proper subgraph of $G$, criticality gives $\chi(G-v) < k$, i.e., $\chi(G-v) \le k-1$.
+> > - **Inductive step:** Suppose for every independent set of size $< |S|$ the bound $\chi(G - S') \le k-1$ holds. Write $S = S'' \cup \{w\}$ for some $w \in S$, where $S'' = S\setminus\{w\}$ is still independent and $|S''| = |S|-1$. By the inductive hypothesis, $G - S''$ has a proper $(k-1)$-colouring $c$.
+> >
+> >   Since $S$ is independent, $w$ has no neighbour within $S$, so deleting $w$ from $G-S''$ only removes $w$ itself. Thus $c$ restricted to $(G-S'')-w = G - S$ remains a proper $(k-1)$-colouring.
+> >
+> >   Hence $\chi(G-S) \le k-1$.
+> >
+> > **Lower bound $\chi(G-S) \ge k-1$.** Suppose instead $\chi(G-S) \le k-2$. Fix such a colouring $c$ of $G - S$ using colours $\{1,\dots,k-2\}$. We extend it to all of $G$ using only $k-1$ colours total, contradicting $\chi(G)=k$:
+> >
+> > Process the vertices of $S$ one at a time. Since $S$ is independent, no two vertices of $S$ are adjacent, so colouring them one-by-one never creates a conflict between two $S$-vertices. For each $v \in S$, by Q11, $\deg_G(v) \ge k-1$, but all of $v$'s neighbours lie in $V(G)\setminus S$ (since $S$ is independent, $v$ has no neighbour inside $S$), and at the time $v$ is processed, the base colouring plus previously-processed $S$-vertices still use at most $k-2$ colours among $v$'s neighbours, so at least one of the $k-1$ colours remains free for $v$ by pigeonhole.
+> >
+> > This produces a proper $(k-1)$-colouring of all of $G$, contradicting $\chi(G)=k$. Hence $\chi(G-S)\ge k-1$.
+> >
+> > Combining both bounds:
+> >
+> > $$\boxed{\chi(G-S) = k-1}$$
 
 > [!question] Q13: Critical Graphs and Joins
 > **If $G_1$ and $G_2$ are simple graphs, show that $G_1 + G_2$ is a critical graph iff $G_1$ and $G_2$ are critical**.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $a = \chi(G_1)$, $b=\chi(G_2)$. By Q2, $\chi(G_1+G_2) = a+b$.
+> >
+> > **($\Leftarrow$) If $G_1$ and $G_2$ are both critical, then $G_1+G_2$ is critical.**
+> >
+> > It suffices to check vertex-deleted subgraphs $H = (G_1+G_2) - x$ for an arbitrary vertex $x$. Suppose WLOG $x \in V(G_1)$. Then:
+> >
+> > $$(G_1+G_2) - x = (G_1 - x) + G_2$$
+> >
+> > since deleting $x$ only removes it (and its incident edges, including all join edges to $G_2$) from the $G_1$ side; the join structure with $G_2$ is otherwise unaffected. By Q2:
+> >
+> > $$\chi\big((G_1-x)+G_2\big) = \chi(G_1-x) + \chi(G_2)$$
+> >
+> > Since $G_1$ is critical and $x \in V(G_1)$, $\chi(G_1 - x) < a = \chi(G_1)$, i.e., $\chi(G_1-x) \le a - 1$. Hence:
+> >
+> > $$\chi\big((G_1+G_2)-x\big) \le (a-1) + b < a+b$$
+> >
+> > The symmetric argument handles $x \in V(G_2)$. So every vertex-deleted subgraph has chromatic number strictly less than $\chi(G_1+G_2)=a+b$, proving $G_1+G_2$ is critical.
+> >
+> > **($\Rightarrow$) If $G_1+G_2$ is critical, then $G_1$ and $G_2$ are both critical.**
+> >
+> > Suppose, for contradiction, $G_1$ is not critical. Then there exists some vertex $x \in V(G_1)$ with $\chi(G_1 - x) = \chi(G_1) = a$ (deleting $x$ fails to strictly decrease $\chi$, since $\chi(G_1-x)\le\chi(G_1)$ always holds, and non-criticality means this inequality is not always strict).
+> >
+> > Then, as above, $(G_1+G_2)-x = (G_1-x)+G_2$, and by Q2:
+> >
+> > $$\chi\big((G_1+G_2)-x\big) = \chi(G_1-x)+\chi(G_2) = a+b = \chi(G_1+G_2)$$
+> >
+> > So deleting $x$ does **not** decrease the chromatic number of $G_1+G_2$, contradicting the criticality of $G_1+G_2$. Hence $G_1$ must be critical; symmetrically, $G_2$ must be critical.
+> >
+> > $$\boxed{G_1+G_2 \text{ is critical} \iff G_1 \text{ and } G_2 \text{ are both critical}}$$
 
 _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partition of $G$ if every induced subgraph $[V_i]$, $1 \le i \le p$, is a clique in $G$. The minimum integer $k$ such that $G$ admits a clique partition is called the clique partition number of $G$, denoted by $\theta_0(G)$.)_
 
@@ -1792,56 +2136,41 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > 1. $\theta_0(G) = \chi(G^c)$.
 > 2. $\theta_0(G_1 + G_2) = \max{\theta_0(G_1), \theta_0(G_2)}$.
 > 3. $\theta_0(G) \ge \alpha_0(G)$.
-
-
-### **Necessary Theory (Brief Overview)**
-
-1. **Order of a Graph \(n(G)\)**: The total number of vertices in the graph \(G\), denoted by \(n(G) = |V(G)|\).
-    
-2. **Vertex-Independence Number \(\alpha_0(G)\)**: An **independent set** (or stable set) \(I \subseteq V(G)\) is a subset of vertices such that no two vertices in \(I\) are adjacent. The **vertex-independence number** \(\alpha_0(G)\) is the size of a maximum independent set in \(G\): \[\alpha_0(G) = \max { |I| : I \text{ is an independent set in } G }\]
-    
-3. **Vertex-Chromatic Number \(\chi(G)\)**: A **proper vertex \(k\)-coloring** of \(G\) is a partition of \(V(G)\) into \(k\) disjoint independent sets \(V_1, V_2, \dots, V_k\), called **color classes**. The **vertex-chromatic number** \(\chi(G)\) is the minimum integer \(k\) for which \(G\) admits a proper vertex \(k\)-coloring.
-    
-
----
-
-### **Detailed Mathematical Proof**
-
-To prove the compound inequality for every simple graph \(G\): \[\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)\] we prove the lower bound and upper bound separately.
-
----
-
-#### **Part 1: Proof of the Lower Bound \(\frac{n(G)}{\alpha_0(G)} \le \chi(G)\)**
-
-1. Let \(k = \chi(G)\) be the vertex-chromatic number of \(G\).
-2. By definition of a proper \(k\)-vertex coloring, the vertex set \(V(G)\) is partitioned into \(k\) color classes: \[V(G) = V_1 \cup V_2 \cup \dots \cup V_k \quad \text{where } V_i \cap V_j = \emptyset \text{ for } i \ne j\]
-3. Since no two vertices in the same color class \(V_i\) are adjacent, each color class \(V_i\) forms an **independent set** in \(G\).
-4. By definition of the vertex-independence number \(\alpha_0(G)\), no independent set in \(G\) can contain more than \(\alpha_0(G)\) vertices. Therefore: \[|V_i| \le \alpha_0(G) \quad \text{for every } i \in {1, 2, \dots, k}\]
-5. Summing the cardinalities of all \(k\) color classes gives the total number of vertices \(n(G)\): \[n(G) = \sum_{i=1}^{k} |V_i| \le \sum_{i=1}^{k} \alpha_0(G) = k \cdot \alpha_0(G) = \chi(G) \cdot \alpha_0(G)\]
-6. Dividing both sides by \(\alpha_0(G)\) (since \(\alpha_0(G) \ge 1\) for any non-empty graph): \[\chi(G) \ge \frac{n(G)}{\alpha_0(G)}\]
-
----
-
-#### **Part 2: Proof of the Upper Bound \(\chi(G) \le n(G) + 1 - \alpha_0(G)\)**
-
-1. Let \(I \subseteq V(G)\) be a **maximum independent set** of \(G\), so that \(|I| = \alpha_0(G)\).
-2. We construct an explicit proper vertex coloring of \(G\) as follows:
-    - Assign **Color 1** to all vertices in \(I\). This is a valid proper coloring for the subset \(I\) because \(I\) is an independent set (no two vertices in \(I\) share an edge).
-    - The remaining vertices in the graph are \(V(G) \setminus I\), which contains: \[|V(G) \setminus I| = n(G) - |I| = n(G) - \alpha_0(G) \text{ vertices}\]
-    - In the worst-case scenario, assign a **distinct new color** to each of the remaining \(n(G) - \alpha_0(G)\) vertices.
-3. The total number of colors used in this valid proper coloring is: \[1 + \left(n(G) - \alpha_0(G)\right) = n(G) + 1 - \alpha_0(G)\]
-4. Since the chromatic number \(\chi(G)\) is defined as the **minimum** number of colors required for any proper coloring of \(G\), \(\chi(G)\) cannot exceed the number of colors used in this explicit construction: \[\chi(G) \le n(G) + 1 - \alpha_0(G)\]
-
----
-
-#### **Conclusion**
-
-Combining **Part 1** and **Part 2**, we obtain the desired result for every graph \(G\): \[\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)\]
-
----
-
-### **Visual Illustration**
-
-The diagram below illustrates the structural partitioning behind both bounds:
-
---Image of: --Chromatic Bounds Illustration
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Recall: a clique partition of $G$ is a partition $(V_1,\dots,V_p)$ of $V(G)$ where each induced subgraph $[V_i]$ is a clique; $\theta_0(G)$ is the minimum such $p$.
+> >
+> > **(1) $\theta_0(G) = \chi(G^c)$.**
+> >
+> > A set $V_i \subseteq V(G)$ induces a clique in $G$ if and only if every two vertices of $V_i$ are adjacent in $G$, if and only if no two vertices of $V_i$ are adjacent in $G^c$ (by definition of complement), if and only if $V_i$ is an **independent set** in $G^c$.
+> >
+> > Hence a clique partition of $G$ into $p$ parts is **exactly** a partition of $V(G^c) = V(G)$ into $p$ independent sets of $G^c$ — i.e., a proper vertex $p$-colouring of $G^c$ (colour classes = independent sets). Therefore the minimum number of parts in a clique partition of $G$ equals the minimum number of colours in a proper colouring of $G^c$:
+> >
+> > $$\boxed{\theta_0(G) = \chi(G^c)}$$
+> >
+> > **(2) $\theta_0(G_1+G_2) = \max\{\theta_0(G_1), \theta_0(G_2)\}$.**
+> >
+> > Using part (1) and the identity for complements of a join, $(G_1+G_2)^c = G_1^c \cup G_2^c$ (disjoint union — in the complement, the join edges between $G_1$ and $G_2$ disappear, while non-edges within each $G_i$ become edges):
+> >
+> > $$\theta_0(G_1+G_2) = \chi\big((G_1+G_2)^c\big) = \chi(G_1^c \,\cup\, G_2^c)$$
+> >
+> > For a disjoint union of graphs, colours can be reused freely across different components (no edges between them), so the chromatic number of a disjoint union is the maximum of the chromatic numbers of its components:
+> >
+> > $$\chi(G_1^c \cup G_2^c) = \max\{\chi(G_1^c), \chi(G_2^c)\} = \max\{\theta_0(G_1), \theta_0(G_2)\}$$
+> >
+> > Hence:
+> >
+> > $$\boxed{\theta_0(G_1+G_2) = \max\{\theta_0(G_1), \theta_0(G_2)\}}$$
+> >
+> > **(3) $\theta_0(G) \ge \alpha_0(G)$.**
+> >
+> > Let $(V_1,\dots,V_p)$ be a minimum clique partition of $G$, so $p = \theta_0(G)$, and let $I$ be a maximum independent set of $G$, so $|I| = \alpha_0(G)$.
+> >
+> > Since each $V_i$ is a clique, $I$ (being independent) can contain **at most one** vertex from each $V_i$ — two vertices of $I$ lying in the same $V_i$ would be adjacent (as $V_i$ is a clique), contradicting independence of $I$.
+> >
+> > Since $I \subseteq V_1 \cup \cdots \cup V_p$ and $|I \cap V_i| \le 1$ for each $i$:
+> >
+> > $$\alpha_0(G) = |I| = \sum_{i=1}^{p} |I \cap V_i| \le \sum_{i=1}^{p} 1 = p = \theta_0(G)$$
+> >
+> > $$\boxed{\theta_0(G) \ge \alpha_0(G)}$$
