@@ -2175,4 +2175,614 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > $$\boxed{\theta_0(G) \ge \alpha_0(G)}$$
 
+---
+
+## Chapter 9
+
+> [!question] Q1: Edge-Chromatic Number from Edge Count and Hamiltonicity
+> Prove:
+>
+> (a) If $G$ is a loopless graph with $n$ odd and at least $n \cdot \Delta(G)$ edges, then $\chi_1(G) = \Delta(G) + 1$.
+>
+> (b) If $G$ is simple, Hamilton and 3-regular, then $\chi_1(G) = 3$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a)** Let $n$ be odd. Since any matching in a graph on $n$ vertices can saturate at most $n-1$ vertices (an odd number of vertices cannot be perfectly matched), every matching has size at most $\left\lfloor \frac{n}{2} \right\rfloor = \frac{n-1}{2}$. Hence:
+> >
+> > $$\alpha_1(G) \le \frac{n-1}{2}$$
+> >
+> > By hypothesis, $m(G) \ge n \cdot \Delta(G)$. Since $n \ge \frac{n-1}{2} \cdot 2$ trivially (as $n > \frac{n-1}{2}$ for $n \ge 1$), we have in particular:
+> >
+> > $$m(G) \ge n\cdot\Delta(G) > \frac{n-1}{2}\cdot \Delta(G) = \Delta(G)\cdot\alpha_1(G)$$
+> >
+> > By the Corollary to Theorem 9.4 (if $m(G) > \Delta(G)\cdot \alpha_1(G)$, then $G$ is Class-2):
+> >
+> > $$\boxed{\chi_1(G) = \Delta(G) + 1}$$
+> >
+> > **(b)** Let $G$ be simple, 3-regular ($\Delta(G) = 3$) and Hamiltonian, with Hamilton cycle $C = (v_1, v_2, \ldots, v_n, v_1)$.
+> >
+> > Since $C$ visits every vertex exactly once, every vertex is incident with exactly 2 edges of $C$. Since $G$ is 3-regular, every vertex has exactly $3 - 2 = 1$ edge outside $C$. Hence the edge set $E(G) - E(C)$ is a set of edges in which every vertex has degree exactly 1, that is, $E(G) - E(C)$ is a **perfect matching** $M$ of $G$.
+> >
+> > A perfect matching requires an even number of vertices, so $n$ is even. Consequently, the Hamilton cycle $C$ has even length, and an even cycle can be properly edge-colored using exactly 2 colors (alternating around the cycle).
+> >
+> > Color the edges of $C$ with colors $1$ and $2$ alternately, and color every edge of $M$ with color $3$. This is a proper edge-coloring:
+> >
+> > - Adjacent edges within $C$ always receive different colors ($1$ or $2$) by the alternating scheme.
+> > - Every edge of $M$ is vertex-disjoint from every other edge of $M$ (it is a matching), so no two $3$-colored edges are adjacent.
+> > - Each vertex is incident with exactly one $M$-edge (color 3) and two $C$-edges (colors 1 and 2), so all three edges at a vertex have distinct colors.
+> >
+> > Hence $\chi_1(G) \le 3$. Since $G$ is 3-regular, $\Delta(G) = 3$, so by the lower bound $\chi_1(G) \ge \Delta(G) = 3$:
+> >
+> > $$\boxed{\chi_1(G) = 3}$$
+
+> [!question] Q2: Iterations to Construct the Regular Graph $H$
+> What is the number of iterations required to construct the regular graph $H$ in the first proof of Theorem 9.3.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > In the first proof of Theorem 9.3 (König), starting from a bipartite graph $G$, the construction builds a sequence of bipartite graphs $H_1, H_2, \ldots, H_t$ such that:
+> >
+> > $$G \sqsubseteq H_1 \sqsubseteq H_2 \sqsubseteq \cdots \sqsubseteq H_t, \qquad \Delta(H_i) = \Delta(G) \text{ for every } i, \qquad \delta(H_{i+1}) = \delta(H_i) + 1$$
+> >
+> > Each iteration increases the minimum degree by exactly $1$, while keeping the maximum degree fixed at $\Delta(G)$. The process starts with $\delta(H_0) = \delta(G)$ (taking $H_0 = G$) and stops as soon as the minimum degree reaches $\Delta(G)$ (i.e., the graph becomes $\Delta(G)$-regular).
+> >
+> > Since $\delta$ increases by exactly $1$ per iteration, the number of iterations $t$ required to go from $\delta(G)$ to $\Delta(G)$ is:
+> >
+> > $$\boxed{t = \Delta(G) - \delta(G)}$$
+
+> [!question] Q3: Degree Sum Bound When $\chi_1(G) = \Delta(G) + 1$
+> Let $G$ be a graph with $\chi_1(G) = \Delta(G) + 1$. Let $e(u,v)$ be an edge such that $\chi_1(G-e) = \Delta(G)$. Show that $\deg_G(u) + \deg_G(v) \ge \Delta(G) + 2$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $d = \Delta(G)$. Since $\chi_1(G-e) = d$, fix a proper $d$-edge-coloring $C$ of $G - e$, using the color set $\{1, 2, \ldots, d\}$.
+> >
+> > **Suppose, for contradiction, that $\deg_G(u) + \deg_G(v) \le d + 1$.**
+> >
+> > In $G - e$, the degree of $u$ is $\deg_G(u) - 1$ and the degree of $v$ is $\deg_G(v) - 1$ (removing $e$ drops each endpoint's degree by exactly 1).
+> >
+> > The number of colors **present** at $u$ (under $C$) equals $\deg_{G-e}(u) = \deg_G(u) - 1$. So the number of colors **missing** at $u$ is:
+> >
+> > $$d - (\deg_G(u) - 1) = d - \deg_G(u) + 1$$
+> >
+> > Similarly, the number of colors missing at $v$ is $d - \deg_G(v) + 1$.
+> >
+> > Adding these:
+> >
+> > $$(\text{missing at } u) + (\text{missing at } v) = 2d - \big(\deg_G(u) + \deg_G(v)\big) + 2$$
+> >
+> > Using the contradiction hypothesis $\deg_G(u) + \deg_G(v) \le d+1$:
+> >
+> > $$(\text{missing at } u) + (\text{missing at } v) \ge 2d - (d+1) + 2 = d + 1$$
+> >
+> > So the combined count of missing colors at $u$ and at $v$ is at least $d+1$, which **exceeds** the total number of available colors $d$. Since both missing-color sets are subsets of the same $d$-element color set $\{1, \ldots, d\}$, and their sizes sum to more than $d$, by the pigeonhole principle **they cannot be disjoint** — there must exist a color $\beta$ missing at both $u$ and $v$.
+> >
+> > But then we can color the edge $e = (u,v)$ with $\beta$: since $\beta$ is missing at both endpoints, this extension is a proper coloring. This gives a $d$-edge-coloring of $G$, so $\chi_1(G) \le d = \Delta(G)$.
+> >
+> > This contradicts the given hypothesis $\chi_1(G) = \Delta(G) + 1$. Hence our assumption was false, and:
+> >
+> > $$\boxed{\deg_G(u) + \deg_G(v) \ge \Delta(G) + 2}$$
+
+> [!question] Q4: Edge-Chromatic Number of Various Graphs
+> Find the edge-chromatic number of the following graphs.
+>
+> (a) $T + T$, where $T$ is a tree on $n (\ge 3)$ vertices.
+>
+> (b) $T_k + C_{2k+1}$, where $T_k$ is a tree on $k$ vertices.
+>
+> (c) $K_5 - e$
+>
+> (d) $C_5 + C_5$.
+>
+> (e) $C_{2s} + C_{2t}$.
+>
+> (f) Petersen graph.
+>
+> (g) $d$-cube, $Q_d$.
+>
+> (h) A $k$-regular bipartite graph.
+>
+> (i) $K_{5,5,5,5,5}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a) $T + T$, $T$ a tree on $n (\ge 3)$ vertices, $d = \Delta(T)$.**
+> >
+> > Let $T_1, T_2$ be the two (isomorphic) copies of $T$, each on $n$ vertices. In the join $G = T_1 + T_2$, every vertex of $T_1$ is joined to all $n$ vertices of $T_2$ and vice versa. So a vertex $x \in T_1$ has degree $\deg_{T_1}(x) + n$; the maximum such degree is $d + n$, attained at a maximum-degree vertex of $T_1$ (symmetrically for $T_2$). Hence:
+> >
+> > $$\Delta(G) = n + d$$
+> >
+> > The cross edges between $T_1$ and $T_2$ form the complete bipartite graph $K_{n,n}$, which is $n$-regular and bipartite; by König's Theorem 9.3, $\chi_1(K_{n,n}) = n$, so these cross edges can be properly colored using $n$ colors (each color class a perfect matching).
+> >
+> > Each tree $T_i$ is bipartite (every tree is bipartite), so again by König's Theorem, $\chi_1(T_i) = \Delta(T_i) = d$; color the edges of $T_1$ and $T_2$ (independently, since they are vertex-disjoint) using $d$ further new colors.
+> >
+> > This uses $n + d$ colors in total and is a proper edge-coloring of $G$ (cross edges and tree edges use disjoint color sets, so no conflicts arise between them). Hence $\chi_1(G) \le n + d = \Delta(G)$. Combined with $\chi_1(G) \ge \Delta(G)$:
+> >
+> > $$\boxed{\chi_1(T+T) = n + \Delta(T)}$$
+> >
+> > **(b) $T_k + C_{2k+1}$.** This was solved in Chapter 7, Q7(a) (Edge-Chromatic Number):
+> >
+> > $$\boxed{\chi_1(T_k + C_{2k+1}) = 2k+1+\Delta(T_k)}$$
+> >
+> > **(c) $K_5 - e$.**
+> >
+> > $K_5$ is 4-regular on $n=5$ vertices, so $\Delta(K_5) = 4$. Let $e = (u,v)$. Removing $e$ drops $\deg(u)$ and $\deg(v)$ to $3$, while the other three vertices retain degree $4$. So $\Delta(K_5-e) = 4$ still (realized by the three untouched vertices).
+> >
+> > Compute the total deficiency of $G = K_5 - e$ (with $\Delta = \Delta(G) = 4$):
+> >
+> > $$td(G) = \sum_{x \in V(G)} (\Delta(G) - \deg(x)) = (4-4)+(4-4)+(4-4)+(4-3)+(4-3) = 0+0+0+1+1 = 2$$
+> >
+> > Since $n(G) = 5$ is odd and $td(G) = 2 < 4 = \Delta(G)$, by the Corollary ("If $G$ is simple, $n(G)$ is odd, and $td(G) < \Delta(G)$, then $G$ is Class-2"):
+> >
+> > $$\boxed{\chi_1(K_5 - e) = \Delta(G) + 1 = 5}$$
+> >
+> > **(d) $C_5 + C_5$.** This was solved in Chapter 7, Q7(b):
+> >
+> > $$\boxed{\chi_1(C_5+C_5) = 7}$$
+> >
+> > **(e) $C_{2s} + C_{2t}$.** This was solved in Chapter 7, Q7(c):
+> >
+> > $$\boxed{\chi_1(C_{2s}+C_{2t}) = 2\max(s,t)+2}$$
+> >
+> > **(f) Petersen graph.**
+> >
+> > The Petersen graph is 3-regular, so $\Delta = 3$. It is a classical, directly verifiable fact (Table 9.1 in the text) that the Petersen graph does **not** admit a proper 3-edge-coloring (it is not 1-factorable / Class-1), hence $\chi_1 \ge \Delta + 1 = 4$. By the Gupta-Vizing theorem, $\chi_1 \le \Delta+1=4$ as well. Hence:
+> >
+> > $$\boxed{\chi_1(\text{Petersen graph}) = 4}$$
+> >
+> > **(g) $d$-cube $Q_d$.**
+> >
+> > $Q_d$ is $d$-regular, and it is bipartite (vertices split by parity of the number of $1$'s in their binary coordinates; every edge flips exactly one coordinate, so it always joins vertices of opposite parity). By König's Theorem 9.3:
+> >
+> > $$\boxed{\chi_1(Q_d) = \Delta(Q_d) = d}$$
+> >
+> > **(h) A $k$-regular bipartite graph $G$.**
+> >
+> > $\Delta(G) = k$ since $G$ is $k$-regular, and $G$ is bipartite, so by König's Theorem 9.3 directly:
+> >
+> > $$\boxed{\chi_1(G) = \Delta(G) = k}$$
+> >
+> > **(i) $K_{5,5,5,5,5}$ (complete 5-partite graph with parts of size 5).**
+> >
+> > Every vertex is adjacent to all vertices outside its own part, i.e., to $4 \times 5 = 20$ vertices. So $G$ is $20$-regular; $\Delta(G) = 20$, and the total vertex count is $n(G) = 5 \times 5 = 25$, which is **odd**.
+> >
+> > Since $G$ is regular and $m(G) > 0$, the Corollary ("If $G$ is a regular simple graph with $n(G)$ odd and $m(G)>0$, then $G$ is Class-2") applies directly:
+> >
+> > $$\boxed{\chi_1(K_{5,5,5,5,5}) = \Delta(G)+1 = 21}$$
+
+> [!question] Q5: Class-2 Graphs in Figure 9.5
+> Show that the graphs shown in Figure 9.5 are of Class-2.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Note:** Figure 9.5 is a diagram in the textbook (showing all 8 Class-2 graphs on at most six vertices) that was not available in text form during this extraction, so the specific 8 graphs $(a)$–$(h)$ cannot be individually identified and verified here.
+> >
+> > However, the **general technique** for proving any such small graph is Class-2 (which should be applied to each graph once its exact edges are known) is:
+> >
+> > 1. Compute $\Delta(G)$ and check whether $G$ is **regular** with **$n(G)$ odd** — if so, the Corollary ("$m(G)>0$, $G$ regular, $n(G)$ odd $\Rightarrow$ Class-2") applies immediately (this covers graphs like $K_3$, $K_5$, and the Petersen-type small odd-regular graphs).
+> > 2. Otherwise, compute the total deficiency $td(G) = \sum_v (\Delta(G) - \deg(v))$. If $n(G)$ is odd and $td(G) < \Delta(G)$, the graph is Class-2 by the Corollary to Theorem 9.4.
+> > 3. If neither applies directly, compute $\alpha_1(G)$ (the matching number) and check whether $m(G) > \Delta(G)\cdot \alpha_1(G)$ (Corollary to Theorem 9.4) — if so, $G$ is Class-2.
+> > 4. If none of the edge-counting corollaries settle it, fall back on a direct argument: show that **no** $\Delta(G)$-edge-coloring exists, typically by a short case analysis exploiting the small size of the graph (e.g. showing any attempted $\Delta$-coloring forces two adjacent edges to share a color).
+> >
+> > All 8 of the exceptional Class-2 graphs on $\le 6$ vertices (odd cycles $C_3, C_5$; $K_5$; and a handful of other small near-regular graphs with an odd number of vertices) can be verified Class-2 by one of steps 1–3 above once their vertex/edge lists are read off the figure.
+
+> [!question] Q6: Edge-Chromatic Number After Deleting Few Edges from a $d$-Regular Graph
+> Let $G$ be a $d$-regular simple graph with odd number of vertices, where $d \ge 2$. Let $H$ be any graph obtained from $G$ by deleting at most $(d-1)/2$ edges. Show that $\chi_1(H) = \Delta(H) + 1$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $n = n(G) = n(H)$ (vertex deletion doesn't occur, only edges are removed) and let $F$ be the set of deleted edges, $|F| \le \frac{d-1}{2}$.
+> >
+> > **Step 1: Bound the total deficiency of $H$ relative to $d$.**
+> >
+> > Since $G$ is $d$-regular, $m(G) = \frac{nd}{2}$. Removing $|F|$ edges gives:
+> >
+> > $$\sum_{x \in V(H)} \deg_H(x) = 2m(H) = 2(m(G) - |F|) = nd - 2|F|$$
+> >
+> > Therefore:
+> >
+> > $$\sum_{x \in V(H)} \big(d - \deg_H(x)\big) = nd - (nd - 2|F|) = 2|F| \le 2 \cdot \frac{d-1}{2} = d - 1 \tag{$\ast$}$$
+> >
+> > **Step 2: Relate this to $td(H)$.**
+> >
+> > Let $\Delta(H) = d - k$ for some integer $k \ge 0$ (since degrees can only decrease, $\Delta(H) \le d$; $k=0$ means some vertex retains full degree $d$).
+> >
+> > $$td(H) = \sum_{x} \big(\Delta(H) - \deg_H(x)\big) = \sum_x \big(d - \deg_H(x)\big) - nk \overset{(\ast)}{\le} (d-1) - nk$$
+> >
+> > **Step 3: Show $td(H) < \Delta(H)$.**
+> >
+> > We must show $(d-1) - nk < d - k$, i.e. $k(1-n) < 1$.
+> >
+> > - If $k = 0$: the inequality reads $0 < 1$, true.
+> > - If $k \ge 1$: since $G$ is $d$-regular with $d \ge 2$ and $n$ odd, we have $n \ge d+1 \ge 3$, so $1-n \le -2 < 0$. Hence $k(1-n) \le 1-n <0 < 1$, true.
+> >
+> > In either case, $td(H) \le (d-1)-nk < d - k = \Delta(H)$.
+> >
+> > **Step 4: Conclude.**
+> >
+> > $H$ is simple (a subgraph of the simple graph $G$), $n(H) = n$ is odd, and $td(H) < \Delta(H)$. By the Corollary to Theorem 9.4 ("If $G$ is simple, $n(G)$ is odd, and $td(G) < \Delta(G)$, then $G$ is Class-2"):
+> >
+> > $$\boxed{\chi_1(H) = \Delta(H) + 1}$$
+
+> [!question] Q7: Regular Graphs on Odd Vertices are Class-2
+> Show that every regular simple graph on odd number of vertices is a Class-2 graph.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be a $d$-regular simple graph with $n(G)$ odd and $m(G) > 0$ (so $d \ge 1$, excluding the trivial empty graph).
+> >
+> > Since $G$ is regular, every vertex has degree exactly $d = \Delta(G)$. Hence the total deficiency is:
+> >
+> > $$td(G) = \sum_{x \in V(G)} \big(\Delta(G) - \deg(x)\big) = \sum_{x\in V(G)} (d - d) = 0$$
+> >
+> > Since $\Delta(G) = d \ge 1 > 0$, we have:
+> >
+> > $$td(G) = 0 < \Delta(G)$$
+> >
+> > As $G$ is simple, $n(G)$ is odd, and $td(G) < \Delta(G)$, the Corollary to Theorem 9.4 applies directly:
+> >
+> > $$\boxed{G \text{ is Class-2, i.e., } \chi_1(G) = \Delta(G) + 1}$$
+
+> [!question] Q8: Edge-Chromatic Number of $G \square 2K_2$
+> Show that $\chi_1(G \,\square\, 2K_2) = \Delta(G \,\square\, 2K_2)$, for every simple graph $G$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $d = \Delta(G)$.
+> >
+> > **Step 1: Reduce to the prism $G \,\square\, K_2$.**
+> >
+> > The graph $2K_2$ consists of two disjoint copies of $K_2$ (i.e. two disconnected components, each a single edge). The Cartesian product distributes over disjoint union of the second factor's components:
+> >
+> > $$G \,\square\, 2K_2 \;=\; (G \,\square\, K_2) \;\sqcup\; (G \,\square\, K_2)$$
+> >
+> > i.e., two disjoint (vertex-disjoint) copies of the **prism** $P := G \,\square\, K_2$. For a disjoint union, $\Delta$ and $\chi_1$ are both determined component-wise: $\Delta(G\,\square\,2K_2) = \Delta(P)$, and $\chi_1(G\,\square\,2K_2) = \chi_1(P)$ (edge colorings of disjoint components don't interact, so the maximum suffices and is achievable). So it is enough to prove:
+> >
+> > $$\chi_1(P) = \Delta(P), \quad \text{where } P = G\,\square\,K_2.$$
+> >
+> > **Step 2: Structure of $P$.** $P$ consists of two vertex-disjoint copies $G_1$ (vertices $u_1$, $u \in V(G)$) and $G_2$ (vertices $u_2$) of $G$, together with a **perfect matching** $M = \{(u_1, u_2) : u \in V(G)\}$ connecting them. Every vertex $u_1$ has degree $\deg_G(u) + 1$ (its edges within $G_1$, plus the one matching edge), so:
+> >
+> > $$\Delta(P) = \Delta(G) + 1 = d+1$$
+> >
+> > **Step 3: Construct a proper $(d+1)$-edge-coloring of $P$.**
+> >
+> > By the Gupta-Vizing theorem (Theorem 9.1), $G$ itself admits a proper edge-coloring $C$ using colors $\{1, 2, \ldots, d+1\}$ (since $\chi_1(G) \le \Delta(G)+1 = d+1$).
+> >
+> > Apply the **identical** coloring $C$ to both copies: color edge $(x_1, y_1)$ in $G_1$ and edge $(x_2, y_2)$ in $G_2$ with the same color $C(x,y)$ that the corresponding edge $(x,y)$ receives in $G$. Since $G_1$ and $G_2$ are vertex-disjoint, this is a valid proper edge-coloring of $G_1 \cup G_2$ using colors $\{1,\ldots,d+1\}$.
+> >
+> > **Step 4: Color the matching edges using only the same $d+1$ colors.**
+> >
+> > Fix a vertex $u \in V(G)$. Under $C$, the number of colors appearing at $u$ in $G$ is $\deg_G(u) \le d$, so **at least one color is missing** at $u$ under $C$; fix one such missing color and call it $\mu(u) \in \{1,\ldots,d+1\}$.
+> >
+> > Because $G_1$ and $G_2$ were colored **identically** via $C$, the set of colors present at $u_1$ (from edges of $G_1$) is exactly the same as the set of colors present at $u_2$ (from edges of $G_2$) — both equal to the colors present at $u$ in $G$. In particular, $\mu(u)$ is missing at **both** $u_1$ and $u_2$.
+> >
+> > Color the matching edge $(u_1, u_2)$ with $\mu(u)$. This is valid: $\mu(u)$ conflicts with nothing already incident to $u_1$ or $u_2$. Since $M$ is a matching, different matching edges share no vertices, so these choices (made independently for each $u \in V(G)$) never conflict with each other.
+> >
+> > **Step 5: Conclude.**
+> >
+> > This produces a proper edge-coloring of all of $P = G_1 \cup G_2 \cup M$ using only the colors $\{1, \ldots, d+1\}$. Hence:
+> >
+> > $$\chi_1(P) \le d + 1 = \Delta(P)$$
+> >
+> > Combined with the universal lower bound $\chi_1(P) \ge \Delta(P)$:
+> >
+> > $$\chi_1(P) = \Delta(P) \quad\Longrightarrow\quad \boxed{\chi_1(G \,\square\, 2K_2) = \Delta(G \,\square\, 2K_2)}$$
+
+> [!question] Q9: Join of Two Class-1 Graphs
+> Prove or disprove: If $G_1$ and $G_2$ are Class-1 graphs, then $G_1 + G_2$ is a Class-1 graph.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > The statement is **FALSE**. We disprove it with an explicit counterexample.
+> >
+> > **Counterexample.** Let $G_1 = K_1$ (a single isolated vertex) and $G_2 = K_4$.
+> >
+> > - $G_1 = K_1$ has no edges, so $\chi_1(G_1) = 0 = \Delta(G_1)$. Hence $G_1$ is (trivially) Class-1.
+> > - $G_2 = K_4$: by the Corollary for $\chi_1(K_n)$ with $n=4$ even, $\chi_1(K_4) = n-1 = 3 = \Delta(K_4)$. Hence $G_2$ is Class-1.
+> >
+> > **The join.** $G_1 + G_2 = K_1 + K_4$: the single vertex of $G_1$ is joined to all 4 vertices of $K_4$, and $K_4$ is already complete among itself. So every pair of the resulting 5 vertices is adjacent:
+> >
+> > $$K_1 + K_4 = K_5$$
+> >
+> > **Edge-chromatic number of $K_5$.** $K_5$ is $4$-regular on $n=5$ (odd) vertices. By the Corollary ("regular simple graph, $n$ odd, $m>0$ $\Rightarrow$ Class-2"), or directly by the Corollary for $\chi_1(K_n)$ with $n=5$ odd:
+> >
+> > $$\chi_1(K_5) = n = 5 = \Delta(K_5) + 1 = 4+1$$
+> >
+> > So $K_5$ is **Class-2**.
+> >
+> > **Conclusion.** $G_1$ and $G_2$ are both Class-1, but their join $G_1+G_2 = K_5$ is Class-2. Hence:
+> >
+> > $$\boxed{\text{The statement is false: a join of two Class-1 graphs need not be Class-1.}}$$
+> >
+> > (Intuition: joining can create an *overfull*-type obstruction — here it collapses two graphs of even and small order into a complete graph of **odd** order, which is always Class-2 by the earlier corollary, regardless of how "nice" the pieces were individually.)
+
+> [!question] Q10: School Staffing Problem
+> In a school there are seven vacancies, one each in the departments of Chemistry, English, French, Geography, History, Mathematics and Physics. There are seven applicants $A_1, \ldots, A_7$ for the vacancies. The applicants and their specializations are listed in the table below. Determine the maximum number of suitably qualified teachers the school can employ. Justify your claim.
+>
+> | Teachers | Specialization |
+> |:--|:--|
+> | $A_1$ | Mathematics, Physics |
+> | $A_2$ | Chemistry, English, Mathematics |
+> | $A_3$ | Chemistry, French, History, Physics |
+> | $A_4$ | English, French, History, Physics |
+> | $A_5$ | Chemistry, Mathematics |
+> | $A_6$ | Mathematics, Physics |
+> | $A_7$ | English, Geography, History |
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Form the bipartite graph $G[A, D]$ where $A = \{A_1, \ldots, A_7\}$ (applicants) and $D = \{\text{Chemistry, English, French, Geography, History, Mathematics, Physics}\}$ (departments), with an edge $A_i$–$d$ whenever applicant $A_i$ is qualified for department $d$.
+> >
+> > A feasible staffing assignment (each hired teacher to exactly one vacancy they're qualified for, no department filled twice) is precisely a **matching** in $G$. The maximum number of teachers the school can employ equals the matching number $\alpha_1(G)$. Since $|D| = 7$, trivially $\alpha_1(G) \le 7$.
+> >
+> > **Claim: $\alpha_1(G) = 7$**, i.e. every vacancy can be filled.
+> >
+> > **Justification — an explicit matching saturating $D$:**
+> >
+> > - $A_1 \to$ Mathematics
+> > - $A_6 \to$ Physics
+> > - $A_5 \to$ Chemistry
+> > - $A_2 \to$ English
+> > - $A_7 \to$ Geography
+> > - $A_3 \to$ French
+> > - $A_4 \to$ History
+> >
+> > Each assignment above is consistent with the applicant's listed specialization, every applicant is used at most once, and every department receives exactly one teacher. This is a matching saturating all of $D$, so $\alpha_1(G) = 7$.
+> >
+> > $$\boxed{\text{The school can employ all 7 teachers, filling every vacancy.}}$$
+> >
+> > (Equivalently, in the edge-coloring language of this chapter: since $G$ is bipartite, König's Theorem 9.3 gives $\chi_1(G) = \Delta(G)$, and a proper edge-coloring of $G$ exhibits $\Delta(G)$ disjoint matchings — the matching above is one such color class, realizing the full saturation of $D$.)
+
+> [!question] Q11: Mathematics Department Course Scheduling
+> A mathematics department plans to offer seven courses in the next semester namely, Complex Analysis (C), Numerical Methods (N), Linear Algebra (L), Probability and Statistics (P), Differential Equations (D), Special Functions (S) and Graph Theory (G). Each of the following combination of courses has attracted the students.
+>
+> | | | | |
+> |:--|:--|:--|:--|
+> | C,L,D | C,N,G | N,P | C,L |
+> | L,P | C,N | S,P | L,N |
+> | C,D | C,G,D | S,G | S,D |
+>
+> (a) Use graph theory techniques to find the minimum number of slots required for these courses on a day.
+>
+> (b) If one wants to schedule the timetable with minimum number of slots, what is the minimum number of class rooms required.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Model.** Build the *conflict graph* $H$ on vertex set $\{C, N, L, P, D, S, G\}$ (one vertex per course), where two courses are joined by an edge whenever some group of students takes **both** of them — since such a group cannot attend both courses at the same time, the two courses must be assigned **different** slots. A valid timetable is precisely a proper **vertex-coloring** of $H$ (color = time slot), and the minimum number of slots is the chromatic number $\chi(H)$.
+> >
+> > **Building $H$ from the given groups:**
+> >
+> > | Group | Edges added |
+> > |:--|:--|
+> > | C,L,D | C–L, C–D, L–D |
+> > | C,N,G | C–N, C–G, N–G |
+> > | N,P | N–P |
+> > | C,L | (duplicate) |
+> > | L,P | L–P |
+> > | C,N | (duplicate) |
+> > | S,P | S–P |
+> > | L,N | L–N |
+> > | C,D | (duplicate) |
+> > | C,G,D | C–G, C–D (dup), G–D |
+> > | S,G | S–G |
+> > | S,D | S–D |
+> >
+> > Distinct edges of $H$: $C$–$L$, $C$–$D$, $L$–$D$, $C$–$N$, $C$–$G$, $N$–$G$, $N$–$P$, $L$–$P$, $S$–$P$, $L$–$N$, $G$–$D$, $S$–$G$, $S$–$D$.
+> >
+> > **(a) Lower bound.** $\{C, L, D\}$ forms a triangle (edges $C$–$L$, $C$–$D$, $L$–$D$) and $\{C, N, G\}$ forms a triangle (edges $C$–$N$, $C$–$G$, $N$–$G$); the clique number is at least 3, so $\chi(H) \ge 3$.
+> >
+> > **Checking $\chi(H) = 3$ is impossible.** Fix $C=1$ (any 3-coloring, WLOG). The triangle $C,L,D$ forces $\{L,D\}=\{2,3\}$ in some order. The triangle $C,N,G$ forces $\{N,G\}=\{2,3\}$ in some order. The edge $L$–$N$ forces $N \ne L$'s color, so $N$ must equal $D$'s color, and hence $G$ must equal $L$'s color. Now consider $S$, adjacent to $P$, $G$, $D$:
+> > - $P$ is adjacent to both $N$ and $L$ (edges $N$–$P$, $L$–$P$), and $\{N,L\}$ already uses both colors $2,3$ (since $N=D$'s color, $L$'s color, and $D\ne L$ as they're adjacent) — so $P$ is forced to color $1$.
+> > - $G$ and $D$ between them use **both** colors $2$ and $3$ (since $G = L$'s color and $D$'s color differ, being adjacent).
+> >
+> > So $S$'s three neighbors $P, G, D$ together occupy all of $\{1,2,3\}$, leaving **no** color available for $S$. This forces a contradiction regardless of which of the two symmetric label choices is made. Hence $\chi(H) \ne 3$, so $\chi(H) \ge 4$.
+> >
+> > **Exhibiting a 4-coloring.** Color greedily in the order $C, L, D, N, G, P, S$:
+> >
+> > | Vertex | Adjacent already-colored | Color |
+> > |:--|:--|:-:|
+> > | $C$ | — | 1 |
+> > | $L$ | $C(1)$ | 2 |
+> > | $D$ | $C(1), L(2)$ | 3 |
+> > | $N$ | $C(1), L(2)$ | 3 |
+> > | $G$ | $C(1), N(3), D(3)$ | 2 |
+> > | $P$ | $N(3), L(2)$ | 1 |
+> > | $S$ | $P(1), G(2), D(3)$ | 4 |
+> >
+> > All 13 edges check out as properly colored (adjacent vertices get different colors). So $\chi(H) \le 4$.
+> >
+> > $$\boxed{\text{(a) Minimum number of slots} = \chi(H) = 4}$$
+> >
+> > **(b) Minimum classrooms with 4 slots.** The number of classrooms needed in a given slot equals the number of courses assigned to that slot (color class size). From the 4-coloring above:
+> >
+> > - Color 1: $\{C, P\}$ — size 2
+> > - Color 2: $\{L, G\}$ — size 2
+> > - Color 3: $\{D, N\}$ — size 2
+> > - Color 4: $\{S\}$ — size 1
+> >
+> > The largest color class has size 2, so this schedule never needs more than 2 classrooms at once.
+> >
+> > $$\boxed{\text{(b) Minimum number of classrooms required} = 2}$$
+
+> [!question] Q12: Teacher–Class Scheduling via Edge Coloring
+> There are 5 teachers and 6 classes. The following matrix $M = [m_{ij}]$ describes the teaching requirements in a week, where $m_{ij}$ is the number of times a teacher $i$ meets the class $j$.
+>
+> $$M = \begin{pmatrix} 0 & 0 & 3 & 0 & 4 & 0 \\ 0 & 2 & 0 & 2 & 0 & 2 \\ 3 & 0 & 0 & 0 & 4 & 0 \\ 2 & 2 & 2 & 0 & 0 & 0 \\ 0 & 2 & 0 & 3 & 0 & 2 \end{pmatrix}$$
+>
+> (a) Find the smallest number of periods needed so that each teacher can meet all the required classes.
+>
+> (b) Is it possible to schedule the time table where there are only 4 classrooms available?
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Model.** Associate the bipartite multigraph $G[S, C]$ with $S = \{t_1, \ldots, t_5\}$ (teachers) and $C = \{c_1, \ldots, c_6\}$ (classes), joining $t_i$ and $c_j$ by $m_{ij}$ parallel edges. A valid timetable (each teacher meets at most one class per period, each class meets at most one teacher per period) is exactly a proper edge-coloring of $G$ with color classes = periods, and the minimum number of periods is $\chi_1(G)$. The number of classrooms needed on a given period equals the size of that period's color class.
+> >
+> > **(a) Computing $\Delta(G)$.**
+> >
+> > Row sums (teacher loads, $\deg(t_i)$):
+> >
+> > $$t_1: 0+0+3+0+4+0=7, \quad t_2: 0+2+0+2+0+2=6, \quad t_3: 3+0+0+0+4+0=7,$$
+> > $$t_4: 2+2+2+0+0+0=6, \quad t_5: 0+2+0+3+0+2=7$$
+> >
+> > Column sums (class loads, $\deg(c_j)$):
+> >
+> > $$c_1: 0+0+3+2+0=5,\ c_2: 0+2+0+2+2=6,\ c_3: 3+0+0+2+0=5,$$
+> > $$c_4: 0+2+0+0+3=5,\ c_5: 4+0+4+0+0=8,\ c_6: 0+2+0+0+2=4$$
+> >
+> > So $\Delta(G) = 8$, attained at class $c_5$.
+> >
+> > Since $G$ is a **bipartite** (multi)graph, König's edge-coloring theorem (Theorem 9.3) gives $\chi_1(G) = \Delta(G)$ even in the presence of parallel edges (each color class is still a matching, and the construction/proof of Theorem 9.3 goes through for bipartite multigraphs).
+> >
+> > $$\boxed{\text{(a) Minimum number of periods} = \chi_1(G) = \Delta(G) = 8}$$
+> >
+> > **(b) Feasibility with only 4 classrooms.**
+> >
+> > Total number of lecture-requirements (edges of $G$) is the sum of all entries of $M$:
+> >
+> > $$m(G) = 7+6+7+6+7 = 33$$
+> >
+> > (summing the row totals from part (a)). If the timetable is run in exactly the minimum $8$ periods, the largest possible number of classrooms usable across all 8 periods combined is at most $8 \times 4 = 32$ (if every period used at most 4 classrooms). But $32 < 33 = m(G)$, so **it is impossible** to fit all 33 required meetings into 8 periods while keeping every period's load $\le 4$ — some period would necessarily need a 5th classroom.
+> >
+> > $$\boxed{\text{(b) No — not with only the minimum 8 periods.}}$$
+> >
+> > **However**, if the number of periods is allowed to increase beyond the minimum, this constraint becomes satisfiable: take $k=9$ periods. Since $\chi_1(G) = 8 \le 9$, a proper $9$-edge-coloring of $G$ exists (pad the $8$-coloring with one empty color class). By the **Equitable Edge-Coloring Theorem (Theorem 9.6)** — "if a $k$-edge-coloring of $G$ exists, then an *equitable* $k$-edge-coloring exists" (one where all color-class sizes differ by at most 1) — we can rebalance this into $9$ periods whose sizes differ by at most 1. Since $33 = 9\times3 + 6 = 6\times 4 + 3\times 3$, an equitable $9$-coloring has six periods of size $4$ and three periods of size $3$ — every period uses at most $4$ classrooms. So with **9 periods** (one more than the minimum), 4 classrooms suffice, exactly mirroring the worked conference-scheduling example in Section 9.4 (where 4 halls forced 6 days instead of the minimum 5).
+
+---
+
+## Chapter 10
+
+> [!question] Q1: Plane Simple Graphs with Given Degree Sequences
+> Draw plane simple graphs with the following degree sequences:
+>
+> $$(4^3, 2^3),\ (5^{12}),\ (6^2, 5^{12}),\ (6^3, 5^{12}),\ (4^3, 3^8),\ (7, 4^{10}, 3^5).$$
+>
+> (The general problem of finding necessary and sufficient conditions for a graphic sequence to realize a planar graph is open.)
+
+> [!question] Q2: Redraw as a Straight-Line Plane Graph
+> Redraw the graphs shown in Figure 10.27 so that all the edges are straight lines and no two lines intersect. (It is known that every planar simple graph can be drawn as a plane graph in which every edge is a straight line.)
+
+> [!question] Q3: Exterior Face Redrawing
+> Redraw the graph in Figure 10.27b so that the face $f$ is the exterior face.
+
+> [!question] Q4: Petersen Graph Nonplanarity via Theorem 10.3
+> Use the first corollary of Theorem 10.3 to show that the Petersen graph is nonplanar.
+
+> [!question] Q5: Faces–Components Relation in a Plane Graph
+> Let $G$ be a plane graph with $r$ faces and $c$ components. Show that $n + r = m + c + 1$.
+
+> [!question] Q6: Hamiltonicity of Platonic Graphs
+> Find which of the platonic graphs (Figure 10.9) are Hamilton.
+
+> [!question] Q7: Face-Degree Identity for 3-Regular Plane Graphs
+> Let $G$ be a connected plane 3-regular graph and let $n_k$ denote the number of faces of degree $k$.
+>
+> (a) Show that $\sum_{k \ge 3} (k-6)n_k + 12 = 0$.
+>
+> (b) Deduce from (a) that if $G$ is bipartite, then $G$ contains at least 6 faces of degree 4.
+
+> [!question] Q8: Number of Components from Vertices, Edges, Faces
+> Find the number of components in a simple plane graph which has 11 vertices, 13 edges and 6 faces.
+
+> [!question] Q9: Plane Graph with Given Edges/Faces and Edge-Chromatic Number of Dual
+> Draw a connected plane simple graph $H$ with 9 edges and 6 faces. Find the edge-chromatic number of the dual of $H$.
+
+> [!question] Q10: Edge Bound for Simple Planar Bipartite Graphs
+> If $G$ is a simple planar bipartite graph, then show that $m(G) \le 2n(G) - 4$.
+
+> [!question] Q11: Non-Isomorphic Plane 3-Regular Graphs with 5 Faces
+> Draw all the non-isomorphic plane simple 3-regular graphs with exactly 5 faces.
+
+> [!question] Q12: 3-Regular Planar Graphs on 10 Vertices with Given Girth
+> (a) Show that there exists no 3-regular simple planar graph on 10 vertices whose girth is 5.
+>
+> (b) Draw a plane 3-regular simple graph on 10 vertices whose girth is 4.
+>
+> (c) Draw a plane 3-regular simple graph on 10 vertices whose girth is 3.
+
+> [!question] Q13: Values of $k$ for a $k$-Regular Simple Plane Graph
+> Find all the values of $k$, for which there exists a $k$-regular simple plane graph.
+
+> [!question] Q14: Vertex-Degree Identity for Maximal Planar Graphs with $\Delta = 7$
+> If $G$ is a simple maximal planar graph with $\Delta(G) = 7$, then show that $n_7 = 3n_3 + 2n_4 + n_5 - 12$, where $n_k$ denotes the number of vertices of degree $k$ in $G$.
+
+> [!question] Q15: Existence of a 4-Regular Maximal Plane Graph
+> Prove or disprove: There exists a simple 4-regular maximal plane graph.
+
+> [!question] Q16: Faces in a Maximum Plane Simple Graph on 10 Vertices
+> Find the number of faces in a maximum plane simple graph on 10 vertices.
+
+> [!question] Q17: Maximal Planar Graph Whose Complement is Also Maximal Planar
+> Prove or disprove: There exists a maximal planar simple graph ($n > 1$) whose complement is also a maximal planar.
+
+> [!question] Q18: Tree Whose Complement is Maximum Planar
+> A tree on $n (\ge 3)$ vertices is such that its complement is maximum planar. Find $n$. Draw one such tree.
+
+> [!question] Q19: Planarity of Graphs with At Most 3 Cycles
+> Show that every graph with at most 3 cycles is planar.
+
+> [!question] Q20: Faces in a Plane Embedding of $K_{1,1,n}$
+> Find the number of faces in a plane embedding of $K_{1,1,n}$.
+
+> [!question] Q21: Planarity of $K_{1,2,\ldots,n}$
+> Find all the values of $n$ such that $K_{1,2,\ldots,n}$ is planar.
+
+> [!question] Q22: Planarity of $K_{a,b,c}$
+> Find all the values of $a, b, c$ such that $K_{a,b,c}$ is planar, where $1 \le a \le b \le c$.
+
+> [!question] Q23: Low-Degree Vertex in Small Simple Planar Graphs
+> Prove or disprove: If $G$ is a simple planar graph with $n \le 11$, then $G$ contains a vertex of degree $\le 4$.
+
+> [!question] Q24: Degree Conditions for Nonplanar Graphs
+> If $G$ is a nonplanar graph then show that either
+>
+> (i) there are at least 5 vertices of degree $\ge 4$, or
+>
+> (ii) there are at least 6 vertices of degree $\ge 3$.
+
+> [!question] Q25: Low-Degree Vertices in Planar Graphs with $n \ge 4$
+> Show that in a planar graph $G$ (with $n \ge 4$) there are at least 4 vertices of degree $\le 5$.
+
+> [!question] Q26: Degree-5 Vertices When $\delta(G) = 5$
+> If $G$ is a simple planar graph with $\delta(G) = 5$, then show that there are at least 12 vertices of degree 5. Give an example of planar graph on 12 vertices with $\delta(G) = 5$.
+
+> [!question] Q27: Nonplanarity of $G$ or $G^c$ for $n(G) \ge 11$
+> If $n(G) \ge 11$, then show that $G$ or $G^c$ is nonplanar. Give an example of a graph $G$ on 8 vertices such that $G$ and $G^c$ are planar.
+
+> [!question] Q28: Degree-Sum Inequality for Planar Graphs
+> If $G$ is a planar with degree sequence $(d_1 \ge d_2 \ge \cdots \ge d_n)$, then show that
+>
+> $$\sum_{i=1}^{k} d_i \le 6(k-2) + \sum_{i=k+1}^{n} d_i, \text{ for every } k,\ 1 \le k \le n.$$
+
+> [!question] Q29: Equivalent Characterizations of a Tree
+> Show that the following are equivalent for a connected graph $G$.
+>
+> (a) $G$ is a tree.
+>
+> (b) $G$ contains no subdivision of $K_3$.
+>
+> (c) $G$ contains no $K_3$-minor.
+
+> [!question] Q30: D-M-P Planarity Algorithm on Given Graphs
+> Verify whether the graphs shown below are embeddable in the plane by applying D-M-P-algorithm. Draw all the intermediate plane graphs and their branches generated by the algorithm.
+>
+> (a) $C_5 + K_1$.
+>
+> (b) $C_5 + K_2$.
+>
+> (c) $K_{2,2,2,2}$.
+>
+> (d) The graph with vertices $1, 2, 3, 4, 5, 6, 7, 8$ and edges $(1,2), (2,3), (3,4), (4,5), (5,6), (6,7), (7,8), (8,1), (1,5), (2,6), (3,7), (4,8)$.
+
+> [!question] Q31: Every Planar Graph is 6-Vertex-Colorable
+> Use the greedy algorithm to show that every planar graph is 6-vertex-colorable.
+
+> [!question] Q32: Proof of Kuratowski's Theorem (Case 2)
+> Prove Kuratowski's theorem (Case 2) by choosing a cycle $C$ in $G - e$ which contains maximum number of edges in the $\text{int}\,C$.
+
+> [!question] Q33: Pentagonal and Hexagonal Faces in a 3-Regular Plane Graph
+> Let $G$ be a simple plane connected 3-regular graph with every face having degree 5 or 6. If $p$ is the number of pentagonal faces and $h$ is the number of hexagonal faces in $G$, show that $p = 12$ and $n(G) = 20 + 2h$.
+>
+> (Which motivational problem stated in Chapter 1 and section 1 is now solved?)
+
 
