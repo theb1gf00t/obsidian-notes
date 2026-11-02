@@ -2174,3 +2174,5 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > $$\alpha_0(G) = |I| = \sum_{i=1}^{p} |I \cap V_i| \le \sum_{i=1}^{p} 1 = p = \theta_0(G)$$
 > >
 > > $$\boxed{\theta_0(G) \ge \alpha_0(G)}$$
+
+
