@@ -1287,3 +1287,237 @@
 > > ### Final Answer
 > >
 > > $$\alpha_1(C_5 + C_7) = 6$$
+
+### **1. Main Result**
+
+- **Minimum Value of \(n\):** **\(n = 22\)**
+- **Graph Type:** Connected 4-regular graph with **no perfect matching**.
+
+---
+
+### **2. Construction & Definition of the Graph (\(n = 22\))**
+
+Let \(G = (V, E)\) be constructed as follows:
+
+1. **Central Vertex Subset \(S\):**
+    
+    - Define \(S = {s_1, s_2}\) containing \(s = |S| = 2\) vertices. There are **no edges** between \(s_1\) and \(s_2\).
+2. **Four Odd Components \(C_1, C_2, C_3, C_4\):**
+    
+    - Each component \(C_i\) (\(1 \le i \le 4\)) consists of **5 vertices**: \(V(C_i) = {u_{i,1}, u_{i,2}, v_{i,1}, v_{i,2}, v_{i,3}}\).
+    - The internal edge structure of each \(C_i\) is a **complete graph \(K_5\) minus one edge**:
+        - \(u_{i,1}\) and \(u_{i,2}\) are non-adjacent in \(C_i\) (degree 3 inside \(C_i\)).
+        - All other pairs of vertices in \(C_i\) are connected (so \(v_{i,1}, v_{i,2}, v_{i,3}\) each have degree 4 inside \(C_i\)).
+3. **Inter-Component Connections:**
+    
+    - For each \(i \in {1, 2, 3, 4}\):
+        - Connect \(u_{i,1}\) to \(s_1\).
+        - Connect \(u_{i,2}\) to \(s_2\).
+
+---
+
+### **3. Verification of Graph Properties**
+
+1. **Total Number of Vertices:** \[n(G) = |S| + \sum_{i=1}^4 |V(C_i)| = 2 + 4 \times 5 = 22 \quad \text{(an even integer)}\]
+    
+2. **4-Regularity:**
+    
+    - **Vertices in \(S\):** \(s_1\) is connected to \(u_{1,1}, u_{2,1}, u_{3,1}, u_{4,1}\) \(\implies \deg(s_1) = 4\). Similarly, \(\deg(s_2) = 4\).
+    - **Vertices \(u_{i,1}, u_{i,2}\) in \(C_i\):** Degree 3 inside \(C_i\) plus 1 edge to \(S\) \(\implies \deg = 3 + 1 = 4\).
+    - **Vertices \(v_{i,1}, v_{i,2}, v_{i,3}\) in \(C_i\):** Degree 4 inside \(C_i\) and 0 edges to \(S\) \(\implies \deg = 4\).
+    - Thus, \(G\) is **4-regular**.
+3. **Connectedness:**
+    
+    - Every component \(C_i\) is internally connected, and every \(C_i\) is attached to both \(s_1\) and \(s_2\), forming a connected graph.
+
+---
+
+### **4. Justification: Proof That \(G\) Has No Perfect Matching**
+
+We use **Tutte's 1-Factor Theorem**:
+
+> A graph \(G\) has a perfect matching if and only if for every subset \(S \subseteq V(G)\), the number of odd connected components of \(G - S\), denoted \(\theta(G - S)\), satisfies: \[\theta(G - S) \le |S|\]
+
+- Consider the central set \(S = {s_1, s_2}\) of size \(|S| = 2\).
+- Removing \(S\) from \(G\) leaves the four disjoint components \(C_1, C_2, C_3, C_4\).
+- Each component \(C_i\) has \(|V(C_i)| = 5\) vertices (an **odd** integer).
+- Therefore, the number of odd connected components of \(G - S\) is: \[\theta(G - S) = 4\]
+- Comparing \(\theta(G - S)\) and \(|S|\): \[\theta(G - S) = 4 > 2 = |S|\]
+
+Since \(\theta(G - S) > |S|\), **\(G\) fails Tutte's condition and cannot contain a perfect matching.**
+
+---
+
+### **5. Rigorous Proof That \(n = 22\) is the Absolute Minimum**
+
+Let \(G\) be any connected 4-regular graph on an even number of vertices \(n\) with no perfect matching.
+
+1. **Tutte's Violation & Parity:** By Tutte's Theorem, there exists a set \(S \subset V(G)\) such that \(\theta(G - S) > |S|\). Let \(s = |S|\) and \(k = \theta(G - S)\). Since \(n\) is even and each odd component has an odd number of vertices: \[n = |S| + \sum_{i=1}^k |V(C_i)| + \sum |V(D_{\text{even}})| \implies n \equiv s + k \pmod 2\] Thus, \(s\) and \(k\) have the same parity, requiring \(k \ge s + 2\).
+    
+2. **Edge-Counting Between \(S\) and Odd Components:** For any odd component \(C_i\) with \(c_i = |V(C_i)|\) vertices, the sum of vertex degrees in \(G\) is \(4 c_i\). The number of edges between \(C_i\) and \(S\), denoted \(e(C_i, S)\), is: \[e(C_i, S) = 4 c_i - 2 |E(C_i)|\] Since \(4c_i\) and \(2|E(C_i)|\) are even, \(e(C_i, S)\) must be an **even integer**. Because \(G\) is connected, \(e(C_i, S) \ge 2\).
+    
+3. **Bounding \(|S|\):** The total number of edges leaving \(S\) satisfies: \[2k \le \sum_{i=1}^k e(C_i, S) \le 4s \implies k \le 2s\] Combining \(s + 2 \le k \le 2s \implies \mathbf{s \ge 2}\).
+    
+4. **Minimum Component Size (\(c_i \ge 5\)):** For \(s = 2\), we have \(k = 4\), which forces \(e(C_i, S) = 2\) for all 4 components. The sum of internal degrees inside \(C_i\) is \(4 c_i - 2\). Since \(C_i\) has \(c_i\) vertices, the maximum possible sum of internal degrees is \(c_i(c_i - 1)\): \[c_i(c_i - 1) \ge 4 c_i - 2 \implies c_i^2 - 5c_i + 2 \ge 0\]
+    
+    - For \(c_i = 1\): \(1 - 5 + 2 = -2 < 0\) (Impossible).
+    - For \(c_i = 3\): \(9 - 15 + 2 = -4 < 0\) (Impossible).
+    - For \(c_i = 5\): \(25 - 25 + 2 = 2 \ge 0\) (**Valid**).
+5. **Minimum Vertex Calculation:** \[n = |S| + \sum_{i=1}^4 c_i \ge 2 + 4(5) = \mathbf{22}\]
+    
+
+---
+
+### **Visual Diagram**
+
+I have generated a structural visual layout of this 22-vertex graph in your **Studio panel** as `connected_4regular_no_pm.png`:
+
+- **Red Nodes (\(S = {s_1, s_2}\)):** Central vertices.
+- **Blue Outer Clusters (\(C_1, C_2, C_3, C_4\)):** Four 5-vertex \(K_5 \setminus {e}\) odd components.
+- **Dashed Red Lines:** The 8 edges connecting \(S\) to the 4 odd components.
+
+---
+Here is a step-by-step guide explaining the exact thought process, mathematical deductions, and design strategy used to arrive at **\(n = 22\)** and construct the 4-regular graph without a perfect matching.
+
+---
+
+### **Overview of the Strategy**
+
+When asked to construct a graph with specific regularity (\(d = 4\)) that **fails to have a perfect matching**, your mind should immediately jump to **Tutte's 1-Factor Theorem**.
+
+Rather than trying to guess random graphs, the strategy is to **reverse-engineer Tutte's condition**:
+
+1. **Intentionally break Tutte's condition** by setting up a central subset of vertices \(S\) whose removal creates strictly more odd connected components than \(|S|\).
+2. **Use degree constraints** (\(4\)-regularity) to set up algebraic inequalities for \(|S|\), the number of odd components \(k\), and the size of each component \(c_i\).
+3. **Minimize the variables** step-by-step to find the smallest valid \(n\).
+4. **Build the graph** according to the derived parameters.
+
+---
+
+### **Step 1: Establishing the Structural Requirement (Tutte Violation)**
+
+By **Tutte’s 1-Factor Theorem**, a graph \(G\) has a perfect matching if and only if: \[\theta(G - S) \le |S| \quad \text{for every subset } S \subseteq V(G)\]
+
+To ensure \(G\) has **no perfect matching**, we must construct \(G\) such that for some set \(S\): \[\theta(G - S) > |S|\]
+
+Let:
+
+- \(s = |S|\) be the number of vertices in \(S\).
+- \(k = \theta(G - S)\) be the number of **odd connected components** created when \(S\) is removed.
+
+Thus, we need **\(k \ge s + 1\)**.
+
+---
+
+### **Step 2: Parity Constraint on \(s\) and \(k\)**
+
+Total vertices in \(G\) is given by: \[n = |S| + \sum_{i=1}^k |V(C_i)| + \sum |V(D_{\text{even}})|\]
+
+Since each \(C_i\) is an odd component, \(|V(C_i)|\) is odd. The sum of \(k\) odd numbers has the same parity as \(k\). Therefore: \[n \equiv s + k \pmod 2\]
+
+Since the problem requires \(n\) to be an **even integer**: \[s + k \text{ must be even} \implies s \text{ and } k \text{ must have the same parity (both even or both odd)}\]
+
+Because \(k > s\) and both share the same parity, the minimal possible gap between \(k\) and \(s\) is **\(2\)**: \[\mathbf{k \ge s + 2}\]
+
+---
+
+### **Step 3: Bounding \(s\) and \(k\) Using 4-Regularity**
+
+Now, how do \(s\) and \(k\) interact with the degree constraint (\(d = 4\))?
+
+1. **Edges leaving an odd component \(C_i\) to \(S\):** Let \(c_i = |V(C_i)|\) be the number of vertices in an odd component \(C_i\). The sum of all vertex degrees in \(C_i\) (in the full graph \(G\)) is \(4 c_i\). Some degree is used for edges _inside_ \(C_i\), and the rest goes to \(S\). \[e(C_i, S) = 4c_i - 2|E(C_i)|\] Notice that \(4c_i\) is even and \(2|E(C_i)|\) is even, so **\(e(C_i, S)\) must be an EVEN integer!**
+    
+2. **Minimum edges leaving \(C_i\):** Since \(G\) is connected, at least 1 edge must connect \(C_i\) to \(S\). Because \(e(C_i, S)\) must be even: \[\mathbf{e(C_i, S) \ge 2 \quad \text{for every component } C_i}\]
+    
+3. **Maximum edges \(S\) can supply:** Set \(S\) contains \(s\) vertices, each of degree \(4\). The maximum number of edges \(S\) can send to the components is at most \(4s\). \[\sum_{i=1}^k e(C_i, S) \le 4s\]
+    
+4. **Combining the inequalities:** Since each of the \(k\) components receives at least \(2\) edges from \(S\): \[2k \le \sum_{i=1}^k e(C_i, S) \le 4s \implies 2k \le 4s \implies \mathbf{k \le 2s}\]
+    
+
+---
+
+### **Step 4: Solving for Minimal \(s\) and \(k\)**
+
+We now have two bounds connecting \(k\) and \(s\):
+
+1. \(k \ge s + 2\) (from parity and Tutte violation)
+2. \(k \le 2s\) (from degree capacity)
+
+Combine them: \[s + 2 \le 2s \implies \mathbf{s \ge 2}\]
+
+To minimize \(n\), we choose the smallest possible integer **\(s = 2\)**:
+
+- Plugging \(s = 2\) back into \(s + 2 \le k \le 2s\): \[4 \le k \le 4 \implies \mathbf{k = 4}\]
+
+**What this tells us:**
+
+- We need **\(s = 2\) central vertices** (\(S = {s_1, s_2}\)).
+- We need **\(k = 4\) odd components** (\(C_1, C_2, C_3, C_4\)).
+- Since \(2k = 4s = 8\), **every component must receive EXACTLY 2 edges from \(S\)** (\(e(C_i, S) = 2\)), and \(s_1, s_2\) must have **no edge between them** so all 8 of their available edges go directly to the 4 components.
+
+---
+
+### **Step 5: Finding the Minimum Component Size \(c_i\)**
+
+Each component \(C_i\) has \(c_i\) vertices (an odd number) and receives \(2\) edges from \(S\). The internal sum of degrees inside \(C_i\) is: \[2|E(C_i)| = 4c_i - 2\]
+
+For \(C_i\) to exist as a simple graph, its internal degree sum cannot exceed the maximum possible degree sum of a complete graph on \(c_i\) vertices, which is \(c_i(c_i - 1)\): \[4c_i - 2 \le c_i(c_i - 1) \implies c_i^2 - 5c_i + 2 \ge 0\]
+
+Let's test odd positive integers for \(c_i\):
+
+- **\(c_i = 1\):** \(1^2 - 5(1) + 2 = -2 \ge 0\) (❌ **False**: internal degree sum needed is \(4(1)-2 = 2\), but a 1-vertex graph has 0 internal edges).
+- **\(c_i = 3\):** \(3^2 - 5(3) + 2 = -4 \ge 0\) (❌ **False**: internal degree sum needed is \(4(3)-2 = 10\), but \(K_3\) only has a maximum degree sum of \(3 \times 2 = 6\)).
+- **\(c_i = 5\):** \(5^2 - 5(5) + 2 = 2 \ge 0\) (✅ **TRUE!** Internal degree sum needed is \(4(5)-2 = 18\). A complete graph \(K_5\) has a total degree sum of \(20\). Removing 1 edge leaves \(20 - 2 = 18\)!).
+
+Thus, the smallest valid size for each odd component is **\(c_i = 5\)**.
+
+---
+
+### **Step 6: Calculating \(n\) & Constructing the Graph**
+
+1. **Total Vertices:** \[n = |S| + c_1 + c_2 + c_3 + c_4 = 2 + 5 + 5 + 5 + 5 = \mathbf{22}\]
+    
+2. **Step-by-Step Construction Recipe:**
+    
+    - **Set \(S\):** Place 2 vertices \(s_1, s_2\) with no edge between them.
+    - **Components \(C_1, C_2, C_3, C_4\):** For each of the 4 components:
+        - Take 5 vertices \({u_{i,1}, u_{i,2}, v_{i,1}, v_{i,2}, v_{i,3}}\).
+        - Form a \(K_5\) among these 5 vertices, then **delete the single edge** \((u_{i,1}, u_{i,2})\).
+        - Now \(u_{i,1}\) and \(u_{i,2}\) have internal degree \(3\), while \(v_{i,1}, v_{i,2}, v_{i,3}\) have internal degree \(4\).
+    - **Attach to \(S\):**
+        - Connect \(u_{i,1}\) to \(s_1\) (bringing \(\deg(u_{i,1}) = 3 + 1 = 4\)).
+        - Connect \(u_{i,2}\) to \(s_2\) (bringing \(\deg(u_{i,2}) = 3 + 1 = 4\)).
+    - **Check Regularity:**
+        - Each component vertex has degree 4.
+        - \(s_1\) is connected to \(u_{1,1}, u_{2,1}, u_{3,1}, u_{4,1} \implies \deg(s_1) = 4\).
+        - \(s_2\) is connected to \(u_{1,2}, u_{2,2}, u_{3,2}, u_{4,2} \implies \deg(s_2) = 4\).
+
+---
+
+### **Summary of the Decision Flow Chart**
+
+```
+Problem: 4-regular, no PM, minimal n (even)
+   │
+   ▼
+1. Apply Tutte: Need k = θ(G - S) > |S| = s
+   │
+   ▼
+2. Parity check: n even ⟹ s and k have same parity ⟹ k ≥ s + 2
+   │
+   ▼
+3. Degree capacity: e(C_i, S) ≥ 2 (even) ⟹ 2k ≤ 4s ⟹ k ≤ 2s
+   │
+   ▼
+4. Solve s + 2 ≤ k ≤ 2s ⟹ Smallest s = 2, k = 4
+   │
+   ▼
+5. Min component size: c_i² - 5c_i + 2 ≥ 0 for odd c_i ⟹ Min c_i = 5
+   │
+   ▼
+6. Minimal n = 2 + 4(5) = 22
+```
+
+---
+
+💡 **This systematic approach works for any regularity \(d\)!** For instance, if you were asked for a \(3\)-regular (cubic) graph with no perfect matching, you would set \(d=3\), recalculate \(e(C_i, S) \ge 1\) (odd), and find the iconic **Tietze's graph** or **Blanuša snark** architectures.
