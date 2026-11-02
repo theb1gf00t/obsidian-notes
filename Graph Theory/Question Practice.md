@@ -1401,50 +1401,49 @@
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > ### **Claim:** FALSE — the statement is **disproven** by counterexample.
+> > **PROVED (TRUE)**
 > >
-> > ### **Counterexample**
+> > The statement is **TRUE**: Every simple connected bipartite graph $G[X,Y]$ satisfying $\deg(x) \ge 3$ for all $x \in X$ and $\deg(y) \le 3$ for all $y \in Y$ contains a matching saturating every vertex in $X$.
 > >
-> > **Graph Construction:**
+> > ---
 > >
-> > - $X = \{x_1, x_2, x_3, x_4\}$ (4 vertices)
-> > - $Y = \{y_1, y_2, y_3\}$ (3 vertices)
-> > - **Edges:** Each vertex in $Y$ is connected to exactly 3 vertices in $X$, arranged as:
-> >   - $y_1$ connects to $x_1, x_2, x_3$
-> >   - $y_2$ connects to $x_1, x_2, x_4$
-> >   - $y_3$ connects to $x_1, x_3, x_4$
+> > ### **Proof 1: Using Double Counting and Hall's Condition**
 > >
-> > **Verify the Conditions:**
+> > By **Hall's Marriage Theorem** (Theorem 7.3 / Theorem 8A.3), a bipartite graph $G[X,Y]$ has a matching saturating every vertex in $X$ if and only if **Hall's Condition** holds: $$|N_G(S)| \ge |S| \quad \text{for every subset } S \subseteq X$$
 > >
-> > - **Degrees in $X$:** $\deg(x_1) = 3$, $\deg(x_2) = 2$, $\deg(x_3) = 2$, $\deg(x_4) = 2$.
-> >   - **Issue:** Not every vertex in $X$ has degree $\ge 3$. Let me revise.
+> > 1. **Count Edges Leaving $S$:** Let $S$ be an arbitrary non-empty subset of $X$. Let $E(S, N(S))$ denote the set of edges with one endpoint in $S$ and the other in $N(S) \subseteq Y$. Since every vertex $x \in S$ has degree $\deg(x) \ge 3$, the total number of edges incident to $S$ satisfies: $$|E(S, N(S))| = \sum_{x \in S} \deg(x) \ge 3|S|$$
+> >     
+> > 2. **Bound Edges Received by $N(S)$:** All edges leaving $S$ must land in $N(S)$. Since every vertex $y \in N(S)$ has degree $\deg(y) \le 3$ in $G$, each vertex in $N(S)$ can be incident to at most $3$ edges going to $S$: $$|E(S, N(S))| = \sum_{y \in N(S)} \deg_S(y) \le \sum_{y \in N(S)} \deg(y) \le 3|N(S)|$$
+> >     
+> > 3. **Combine the Inequalities:** $$3|S| \le |E(S, N(S))| \le 3|N(S)|$$ Dividing both sides by $3$ gives: $$|N(S)| \ge |S|$$
+> >     
 > >
-> > **Revised Counterexample:**
+> > Since $|N(S)| \ge |S|$ holds for **every** subset $S \subseteq X$, Hall's Condition is satisfied. Therefore, **$G$ contains a matching saturating every vertex in $X$**. $\blacksquare$
 > >
-> > - $X = \{x_1, x_2, x_3\}$ (3 vertices, each with degree $\ge 3$)
-> > - $Y = \{y_1, y_2, y_3\}$ (3 vertices, each with degree $\le 3$)
-> > - **Edges:** Arrange so that:
-> >   - $x_1$ connects to all of $Y$ (degree 3)
-> >   - $x_2$ connects to all of $Y$ (degree 3)
-> >   - $x_3$ connects to $y_1, y_2, y_3$ but...we need to make matching saturating $X$ impossible.
+> > ---
 > >
-> > Actually, by **Hall's Marriage Theorem**, if $\deg(x) \ge |Y|/2$ for all $x \in X$, then a matching saturating $X$ exists. Here, if all vertices in $X$ have degree $\ge 3$ and $|Y| \le 6$, then by Hall's condition, a saturating matching exists. **The statement is actually TRUE.**
+> > ### **Proof 2: Direct Application of the Corollary to Hall's Theorem**
 > >
-> > ### **Corrected Claim: TRUE**
+> > Your course materials explicitly provide a **Corollary to Hall's Theorem**:
 > >
-> > **Proof by Hall's Marriage Theorem:**
+> > > **Corollary (Section 7.3 / 8A.3):**  
+> > > Let $G$ be a bipartite graph with bipartition $[X,Y]$ and $\delta(G) > 0$. If $$\min_{x \in X} \deg(x) \ge \max_{y \in Y} \deg(y)$$ then $G$ contains a matching saturating every vertex in $X$.
 > >
-> > Let $G[X, Y]$ satisfy the degree conditions:
-> > - Every vertex in $X$ has degree $\ge 3$.
-> > - Every vertex in $Y$ has degree $\le 3$.
+> > Given the prompt's conditions:
 > >
-> > To show a matching saturates $X$, we verify **Hall's condition:** For every subset $S \subseteq X$, the neighborhood $N(S) \subseteq Y$ must satisfy $|N(S)| \ge |S|$.
+> > - $\min_{x \in X} \deg(x) \ge 3$
+> > - $\max_{y \in Y} \deg(y) \le 3$
 > >
-> > **Counting argument:** The number of edges between $S$ and $N(S)$ is at least $3|S|$ (since each vertex in $S$ has degree $\ge 3$). Since each vertex in $N(S)$ has degree $\le 3$, the number of edges is at most $3|N(S)|$. Therefore:
+> > Thus: $$\min_{x \in X} \deg(x) \ge 3 \ge \max_{y \in Y} \deg(y)$$
 > >
-> > $$3|S| \le 3|N(S)| \implies |S| \le |N(S)|$$
+> > The hypothesis of the corollary is directly satisfied, confirming that **$G$ has a matching saturating $X$**. $\blacksquare$
 > >
-> > By Hall's condition, a matching saturating $X$ exists.
+> > ---
+> >
+> > ### **Location in Your Course Notes**
+> >
+> > - **`Graph Theory Book (IITM).pdf`:** **Module 7, Section 7.3** (Page 162, Corollary to Theorem 7.3) & **Exercise 22** (Page 177).
+> > - **`Week-10-Unit-8A.pdf`:** **Section 8A.3** (Page 12, Corollary to Theorem 8A.3).
 
 > [!question] Q15: $\beta_0$ and $\beta_1$ of $K_{2,4,6,\dots,2k}$
 > Find $\beta_0$ and $\beta_1$ of $K_{2,4,6,\dots,2k}$.
@@ -1609,3 +1608,5 @@
 > > ### Final Answer
 > >
 > > $$\alpha_1(C_5 + C_7) = 6$$
+> 
+
