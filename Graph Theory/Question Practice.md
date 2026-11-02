@@ -1193,26 +1193,72 @@
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > ### **1. Construction for General $k \ge 2$**
+> > To find an explicit example of a $k$-regular simple graph with no perfect matching for **every $k \ge 2$**, we divide the problem into two natural cases based on the parity of $k$:
 > >
-> > For each $k \ge 2$, we construct a $k$-regular graph with no perfect matching using a similar Tutte-violation strategy:
+> > ---
 > >
-> > **Central Set $S$:** 2 vertices with no edge between them.
-> > **Odd Components:** $k+1$ disjoint odd components, each of size $2k+1$.
-> > **Connections:** Each component has exactly 2 edges connecting to $S$.
+> > ### **Case 1: $k$ is Even ($k = 2m$ for $m \ge 1$)**
 > >
-> > This graph:
-> > - Has $n = 2 + (k+1)(2k+1) = 2k^2 + 3k + 3$ vertices.
-> > - Is $k$-regular.
-> > - Has $\theta(G-S) = k+1 > 2 = |S|$, violating Tutte's condition.
+> > When $k$ is even, we can use a very simple complete graph construction.
 > >
-> > ### **2. Specific Examples**
+> > #### **1. Construction: $G = K_{k+1}$**
 > >
-> > **$k = 2$:** Peterson graph (or a 2-regular graph with 6 vertices: two triangles connected by 2 edges forming a prism).
+> > Let $G$ be the complete graph on $n = k+1$ vertices.
 > >
-> > **$k = 3$:** Construct from $S = \{s_1, s_2\}$ with 4 disjoint odd components, each $K_7 \setminus \{e\}$ (7 vertices, 20 edges), connected to $S$ with 2 edges each.
+> > #### **2. Properties & Proof:**
 > >
-> > **$k = 4$:** The graph constructed in Q9 ($n = 22$ vertices).
+> > 1. **$k$-Regularity:** In $K_{k+1}$, every vertex is connected to all other $k$ vertices. Thus, $\deg(v) = k$ for every vertex $v \in V(G)$, making $G$ a **$k$-regular simple graph**.
+> > 2. **Odd Vertex Count:** Since $k$ is even, the number of vertices $n = k+1$ is **odd**.
+> > 3. **No Perfect Matching:** Every edge in a matching pairs up $2$ vertices. A graph with an odd number of vertices $n$ can have a matching of size at most $\lfloor n/2 \rfloor = \lfloor \frac{k+1}{2} \rfloor = \frac{k}{2} < \frac{k+1}{2}$. Thus, $K_{k+1}$ cannot contain a perfect matching.
+> >
+> > _(Note: If a disconnected graph with an **even** total number of vertices is desired, we can take $G = K_{k+1} \cup K_{k+1}$, the disjoint union of two copies of $K_{k+1}$. This graph has $2(k+1)$ vertices, is $k$-regular, and has no perfect matching)._
+> >
+> > ---
+> >
+> > ### **Case 2: $k$ is Odd ($k = 2m+1$ for $m \ge 1$)**
+> >
+> > When $k$ is odd, the total number of vertices $n$ in any $k$-regular graph **must be even** (since $k \cdot n = 2|E|$ implies $n$ is even). Furthermore, an odd-regular graph cannot have isolated odd components.
+> >
+> > We can construct a connected $k$-regular graph with no perfect matching using **Tutte's 1-Factor Theorem**.
+> >
+> > #### **1. Construction Recipe for any Odd $k \ge 3$:**
+> >
+> > Construct $G$ on $n = (k+1)^2$ vertices as follows:
+> >
+> > 1. **Central Vertex Subset $S$:** Let $S = \{v_0\}$ consist of a single vertex $v_0$.
+> > 2. **$k$ Odd Components $C_1, C_2, \dots, C_k$:** Create $k$ disjoint components, each containing $c_i = k+2$ vertices (an odd integer). Label the vertices of $C_i$ as $\{u_i, x_{i,1}, x_{i,2}, \dots, x_{i,k+1}\}$.
+> > 3. **Internal Edges of $C_i$:** Start with a complete graph $K_{k+2}$ on $\{u_i, x_{i,1}, \dots, x_{i,k+1}\}$. Then remove:
+> >     - The $2$ edges $(u_i, x_{i,1})$ and $(u_i, x_{i,2})$.
+> >     - A 1-factor (matching) of size $\frac{k-1}{2}$ among the remaining $k-1$ vertices $\{x_{i,3}, x_{i,4}, \dots, x_{i,k+1}\}$. _(This leaves $u_i$ with internal degree $k-1$, and each $x_{i,j}$ with internal degree $k$.)_
+> > 4. **Inter-Edges:** Connect the central vertex $v_0$ to the distinguished vertex $u_i$ of each component $C_i$ for $i = 1, 2, \dots, k$.
+> >
+> > ---
+> >
+> > #### **2. Verification of Properties for Odd $k$:**
+> >
+> > 1. **$k$-Regularity:**
+> >     
+> >     - **Central vertex $v_0$:** Connected to $u_1, u_2, \dots, u_k \implies \deg(v_0) = k$.
+> >     - **Distinguished vertices $u_i$:** Has internal degree $k-1$ inside $C_i$ plus $1$ edge to $v_0 \implies \deg(u_i) = (k-1) + 1 = k$.
+> >     - **Vertices $x_{i,j}$:** Has internal degree $k$ inside $C_i$ and $0$ edges to $S \implies \deg(x_{i,j}) = k$.
+> >     - Thus, $G$ is a **$k$-regular simple graph**.
+> > 2. **Total Vertices:** $$n = |S| + \sum_{i=1}^k |V(C_i)| = 1 + k(k+2) = k^2 + 2k + 1 = (k+1)^2$$ Since $k$ is odd, $k+1$ is even, so $n = (k+1)^2$ is an **even integer**.
+> >     
+> > 3. **No Perfect Matching (Tutte's Violation):** Consider the set $S = \{v_0\}$ of size $|S| = 1$. Deleting $S$ leaves the $k$ components $C_1, C_2, \dots, C_k$. Each component $C_i$ has $|V(C_i)| = k+2$ vertices (an odd integer). Therefore, the number of odd connected components of $G - S$ is: $$\theta(G - S) = k$$ Since $k \ge 3 > 1 = |S|$, we have: $$\theta(G - S) > |S|$$ By **Tutte's 1-Factor Theorem**, $G$ **cannot contain a perfect matching**.
+> >     
+> >
+> > ---
+> >
+> > ### **Summary of Examples**
+> >
+> > | $k$ | Graph $G$ | Vertices $n$ | Regularity | Why No Perfect Matching? |
+> > |:-:|:-:|:-:|:-:|:--|
+> > | **$k=2$ (Even)** | $K_3$ (or $K_3 \cup K_3$) | $3$ (or $6$) | 2-regular | Odd component of size $3$ cannot be fully paired up. |
+> > | **$k=3$ (Odd)** | $1$ central vertex $v_0$ connected to $3$ components $C_1, C_2, C_3$ of size $5$ ($K_5 \setminus 2\text{ edges}$) | $16$ | 3-regular | $\theta(G - \{v_0\}) = 3 > 1$ (fails Tutte's condition). |
+> > | **$k=4$ (Even)** | $K_5$ (or $K_5 \cup K_5$) | $5$ (or $10$) | 4-regular | Odd component of size $5$ cannot be fully paired up. |
+> > | **$k=5$ (Odd)** | $1$ central vertex $v_0$ connected to $5$ components of size $7$ | $36$ | 5-regular | $\theta(G - \{v_0\}) = 5 > 1$ (fails Tutte's condition). |
+> > | **General Even $k$** | $K_{k+1}$ | $k+1$ (odd) | $k$-regular | $n = k+1$ is odd $\implies$ max matching size $\le k/2$. |
+> > | **General Odd $k$** | 1 vertex $v_0$ joined to $k$ components of size $k+2$ | $(k+1)^2$ (even) | $k$-regular | $\theta(G - \{v_0\}) = k > 1 = |S|$ (fails Tutte's condition). |
 
 > [!question] Q11: Perfect Matching in Trees
 > A tree $T$ has a perfect matching iff $O(T - v) = 1$, for every vertex $v$.
@@ -1537,3 +1583,70 @@
 > > ### Final Answer
 > >
 > > $$\alpha_1(C_5 + C_7) = 6$$
+
+To find an explicit example of a \(k\)-regular simple graph with no perfect matching for **every \(k \ge 2\)**, we divide the problem into two natural cases based on the parity of \(k\):
+
+---
+
+### **Case 1: \(k\) is Even (\(k = 2m\) for \(m \ge 1\))**
+
+When \(k\) is even, we can use a very simple complete graph construction.
+
+#### **1. Construction: \(G = K_{k+1}\)**
+
+Let \(G\) be the complete graph on \(n = k+1\) vertices.
+
+#### **2. Properties & Proof:**
+
+1. **\(k\)-Regularity:** In \(K_{k+1}\), every vertex is connected to all other \(k\) vertices. Thus, \(\deg(v) = k\) for every vertex \(v \in V(G)\), making \(G\) a **\(k\)-regular simple graph**.
+2. **Odd Vertex Count:** Since \(k\) is even, the number of vertices \(n = k+1\) is **odd**.
+3. **No Perfect Matching:** Every edge in a matching pairs up \(2\) vertices. A graph with an odd number of vertices \(n\) can have a matching of size at most \(\lfloor n/2 \rfloor = \lfloor \frac{k+1}{2} \rfloor = \frac{k}{2} < \frac{k+1}{2}\). Thus, \(K_{k+1}\) cannot contain a perfect matching.
+
+_(Note: If a disconnected graph with an **even** total number of vertices is desired, we can take \(G = K_{k+1} \cup K_{k+1}\), the disjoint union of two copies of \(K_{k+1}\). This graph has \(2(k+1)\) vertices, is \(k\)-regular, and has no perfect matching)._
+
+---
+
+### **Case 2: \(k\) is Odd (\(k = 2m+1\) for \(m \ge 1\))**
+
+When \(k\) is odd, the total number of vertices \(n\) in any \(k\)-regular graph **must be even** (since \(k \cdot n = 2|E|\) implies \(n\) is even). Furthermore, an odd-regular graph cannot have isolated odd components.
+
+We can construct a connected \(k\)-regular graph with no perfect matching using **Tutte's 1-Factor Theorem**.
+
+#### **1. Construction Recipe for any Odd \(k \ge 3\):**
+
+Construct \(G\) on \(n = (k+1)^2\) vertices as follows:
+
+1. **Central Vertex Subset \(S\):** Let \(S = {v_0}\) consist of a single vertex \(v_0\).
+2. **\(k\) Odd Components \(C_1, C_2, \dots, C_k\):** Create \(k\) disjoint components, each containing \(c_i = k+2\) vertices (an odd integer). Label the vertices of \(C_i\) as \({u_i, x_{i,1}, x_{i,2}, \dots, x_{i,k+1}}\).
+3. **Internal Edges of \(C_i\):** Start with a complete graph \(K_{k+2}\) on \({u_i, x_{i,1}, \dots, x_{i,k+1}}\). Then remove:
+    - The \(2\) edges \((u_i, x_{i,1})\) and \((u_i, x_{i,2})\).
+    - A 1-factor (matching) of size \(\frac{k-1}{2}\) among the remaining \(k-1\) vertices \({x_{i,3}, x_{i,4}, \dots, x_{i,k+1}}\). _(This leaves \(u_i\) with internal degree \(k-1\), and each \(x_{i,j}\) with internal degree \(k\).)_
+4. **Inter-Edges:** Connect the central vertex \(v_0\) to the distinguished vertex \(u_i\) of each component \(C_i\) for \(i = 1, 2, \dots, k\).
+
+---
+
+#### **2. Verification of Properties for Odd \(k\):**
+
+1. **\(k\)-Regularity:**
+    
+    - **Central vertex \(v_0\):** Connected to \(u_1, u_2, \dots, u_k \implies \deg(v_0) = k\).
+    - **Distinguished vertices \(u_i\):** Has internal degree \(k-1\) inside \(C_i\) plus \(1\) edge to \(v_0 \implies \deg(u_i) = (k-1) + 1 = k\).
+    - **Vertices \(x_{i,j}\):** Has internal degree \(k\) inside \(C_i\) and \(0\) edges to \(S \implies \deg(x_{i,j}) = k\).
+    - Thus, \(G\) is a **\(k\)-regular simple graph**.
+2. **Total Vertices:** \[n = |S| + \sum_{i=1}^k |V(C_i)| = 1 + k(k+2) = k^2 + 2k + 1 = (k+1)^2\] Since \(k\) is odd, \(k+1\) is even, so \(n = (k+1)^2\) is an **even integer**.
+    
+3. **No Perfect Matching (Tutte's Violation):** Consider the set \(S = {v_0}\) of size \(|S| = 1\). Deleting \(S\) leaves the \(k\) components \(C_1, C_2, \dots, C_k\). Each component \(C_i\) has \(|V(C_i)| = k+2\) vertices (an odd integer). Therefore, the number of odd connected components of \(G - S\) is: \[\theta(G - S) = k\] Since \(k \ge 3 > 1 = |S|\), we have: \[\theta(G - S) > |S|\] By **Tutte's 1-Factor Theorem**, \(G\) **cannot contain a perfect matching**.
+    
+
+---
+
+### **Summary of Examples**
+
+|         \(k\)          |                                                          Graph \(G\)                                                          |   Vertices \(n\)   |  Regularity   | Why No Perfect Matching?                                       |     |                               |
+| :--------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :----------------: | :-----------: | :------------------------------------------------------------- | --- | ----------------------------- |
+|   **\(k=2\) (Even)**   |                                                 \(K_3\) (or \(K_3 \cup K_3\))                                                 |  \(3\) (or \(6\))  |   2-regular   | Odd component of size \(3\) cannot be fully paired up.         |     |                               |
+|   **\(k=3\) (Odd)**    | \(1\) central vertex \(v_0\) connected to \(3\) components \(C_1, C_2, C_3\) of size \(5\) (\(K_5 \setminus 2\text{ edges}\)) |       \(16\)       |   3-regular   | \(\theta(G - {v_0}) = 3 > 1\) (fails Tutte's condition).       |     |                               |
+|   **\(k=4\) (Even)**   |                                                 \(K_5\) (or \(K_5 \cup K_5\))                                                 | \(5\) (or \(10\))  |   4-regular   | Odd component of size \(5\) cannot be fully paired up.         |     |                               |
+|   **\(k=5\) (Odd)**    |                           \(1\) central vertex \(v_0\) connected to \(5\) components of size \(7\)                            |       \(36\)       |   5-regular   | \(\theta(G - {v_0}) = 5 > 1\) (fails Tutte's condition).       |     |                               |
+| **General Even \(k\)** |                                                          \(K_{k+1}\)                                                          |   \(k+1\) (odd)    | \(k\)-regular | \(n = k+1\) is odd \(\implies\) max matching size \(\le k/2\). |     |                               |
+| **General Odd \(k\)**  |                                  1 vertex \(v_0\) joined to \(k\) components of size \(k+2\)                                  | \((k+1)^2\) (even) | \(k\)-regular | \(\theta(G - {v_0}) = k > 1 =                                  | S   | \) (fails Tutte's condition). |
