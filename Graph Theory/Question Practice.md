@@ -1617,3 +1617,54 @@ CHAPTER 8:
 
 questions:
 
+Here is the complete list of all 14 exercises from the end of Chapter 8 (Vertex Colorings) in **Graph Theory Book (IITM).pdf**:
+
+---
+
+1. **Find the vertex chromatic number of:**
+    
+    1. A tree.
+    2. A graph with exactly one cycle.
+    3. The complement of a cycle.
+    4. \(C_{2s} + C_{2t+1}\).
+    5. Petersen graph.
+    6. \(K_{n_1, n_2, \dots, n_s}\).
+2. **Prove:** \(\chi(G_1 + G_2) = \chi(G_1) + \chi(G_2)\).
+    
+3. **For every graph \(G\), show that:** \[\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)\]
+    
+4. **Show that every graph with \(\chi(G) = k\) contains:**
+    
+    1. At least \(\frac{k(k - 1)}{2}\) edges.
+    2. A cycle of length at least \(k\).
+5. **Find \(n(G_k)\), where \(G_k\) is the \(k\)-vertex-chromatic, triangle-free graph constructed using Mycielski’s method**.
+    
+6. **Draw a graph having maximum number of edges with \(\chi(G) = 4\) and \(n(G) = 10\)**.
+    
+7. **Let \(G\) be the graph shown in the text (\(P_2 \square P_4\) ladder graph). Order the vertices of \(G\) in 3 different ways, say \(S_1, S_2,\) and \(S_3\), so that the greedy algorithm:**
+    
+    1. Uses 2 colors, if \(S_1\) is the input.
+    2. Uses 3 colors, if \(S_2\) is the input.
+    3. Uses 4 colors, if \(S_3\) is the input.
+8. **Order the vertices of the graph shown in the text (crown graph \(K_{4,4} - 4e\)) in such a way that the greedy algorithm uses 4 colors**.
+    
+9. **Let \(G\) be a simple graph such that \(\delta(H) \le k\), for every subgraph \(H\) of \(G\) (such a graph is called a \(k\)-degenerate graph). Order the vertices of \(G\) so that if one applies the greedy algorithm to color the vertices of \(G\), then it uses at most \(k + 1\) colors**.
+    
+10. **There are 7 chemicals \(A, B, C, D, E, F, G\). For safety reasons, the following pairs of chemicals cannot be stored in one room:** \(A&B, A&C, A&G, B&C, B&D, C&D, D&E, D&F, E&F, E&G, F&G\). **If the problem is to find the minimum number of rooms (say \(k\)) required to store all the chemicals, how would you model it as a graph theoretical problem and find \(k\)?**
+    
+
+_(Note: A graph \(G\) is said to be \(k\)-critical if \(\chi(G) = k\), and \(\chi(H) < k\) for every proper subgraph \(H\) of \(G\).)_
+
+11. **If \(G\) is \(k\)-critical, then show that \(G\) is connected and that \(\delta(G) \ge k - 1\)**.
+    
+12. **If \(S\) is a set of independent vertices in a \(k\)-critical graph, then what is the chromatic number of \(G - S\)?**
+    
+13. **If \(G_1\) and \(G_2\) are simple graphs, show that \(G_1 + G_2\) is a critical graph iff \(G_1\) and \(G_2\) are critical**.
+    
+
+_(Note: A partition \((V_1, V_2, \dots, V_p)\) of \(V(G)\) is called a clique partition of \(G\) if every induced subgraph \([V_i]\), \(1 \le i \le p\), is a clique in \(G\). The minimum integer \(k\) such that \(G\) admits a clique partition is called the clique partition number of \(G\), denoted by \(\theta_0(G)\).)_
+
+14. **Show that:**
+    1. \(\theta_0(G) = \chi(G^c)\).
+    2. \(\theta_0(G_1 + G_2) = \max{\theta_0(G_1), \theta_0(G_2)}\).
+    3. \(\theta_0(G) \ge \alpha_0(G)\).

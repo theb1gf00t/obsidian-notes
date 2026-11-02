@@ -99,7 +99,7 @@
   "convertedDocOutputFolder": "",
   "agentMode": {
     "byok": {},
-    "activeBackend": "claude",
+    "activeBackend": "opencode",
     "backends": {
       "codex": {
         "defaultModel": {
@@ -118,7 +118,8 @@
         "defaultModel": {
           "baseModelId": "google/gemini-3.8-flash",
           "effort": "low"
-        }
+        },
+        "defaultMode": "auto"
       }
     },
     "debugFullFrames": true,
