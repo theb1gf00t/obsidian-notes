@@ -1625,6 +1625,117 @@ Here is the complete list of all 14 exercises from the end of Chapter 8 (Vertex 
 > 4. $C_{2s} + C_{2t+1}$.
 > 5. Petersen graph.
 > 6. $K_{n_1, n_2, \dots, n_s}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > To find the vertex chromatic number $\chi(G)$ for each of the given graph classes, we first outline the necessary graph-theoretic principles and then provide detailed mathematical derivations.
+> >
+> > ---
+> >
+> > ### **Necessary Theory (Brief Overview)**
+> >
+> > 1. **Vertex Chromatic Number $\chi(G)$**: The minimum number of colors required to color the vertices of a graph $G$ such that no two adjacent vertices share the same color.
+> > 2. **Bipartite Graphs & Odd Cycles**:
+> >     - A graph $G$ is $2$-colorable ($\chi(G) \le 2$) if and only if $G$ is bipartite, which holds if and only if $G$ contains no odd cycles (König's Theorem).
+> >     - An even cycle $C_{2k}$ has $\chi(C_{2k}) = 2$, while an odd cycle $C_{2k+1}$ has $\chi(C_{2k+1}) = 3$.
+> > 3. **Graph Join ($G_1 + G_2$)**:
+> >     - The join $G_1 + G_2$ is formed by taking disjoint copies of $G_1$ and $G_2$ and adding an edge between every vertex of $G_1$ and every vertex of $G_2$.
+> >     - **Theorem**: $\chi(G_1 + G_2) = \chi(G_1) + \chi(G_2)$.
+> > 4. **Complement of a Graph ($G^c$)**:
+> >     - Two vertices are adjacent in $G^c$ if and only if they are non-adjacent in $G$.
+> >     - An independent set in $G^c$ corresponds to a clique (mutually adjacent set) in $G$.
+> >
+> > ---
+> >
+> > ### **Solutions & Proofs**
+> >
+> > #### **1. A Tree $T$**
+> >
+> > - **Theory**: A tree $T$ is a connected acyclic graph.
+> > - **Proof**: Since $T$ contains no cycles, it has no odd cycles. By König's Theorem, any graph without odd cycles is bipartite.
+> >     - For a non-trivial tree with at least one edge ($n \ge 2$), $\chi(T) \ge 2$.
+> >     - Because $T$ is bipartite, its vertices can be partitioned into two independent sets $V_1$ and $V_2$, which can be colored using $2$ distinct colors.
+> > - **Conclusion**: $$\chi(T) = 2 \quad (\text{for } n \ge 2; \quad \chi(T) = 1 \text{ if } n = 1)$$
+> >
+> > ---
+> >
+> > #### **2. A Graph $G$ with Exactly One Cycle**
+> >
+> > - **Theory**: A graph with exactly one cycle is called a unicyclic graph.
+> >     
+> > - **Proof**: Let $C_k$ be the unique cycle present in $G$.
+> >     
+> >     - **Case 1: $C_k$ is an even cycle ($k = 2m$)** Since the only cycle in $G$ is even, $G$ contains no odd cycles. Therefore, $G$ is bipartite, which implies $\chi(G) = 2$ (assuming $G$ has at least one edge).
+> >         
+> >     - **Case 2: $C_k$ is an odd cycle ($k = 2m + 1$)** Since $G$ contains an odd cycle $C_{2m+1}$ as a subgraph, we must have $\chi(G) \ge \chi(C_{2m+1}) = 3$. To show $\chi(G) \le 3$, we can first color the cycle $C_{2m+1}$ using $3$ colors ${1, 2, 3}$. The remainder of the graph $G \setminus C_k$ consists of a collection of trees rooted at the vertices of $C_k$. Since trees are $2$-colorable, we can extend the coloring outward along each tree using $2$ alternating colors without introducing any color conflicts. Thus, $3$ colors are sufficient.
+> >         
+> > - **Conclusion**: $$\chi(G) = \begin{cases} 2 & \text{if the unique cycle is even} \\ 3 & \text{if the unique cycle is odd} \end{cases}$$
+> >     
+> >
+> > ---
+> >
+> > #### **3. The Complement of a Cycle, $C_n^c$**
+> >
+> > - **Theory**: A proper vertex coloring of $C_n^c$ partitions $V(C_n^c)$ into independent sets of $C_n^c$. An independent set in $C_n^c$ corresponds to a clique (mutually adjacent vertices) in $C_n$.
+> >     
+> > - **Proof**:
+> >     
+> >     1. For $n = 3$, $C_3$ is a triangle ($K_3$), so $C_3^c$ consists of $3$ isolated vertices ($3K_1$). Thus, $\chi(C_3^c) = 1$.
+> >     2. For $n \ge 4$, the simple cycle $C_n$ contains no triangles, so the maximum clique size in $C_n$ is $\omega(C_n) = 2$.
+> >         - Consequently, every independent set in $C_n^c$ can contain at most $2$ vertices.
+> >         - To color $n$ vertices where each color class has at most $2$ vertices, we require at least: $$\chi(C_n^c) \ge \left\lceil \frac{n}{2} \right\rceil$$
+> >         - We can achieve this bound by pairing adjacent vertices along $C_n$ to form $1$-edges (cliques of size $2$ in $C_n$), each receiving a unique color:
+> >             - If $n = 2k$ (even), we partition the vertices into $k = \frac{n}{2}$ adjacent pairs.
+> >             - If $n = 2k + 1$ (odd), we partition into $k$ adjacent pairs and $1$ single vertex, using $k + 1 = \left\lceil \frac{n}{2} \right\rceil$ colors.
+> > - **Conclusion**: $$\chi(C_n^c) = \begin{cases} 1 & \text{if } n = 3 \\ \left\lceil \frac{n}{2} \right\rceil & \text{if } n \ge 4 \end{cases}$$
+> >     
+> >
+> > ---
+> >
+> > #### **4. $C_{2s} + C_{2t+1}$**
+> >
+> > - **Theory**: By the property of graph join, $\chi(G_1 + G_2) = \chi(G_1) + \chi(G_2)$.
+> >     
+> > - **Proof**:
+> >     
+> >     - In $G_1 + G_2$, every vertex in $V(G_1)$ is adjacent to every vertex in $V(G_2)$.
+> >     - Hence, no color used for $V(G_1)$ can be reused for $V(G_2)$, making the color sets completely disjoint.
+> >     - For $C_{2s}$ (an even cycle, $2s \ge 4$), the chromatic number is $\chi(C_{2s}) = 2$.
+> >     - For $C_{2t+1}$ (an odd cycle, $2t+1 \ge 3$), the chromatic number is $\chi(C_{2t+1}) = 3$.
+> >     - Substituting these values yields: $$\chi(C_{2s} + C_{2t+1}) = \chi(C_{2s}) + \chi(C_{2t+1}) = 2 + 3 = 5$$
+> > - **Conclusion**: $$\chi(C_{2s} + C_{2t+1}) = 5$$
+> >     
+> >
+> > ---
+> >
+> > #### **5. Petersen Graph**
+> >
+> > - **Theory**: The Petersen graph contains $5$-cycles (e.g., its outer cycle). Since it contains an odd cycle, it cannot be $2$-colorable. Therefore, $\chi(\text{Petersen}) \ge 3$.
+> > - **Proof**: To demonstrate that $3$ colors are sufficient ($\chi(\text{Petersen}) \le 3$), we construct an explicit $3$-coloring:
+> >     - Let the outer $5$-cycle vertices be $v_1, v_2, v_3, v_4, v_5$ and the inner star vertices be $v_6, v_7, v_8, v_9, v_{10}$, where spoke edges join $v_i$ and $v_{i+5}$ for $1 \le i \le 5$.
+> >     - Assign colors ${\text{Red}, \text{Blue}, \text{Green}}$ as follows:
+> >         - Outer cycle: $v_1 = \text{Red}, v_2 = \text{Blue}, v_3 = \text{Red}, v_4 = \text{Blue}, v_5 = \text{Green}$.
+> >         - Inner star: $v_6 = \text{Blue}, v_7 = \text{Green}, v_8 = \text{Green}, v_9 = \text{Red}, v_{10} = \text{Blue}$.
+> >     - Verifying all $15$ edges confirms that no two adjacent vertices share the same color.
+> >
+> > The visualization below illustrates this valid proper $3$-coloring:
+> >
+> > --Image of: --Proper 3-Coloring of Petersen Graph
+> >
+> > - **Conclusion**: $$\chi(\text{Petersen Graph}) = 3$$
+> >
+> > ---
+> >
+> > #### **6. Complete Multipartite Graph $K_{n_1, n_2, \dots, n_s}$**
+> >
+> > - **Theory**: A complete $s$-partite graph has a vertex set partitioned into $s$ independent sets $V_1, V_2, \dots, V_s$ of sizes $n_1, n_2, \dots, n_s$, where every vertex in $V_i$ is connected to every vertex in $V_j$ for all $i \ne j$.
+> >     
+> > - **Proof**:
+> >     
+> >     1. Within each part $V_i$, there are no internal edges. Thus, all vertices in $V_i$ can receive the same color $c_i$.
+> >     2. For any two distinct parts $V_i$ and $V_j$ ($i \ne j$), every vertex in $V_i$ is adjacent to every vertex in $V_j$. Thus, $c_i \ne c_j$ for all $i \ne j$.
+> >     3. This requires at least $s$ distinct colors, and $s$ colors are sufficient by assigning color $i$ to all vertices in $V_i$.
+> > - **Conclusion**: $$\chi(K_{n_1, n_2, \dots, n_s}) = s$$
 
 > [!question] Q2: Chromatic Number of a Join
 > **Prove:** $\chi(G_1 + G_2) = \chi(G_1) + \chi(G_2)$.
@@ -1681,3 +1792,56 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > 1. $\theta_0(G) = \chi(G^c)$.
 > 2. $\theta_0(G_1 + G_2) = \max{\theta_0(G_1), \theta_0(G_2)}$.
 > 3. $\theta_0(G) \ge \alpha_0(G)$.
+
+
+### **Necessary Theory (Brief Overview)**
+
+1. **Order of a Graph \(n(G)\)**: The total number of vertices in the graph \(G\), denoted by \(n(G) = |V(G)|\).
+    
+2. **Vertex-Independence Number \(\alpha_0(G)\)**: An **independent set** (or stable set) \(I \subseteq V(G)\) is a subset of vertices such that no two vertices in \(I\) are adjacent. The **vertex-independence number** \(\alpha_0(G)\) is the size of a maximum independent set in \(G\): \[\alpha_0(G) = \max { |I| : I \text{ is an independent set in } G }\]
+    
+3. **Vertex-Chromatic Number \(\chi(G)\)**: A **proper vertex \(k\)-coloring** of \(G\) is a partition of \(V(G)\) into \(k\) disjoint independent sets \(V_1, V_2, \dots, V_k\), called **color classes**. The **vertex-chromatic number** \(\chi(G)\) is the minimum integer \(k\) for which \(G\) admits a proper vertex \(k\)-coloring.
+    
+
+---
+
+### **Detailed Mathematical Proof**
+
+To prove the compound inequality for every simple graph \(G\): \[\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)\] we prove the lower bound and upper bound separately.
+
+---
+
+#### **Part 1: Proof of the Lower Bound \(\frac{n(G)}{\alpha_0(G)} \le \chi(G)\)**
+
+1. Let \(k = \chi(G)\) be the vertex-chromatic number of \(G\).
+2. By definition of a proper \(k\)-vertex coloring, the vertex set \(V(G)\) is partitioned into \(k\) color classes: \[V(G) = V_1 \cup V_2 \cup \dots \cup V_k \quad \text{where } V_i \cap V_j = \emptyset \text{ for } i \ne j\]
+3. Since no two vertices in the same color class \(V_i\) are adjacent, each color class \(V_i\) forms an **independent set** in \(G\).
+4. By definition of the vertex-independence number \(\alpha_0(G)\), no independent set in \(G\) can contain more than \(\alpha_0(G)\) vertices. Therefore: \[|V_i| \le \alpha_0(G) \quad \text{for every } i \in {1, 2, \dots, k}\]
+5. Summing the cardinalities of all \(k\) color classes gives the total number of vertices \(n(G)\): \[n(G) = \sum_{i=1}^{k} |V_i| \le \sum_{i=1}^{k} \alpha_0(G) = k \cdot \alpha_0(G) = \chi(G) \cdot \alpha_0(G)\]
+6. Dividing both sides by \(\alpha_0(G)\) (since \(\alpha_0(G) \ge 1\) for any non-empty graph): \[\chi(G) \ge \frac{n(G)}{\alpha_0(G)}\]
+
+---
+
+#### **Part 2: Proof of the Upper Bound \(\chi(G) \le n(G) + 1 - \alpha_0(G)\)**
+
+1. Let \(I \subseteq V(G)\) be a **maximum independent set** of \(G\), so that \(|I| = \alpha_0(G)\).
+2. We construct an explicit proper vertex coloring of \(G\) as follows:
+    - Assign **Color 1** to all vertices in \(I\). This is a valid proper coloring for the subset \(I\) because \(I\) is an independent set (no two vertices in \(I\) share an edge).
+    - The remaining vertices in the graph are \(V(G) \setminus I\), which contains: \[|V(G) \setminus I| = n(G) - |I| = n(G) - \alpha_0(G) \text{ vertices}\]
+    - In the worst-case scenario, assign a **distinct new color** to each of the remaining \(n(G) - \alpha_0(G)\) vertices.
+3. The total number of colors used in this valid proper coloring is: \[1 + \left(n(G) - \alpha_0(G)\right) = n(G) + 1 - \alpha_0(G)\]
+4. Since the chromatic number \(\chi(G)\) is defined as the **minimum** number of colors required for any proper coloring of \(G\), \(\chi(G)\) cannot exceed the number of colors used in this explicit construction: \[\chi(G) \le n(G) + 1 - \alpha_0(G)\]
+
+---
+
+#### **Conclusion**
+
+Combining **Part 1** and **Part 2**, we obtain the desired result for every graph \(G\): \[\frac{n(G)}{\alpha_0(G)} \le \chi(G) \le n(G) + 1 - \alpha_0(G)\]
+
+---
+
+### **Visual Illustration**
+
+The diagram below illustrates the structural partitioning behind both bounds:
+
+--Image of: --Chromatic Bounds Illustration
