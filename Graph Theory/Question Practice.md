@@ -1793,3 +1793,4 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > 1. $\theta_0(G) = \chi(G^c)$.
 > 2. $\theta_0(G_1 + G_2) = \max{\theta_0(G_1), \theta_0(G_2)}$.
 > 3. $\theta_0(G) \ge \alpha_0(G)$.
+
