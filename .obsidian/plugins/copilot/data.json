@@ -52,7 +52,7 @@
   "inlineEditCommands": [],
   "projectList": [],
   "lastDismissedVersion": null,
-  "lastShownStartupVersion": null,
+  "lastShownStartupVersion": "4.0.18",
   "passMarkdownImages": true,
   "enableAutonomousAgent": true,
   "enableCustomPromptTemplating": true,
@@ -942,6 +942,24 @@
       },
       "configuredModelId": "f8a0a19a-0b09-4086-a761-e361faae14b9",
       "configuredAt": 1793459911775
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/crouton-alpha-free",
+        "displayName": "opencode/Crouton Alpha Free"
+      },
+      "configuredModelId": "ed88826a-3d98-4ac5-94e4-d7a0cf979f0d",
+      "configuredAt": 1793864591953
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/pulse-alpha-free",
+        "displayName": "opencode/Pulse Alpha Free"
+      },
+      "configuredModelId": "52c029b5-47c1-4e52-9631-e8c299654b80",
+      "configuredAt": 1793864591954
     }
   ],
   "backends": {
