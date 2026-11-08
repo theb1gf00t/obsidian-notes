@@ -2230,7 +2230,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > Since $\delta$ increases by exactly $1$ per iteration, the number of iterations $t$ required to go from $\delta(G)$ to $\Delta(G)$ is:
 > >
 > > $$\boxed{t = \Delta(G) - \delta(G)}$$
-
+1
 > [!question] Q3: Degree Sum Bound When $\chi_1(G) = \Delta(G) + 1$
 > Let $G$ be a graph with $\chi_1(G) = \Delta(G) + 1$. Let $e(u,v)$ be an edge such that $\chi_1(G-e) = \Delta(G)$. Show that $\deg_G(u) + \deg_G(v) \ge \Delta(G) + 2$.
 >
