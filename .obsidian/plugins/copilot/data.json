@@ -955,11 +955,20 @@
     {
       "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
       "info": {
-        "id": "opencode/pulse-alpha-free",
-        "displayName": "opencode/Pulse Alpha Free"
+        "id": "opencode/iceman-free",
+        "displayName": "opencode/Iceman Free"
       },
-      "configuredModelId": "52c029b5-47c1-4e52-9631-e8c299654b80",
-      "configuredAt": 1793864591954
+      "configuredModelId": "a144507b-312a-4d88-be75-c68ee5eb3687",
+      "configuredAt": 1794125924298
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/inkling-2-small-free",
+        "displayName": "opencode/Inkling 2 Small Free"
+      },
+      "configuredModelId": "3639e392-d393-42c3-809c-8a751a99fd80",
+      "configuredAt": 1794125924299
     }
   ],
   "backends": {
