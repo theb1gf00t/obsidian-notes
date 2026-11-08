@@ -861,9 +861,68 @@ _Time: 75 Minutes | Maximum Marks: 16 out of 15_
 > [!question] Q4a (3 marks): Validity of given tie-lines on the Gibbs triangle
 > Can there ever exist a phase diagram in which a tie-line of a two-phase coexistence region extends from $(0.55,\ 0.25,\ 0.20)$ to $(0.4,\ 0.4,\ 0.20)$? Why or why not? How about one extending from $(0.6,\ 0.4,\ 0.0)$ to $(0.3,\ 0.0,\ 0.70)$? Why?
 > > [!success]- Solution (Click to expand)
-> > *(Answer to be filled in)*
+> > **Verdict / Core Takeaway:** The first tie-line **can exist**; the second **cannot** (for solution phases).
+> >
+> > ---
+> >
+> > **Background: What makes a tie-line valid?**
+> >
+> > A tie-line in a ternary two-phase field $(\alpha + \beta)$ must satisfy three conditions simultaneously:
+> > 1. **Both endpoints are valid ternary compositions** — each set of three mole fractions is non-negative and sums to 1.
+> > 2. **Chemical potential equality** — $\mu_i^\alpha = \mu_i^\beta$ for all three components $i = A, B, C$.
+> > 3. **Topological consistency** — both endpoints must lie on the interior phase boundary curves of the same two-phase region; a tie-line cannot straddle two different binary edges of the Gibbs triangle simultaneously (this would imply the two coexisting phases each contain zero of a different component, which violates the dilute-solution limit of chemical potentials).
+> >
+> > ---
+> >
+> > **Part 1 — $(0.55,\ 0.25,\ 0.20)$ to $(0.4,\ 0.4,\ 0.20)$**
+> >
+> > *Composition check:*
+> > - $\mathbf{c}^\alpha$: $0.55 + 0.25 + 0.20 = 1.00$ ✓
+> > - $\mathbf{c}^\beta$: $0.40 + 0.40 + 0.20 = 1.00$ ✓
+> >
+> > *Geometric feature:* Both endpoints have $c_C = 0.20$. The proposed tie-line is **parallel to the $AB$ binary baseline** at constant $c_C = 0.20$ — it lies entirely in the ternary interior, touching neither binary edge.
+> >
+> > *Thermodynamic check:* The partition coefficient of $C$ is:
+> > $$K_D^C = \frac{c_C^\alpha}{c_C^\beta} = \frac{0.20}{0.20} = 1$$
+> > Equal partitioning of $C$ between $\alpha$ and $\beta$ is physically realizable when the activity coefficients $\gamma_C^\alpha = \gamma_C^\beta$ at these compositions (e.g., in a symmetric miscibility gap or a quasi-binary section of the ternary). The chemical potential of $C$ is finite and equal in both phases. No condition is violated.
+> >
+> > **Conclusion: YES, this tie-line can exist.**
+> >
+> > ---
+> >
+> > **Part 2 — $(0.6,\ 0.4,\ 0.0)$ to $(0.3,\ 0.0,\ 0.70)$**
+> >
+> > *Composition check:*
+> > - $\mathbf{c}^1$: $0.60 + 0.40 + 0.00 = 1.00$ ✓ — lies on the **$AB$ binary edge** ($c_C = 0$)
+> > - $\mathbf{c}^2$: $0.30 + 0.00 + 0.70 = 1.00$ ✓ — lies on the **$AC$ binary edge** ($c_B = 0$)
+> >
+> > *Topological violation:* The two endpoints sit on **two different binary edges** of the Gibbs triangle. A ternary two-phase field has its phase boundary curves running through the interior of the triangle; they cannot have one endpoint on the $AB$ edge and the other on the $AC$ edge unless the two-phase region spans all the way across both binary sides — which would require both binary sub-systems $A$–$B$ and $A$–$C$ to themselves be two-phase at these compositions. That is an extraordinary coincidence and not a generic ternary two-phase field.
+> >
+> > *Chemical potential violation:* Using the dilute-solution limit $\mu_i \approx \mu_i^\circ + RT\ln c_i$:
+> > - At $\mathbf{c}^1$: $c_C = 0 \implies \mu_C^1 \to -\infty$, while at $\mathbf{c}^2$: $c_C = 0.70 \implies \mu_C^2$ is finite.
+> > - At $\mathbf{c}^2$: $c_B = 0 \implies \mu_B^2 \to -\infty$, while at $\mathbf{c}^1$: $c_B = 0.40 \implies \mu_B^1$ is finite.
+> >
+> > Equilibrium demands $\mu_C^1 = \mu_C^2$ and $\mu_B^1 = \mu_B^2$ — both are impossible simultaneously. The chemical potential divergence at $c_i = 0$ is a direct consequence of the configurational entropy of mixing ($\partial \Delta G_m / \partial c_i \to -\infty$ as $c_i \to 0$), so strict zero solubility is thermodynamically forbidden in solution phases.
+> >
+> > *Special exception:* The only scenario where this could be valid is if both endpoints are stoichiometric **line compounds** with absolute zero solubility for the absent component — not solution phases. For any real solution phases, this tie-line is impossible.
+> >
+> > **Conclusion: NO, this tie-line cannot exist for solution phases.**
+> >
+> > ---
+> >
+> > **Summary**
+> >
+> > | Tie-line | $c_i$ sum | Location | Valid? | Key reason |
+> > |:--|:--|:--|:--|:--|
+> > | $(0.55, 0.25, 0.20) \to (0.40, 0.40, 0.20)$ | 1.00 / 1.00 | Interior, parallel to $AB$ | **YES** | $K_D^C = 1$; both endpoints in ternary interior, no $c_i = 0$ |
+> > | $(0.60, 0.40, 0.00) \to (0.30, 0.00, 0.70)$ | 1.00 / 1.00 | $AB$ edge → $AC$ edge | **NO** | $\mu_C$ and $\mu_B$ diverge at $c_i = 0$; topological impossibility for solution phases |
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 128–129, Figs. 113–117; P. Gordon, Chapter 4, Section 4.7, pp. 64–65.
 
 > [!question] Q4b (3 marks) [OR]: Invariant reactions in the Cu–Zn binary phase diagram
 > Identify all invariant points in the Cu–Zn binary phase diagram (see exam paper) and name the associated reactions appropriately.
 > > [!success]- Solution (Click to expand)
 > > *(Answer to be filled in)*
+
+---
+
