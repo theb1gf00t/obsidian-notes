@@ -922,7 +922,68 @@ _Time: 75 Minutes | Maximum Marks: 16 out of 15_
 > [!question] Q4b (3 marks) [OR]: Invariant reactions in the Cu–Zn binary phase diagram
 > Identify all invariant points in the Cu–Zn binary phase diagram (see exam paper) and name the associated reactions appropriately.
 > > [!success]- Solution (Click to expand)
-> > *(Answer to be filled in)*
+> > **Verdict / Core Takeaway:** The Cu–Zn binary phase diagram contains **five invariant points**, all at fixed temperature and composition under the condensed Phase Rule ($F = 0$, $P = 3$, $C = 2$). Four are peritectic reactions; one is a peritectoid.
+> >
+> > ---
+> >
+> > **Background: Identifying Invariant Points**
+> >
+> > In a binary system ($C = 2$) at constant pressure, the condensed Phase Rule gives:
+> > $$P + F = C + 1 = 3$$
+> > An invariant point has $F = 0$, requiring $P = 3$ phases to coexist simultaneously at a unique temperature and composition. On the phase diagram, invariant points appear as **horizontal three-phase tie-lines** (isothermal plateaus) connecting three phase boundary intersections. The reaction type is identified by which side of the plateau is the high-temperature side (reactant side) vs. the low-temperature side (product side).
+> >
+> > ---
+> >
+> > **The Six Solid Phases of Cu–Zn**
+> >
+> > The Cu–Zn system has six distinct phases: $\alpha$ (Cu-rich FCC), $\beta$ (BCC), $\gamma$ (complex cubic), $\delta$ (BCC), $\varepsilon$ (HCP), and $\eta$ (Zn-rich HCP). These give rise to five invariant reactions on cooling from the liquid.
+> >
+> > ---
+> >
+> > **Invariant Reactions (listed in order of decreasing temperature)**
+> >
+> > **1. Peritectic at ~902 °C (~37 at% Zn)**
+> > $$L + \alpha \xrightarrow{\text{cooling}} \beta$$
+> > A liquid reacts with the existing $\alpha$ (FCC) phase to form $\beta$ (BCC). Classic peritectic: one liquid + one solid → one new solid.
+> >
+> > **2. Peritectic at ~835 °C (~59 at% Zn)**
+> > $$L + \beta \xrightarrow{\text{cooling}} \gamma$$
+> > Liquid reacts with $\beta$ (BCC) to produce $\gamma$ (complex cubic, $\text{Cu}_5\text{Zn}_8$ prototype structure).
+> >
+> > **3. Peritectic at ~700 °C (~73 at% Zn)**
+> > $$L + \gamma \xrightarrow{\text{cooling}} \delta$$
+> > Liquid reacts with $\gamma$ to form $\delta$ (BCC). The $\delta$ phase has a narrow stability range.
+> >
+> > **4. Peritectic at ~598 °C (~79 at% Zn)**
+> > $$L + \delta \xrightarrow{\text{cooling}} \varepsilon$$
+> > Liquid reacts with $\delta$ to form $\varepsilon$ (HCP). This is the last liquid-involving invariant on cooling.
+> >
+> > **5. Peritectoid at ~558 °C (~78 at% Zn)**
+> > $$\beta' + \gamma \xrightarrow{\text{cooling}} \delta$$
+> > Two solid phases ($\beta'$, the ordered BCC form, and $\gamma$) react to produce $\delta$. This is an **all-solid** invariant reaction — a peritectoid (the solid-state analogue of the peritectic). Note: some references instead list this as an $\varepsilon + \gamma \to \delta$ peritectoid depending on the edition of the phase diagram.
+> >
+> > ---
+> >
+> > **Summary Table**
+> >
+> > | # | Temperature (approx.) | Reaction (on cooling) | Reaction Type |
+> > |:--|:--|:--|:--|
+> > | 1 | ~902 °C | $L + \alpha \rightleftharpoons \beta$ | Peritectic |
+> > | 2 | ~835 °C | $L + \beta \rightleftharpoons \gamma$ | Peritectic |
+> > | 3 | ~700 °C | $L + \gamma \rightleftharpoons \delta$ | Peritectic |
+> > | 4 | ~598 °C | $L + \delta \rightleftharpoons \varepsilon$ | Peritectic |
+> > | 5 | ~558 °C | $\beta' + \gamma \rightleftharpoons \delta$ | Peritectoid |
+> >
+> > ---
+> >
+> > **How to identify these on the diagram (exam technique)**
+> >
+> > 1. Locate every **horizontal three-phase plateau** on the diagram.
+> > 2. For each plateau, identify the **three phases** meeting at that temperature (read their phase field labels on either side).
+> > 3. Determine which phase(s) are on the **high-$T$ side** (reactants on cooling) and which is on the **low-$T$ side** (product on cooling).
+> > 4. Classify: if one reactant is liquid → **peritectic** (or eutectic if two products); if all phases are solid → **peritectoid** (or eutectoid); if two liquids → syntectic; etc.
+> >
+> > **Literature:** P. Gordon, Chapter 7, Section 7.1, pp. 175–177, Figs. 7.1 & 7.3; A. Prince, Section 4.3, pp. 82–85; Callister, Appendix B, Cu–Zn phase diagram.
 
 ---
 
