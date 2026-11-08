@@ -566,127 +566,96 @@
 > For a connected graph $G$, the following are equivalent: (a) $G$ is a tree; (b) $G$ contains no $S(K_3)$; (c) $G$ contains no $K_3$-minor.
 
 
+---
 
-### **Necessary Theory (Brief Overview)**
-
-#### **1. Vertex Coloring**
-
-- **Definition**: A proper \(k\)-vertex-coloring of a simple graph \(G = (V, E)\) is a function \(f: V(G) \to {1, 2, \dots, k}\) such that \(uv \in E(G) \implies f(u) \ne f(v)\). Equivalently, it partitions \(V(G)\) into \(k\) disjoint **independent sets** \(V_1, V_2, \dots, V_k\).
-- **Vertex Chromatic Number \(\chi(G)\)**: The minimum integer \(k\) for which \(G\) admits a proper \(k\)-vertex-coloring.
-- **Key Bounds**:
-    1. **Clique Lower Bound**: \(\chi(G) \ge \omega(G)\), where \(\omega(G)\) is the maximum clique size in \(G\).
-    2. **Independence Lower Bound**: \(\chi(G) \ge \frac{n(G)}{\alpha_0(G)}\), where \(n(G)\) is the order and \(\alpha_0(G)\) is the vertex-independence number.
-    3. **Greedy Upper Bound**: \(\chi(G) \le \Delta(G) + 1\), where \(\Delta(G)\) is the maximum vertex degree.
-    4. **Brooks' Theorem**: \(\chi(G) \le \Delta(G)\) for any connected graph \(G\) unless \(G\) is a complete graph \(K_n\) or an odd cycle \(C_{2p+1}\).
-    5. **Bipartite Graphs (König)**: \(\chi(G) \le 2 \iff G\) contains no odd cycles.
+## Miscellaneous
 
 ---
 
-#### **2. Edge Coloring**
+### Necessary Theory (Brief Overview)
 
-- **Definition**: A proper \(k\)-edge-coloring of a loopless graph \(G = (V, E)\) is a function \(C: E(G) \to {1, 2, \dots, k}\) such that adjacent edges (edges sharing a common vertex) receive distinct colors. Equivalently, it partitions \(E(G)\) into \(k\) disjoint **matchings** \(M_1, M_2, \dots, M_k\).
-- **Chromatic Index / Edge-Chromatic Number \(\chi_1(G)\)**: The minimum integer \(k\) for which \(G\) admits a proper \(k\)-edge-coloring.
-- **Key Bounds & Classification**:
-    1. **Trivial Degree Lower Bound**: \(\chi_1(G) \ge \Delta(G)\), because all edges incident to a vertex of maximum degree \(\Delta(G)\) must receive distinct colors.
-    2. **Gupta-Vizing Theorem**: For any simple graph \(G\), \(\Delta(G) \le \chi_1(G) \le \Delta(G) + 1\).
-        - Graphs with \(\chi_1(G) = \Delta(G)\) are called **Class-1**.
-        - Graphs with \(\chi_1(G) = \Delta(G) + 1\) are called **Class-2**.
-    3. **König's Edge-Coloring Theorem**: Every bipartite graph \(G\) is Class-1, i.e., \(\chi_1(G) = \Delta(G)\).
-    4. **Line Graph Identity**: \(\chi_1(G) = \chi(L(G))\), where \(L(G)\) is the line graph of \(G\).
+> [!note] Vertex Coloring — Definition & Key Bounds
+> A proper $k$-vertex-coloring of a simple graph $G = (V, E)$ is a function $f: V(G) \to \{1, 2, \dots, k\}$ such that $uv \in E(G) \implies f(u) \ne f(v)$. Equivalently, it partitions $V(G)$ into $k$ disjoint **independent sets** $V_1, V_2, \dots, V_k$.
+>
+> **Chromatic Number $\chi(G)$:** The minimum $k$ for which $G$ admits a proper $k$-vertex-coloring.
+>
+> **Key Bounds:**
+> 1. **Clique Lower Bound:** $\chi(G) \ge \omega(G)$
+> 2. **Independence Lower Bound:** $\chi(G) \ge \dfrac{n(G)}{\alpha_0(G)}$
+> 3. **Greedy Upper Bound:** $\chi(G) \le \Delta(G) + 1$
+> 4. **Brooks' Theorem:** $\chi(G) \le \Delta(G)$ for any connected $G$ unless $G \cong K_n$ or $G \cong C_{2p+1}$
+> 5. **Bipartite (König):** $\chi(G) \le 2 \iff G$ contains no odd cycles
 
----
-
-### **Detailed Mathematical Comparison of Approaches and Proof Techniques**
-
-When approaching questions or constructing proofs, vertex coloring and edge coloring require fundamentally different mindsets, techniques, and structural perspectives.
-
----
-
-#### **1. Fundamental Units of Partitioning**
-
-- **Vertex Coloring Approach**:
-    
-    - Focuses on **vertex partitioning** into independent sets \(V(G) = V_1 \cup V_2 \cup \dots \cup V_k\).
-    - Questions revolve around bounding the size of independent sets \(\alpha_0(G)\) and determining how many independent sets are required to cover all vertices \(V(G)\).
-    - Local dense subgraphs (cliques \(K_r\)) force the chromatic number upward (\(\chi(G) \ge r\)).
-- **Edge Coloring Approach**:
-    
-    - Focuses on **edge partitioning** into matchings \(E(G) = M_1 \cup M_2 \cup \dots \cup M_k\).
-    - Questions revolve around decomposing the edge set into 1-factors or matchings.
-    - Local star subgraphs \(K_{1, \Delta}\) force the chromatic index upward (\(\chi_1(G) \ge \Delta(G)\)).
+> [!note] Edge Coloring — Definition & Key Bounds
+> A proper $k$-edge-coloring of a loopless graph $G = (V, E)$ is a function $C: E(G) \to \{1, 2, \dots, k\}$ such that adjacent edges (sharing a common vertex) receive distinct colors. Equivalently, it partitions $E(G)$ into $k$ disjoint **matchings** $M_1, M_2, \dots, M_k$.
+>
+> **Chromatic Index $\chi_1(G)$:** The minimum $k$ for which $G$ admits a proper $k$-edge-coloring.
+>
+> **Key Bounds & Classification:**
+> 1. **Trivial Degree Lower Bound:** $\chi_1(G) \ge \Delta(G)$
+> 2. **Gupta–Vizing Theorem:** $\Delta(G) \le \chi_1(G) \le \Delta(G) + 1$; graphs are **Class 1** ($\chi_1 = \Delta$) or **Class 2** ($\chi_1 = \Delta + 1$)
+> 3. **König's Edge-Coloring Theorem:** Every bipartite graph is Class 1
+> 4. **Line Graph Identity:** $\chi_1(G) = \chi(L(G))$
 
 ---
 
-#### **2. Bounding Strategy and Decision Gap**
+### Detailed Comparison: Vertex vs. Edge Coloring Approaches
 
-- **Vertex Coloring Approach (Unbounded Local-Global Gap)**:
-    
-    - Knowing the local structure (\(\omega(G)\) or \(\Delta(G)\)) does **not** pin down \(\chi(G)\) tightly.
-    - By **Mycielski's Theorem**, there exist triangle-free graphs (\(\omega(G) = 2\)) with arbitrarily large vertex chromatic numbers (\(\chi(G) = k\)).
-    - Consequently, proofs in vertex coloring must analyze global cycles, topological embeddings (e.g., planarity), or sequential vertex orderings rather than relying strictly on local degree bounds.
-- **Edge Coloring Approach (Strict Binary Dichotomy)**:
-    
-    - By the **Gupta-Vizing Theorem**, \(\chi_1(G)\) can take **only one of two possible values**: \(\Delta(G)\) or \(\Delta(G) + 1\).
-    - Proving an edge coloring result reduces entirely to deciding whether \(G\) is **Class-1** or **Class-2**.
-    - To prove \(G\) is Class-1, you construct a \(\Delta(G)\)-edge-coloring.
-    - To prove \(G\) is Class-2, you show that the edge density exceeds what can be accommodated by \(\Delta(G)\) matchings: \[m(G) > \Delta(G) \cdot \alpha_1(G) \implies \chi_1(G) = \Delta(G) + 1 \quad \text{}\] In particular, for a simple regular graph \(G\) on an odd number of vertices \(n\), every matching has size at most \(\frac{n-1}{2}\), so: \[m(G) = \frac{n \cdot \Delta(G)}{2} > \Delta(G) \cdot \frac{n-1}{2} \implies \chi_1(G) = \Delta(G) + 1 \quad \text{}\]
+> [!abstract] Fundamental Units of Partitioning
+> **Vertex Coloring:**
+> - Partitions $V(G)$ into independent sets; local cliques $K_r$ force $\chi(G) \ge r$.
+>
+> **Edge Coloring:**
+> - Partitions $E(G)$ into matchings; local stars $K_{1,\Delta}$ force $\chi_1(G) \ge \Delta(G)$.
 
----
+> [!abstract] Bounding Strategy and Decision Gap
+> **Vertex Coloring (Unbounded Local–Global Gap):**
+> - Local structure ($\omega(G)$ or $\Delta(G)$) does **not** pin down $\chi(G)$ tightly.
+> - By Mycielski's Theorem, triangle-free graphs ($\omega = 2$) can have arbitrarily large $\chi(G)$.
+> - Proofs must analyze global cycles, topological embeddings, or sequential vertex orderings.
+>
+> **Edge Coloring (Strict Binary Dichotomy):**
+> - $\chi_1(G)$ takes **only one of two values**: $\Delta(G)$ or $\Delta(G) + 1$.
+> - To prove Class 2, show edge density exceeds $\Delta(G)$ matchings:
+> $$m(G) > \Delta(G) \cdot \alpha_1(G) \implies \chi_1(G) = \Delta(G) + 1$$
+> - For a $\Delta$-regular graph on an odd number of vertices $n$:
+> $$m(G) = \frac{n \cdot \Delta(G)}{2} > \Delta(G) \cdot \frac{n-1}{2} \implies \chi_1(G) = \Delta(G) + 1$$
 
-#### **3. Core Proof Techniques**
+> [!abstract] Core Proof Techniques — Vertex Coloring
+> **1. Greedy / Sequential Ordering:**
+> - Order vertices $v_1, v_2, \dots, v_n$ by a structural strategy (e.g., reverse perfect elimination ordering for chordal graphs, or by distance from a minimum-degree vertex for Brooks' Theorem).
+> - Assign the smallest available color to $v_i$ not conflicting with $N(v_i) \cap \{v_1, \dots, v_{i-1}\}$.
+>
+> **2. Kempe Chains (Color Swapping):**
+> - Let $G_{i,j}$ be the subgraph induced by vertices colored $i$ and $j$.
+> - If two target vertices lie in **different components** of $G_{i,j}$, swap colors $i \leftrightarrow j$ in one component to free a color — used in the 5-Color Theorem and Brooks' Theorem.
+>
+> **3. Inductive Constructions (Mycielski):**
+> - Build $G_{k+1}$ from $G_k$ by adding shadow vertices $u_1, \dots, u_p$ (duplicating neighborhoods of $v_1, \dots, v_p$) and an apex $z$ joined to all shadow vertices.
 
-##### **A. Vertex Coloring Proof Techniques**
+> [!abstract] Core Proof Techniques — Edge Coloring
+> **1. Missing Colors & Vizing Fan Recoloring:**
+> - At any vertex $x$ in a $(\Delta+1)$-edge-coloring of $G - e$, at least one color is missing since $\deg(x) \le \Delta$.
+> - Construct a **Vizing Fan** $(u, v_0), (u, v_1), \dots, (u, v_t)$ at pivot $u$, where color $\alpha_{i+1}$ is missing at $v_i$; shift colors along the fan to eliminate conflicts.
+>
+> **2. Alternating $\alpha$-$\beta$ Paths:**
+> - Build a maximal path $P$ from fan vertex $v_t$ alternating between colors $\alpha$ and $\beta$.
+> - Swapping $\alpha \leftrightarrow \beta$ along $P$ breaks cyclic dependencies, allowing the uncolored edge $e = (u, v_0)$ to be colored with $\Delta + 1$ colors.
+>
+> **3. Regularization and Bipartite Matching Extensions:**
+> - To prove $\chi_1(G) = \Delta(G)$ for bipartite $G$: embed $G$ into a $\Delta(G)$-regular bipartite supergraph $H$, then partition $E(H)$ into $\Delta(G)$ perfect matchings via Hall's Marriage Theorem.
 
-1. **Greedy / Sequential Ordering Method**:
-    
-    - Order the vertices \(v_1, v_2, \dots, v_n\) according to a specific structural strategy (e.g., reverse Perfect Elimination Ordering for chordal graphs, or ordering by distance from a vertex of minimum degree in Brooks' Theorem).
-    - Assign the smallest available color to \(v_i\) that does not conflict with its already-colored predecessors \(N(v_i) \cap {v_1, \dots, v_{i-1}}\).
-2. **Kempe Chains (Color Swapping along Subgraphs)**:
-    
-    - Consider the subgraphs \(G_{i,j}\) induced by vertices colored with colors \(i\) and \(j\).
-    - If two target vertices \(u\) and \(v\) belong to **different connected components** of \(G_{i,j}\), interchanging colors \(i \leftrightarrow j\) in one component frees up a color for an uncolored vertex without violating propriety.
-    - Used extensively in proving the **5-Color Theorem** for planar graphs and **Brooks' Theorem**.
-3. **Inductive Constructions (e.g., Mycielski's Method)**:
-    
-    - Build \(G_{k+1}\) from \(G_k\) by introducing \(p\) shadow vertices \(u_1, \dots, u_p\) duplicating the neighborhood of \(v_1, \dots, v_p\) and a single apex vertex \(z\) connected to all shadow vertices.
+> [!important] Summary of Methodological Differences
+> | Aspect | Vertex Coloring | Edge Coloring |
+> |:--|:--|:--|
+> | **Problem** | Partition $V(G)$ into $k$ independent sets? | Partition $E(G)$ into $k$ matchings? |
+> | **Lower bound** | Clique number $\omega(G)$ | Maximum degree $\Delta(G)$ |
+> | **Upper bound** | $\Delta(G) + 1$ (greedy), $\Delta(G)$ (Brooks) | $\Delta(G) + 1$ (Vizing) |
+> | **Gap** | Unbounded (Mycielski) | Binary: Class 1 or Class 2 |
+> | **Key invariants** | $\omega(G)$, $\alpha_0(G)$, $\Delta(G)$ | $\Delta(G)$, $m(G)$, $\alpha_1(G)$ |
+> | **Proof mechanics** | Vertex orderings, Kempe chains, planarity bounds | Vizing fans, alternating 2-color paths, bipartite regularization |
 
-##### **B. Edge Coloring Proof Techniques**
-
-1. **Missing Colors & Vizing's Fan Recoloring**:
-    
-    - At any vertex \(x\) in a \((\Delta + 1)\)-edge-coloring of \(G - e\), there is always at least one missing color because \(\text{deg}(x) \le \Delta < \Delta + 1\).
-    - Construct a **Vizing Fan** of edges \((u, v_0), (u, v_1), \dots, (u, v_t)\) incident to a pivot vertex \(u\), where \(\alpha_{i+1}\) is a color missing at \(v_i\).
-    - Shift the edge colors iteratively along the fan to systematically eliminate color conflicts.
-2. **Alternating \(\alpha\text{-}\beta\) Paths**:
-    
-    - Construct a maximal path \(P\) starting at a fan vertex \(v_t\) whose edges alternate between two colors \(\alpha\) and \(\beta\).
-    - Swapping colors \(\alpha \leftrightarrow \beta\) along \(P\) breaks cyclic dependencies in the missing-color chain, allowing the uncolored edge \(e = (u, v_0)\) to be properly colored with \(\Delta + 1\) colors.
-3. **Regularization and Bipartite Matching Extensions**:
-    
-    - To prove \(\chi_1(G) = \Delta(G)\) for a bipartite graph \(G\), embed \(G\) into a \(\Delta(G)\)-regular bipartite supergraph \(H\).
-    - Partition \(E(H)\) into \(\Delta(G)\) perfect matchings using **Hall's Marriage Theorem**, which directly induces a proper \(\Delta(G)\)-edge-coloring on \(G\).
-
----
-
-#### **4. Summary of Methodological Differences**
-
-- **Problem Formulation**:
-    
-    - Vertex coloring asks: _"Can we partition the vertex set \(V(G)\) into \(k\) independent sets?"_
-    - Edge coloring asks: _"Can we partition the edge set \(E(G)\) into \(k\) matchings?"_
-- **Critical Invariants**:
-    
-    - Vertex coloring relies on finding large **cliques** \(\omega(G)\) for lower bounds and **vertex degrees** \(\Delta(G)\) for upper bounds.
-    - Edge coloring relies on the **maximum degree** \(\Delta(G)\) as the universal baseline, with **edge count and matching numbers** \(m(G)/\alpha_1(G)\) determining Class-1 vs. Class-2 status.
-- **Standard Proof Mechanics**:
-    
-    - Vertex coloring relies on **vertex ordering algorithms**, **Kempe chain component swaps**, and **planar face/component bounds**.
-    - Edge coloring relies on **Vizing fans**, **alternating two-color paths**, and **regular bipartite matching extensions**.
-
----
-
-### **Visual Comparison**
-
-The illustration below depicts the structural distinction between vertex coloring and edge coloring on the \(5\)-cycle \(C_5\):
-
---Image of: --Vertex vs Edge Coloring Comparison
+> [!note] Visual Comparison
+> The illustration below depicts the structural distinction between vertex coloring and edge coloring on the $5$-cycle $C_5$:
+>
+> --Image of: --Vertex vs Edge Coloring Comparison
