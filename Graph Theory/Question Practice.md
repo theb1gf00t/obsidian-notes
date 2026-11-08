@@ -2230,7 +2230,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > Since $\delta$ increases by exactly $1$ per iteration, the number of iterations $t$ required to go from $\delta(G)$ to $\Delta(G)$ is:
 > >
 > > $$\boxed{t = \Delta(G) - \delta(G)}$$
-1
+
 > [!question] Q3: Degree Sum Bound When $\chi_1(G) = \Delta(G) + 1$
 > Let $G$ be a graph with $\chi_1(G) = \Delta(G) + 1$. Let $e(u,v)$ be an edge such that $\chi_1(G-e) = \Delta(G)$. Show that $\deg_G(u) + \deg_G(v) \ge \Delta(G) + 2$.
 >
@@ -3525,7 +3525,6 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > $$n = 2(12)+2h-4 \implies \boxed{n = 20+2h}$$
 > >
 > > **The motivational problem.** This result — exactly 12 pentagonal faces, with the vertex count given by $n=20+2h$ — is the graph-theoretic solution to the **soccer ball / fullerene problem** raised in Chapter 1 (Module 1, §1.1, "Discovery of graphs"): the question of how many pentagons and hexagons can tile a surface like a soccer ball (or, chemically, a fullerene molecule such as $C_{60}$, Buckminsterfullerene) so that exactly 3 faces meet at every vertex. The case $h=0$ gives $n=20$ (the dodecahedron/regular pentagonal tiling with 12 pentagons, no hexagons), and $h=20$ gives $n=60$ — exactly the structure of the classic soccer ball and the $C_{60}$ fullerene (12 pentagons + 20 hexagons, 60 vertices).
-
 
 
 
