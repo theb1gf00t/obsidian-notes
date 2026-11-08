@@ -684,3 +684,144 @@ graph TD
 > > 4. **Conclusion:** Both contradictions are irresolvable, so the hypothesis is false. Tie-lines across a two-phase field form a continuous, **non-intersecting** sequence.
 > >
 > > **References:** A. Prince, Chapter 8, Section 8.4, p. 128, Item (3) & Fig. 115; P. Gordon, Chapter 3, Section 3.3, pp. 21–23.
+
+
+
+
+
+---
+
+## Quiz 2 — MT-205 Phase Diagrams
+
+**Even Semester 2026–2027 | Department of Metallurgical Engineering, IIT-BHU**
+_Time: 75 Minutes | Maximum Marks: 16 out of 15_
+
+> [!question] Q1 (7 marks): Nucleation in a closed container — critical radii and nucleation mode
+> In a closed container, $\beta$ phase is present at a temperature and pressure where it is unstable. The $\alpha$ phase is the stablest phase for these conditions. The latent heat associated with the $\beta \to \alpha$ transformation is negligible. The molar volume difference between the two phases is also negligible. Let $\gamma_{\alpha\beta}$, $\gamma_{\alpha w}$, and $\gamma_{\beta w}$ be the interfacial energies of the $\alpha/\beta$, $\alpha/\text{wall}$, and $\beta/\text{wall}$ surfaces respectively.
+>
+> **(i) (1 + 3 marks):** Derive the explicit formulae for the critical radii of homogeneous and heterogeneous nucleation possible in the container.
+>
+> **(ii) (1 mark):** Given $\gamma_{\alpha\beta} = 0.1\ \text{J/m}^2$, $\gamma_{\alpha w} = 0.5\ \text{J/m}^2$, $\gamma_{\beta w} = 0.75\ \text{J/m}^2$ — which nucleation event is more likely, and why?
+>
+> **(iii) (2 marks):** Given $\gamma_{\alpha\beta} = 0.1\ \text{J/m}^2$, $\gamma_{\alpha w} = 2.0\ \text{J/m}^2$, $\gamma_{\beta w} = 1.0\ \text{J/m}^2$ — which nucleation event is more likely, and why?
+> > [!success]- Solution (Click to expand)
+> > *(Answer to be filled in)*
+
+> [!question] Q2 (3 marks): Collinearity and lever rule on the Gibbs triangle
+> If on the Gibbs triangle, a system of overall composition $(c_A^0, c_B^0, c_C^0)$ splits into two homogeneous phases of compositions $(c_A^\alpha, c_B^\alpha, c_C^\alpha)$ and $(c_A^\beta, c_B^\beta, c_C^\beta)$, show that all three compositions necessarily lie on a straight line. Derive the phase fractions of each of the two phases that formed.
+> > [!success]- Solution (Click to expand)
+> > *(Answer to be filled in)*
+
+> [!question] Q3 (3 marks): Invariance of mole-fraction ratio along a median line of the Gibbs triangle
+> On a Gibbs triangle, show that for the entire line joining one vertex to the opposite edge, the ratio of the mole fractions of the components lying on either side of that edge is invariant.
+> > [!success]- Solution (Click to expand)
+> > *(Answer to be filled in)*
+
+> [!question] Q4a (3 marks): Validity of given tie-lines on the Gibbs triangle
+> Can there ever exist a phase diagram in which a tie-line of a two-phase coexistence region extends from $(0.55,\ 0.25,\ 0.20)$ to $(0.4,\ 0.4,\ 0.20)$? Why or why not? How about one extending from $(0.6,\ 0.4,\ 0.0)$ to $(0.3,\ 0.0,\ 0.70)$? Why?
+> > [!success]- Solution (Click to expand)
+> > *(Answer to be filled in)*
+
+> [!question] Q4b (3 marks) [OR]: Invariant reactions in the Cu–Zn binary phase diagram
+> Identify all invariant points in the Cu–Zn binary phase diagram (see exam paper) and name the associated reactions appropriately.
+> > [!success]- Solution (Click to expand)
+> > *(Answer to be filled in)*
+
+
+Here is the complete, step-by-step analytical and numerical solution for **Question 1** from your **MT-205 Phase Diagrams Quiz 2**.
+
+---
+
+### **Question 1 Problem Statement**
+
+> In a closed container, \(\beta\) phase is present at a temperature and a pressure where it is unstable. The \(\alpha\) phase is the stablest phase for these temperature and pressure conditions. The latent heat associated with the \(\beta\) to \(\alpha\) transformation is seen to be quite negligible. Also, the molar volume difference between the two phases is negligible.
+> 
+> _(i)_ If \(\gamma_{\alpha\beta}\), \(\gamma_{\alpha w}\), and \(\gamma_{\beta w}\) are the interfacial energies of the \(\alpha/\beta\), \(\alpha/\text{wall}\), and \(\beta/\text{wall}\) surfaces, derive the explicit formulae for the critical radii of homogeneous and heterogeneous nucleations possible in the container. _(1 + 3 marks)_  
+> _(ii)_ If \(\gamma_{\alpha\beta} = 0.1\text{ J/m}^2\), \(\gamma_{\alpha w} = 0.5\text{ J/m}^2\), and \(\gamma_{\beta w} = 0.75\text{ J/m}^2\): Which nucleation event is more likely to happen, and why? _(1 mark)_  
+> _(iii)_ If \(\gamma_{\alpha\beta} = 0.1\text{ J/m}^2\), \(\gamma_{\alpha w} = 2.0\text{ J/m}^2\), and \(\gamma_{\beta w} = 1.0\text{ J/m}^2\): Which nucleation event is more likely to happen, and why? _(2 marks)_
+
+---
+
+### __Part (i): Derivation of Critical Radii (\(r^__{\text{hom}}\) and \(r^__{\text{het}}\))**
+
+Let \(\Delta G_v = G_v^\beta - G_v^\alpha > 0\) be the driving force for phase transformation (volume Gibbs free energy reduction per unit volume of \(\alpha\) formed).
+
+#### **1. Homogeneous Nucleation**
+
+For homogeneous nucleation in the bulk \(\beta\) matrix, an \(\alpha\) embryo forms as a sphere of radius \(r\).
+
+The net free energy change \(\Delta G_{\text{hom}}(r)\) is the sum of the volume free energy gain and the surface free energy penalty: \[\Delta G_{\text{hom}}(r) = -\frac{4}{3}\pi r^3 \Delta G_v + 4\pi r^2 \gamma_{\alpha\beta}\]
+
+To find the critical radius \(r^*_{\text{hom}}\), set the derivative with respect to \(r\) equal to zero: \[\frac{d(\Delta G_{\text{hom}})}{dr} = -4\pi r^2 \Delta G_v + 8\pi r \gamma_{\alpha\beta} = 0\]
+
+Solving for \(r\): \[\mathbf{r^*_{\text{hom}} = \frac{2\gamma_{\alpha\beta}}{\Delta G_v}}\]
+
+---
+
+#### **2. Heterogeneous Nucleation**
+
+For heterogeneous nucleation on a flat container wall (\(w\)), an \(\alpha\) embryo forms as a spherical cap of radius of curvature \(r\) with a contact angle \(\theta\).
+
+**Mechanical Equilibrium (Young's Equation):**  
+At the three-phase contact junction (\(\alpha - \beta - \text{wall}\)), balancing horizontal surface tension components gives: \[\gamma_{\beta w} = \gamma_{\alpha w} + \gamma_{\alpha\beta} \cos\theta \implies \cos\theta = \frac{\gamma_{\beta w} - \gamma_{\alpha w}}{\gamma_{\alpha\beta}}\]
+
+**Free Energy Change:**  
+The volume of the spherical cap and its interfacial areas are:
+
+- **Cap Volume:** \(V_{\text{cap}} = \frac{4}{3}\pi r^3 S(\theta)\)
+- **Curved \(\alpha/\beta\) Interface Area:** \(A_{\alpha\beta} = 2\pi r^2 (1 - \cos\theta)\)
+- **Flat \(\alpha/\text{wall}\) Contact Area Created:** \(A_{\alpha w} = \pi r^2 \sin^2\theta = \pi r^2 (1 - \cos^2\theta)\)
+- **\(\beta/\text{wall}\) Area Destroyed:** \(A_{\beta w} = A_{\alpha w}\)
+
+where the geometric shape factor \(S(\theta)\) is defined as: \[S(\theta) = \frac{(2 + \cos\theta)(1 - \cos\theta)^2}{4}\]
+
+Substituting these geometric terms into the total free energy equation: \[\Delta G_{\text{het}}(r) = -V_{\text{cap}} \Delta G_v + A_{\alpha\beta} \gamma_{\alpha\beta} + A_{\alpha w} \gamma_{\alpha w} - A_{\beta w} \gamma_{\beta w}\]
+
+Using \(\gamma_{\beta w} - \gamma_{\alpha w} = \gamma_{\alpha\beta} \cos\theta\), the net surface term simplifies directly to \(4\pi r^2 \gamma_{\alpha\beta} S(\theta)\), giving: \[\Delta G_{\text{het}}(r) = \left( -\frac{4}{3}\pi r^3 \Delta G_v + 4\pi r^2 \gamma_{\alpha\beta} \right) S(\theta) = \Delta G_{\text{hom}}(r) \cdot S(\theta)\]
+
+Setting \(\frac{d(\Delta G_{\text{het}})}{dr} = 0\): \[\left( -4\pi r^2 \Delta G_v + 8\pi r \gamma_{\alpha\beta} \right) S(\theta) = 0\]
+
+Since \(S(\theta) > 0\) for any non-zero contact angle: \[\mathbf{r^*_{\text{het}} = \frac{2\gamma_{\alpha\beta}}{\Delta G_v}}\]
+
+> **Key Conclusion for Part (i):**  
+> Both homogeneous and heterogeneous nucleation share the **exact same critical radius of curvature**:  
+> \[r^*_{\text{hom}} = r^*_{\text{het}} = \frac{2\gamma_{\alpha\beta}}{\Delta G_v}\]
+
+---
+
+### **Part (ii): Case Evaluation (\(\gamma_{\alpha\beta} = 0.1\text{ J/m}^2\), \(\gamma_{\alpha w} = 0.5\text{ J/m}^2\), \(\gamma_{\beta w} = 0.75\text{ J/m}^2\))**
+
+Substitute the values into Young's equation to evaluate \(\cos\theta\): \[\cos\theta = \frac{\gamma_{\beta w} - \gamma_{\alpha w}}{\gamma_{\alpha\beta}} = \frac{0.75 - 0.5}{0.1} = \frac{0.25}{0.1} = 2.5\]
+
+#### **Physical Analysis:**
+
+- Mathematically, \(\cos\theta = 2.5 > 1\), which indicates **complete wetting (\(\theta = 0^\circ\))**.
+- Looking at the surface energy balance: \[\gamma_{\alpha w} + \gamma_{\alpha\beta} = 0.5 + 0.1 = 0.6\text{ J/m}^2 < \gamma_{\beta w} = 0.75\text{ J/m}^2\]
+- Replacing a \(\beta/\text{wall}\) interface with an \(\alpha/\text{wall}\) interface plus an \(\alpha/\beta\) interface results in a net decrease in interfacial energy (\(\Delta\gamma = -0.15\text{ J/m}^2 < 0\)).
+- Consequently, the shape factor \(S(0^\circ) = 0\), meaning the activation energy barrier for heterogeneous nucleation vanishes (\(\Delta G^*_{\text{het}} = 0\)).
+
+#### **Conclusion for Part (ii):**
+
+**Heterogeneous nucleation** is far more likely to occur (in fact, \(\alpha\) will nucleate spontaneously on the container wall with **zero activation energy barrier**).
+
+---
+
+### **Part (iii): Case Evaluation (\(\gamma_{\alpha\beta} = 0.1\text{ J/m}^2\), \(\gamma_{\alpha w} = 2.0\text{ J/m}^2\), \(\gamma_{\beta w} = 1.0\text{ J/m}^2\))**
+
+Substitute the values into Young's equation: \[\cos\theta = \frac{\gamma_{\beta w} - \gamma_{\alpha w}}{\gamma_{\alpha\beta}} = \frac{1.0 - 2.0}{0.1} = \frac{-1.0}{0.1} = -10\]
+
+#### **Physical Analysis:**
+
+- Mathematically, \(\cos\theta \le -1\), which corresponds to **complete non-wetting (\(\theta = 180^\circ\))**.
+- Looking at the surface energy balance: \[\gamma_{\alpha w} = 2.0\text{ J/m}^2 > \gamma_{\beta w} + \gamma_{\alpha\beta} = 1.0 + 0.1 = 1.1\text{ J/m}^2\]
+- The container wall strongly prefers contact with the \(\beta\) phase. Forming \(\alpha\) on the wall is surface-energy unfavorable.
+- For \(\theta = 180^\circ\), the shape factor becomes \(S(180^\circ) = 1.0\), which means: \[\Delta G^*_{\text{het}} = \Delta G^*_{\text{hom}} \cdot S(180^\circ) = \Delta G^*_{\text{hom}}\]
+- Since the energy barrier to form a critical nucleus on the wall is identical to that in the bulk (\(\Delta G^*_{\text{het}} = \Delta G^*_{\text{hom}}\)), but the **3D volume of the bulk matrix offers infinitely more available nucleation sites than the 2D surface of the wall**, nucleation in the bulk is kinetics-dominated.
+
+#### **Conclusion for Part (iii):**
+
+**Homogeneous nucleation** in the bulk \(\beta\) matrix is far more likely to happen because heterogeneous nucleation offers no energy advantage (\(S(\theta) = 1.0\)) and container walls provide significantly fewer nucleation sites compared to the bulk volume.
+
+---
+
+📘 _Feel free to ask if you would like me to solve Question 2, Question 3, or Question 4 from your quiz paper in similar detail!_
