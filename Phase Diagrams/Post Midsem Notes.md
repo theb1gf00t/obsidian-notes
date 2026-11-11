@@ -987,3 +987,256 @@ _Time: 75 Minutes | Maximum Marks: 16 out of 15_
 
 ---
 
+## Lecture 6: Median Lines, Konovalov's Rule & Isothermal Section Validity in Ternary Systems
+
+### 1. Underlying Theory & Foundations
+
+#### A. Thermodynamic & Kinetic Principles
+
+- A **median line** of the Gibbs triangle (vertex-to-opposite-edge line, e.g. $A$ to a point on $BC$) is the locus along which the **ratio of the two components defining the opposite edge stays fixed**, while the fraction of the vertex component varies continuously from 0 (at the edge) to 1 (at the vertex).
+- Distinct median lines from the same vertex (e.g. $Ad$ and $Ae$, $Ad$ and $Af$ landing at different points on $BC$) carry **different, but each individually invariant, component ratios** — the ratio is a property of *which* median line you are on, not a universal constant of the triangle.
+- **Konovalov's Rule** governs liquidus/solidus (or any two-phase boundary pair) behaviour at a composition extremum (maximum or minimum boiling/melting point): at such an extremum, the vapor (or liquid) and the coexisting liquid (or solid) phases must have **identical composition**, and the extremum is a point of **tangency**, not a kink, between the two boundary curves.
+- **Valid isothermal sections** of ternary phase diagrams must obey the same four topological rules as binary diagrams (Lecture 3): phase-region adjacency, Konovalov tangency at congruent points, Schreinemakers metastable extension, and non-zero solubility — applied now to curved two-phase "lens" regions and three-phase triangles embedded in the Gibbs triangle. A proposed isotherm showing two separate two-phase lenses that merge into a single three-phase region without the correct boundary topology, or a single-phase region bridging two others without an intervening two-phase band, is thermodynamically invalid.
+- **Vertical sections (isopleths)** through the ternary space model are 2D slices at *fixed composition ratio or fixed one component*, with temperature on the vertical axis — distinct from the *isothermal* (horizontal) sections of Lecture 5. Reading melting points off a space model requires identifying where each vertical section intersects the three pure-component edges at the top of the prism.
+
+#### B. Governing Formulations & Derivations
+
+- **Median line parametrization** (vertex $A = (1,0,0)$, foot point $D = (c_A^D, 0, c_C^D)$ on edge... generalized to any foot point $D=(0, c_B^D, c_C^D)$ on edge $BC$):
+  $$\mathbf{P}(t) = (1-t)\mathbf{D} + t\mathbf{A}, \qquad 0 \le t \le 1$$
+  $$c_B(t) = (1-t)c_B^D, \qquad c_C(t) = (1-t)c_C^D, \qquad c_A(t) = t + (1-t)\cdot 0$$
+  $$\frac{c_B(t)}{c_C(t)} = \frac{c_B^D}{c_C^D} = \text{constant for a given } D$$
+- **Konovalov's Rule (mathematical statement):** at a congruent (extremum) point where liquidus $T_L(x)$ and solidus $T_S(x)$ meet,
+  $$T_L(x^*) = T_S(x^*), \qquad \left.\frac{dT_L}{dx}\right|_{x^*} = \left.\frac{dT_S}{dx}\right|_{x^*} = 0, \qquad x_L^* = x_S^*$$
+  i.e., the two curves are mutually tangent (horizontal tangent) at a **single shared composition** $x^*$.
+- **Parameter definitions:**
+  - $t$ — fractional progress along a median line from the edge ($t=0$) to the vertex ($t=1$).
+  - $c_B^D, c_C^D$ — mole fractions of $B$, $C$ at the foot point $D$ on edge $BC$; their ratio is the invariant that characterizes that specific median line.
+  - $x^*$ — the congruent composition at a liquidus/solidus extremum (maximum or minimum).
+
+#### C. Phase & Microstructural Evolution
+
+```mermaid
+graph TD
+    A["Vertex A"] -->|Median line to foot point D on BC| B["c_B/c_C constant = c_B^D/c_C^D for all points on AD"]
+    A -->|Median line to foot point E on BC, closer to B| C["c_B/c_C constant = c_B^E/c_C^E, larger ratio than AD"]
+    A -->|Median line to foot point F on BC, closer to C| D["c_B/c_C constant = c_B^F/c_C^F, smaller ratio than AD"]
+    E2["Liquidus curve T_L(x)"] -->|Extremum at x*| F2["Tangent point: T_L = T_S, dT/dx = 0"]
+    G["Solidus curve T_S(x)"] -->|Extremum at x*| F2
+```
+
+#### D. Literature References
+
+- [[A Prince2.pdf]]
+- [[P Gordon.pdf]]
+- [[Phase Transformations in met...pdf]]
+
+---
+
+### 2. Professor's Summarizing Questions & Solutions
+
+> [!question] Q1: The Gibbs triangle is given below, with vertex $A$ connected to points $e$, $d$, $f$ on edge $BC$ (in that left-to-right order).
+> (i) Prove that for the entire line $Ad$ (except for $A$), $\dfrac{c_B}{c_C}$ is a constant.
+> (ii) Prove that $\dfrac{c_B}{c_C}$ of the $Ae$ line is bigger than that of the $Ad$ line.
+> (iii) Prove that the $\dfrac{c_B}{c_C}$ ratio of the $Af$ line is smaller than that of the $Ad$ line.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** Each median line from vertex $A$ carries its own fixed $c_B/c_C$ ratio, equal to the ratio at its foot point on $BC$; since $e$ lies closer to $B$ than $d$, and $f$ lies closer to $C$ than $d$, the ratio ordering follows directly from position along $BC$: $(c_B/c_C)_{Ae} > (c_B/c_C)_{Ad} > (c_B/c_C)_{Af}$.
+> >
+> > **Theoretical Justification:**
+> >
+> > **Part (i) — Invariance along $Ad$**
+> >
+> > Let $A = (1,0,0)$ and let $D$ be the foot point on edge $BC$ (where $c_A = 0$): $D = (0, c_B^D, c_C^D)$ with $c_B^D + c_C^D = 1$.
+> >
+> > The parametric form of the line $AD$:
+> > $$\mathbf{P}(t) = (1-t)\mathbf{D} + t\mathbf{A} = \big(t,\; (1-t)c_B^D,\; (1-t)c_C^D\big), \quad 0 \le t \le 1$$
+> >
+> > so that $c_B(t) = (1-t)c_B^D$ and $c_C(t) = (1-t)c_C^D$. Taking the ratio:
+> > $$\frac{c_B(t)}{c_C(t)} = \frac{(1-t)c_B^D}{(1-t)c_C^D} = \frac{c_B^D}{c_C^D} = \text{constant}, \quad \forall\, t \in [0, 1)$$
+> >
+> > The factor $(1-t)$ cancels identically for every point on the line except $A$ itself ($t=1$, where both $c_B$ and $c_C$ vanish and the ratio is undefined/indeterminate). This proves the ratio is invariant along $Ad$. $\blacksquare$
+> >
+> > **Part (ii) — $Ae$ ratio exceeds $Ad$ ratio**
+> >
+> > From the figure, $e$ lies between $B$ and $d$ on edge $BC$ (closer to vertex $B$). Moving along $BC$ from $d$ toward $B$ increases $c_B$ and decreases $c_C$ monotonically (since $c_B + c_C = 1$ on that edge). Therefore at foot point $e$:
+> > $$c_B^e > c_B^d, \qquad c_C^e < c_C^d \implies \frac{c_B^e}{c_C^e} > \frac{c_B^d}{c_C^d}$$
+> > By Part (i), this foot-point ratio is carried unchanged along the entire median line, so:
+> > $$\left(\frac{c_B}{c_C}\right)_{Ae} > \left(\frac{c_B}{c_C}\right)_{Ad}$$
+> >
+> > **Part (iii) — $Af$ ratio is smaller than $Ad$ ratio**
+> >
+> > From the figure, $f$ lies between $d$ and $C$ on edge $BC$ (closer to vertex $C$). Moving along $BC$ from $d$ toward $C$ decreases $c_B$ and increases $c_C$:
+> > $$c_B^f < c_B^d, \qquad c_C^f > c_C^d \implies \frac{c_B^f}{c_C^f} < \frac{c_B^d}{c_C^d}$$
+> > By the same invariance argument, this holds along the entire line $Af$:
+> > $$\left(\frac{c_B}{c_C}\right)_{Af} < \left(\frac{c_B}{c_C}\right)_{Ad}$$
+> >
+> > **Exam trap:** Do not confuse "ratio is constant along a given median line" with "ratio is the same for all median lines" — each line from $A$ has its *own* constant ratio, fixed solely by where it meets $BC$.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.2, pp. 120–121, Figs. 105 & 106; Porter & Easterling, Chapter 1, Section 1.7, pp. 56–57, Fig. 1.40.
+
+> [!question] Q2: State the mathematical formulation of Konovalov's rule.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** At a composition extremum (maximum or minimum) of the liquidus/solidus pair, both curves meet at exactly one point with a common horizontal tangent, and the coexisting phases there share identical composition.
+> >
+> > **Theoretical Justification:**
+> > - Let $T_L(x)$ and $T_S(x)$ denote the liquidus and solidus temperatures as functions of composition $x$ (mole fraction of one component).
+> > - Konovalov's rule states that wherever $T_L(x)$ (or the corresponding equilibrium curve) exhibits a local extremum, the solidus $T_S(x)$ must pass through the **same point** with the **same tangent slope**:
+> >   $$T_L(x^*) = T_S(x^*) = T_{\text{ext}}, \qquad \left.\frac{dT_L}{dx}\right|_{x=x^*} = \left.\frac{dT_S}{dx}\right|_{x=x^*} = 0$$
+> > - This is equivalent to stating that the two phases in equilibrium at the extremum have **identical composition**: $x_L^* = x_S^*$.
+> > - Physically, this follows from the condition that at a true extremum of the equilibrium curve, the system behaves as if it were a single (pseudo-pure) component — both phases must therefore have the same free energy minimum location in composition space, forcing coincidence of the two curves with zero slope.
+> > - **Exam trap:** A common construction error is to draw the liquidus and solidus extrema at *different* compositions (this is exactly Rule 2 — the extrema-tangency rule — from Lecture 3, Q4), which Konovalov's rule explicitly forbids.
+> >
+> > **Literature:** A. Prince, Chapter 3, Section 3.4, pp. 48–50; P. Gordon, Chapter 4, Section 4.5, pp. 56–58, Figs. 4.22a & 4.22b.
+
+> [!question] Q3: Can the following ever be an isothermal section of a ternary phase diagram? The sketch shows a Gibbs triangle $ABC$ with a single-phase region $l$ near vertex $A$, a two-phase region $s+l$ beneath it, and a single-phase region $s$ near the $BC$ edge, with curved boundaries separating all three and no intervening region between the $s+l$ lens and either the $l$ or $s$ fields other than their shared boundary curves. Why?
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** **Yes, this can be a valid isothermal section** — provided the boundary curves satisfy the Rule of Neighboring Phase Regions, i.e., the single-phase $l$ (liquid) field and single-phase $s$ (solid) field are each bounded *only* by the two-phase ($s+l$) region, and never touch each other directly.
+> >
+> > **Theoretical Justification:**
+> > - By the **Rule of Neighboring Phase Regions** (Lecture 3, Rule 1), a single-phase region must always be separated from another single-phase region by a two-phase region containing exactly those two phases. Crossing any phase boundary must change the phase count by exactly $\pm 1$.
+> > - In the sketch, region $l$ (single-phase liquid, $P=1$) is adjacent only to the $(s+l)$ two-phase lens ($P=2$), and region $s$ (single-phase solid, $P=1$) is likewise adjacent only to the $(s+l)$ lens — crossing from $l$ into $s+l$ changes $P$ from 1 to 2 ($\Delta P = +1$); crossing from $s+l$ into $s$ changes $P$ from 2 to 1 ($\Delta P = -1$). Both transitions are valid.
+> > - Critically, $l$ and $s$ do **not** share a common boundary anywhere in the sketch — there is no direct $l$–$s$ contact, which would otherwise violate Rule 1 (a jump of $P$ by 2 phases simultaneously, or a discontinuous chemical-potential jump).
+> > - This topology is exactly analogous to the isothermal sections of the isomorphous ternary system from Lecture 5 (e.g., isotherm (iii) or (v)): a liquid field, a lens-shaped two-phase band, and a solid field, arranged in series.
+> > - **Exam trap:** The question is testing whether you check *adjacency*, not merely whether three regions are present. The diagram is valid as drawn here specifically because $l$ and $s$ never touch; if the sketch instead showed $l$ and $s$ sharing a direct boundary (bypassing the two-phase region at some point along $BC$), it would be invalid.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 128–131, Figs. 111–115; Porter & Easterling, Chapter 1, Section 1.7, p. 58, Fig. 1.42.
+
+> [!question] Q4: In a certain isotherm of a certain ternary phase diagram, a tie-line is seen to extend from $(c_A^{liq}, c_B^{liq}, c_C^{liq}) = (0.3, 0.2, 0.5)$ to $(c_A^{sol}, c_B^{sol}, c_C^{sol}) = (0.1, 0.7, 0.2)$. Arrange $A$, $B$, $C$ in the decreasing order of their melting points.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** Decreasing order of melting points: $\boxed{T_B > T_C > T_A}$.
+> >
+> > **Theoretical Justification:**
+> > - On a tie-line linking a liquid composition to its coexisting solid composition at a fixed temperature, the component most strongly **retained by the solid** (highest partition coefficient) is the relatively **highest-melting** component, while the component most strongly **rejected into the liquid** (lowest partition coefficient) is the relatively **lowest-melting** component — the ternary generalization of the binary rule that the first solid to freeze is richer in the high-melting species.
+> > - Define the partition coefficient for each component as $k_i = c_i^{sol}/c_i^{liq}$:
+> >   - **Component $A$:** $k_A = 0.1/0.3 \approx 0.333$
+> >   - **Component $B$:** $k_B = 0.7/0.2 = 3.5$
+> >   - **Component $C$:** $k_C = 0.2/0.5 = 0.4$
+> > - $k_B = 3.5 \gg 1$: $B$ is strongly enriched in the solid → $B$ is the **highest-melting** component.
+> > - $k_C = 0.4$ and $k_A = 0.333$: both $A$ and $C$ are depleted in the solid (rejected toward the liquid), but $k_C > k_A$, so $C$ is retained by the solid *relatively more* than $A$ is → $C$ is **higher-melting** than $A$, and $A$, with the smallest partition coefficient, is the **lowest-melting** component.
+> > - **Final order:** $\boxed{T_B > T_C > T_A}$
+> >
+> > **Exam trap:** Always compute partition coefficients $k_i = c_i^{sol}/c_i^{liq}$ component-by-component rather than eyeballing raw mole fractions — the component with the largest $k_i$ (most preferentially retained by the solid) has the highest melting point, and the smallest $k_i$ (most rejected into the liquid) has the lowest.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 128–129, Fig. 112; P. Gordon, Chapter 4, Section 4.10, pp. 77–81.
+
+---
+
+## Lecture 7: Vertical Sections, Solidification Paths & Congruent Points in Isomorphous Ternary Systems
+
+### 1. Underlying Theory & Foundations
+
+#### A. Thermodynamic & Kinetic Principles
+
+- A **vertical section (isopleth)** of a ternary space model is a 2D slice taken at a *fixed* relationship among compositions (e.g., a fixed ratio of two components, or along a line through the Gibbs triangle), with temperature plotted on the vertical axis — contrasted with the *isothermal* (horizontal, fixed-$T$) sections of Lecture 5.
+- Unlike a true binary phase diagram, a **generic vertical section is NOT a valid binary-style diagram**: tie-lines constructed by connecting two points at the same temperature on the two boundary curves of a vertical section generally do **not** represent the true coexisting phase compositions, because the real tie-line in the 3D space model is usually not contained within the plane of the section. Tie-lines on an arbitrary vertical section are therefore generally **not horizontal / not valid** — this is a frequently tested true/false trap.
+- The **exception** occurs for a **quasi-binary section**: a vertical section that happens to contain the true 3D tie-lines within its own plane (e.g., certain sections through a congruent point, or through a plane of symmetry of the system). Only quasi-binary sections can be read exactly like true binary phase diagrams, including applying the lever rule directly within the section.
+- For an **isomorphous ternary system** (complete solid and liquid solubility, as in Lecture 5's space model, e.g. Prince's Fig. 111), quasi-static cooling of an alloy from above the liquidus to below the solidus produces continuously evolving solid and liquid compositions that trace **curved, generally non-planar loci** on the liquidus and solidus surfaces respectively, projecting onto **curved paths (not straight lines)** on the Gibbs triangle.
+- A **congruent point** (congruent melting/transformation) is a composition where the liquidus and solidus (or two other coexisting-phase surfaces) touch at identical composition — the ternary extension of Konovalov's rule (Lecture 6, Q2). A **congruent minimum** or **congruent maximum** in a binary subsystem shows up in the full ternary space model as a trough or ridge running into the ternary interior.
+- A ternary system can exhibit a congruent extremum in **two** of its three binary edge subsystems while the **third** binary edge subsystem shows normal (monotonic, non-congruent) liquidus/solidus behavior — the resulting space model combines two saddle/trough features with one normal lens, requiring careful combination of isothermal and vertical sections to visualize.
+
+#### B. Governing Formulations & Derivations
+
+- **Tie-line validity condition for a vertical section at composition ratio $c_B/c_C = r$ (fixed):** a tie-line linking liquid composition $\mathbf{c}^L$ and solid composition $\mathbf{c}^S$ lies within the section plane **only if**
+  $$\frac{c_B^L}{c_C^L} = \frac{c_B^S}{c_C^S} = r$$
+  which is generally **not** satisfied unless the section is quasi-binary — in the generic case $\mathbf{c}^L$ and $\mathbf{c}^S$ drift off the section plane in opposite directions as solidification proceeds.
+- **Solidification locus (non-equilibrium or equilibrium) projected onto the Gibbs triangle:** for quasi-static (equilibrium) cooling, the solid locus $\mathbf{c}^S(T)$ and liquid locus $\mathbf{c}^L(T)$ both trace continuous curves linked at every instant by the mass balance
+  $$\mathbf{c}^0 = f^L(T)\,\mathbf{c}^L(T) + f^S(T)\,\mathbf{c}^S(T), \qquad f^L + f^S = 1$$
+  with $f^S(T_{\text{liquidus}}) = 0$ and $f^L(T_{\text{solidus}}) = 0$.
+- **Parameter definitions:**
+  - $r = c_B/c_C$ — the fixed ratio defining a vertical section through the Gibbs triangle (a median-line-type section, cf. Lecture 6).
+  - Quasi-binary section — a special vertical section within which real 3D tie-lines happen to lie, permitting direct lever-rule reading.
+
+#### C. Phase & Microstructural Evolution
+
+```mermaid
+stateDiagram-v2
+    [*] --> AboveLiquidus : Alloy (c_A,c_B,c_C) above liquidus surface — single-phase Liquid
+    AboveLiquidus --> OnLiquidus : Cool to liquidus surface — first solid nucleates (high-melting-enriched)
+    OnLiquidus --> TwoPhaseRegion : Continue cooling through (L+S) lens\nSolid locus traces curve on solidus surface\nLiquid locus traces curve on liquidus surface
+    TwoPhaseRegion --> OnSolidus : Reach solidus surface — last liquid disappears
+    OnSolidus --> BelowSolidus : Fully solid, single-phase
+    BelowSolidus --> [*]
+```
+
+#### D. Literature References
+
+- [[A Prince2.pdf]]
+- [[P Gordon.pdf]]
+- [[Phase Transformations in met...pdf]]
+
+---
+
+### 2. Professor's Summarizing Questions & Solutions
+
+> [!question] Q5: How would the vertical sections $AA'$, $II'$, and $III'$ (as shown, cutting through the Gibbs-triangle base with $A$ at the apex, $A'$ on edge $BC$, and $I$–$I'$, $II$–$II'$ as two further lines crossing the triangle at different heights/angles) look like for the phase diagram of Fig. 111 of Prince's book (the isomorphous ternary space model with $T_A > T_B > T_C$)?
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** $AA'$ (a true median line through the apex $A$) is a **quasi-binary-like section** showing a simple lens between a single liquidus curve and a single solidus curve, symmetric in form to a binary isomorphous diagram; $II'$ and $III'$ (sections that do **not** pass through a vertex, cutting across the interior at an angle) show **lens-shaped two-phase bands whose upper (liquidus) and lower (solidus) boundary curves are generally skewed/non-symmetric**, since the section plane intersects the liquidus and solidus surfaces along different, non-corresponding loci.
+> >
+> > **Theoretical Justification:**
+> > - **Section $AA'$:** Since $A'$ lies on edge $BC$ and $A$ is a pure-component vertex, this section is a **median line** (as studied in Lecture 6, Q1). At the top ($A$), temperature starts at $T_A$ (pure $A$ melting point); at the bottom ($A'$ on $BC$), the section reduces to the binary $B$–$C$ edge diagram at that specific $B{:}C$ ratio. The vertical section shows: a liquidus curve descending from $T_A$ down to the liquidus value of the $B$–$C$ system at that composition, a solidus curve similarly descending, and a lens-shaped $(L+S)$ two-phase region between them — qualitatively resembling a simple isomorphous binary loop, but **it is still generally not a true quasi-binary** unless $AA'$ happens to contain the actual 3D tie-lines (which occurs only in special symmetric cases).
+> > - **Sections $II'$ and $III'$:** These lines cut across the Gibbs triangle without passing through any vertex, intersecting two different edges (e.g., $AB$ and $AC$, or $AB$ and $BC$) at oblique angles. Each such section intersects the liquidus and solidus surfaces along curves whose endpoint temperatures are set by wherever the section crosses the relevant binary edges. Because the cutting plane is not aligned with the symmetry of the liquidus/solidus surfaces, the resulting lens is generally **asymmetric and skewed**, and tie-lines drawn horizontally within the section plane do **not** represent real coexisting phases (see Q7).
+> > - In all three cases, the overall topology remains a lens-shaped $(L+S)$ two-phase field bounded above by the liquidus trace and below by the solidus trace, flanked by single-phase liquid above and single-phase solid below — consistent with Rule 1 (Lecture 3) applied to vertical sections.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 131–134, Fig. 111 & associated vertical sections Figs. 118–120.
+
+> [!question] Q6: If an alloy of composition $(c_A, c_B, c_C) = (0.1, 0.1, 0.8)$ is quasi-statically cooled from above the liquidus surface to below the solidus surface, given that the space model is as per Fig. 111 of Prince's book: (i) what sort of locus does the forming solids trace on the Gibbs triangle? (ii) what is the locus traced by the liquid phases that form?
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** Both the solid locus and the liquid locus are **continuous curved paths** (not straight lines) on the Gibbs triangle; the solid locus begins at a point enriched in the highest-melting component ($A$, since $T_A > T_B > T_C$) and curves toward the final solid composition $(0.1, 0.1, 0.8)$, while the liquid locus begins exactly at $(0.1, 0.1, 0.8)$ (the first liquidus contact) and curves away toward progressively lower-melting (more $C$-rich) compositions as solidification proceeds.
+> >
+> > **Theoretical Justification:**
+> > - **Quasi-static (equilibrium) cooling** means the system remains at full internal equilibrium at every instant: each infinitesimal temperature drop is followed by complete diffusional re-equilibration in both phases (contrast with the non-equilibrium Scheil-type cooling of Lecture 2).
+> > - **At the liquidus contact temperature:** the alloy is entirely liquid at $(0.1,0.1,0.8)$. The very first solid to nucleate has a composition read off the solidus surface via the (initially vanishingly short) tie-line through $(0.1,0.1,0.8)$; since $T_A > T_B > T_C$, this first solid is enriched in $A$ (and to a lesser extent $B$) relative to the bulk, i.e., depleted in $C$ relative to $(0.1,0.1,0.8)$.
+> > - **As cooling proceeds:** mass balance requires
+> >   $$\mathbf{c}^0 = f^L(T)\,\mathbf{c}^L(T) + f^S(T)\,\mathbf{c}^S(T)$$
+> >   For this to hold continuously while $f^S$ grows from 0 to 1 (and $f^L$ shrinks from 1 to 0), both $\mathbf{c}^L(T)$ and $\mathbf{c}^S(T)$ must shift continuously. Since liquidus and solidus are curved (non-planar, non-ruled) surfaces in general, their intersection loci with the family of tie-lines passing through the fixed overall composition $\mathbf{c}^0$ trace out **curved paths**, not straight lines, when projected onto the Gibbs triangle.
+> > - **Solid locus:** starts (at the liquidus temperature) at the first-solid composition (enriched in $A$, poor in $C$) and curves continuously, ending exactly at $\mathbf{c}^0 = (0.1,0.1,0.8)$ at the solidus temperature (when $f^S \to 1$, the last solid formed must equal the bulk composition).
+> > - **Liquid locus:** starts exactly at $\mathbf{c}^0 = (0.1,0.1,0.8)$ (at the liquidus temperature, when $f^L \to 1$, i.e., the liquid is still essentially the whole alloy) and curves away, becoming progressively enriched in $C$ (the lowest-melting component) as the remaining liquid is depleted of the higher-melting species by ongoing solidification, ending at the final-liquid composition when $f^L \to 0$ at the solidus temperature.
+> > - **Exam trap:** A common error is to assume these loci are straight lines (as in a simple two-point tie-line) — they are not, because they are *traces of continuously varying equilibrium tie-line endpoints* over a range of temperatures, not a single static tie-line.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 134–137, Fig. 111 & Fig. 117 (solidification path construction); P. Gordon, Chapter 4, Section 4.10, pp. 78–81.
+
+> [!question] Q7: Say true or false with explanation: Given a vertical section of a ternary phase diagram, the tie-lines constructed on them give the co-existing phases and their phase fractions.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** **FALSE** (in general).
+> >
+> > **Theoretical Justification:**
+> > - A tie-line drawn horizontally within an arbitrary vertical section (connecting a point on the liquidus trace to a point on the solidus trace at the same temperature, both lying in the section plane) represents the **true 3D tie-line only if the section happens to be quasi-binary** — i.e., only if the real coexisting liquid and solid compositions at that temperature both lie exactly within the cutting plane.
+> > - In the general case, the real tie-line endpoints $\mathbf{c}^L(T)$ and $\mathbf{c}^S(T)$ lie **off the section plane**, on either side of it, because the liquidus and solidus surfaces are curved and the equilibrium tie-lines sweep through the full 3D space model, not confined to any arbitrary 2D slice.
+> > - Consequently, the two boundary curves of a generic vertical section (its "liquidus line" and "solidus line" as drawn in 2D) are merely the **loci of where the liquidus/solidus *surfaces* intersect the cutting plane**, not a representation of two phases actually in equilibrium with each other at that temperature along a horizontal line.
+> > - Applying the lever rule using a horizontal line in a non-quasi-binary vertical section therefore gives **physically meaningless phase fractions** — the apparent "two endpoints" are not compositions of phases that coexist with each other.
+> > - **Condition for truth:** The statement becomes **true** only for the special case of a **quasi-binary section**, where the section plane has been specifically chosen (often through a congruent point or a symmetry plane of the system) such that it does contain the actual tie-lines.
+> > - **Exam trap:** Students often over-generalize from binary-diagram intuition, where every horizontal line inside a two-phase region is automatically a valid tie-line. This does **not** carry over to generic ternary vertical sections.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.4, pp. 131–134; Porter & Easterling, Chapter 1, Section 1.7, p. 58, Fig. 1.42e.
+
+> [!question] Q8: Draw the space model of a ternary system that exhibits a congruent minimum and a congruent maximum in two of its binary subsystems and no congruent melting point in the third. Show how the isotherms and a few vertical sections of it would look like.
+> > [!success]- Solution (Click to expand)
+> > **Verdict / Core Takeaway:** The space model combines a **trough** (congruent minimum) running from one binary edge into the ternary interior, a **ridge** (congruent maximum) running from a second binary edge into the interior, and a **normal monotonic lens** on the third binary edge with no interior extremum feature; isothermal sections show evolving single-phase/two-phase topology that reflects both the trough and the ridge simultaneously, and vertical sections cut at different orientations show either simple lens shapes (away from the extrema) or saddle/pinch shapes (through the trough or ridge).
+> >
+> > **Theoretical Justification:**
+> >
+> > **A. Binary edge behavior**
+> > - **Edge 1 (say $A$–$B$):** exhibits a **congruent minimum** — the liquidus and solidus dip down to touch at a single intermediate composition $x_{\min}$, per Konovalov's rule (Lecture 6, Q2): $T_L(x_{\min}) = T_S(x_{\min})$ with zero slope for both curves there.
+> > - **Edge 2 (say $B$–$C$):** exhibits a **congruent maximum** — the liquidus and solidus rise to touch at a single intermediate composition $x_{\max}$, again via Konovalov tangency, but now as a peak rather than a trough.
+> > - **Edge 3 ($A$–$C$):** shows the **normal isomorphous case** (as in Lecture 5's Fig. 111) — monotonic liquidus/solidus with no interior extremum, i.e., liquidus and solidus meet only at the pure-component vertices $T_A$ and $T_C$.
+> >
+> > **B. Space model construction**
+> > - The congruent minimum on edge $A$–$B$ generates a **trough line** running from the minimum point on that edge into the interior of the triangular prism, tracing a path of local liquidus/solidus minima across ternary compositions (often terminating at a ternary minimum point or continuing to another binary edge, depending on the specific system).
+> > - The congruent maximum on edge $B$–$C$ generates a **ridge line** running from the maximum point on that edge into the interior, tracing local liquidus/solidus maxima.
+> > - The liquidus surface overall is a **saddle-like** surface combining a dip near the $A$–$B$ trough and a rise near the $B$–$C$ ridge, smoothly connecting to the simple monotonic liquidus along edge $A$–$C$.
+> >
+> > **C. Isothermal sections**
+> > - At temperatures between $T_A$ and the trough minimum: the isotherm shows a liquid field pinching inward near the $A$–$B$ edge (reflecting the approaching trough) while remaining a simple lens elsewhere.
+> > - Near the trough's own temperature: the two-phase lens on the isotherm **pinches to near-zero width** at the composition where the trough crosses that isotherm, reflecting the congruent (zero-barrier, single-composition) transformation there.
+> > - Symmetric but inverted behavior occurs near the ridge temperature on the $B$–$C$ side: the liquid field bulges outward/the two-phase lens narrows at the ridge composition.
+> > - Away from both features (isotherms cutting only the $A$–$C$ normal region), the section looks like the simple lens topology of Lecture 5's isomorphous case.
+> >
+> > **D. Vertical sections**
+> > - A vertical section cut **through the trough line** (e.g., from vertex $C$ toward the $A$–$B$ minimum point) shows a liquidus/solidus pair that **dips down to a congruent point** partway along the section — a visible minimum in the 2D diagram, resembling a binary congruent-minimum loop.
+> > - A vertical section cut **through the ridge line** (from vertex $A$ toward the $B$–$C$ maximum point) shows the mirror case: liquidus/solidus **rising to a congruent maximum** partway along.
+> > - A vertical section cut **away from both** (e.g., parallel to edge $A$–$C$, far from $B$) shows a simple monotonic lens with no extremum, consistent with the normal edge behavior there.
+> > - **Exam trap:** The trough and ridge are generally **not** quasi-binary sections in themselves unless the specific cutting plane is chosen to contain them exactly — only sections that follow the trough/ridge line itself reveal the true congruent point; an arbitrary nearby section will show a near-pinch or near-bulge without the true zero-width congruent point.
+> >
+> > **Literature:** A. Prince, Chapter 8, Section 8.5, pp. 137–142, Figs. 121–124; P. Gordon, Chapter 4, Section 4.9, pp. 73–77.
+
+---
+
