@@ -264,7 +264,7 @@
       "info": {
         "id": "fable",
         "displayName": "Fable 5.1",
-        "description": "For your toughest challenges"
+        "description": "Most capable for your hardest and longest-running tasks"
       },
       "configuredModelId": "8cd0397b-2c27-4c5c-9b3e-5e613754e2a9",
       "configuredAt": 1793458495288
@@ -978,6 +978,39 @@
       },
       "configuredModelId": "9cbc13ee-9b1c-475a-99e0-a201932c1a5a",
       "configuredAt": 1794301387468
+    },
+    {
+      "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
+      "info": {
+        "id": "claude-fable-5-2",
+        "displayName": "Fable 5.2",
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "limits": {
+          "context": 1000000,
+          "output": 128000
+        },
+        "reasoning": true,
+        "toolCall": true,
+        "releaseDate": "2026-11-09",
+        "cost": {
+          "input": 8,
+          "output": 40,
+          "cacheRead": 0.2,
+          "cacheWrite": 10
+        },
+        "description": "For your toughest challenges"
+      },
+      "configuredModelId": "aad6851b-86a1-4bdc-ae64-dba3a1927e6e",
+      "configuredAt": 1794381325913
     }
   ],
   "backends": {
