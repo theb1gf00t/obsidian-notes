@@ -3526,6 +3526,133 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > **The motivational problem.** This result — exactly 12 pentagonal faces, with the vertex count given by $n=20+2h$ — is the graph-theoretic solution to the **soccer ball / fullerene problem** raised in Chapter 1 (Module 1, §1.1, "Discovery of graphs"): the question of how many pentagons and hexagons can tile a surface like a soccer ball (or, chemically, a fullerene molecule such as $C_{60}$, Buckminsterfullerene) so that exactly 3 faces meet at every vertex. The case $h=0$ gives $n=20$ (the dodecahedron/regular pentagonal tiling with 12 pentagons, no hexagons), and $h=20$ gives $n=60$ — exactly the structure of the classic soccer ball and the $C_{60}$ fullerene (12 pentagons + 20 hexagons, 60 vertices).
 
+---
+
+## Chapter 11
+
+> [!question] Q1: Strong Simple Digraphs on 4 Vertices and 5 Arcs
+> Draw all the non-isomorphic strong simple digraphs on 4 vertices and 5 arcs.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Step 1 — the degree sequences are forced.** A strong digraph has no vertex of out-degree $0$ (it could never be left) and none of in-degree $0$ (it could never be entered). So with $n=4$ and $m=\sum_v \mathrm{outdeg}(v)=5$ every out-degree is $\ge 1$; also no out-degree can be $\ge 3$, since $3+1+1+1=6>5$. Hence
+> >
+> > $$\text{out-degree sequence} = (2,1,1,1),\qquad \text{in-degree sequence} = (2,1,1,1).$$
+> >
+> > Exactly one vertex $x$ has out-degree $2$ and exactly one vertex $y$ has in-degree $2$. Consequently the *total* degrees $\deg^++\deg^-$ are either $(4,2,2,2)$ (when $x=y$) or $(3,3,2,2)$ (when $x\neq y$).
+> >
+> > **Step 2 — split the cases by the number of 2-cycles** (a 2-cycle is a pair $u\leftrightarrow v$ carrying both arcs).
+> >
+> > *No 2-cycle at all:* then the underlying graph has $5$ edges on $4$ vertices, i.e. it is $K_4$ minus one edge $xy$. The two vertices of total degree $2$ are precisely $x,y$, and the other two vertices $u,w$ are adjacent to everything. So the underlying graph is the union of two triangles $xuw$, $yuw$ sharing the edge $uw$. Orient $uw$ as $u\to w$ (the other choice is symmetric). Each of $x,y$ must have out-degree $1$ and in-degree $1$ among its two neighbours $u,w$, so it is either *transitive* ($u\to x\to w$) or *cyclic* ($w\to x\to u$):
+> >   * **both transitive:** then $w$ has out-degree $0$ — impossible in a strong digraph;
+> >   * **one transitive, one cyclic:** say $u\to y\to w$ and $w\to x\to u$. Then $u\to y\to w\to x\to u$ is a directed 4-cycle and $u\to w$ is a chord. This is $\mathbf{D_2}$;
+> >   * **both cyclic:** $w\to x\to u$, $w\to y\to u$, and $u\to w$. Both $u,w,x$ and $u,w,y$ are directed triangles sharing the arc $u\to w$. This is $\mathbf{D_4}$ (the "bow-tie").
+> >
+> > *Exactly one 2-cycle,* say $a\leftrightarrow b$. Then $b$ has spent its only out-arc, so the remaining three arcs have tails $a,c,d$ (one each). Two shapes are possible:
+> >   * all three arcs stay inside $\{a,c,d\}$: each of $a,c,d$ then has out-degree $1$ inside a 3-set, so the three arcs form a directed triangle $a\to c\to d\to a$. This is $\mathbf{D_1}$ (a directed triangle with a 2-cycle attached at $a$);
+> >   * one arc returns to $b$, say $c\to b$ (the case $d\to b$ is symmetric). Testing the possible tails $a\to X$, $d\to Y$ shows that every choice except $a\to d,\ d\to c$ either creates a second 2-cycle, gives some vertex in-degree $0$, or leaves a vertex unreachable. The surviving choice $a\to d\to c\to b$ together with $b\to a$ is a directed 4-cycle $a\to d\to c\to b\to a$ whose edge $ab$ is "doubled" by the extra arc $a\to b$. This is $\mathbf{D_3}$.
+> >
+> > *Two 2-cycles:* they consume $4$ arcs on two vertex pairs $\{a,b\},\{c,d\}$ and leave only one arc to join the two pairs, so the pairs can be joined in only one direction and no vertex of one pair reaches the other pair. Impossible.
+> >
+> > **Step 3 — the four digraphs.** They are pairwise non-isomorphic, and are separated by simple invariants:
+> >
+> > ![[ch11_strong_digraphs_4v.png]]
+> >
+> > | Digraph | Arcs | Total degrees | Directed triangles | 2-cycles | Directed 4-cycles |
+> > |---|---|---|---|---|---|
+> > | $D_1$ | $a\to b,\ b\to c,\ c\to a,\ a\to d,\ d\to a$ | $(4,2,2,2)$ | $1$ | $1$ | $0$ |
+> > | $D_2$ | $a\to b,\ b\to c,\ c\to d,\ d\to a,\ a\to c$ | $(3,3,2,2)$ | $1$ | $0$ | $1$ |
+> > | $D_3$ | $a\to c,\ c\to d,\ d\to b,\ b\to a,\ a\to b$ | $(3,3,2,2)$ | $0$ | $1$ | $1$ |
+> > | $D_4$ | $w\to u,\ u\to x,\ x\to w,\ u\to y,\ y\to w$ | $(3,3,2,2)$ | $2$ | $0$ | $0$ |
+> >
+> > All four are strong: $D_1$ via $a\leftrightarrow d$ plus the triangle; $D_2$ and $D_3$ contain directed Hamilton cycles; $D_4$ via the two triangles sharing $w\to u$. Total degrees $(4,2,2,2)$ singles out $D_1$; among the rest, "has a 2-cycle" singles out $D_3$, and "has a directed 4-cycle" singles out $D_2$.
+> >
+> > $$\boxed{\text{There are exactly }4\text{ non-isomorphic strong simple digraphs on 4 vertices with 5 arcs.}}$$
+
+> [!question] Q2: Out-Degree 1 Everywhere Forces Exactly One Directed Cycle
+> If $D$ is a digraph in which every vertex has out-degree $1$, then show that $D$ has exactly one directed cycle.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Important correction of the statement.** As printed this is false for a disconnected digraph: two disjoint directed 3-cycles form a digraph on $6$ vertices with every out-degree equal to $1$, yet it has *two* directed cycles. The correct statement — and the one the exercise means — is:
+> >
+> > > If every vertex of $D$ has out-degree $1$, then $D$ has **exactly one directed cycle in each weakly connected component**; in particular, if $D$ is weakly connected, it has exactly one directed cycle.
+> >
+> > **Proof.** Let $K$ be a weakly connected component of $D$, with $n_K$ vertices.
+> >
+> > *Counting arcs.* Every arc of $D$ has both ends in the same weak component (an arc is an edge of the underlying graph, so it joins vertices of one component). Every vertex of $K$ is the tail of exactly one arc, hence $K$ carries exactly $n_K$ arcs.
+> >
+> > *The underlying graph is unicyclic.* The underlying graph $G_K$ is connected with $n_K$ vertices and $n_K$ edges, so it contains exactly one cycle (a connected graph has a unique cycle iff $|E|=|V|$).
+> >
+> > *That cycle is directed, and it is the only directed cycle.* Let $C$ be the unique cycle of $G_K$ and count the arcs of $D$ having **both ends** in $V(C)$. The underlying edges inside $V(C)$ are exactly the $|C|$ edges of $C$, and each of them carries exactly one arc, so there are exactly $|C|$ such arcs. On the other hand each vertex of $C$ has out-degree $1$, so at most $|C|$ arcs have their tail in $V(C)$. Since there are exactly $|C|$ arcs with both ends in $V(C)$, **every** vertex of $C$ has its unique out-arc inside $C$. Following out-arcs from any vertex of $C$ therefore stays in $C$ and returns to it, producing a directed cycle that uses all $|C|$ cycle edges: $C$ is a directed cycle.
+> >
+> > Finally, any directed cycle of $D$ is a closed walk in $G_K$ and therefore uses the unique cycle $C$ of $G_K$; so $C$ is the only directed cycle of $K$.
+> >
+> > **Conclusion.** $\#\{\text{directed cycles of }D\} = \#\{\text{weakly connected components of }D\}$. (Equivalently: such a digraph — a *functional digraph* — is a disjoint union of "unicyclic" components, each a directed cycle with rooted in-trees hanging off it.)
+> >
+> > $$\boxed{\text{One directed cycle per weakly connected component; exactly one if }D\text{ is weakly connected.}}$$
+
+> [!question] Q3: Digraphs on 7 Vertices with In-Degree = Out-Degree = 1
+> Draw (as many as you can) simple non-isomorphic digraphs on 7 vertices in which every vertex has out-degree $1$ and every vertex has in-degree $1$. (Do you recognize any relation on such digraphs and partition of 7?)
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Structure.** If every vertex has out-degree $1$ *and* in-degree $1$, then every weak component is a directed cycle: by Q2 each component has exactly one directed cycle, and inside a component the $1$-in/$1$-out condition forbids any arc pointing into the cycle from outside (that vertex would need an out-arc too, and its unique out-arc would have to stay on the cycle, giving it in-degree $2$). So
+> >
+> > $$D \;=\; \text{a disjoint union of directed cycles, with no loops (}D\text{ is simple).}$$
+> >
+> > Hence two such digraphs are isomorphic iff the multiset of their cycle lengths is the same, i.e. iff they correspond to the same **partition of $7$ into parts $\ge 2$** (a part $1$ would be a loop, which a simple digraph does not allow).
+> >
+> > **The four partitions of $7$ into parts $\ge 2$** and their digraphs:
+> >
+> > $$7,\qquad 5+2,\qquad 4+3,\qquad 3+2+2.$$
+> >
+> > ![[ch11_one_in_one_out_7v.png]]
+> >
+> > 1. $7$ — one directed $7$-cycle $0\to1\to2\to3\to4\to5\to6\to0$ (strongly connected).
+> > 2. $5+2$ — a directed $5$-cycle together with a $2$-cycle ($u\leftrightarrow v$).
+> > 3. $4+3$ — a directed $4$-cycle together with a directed $3$-cycle.
+> > 4. $3+2+2$ — a directed $3$-cycle together with two $2$-cycles.
+> >
+> > $$\boxed{\text{Exactly }4\text{ non-isomorphic digraphs.}}$$
+> >
+> > **The "partition of 7" connection.** The isomorphism classes of $1$-in/$1$-out simple digraphs on $7$ vertices are in bijection with the partitions of $7$ whose parts are all $\ge 2$. Equivalently, if loops were allowed (a loop being a $1$-cycle), every partition of $7$ would occur, and there would be $p(7)=15$ digraphs: $7;\ 6+1;\ 5+2;\ 5+1+1;\ 4+3;\ 4+2+1;\ 4+1+1+1;\ 3+3+1;\ 3+2+2;\ 3+2+1+1;\ 3+1^4;\ 2+2+2+1;\ 2+2+1+1+1;\ 2+1^5;\ 1^7$. Among the $4$ loop-free ones, exactly one (the $7$-cycle) is strongly connected, and the number of weak components equals the number of parts.
+
+> [!question] Q4: Equality of the Sums of Squared Out-Degrees and Squared In-Degrees
+> Let $G$ be a $k$-regular graph on vertices $v_1,\dots,v_n$ and let $D$ be an orientation of $G$. Show that $\sum_{i=1}^n \big(\mathrm{outdeg}(v_i)\big)^2 = \sum_{i=1}^n \big(\mathrm{indeg}(v_i)\big)^2$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Key observation.** An orientation assigns to each edge exactly one direction, so every vertex satisfies
+> >
+> > $$\mathrm{outdeg}(v)+\mathrm{indeg}(v)=\deg_G(v)=k \qquad \text{for all } v\in V,$$
+> >
+> > and, summing over all vertices (each edge contributes one out-end and one in-end),
+> >
+> > $$\sum_{v}\mathrm{outdeg}(v)=\sum_{v}\mathrm{indeg}(v)=m=|E(G)|.$$
+> >
+> > **Computation.** Write $d^+(v)=\mathrm{outdeg}(v)$, $d^-(v)=\mathrm{indeg}(v)$. Then
+> >
+> > $$\sum_{v}\Big((d^+(v))^2-(d^-(v))^2\Big)=\sum_{v}\big(d^+(v)-d^-(v)\big)\big(d^+(v)+d^-(v)\big)=\sum_{v}\big(d^+(v)-d^-(v)\big)\,k,$$
+> >
+> > because $d^+(v)+d^-(v)=k$ for every $v$. Therefore
+> >
+> > $$\sum_{v}\Big((d^+(v))^2-(d^-(v))^2\Big)=k\underbrace{\Big(\sum_v d^+(v)-\sum_v d^-(v)\Big)}_{=\,m-m\,=\,0}=0,$$
+> >
+> > which is exactly the claimed identity. $\blacksquare$
+> >
+> > **What the identity says.** Since $\frac1n\sum_v d^+(v)=\frac1n\sum_v d^-(v)=\frac mn$, the identity is equivalent to
+> >
+> > $$\mathrm{Var}(d^+)=\mathrm{Var}(d^-),$$
+> >
+> > i.e. an orientation of a regular graph always produces the same *spread* of out-degrees as of in-degrees (only the means are automatically equal, but for regular $G$ the second moments agree too).
+> >
+> > **Remark (why regularity is essential).** The proof only uses $d^+(v)+d^-(v)=k$ with $k$ independent of $v$. For a non-regular graph the identity fails in general. Indeed, in general
+> >
+> > $$\sum_{v}(d^+(v))^2-\sum_{v}(d^-(v))^2=\sum_{v}\deg_G(v)\,\big(d^+(v)-d^-(v)\big),$$
+> >
+> > which need not vanish when the degrees differ. For example, the path $a-b-c$ oriented as $a\to b\leftarrow c$ has out-degrees $(1,0,1)$ and in-degrees $(0,2,0)$, so $\sum(d^+)^2=2\neq 4=\sum(d^-)^2$.
+
 
 
 
