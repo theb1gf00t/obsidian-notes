@@ -6,7 +6,7 @@ sessionId: "c874459c-87f7-40ba-bea5-051a77e1d90a"
 agentLabel: "ive attached a chapter of narsingh_deo_removed.pdf book rela…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":87393,"contextWindow":200000,"inputTokens":1,"outputTokens":1,"cacheReadTokens":86617,"cacheWriteTokens":774,"updatedAt":1794501310942}'
+usage: '{"usedTokens":106450,"contextWindow":200000,"inputTokens":1,"outputTokens":1,"cacheReadTokens":95434,"cacheWriteTokens":11014,"updatedAt":1794501923469}'
 ---
 
 **user**: ive attached a chapter of [[narsingh_deo_removed.pdf]]  book related to matrices in graphs. 
@@ -66,5 +66,20 @@ Would you like me to add these questions (and later their answers) to [[Question
 in [[Question Practice]]
 [Timestamp: 2026/11/12 22:11:55]
 
-**ai**: Let me read the full Question Practice file to understand the existing structure before adding.I see — Chapter 7 in Question Practice refers to a different chapter (graph theory chapters about bipartite graphs, etc.) — not matrices. I need to find where the matrix chapter questions would go. Let me check what chapters are covered and what Chapter 11 ends at.The file has chapters 7–11 on graph theory topics, and the matrix representation chapter (Week-9/Unit-7 from the PDF) needs to be added as a new chapter. Let me check how many lines are in the file to append correctly.Now I'll append the new chapter with all 12 selected questions and their full solutions to the end of the file.
+**ai**: Let me read the full Question Practice file to understand the existing structure before adding.I see — Chapter 7 in Question Practice refers to a different chapter (graph theory chapters about bipartite graphs, etc.) — not matrices. I need to find where the matrix chapter questions would go. Let me check what chapters are covered and what Chapter 11 ends at.The file has chapters 7–11 on graph theory topics, and the matrix representation chapter (Week-9/Unit-7 from the PDF) needs to be added as a new chapter. Let me check how many lines are in the file to append correctly.Now I'll append the new chapter with all 12 selected questions and their full solutions to the end of the file.Done. I've added a new **## Chapter 7 — Matrix Representation of Graphs (Unit 7)** section to [[Question Practice]] with 12 questions and full solutions:
+
+| # | Problem | Topic |
+|---|---------|-------|
+| Q1 (7-1) | Incidence Matrix Construction & Block-Diagonal Form | §7.1 |
+| Q2 (7-2) | Constructing $A_f$, $B_f$, $C_f$ and verifying relationships | §7.4 |
+| Q3 (7-3) | Ranks of $A$, $B$, $C$ for disconnected graphs | Theorems 7.3/7.5/7.6 |
+| Q4 (7-4) | Circuit Matrix construction & 5 properties | §7.2 |
+| Q5 (7-6) | Black-box switching network problem | §7.2 application |
+| Q6 (7-7) | Graph from fundamental cut-set matrix $C_f$ | §7.3 |
+| Q7 (7-12) | Prove $B_f = [I_\mu \mid \cdots]$ and $C_f = A_t^{-1} A_f$ | §7.4 |
+| Q8 (7-15) | Matrices $A_f$, $B_f$, $C_f$, $X$ for $K_n$ | §7.5/Cayley |
+| Q9 (7-18) | Diameter from powers of adjacency matrix | Thm 7.2 Corollary A |
+| Q10 (7-19) | $[X^3]_{ii} = 2 \times$ (triangles through $v_i$) | §7.1 adj. matrix powers |
+| Q11 (7-20) | $\mathcal{J}(G) = \det(A_f A_f^T)$ | §7.5 Kirchhoff theorem |
+| Q12 (7-23) | Degree matrix $D$, Laplacian $K = D-X$, all cofactors $= \mathcal{J}(G)$ | §7.5 Kirchhoff-Matrix-Tree |
 [Timestamp: 2026/11/12 22:11:55]

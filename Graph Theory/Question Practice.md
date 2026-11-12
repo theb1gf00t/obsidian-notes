@@ -4547,3 +4547,378 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 
 
 
+
+## Chapter 7 — Matrix Representation of Graphs (Unit 7)
+
+> [!question] Q1 (7-1): Incidence Matrix — Construction & Block-Diagonal Form
+> Write the incidence matrix $A(G)$ for a labeled simple graph. If the graph is disconnected with two components $g_1$ and $g_2$, express $A(G)$ in block-diagonal form as in Eq. (7-1):
+> $$A(G) = \begin{bmatrix} A(g_1) & 0 \\ 0 & A(g_2) \end{bmatrix}.$$
+> Explain why this form holds.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Definition.** For a graph $G$ with $n$ vertices $v_1, \dots, v_n$ and $e$ edges $e_1, \dots, e_e$ (no self-loops), the **incidence matrix** $A(G) = [a_{ij}]$ is the $n \times e$ binary matrix where:
+> >
+> > $$a_{ij} = \begin{cases} 1 & \text{if edge } e_j \text{ is incident on vertex } v_i \\ 0 & \text{otherwise} \end{cases}$$
+> >
+> > **Key observations:**
+> > 1. Each column has exactly two 1's (each edge is incident on exactly two vertices).
+> > 2. The number of 1's in row $i$ equals $\deg(v_i)$.
+> > 3. A row of all 0's represents an isolated vertex.
+> > 4. Parallel edges produce identical columns.
+> >
+> > **Block-diagonal form for a disconnected graph.** If $G$ is disconnected with components $g_1$ and $g_2$, no edge in $g_1$ is incident on any vertex of $g_2$ and vice versa. If we order the vertices so that all vertices of $g_1$ come first, and order edges likewise, then:
+> >
+> > $$A(G) = \begin{bmatrix} A(g_1) & 0 \\ 0 & A(g_2) \end{bmatrix}$$
+> >
+> > The off-diagonal blocks are all zeros because there are no edges between the two components. This generalizes to any number of components.
+
+> [!question] Q2 (7-2): Constructing $A_f$, $B_f$, $C_f$ and Verifying Relationships
+> Consider a graph with a chosen spanning tree $T$. Write the matrices $A_f$ (reduced incidence matrix), $B_f$ (fundamental circuit matrix), and $C_f$ (fundamental cut-set matrix) in the standard partitioned forms:
+> $$B_f = [I_\mu \mid B_t], \qquad C_f = [C_c \mid I_{n-1}], \qquad A_f = [A_c \mid A_t].$$
+> Then verify the relationships:
+> $$B_t^T = C_c \qquad \text{and} \qquad A_t^{-1} \cdot A_c = B_t^T.$$
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Setup.** Let $G$ be a connected graph with $n$ vertices and $e$ edges. Choose a spanning tree $T$ with $n-1$ branches. The $\mu = e - n + 1$ remaining edges are the **chords**.
+> >
+> > **Reduced incidence matrix $A_f$:** Delete any one row (reference vertex) from $A(G)$. Partition columns so chords come first:
+> > $$A_f = [A_c \mid A_t]$$
+> > where $A_t$ is $(n-1) \times (n-1)$ corresponding to tree branches (nonsingular since the reduced incidence matrix of a tree is nonsingular), and $A_c$ corresponds to chords.
+> >
+> > **Fundamental circuit matrix $B_f$:** Each chord $e_k$ defines a unique fundamental circuit with branches of $T$. Arrange chord columns first:
+> > $$B_f = [I_\mu \mid B_t]$$
+> > The identity block $I_\mu$ appears in the chord columns (each row has exactly one chord).
+> >
+> > **Fundamental cut-set matrix $C_f$:** Each branch $b_k$ defines a unique fundamental cut-set. Arrange branch columns last:
+> > $$C_f = [C_c \mid I_{n-1}]$$
+> >
+> > **Verifying $B_t^T = C_c$.**
+> >
+> > From Theorem 7-4 (orthogonality): $A_f \cdot B_f^T = 0 \pmod{2}$. That is:
+> > $$[A_c \mid A_t] \begin{bmatrix} I_\mu \\ B_t^T \end{bmatrix} = 0 \implies A_c + A_t B_t^T = 0 \pmod{2}$$
+> >
+> > Since $A_t$ is nonsingular, multiplying both sides by $A_t^{-1}$:
+> > $$A_t^{-1} A_c = B_t^T \pmod{2}$$
+> >
+> > Similarly, from $C_f \cdot B_f^T = 0 \pmod{2}$:
+> > $$[C_c \mid I_{n-1}] \begin{bmatrix} I_\mu \\ B_t^T \end{bmatrix} = C_c + B_t^T = 0 \implies C_c = B_t^T \pmod{2}$$
+> >
+> > **Conclusion:** $B_t^T = C_c$ and $A_t^{-1} A_c = B_t^T$, confirming the fundamental relationship among the three matrices.
+
+> [!question] Q3 (7-3): Ranks of $A$, $B$, $C$ for a Disconnected Graph
+> Show that for a simple disconnected graph $G$ with $k$ components, $n$ vertices, and $e$ edges, the ranks of the incidence matrix $A$, circuit matrix $B$, and cut-set matrix $C$ are:
+> $$\text{rank}(A) = n - k, \quad \text{rank}(B) = e - n + k, \quad \text{rank}(C) = n - k.$$
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Rank of $A$ (incidence matrix).**
+> >
+> > For a *connected* graph with $n$ vertices, $\text{rank}(A) = n - 1$ (Theorem 7-2). For a disconnected graph with $k$ components, apply this result component by component. The incidence matrix in block-diagonal form gives:
+> > $$\text{rank}(A) = \sum_{i=1}^{k} (n_i - 1) = n - k$$
+> > where $n_i$ is the number of vertices in component $i$ and $\sum n_i = n$.
+> >
+> > **Rank of $B$ (circuit matrix).**
+> >
+> > From Theorem 7-4 (orthogonality), $A \cdot B^T = 0 \pmod{2}$. By Sylvester's law of nullity:
+> > $$\text{rank}(A) + \text{rank}(B) \leq e$$
+> > $$\text{rank}(B) \leq e - \text{rank}(A) = e - (n - k) = e - n + k$$
+> >
+> > The fundamental circuit matrix $B_f$ has $\mu = e - n + k$ rows (one per chord) and is of full rank, so:
+> > $$\text{rank}(B) \geq e - n + k$$
+> >
+> > Combining both inequalities: $\boxed{\text{rank}(B) = e - n + k}$.
+> >
+> > **Rank of $C$ (cut-set matrix).**
+> >
+> > From observation 6 about cut-set matrices: for a nonseparable graph, every row of $A(G)$ is a row of $C(G)$, hence $\text{rank}(C) \geq \text{rank}(A) = n - k$.
+> >
+> > From $C \cdot B^T = 0 \pmod{2}$ (every circuit and cut-set share an even number of edges), Sylvester's theorem gives:
+> > $$\text{rank}(C) + \text{rank}(B) \leq e \implies \text{rank}(C) \leq e - (e - n + k) = n - k$$
+> >
+> > Therefore $\boxed{\text{rank}(C) = n - k}$.
+
+> [!question] Q4 (7-4): Circuit Matrix — Construction & Properties
+> Label the edges of a graph and write down its circuit matrix $B(G)$. Verify observations 1–5 about circuit matrices:
+> 1. A column of all zeros corresponds to an edge not in any circuit.
+> 2. Each row of $B(G)$ is a circuit vector.
+> 3. A circuit matrix can represent a self-loop (a row with a single 1).
+> 4. The number of 1's in a row equals the number of edges in that circuit.
+> 5. If $G$ is separable with blocks $g_1$ and $g_2$, then $B(G)$ is block-diagonal.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Definition.** For a graph $G$ with $q$ distinct circuits and $e$ edges, the **circuit matrix** $B(G) = [b_{ij}]$ is the $q \times e$ binary matrix where:
+> > $$b_{ij} = \begin{cases} 1 & \text{if the } i\text{th circuit includes the } j\text{th edge} \\ 0 & \text{otherwise} \end{cases}$$
+> >
+> > **Verification of observations:**
+> >
+> > **Obs. 1 — Column of all zeros = noncircuit edge.** If edge $e_j$ belongs to no circuit, then $b_{ij} = 0$ for every row $i$, giving a zero column. Conversely, an edge is a *bridge* (cut-edge) if and only if it belongs to no circuit, so a zero column corresponds exactly to a bridge.
+> >
+> > **Obs. 2 — Each row is a circuit vector.** By construction, the support of row $i$ (the set of positions with 1) is exactly the edge set of circuit $i$, which is a circuit vector in the cycle space $W_\Gamma$ of the graph.
+> >
+> > **Obs. 3 — Self-loops.** A self-loop at vertex $v$ forms a circuit by itself (a cycle of length 1). Its corresponding row has exactly one 1. Unlike the incidence matrix (which cannot represent self-loops properly), the circuit matrix handles them naturally.
+> >
+> > **Obs. 4 — Row weight = circuit length.** The number of 1's in row $i$ is $\sum_j b_{ij}$, which counts exactly the edges belonging to circuit $i$, i.e., its length $|E(\Gamma_i)|$.
+> >
+> > **Obs. 5 — Separable graph gives block-diagonal $B(G)$.** If $G$ is separable (or disconnected) with blocks $g_1$ and $g_2$, then every circuit lies entirely within $g_1$ or entirely within $g_2$ (a circuit cannot use edges from both blocks, as the blocks share at most one vertex and no edge). Ordering the rows and columns by block gives:
+> > $$B(G) = \begin{bmatrix} B(g_1) & 0 \\ 0 & B(g_2) \end{bmatrix}$$
+
+> [!question] Q5 (7-6): Black-Box Switching Network
+> A black box contains a switching network of seven switches $1, 2, 3, 4, 5, 6, 7$. When connected in series with an external switch $k$, the lamp lights for the following combinations (each listed with $k$):
+> $(1, 4, 5)$, $(1, 4, 6, 7)$, $(2, 5, 7)$, $(2, 6)$, $(3, 5)$, $(3, 6, 7)$.
+> Find the switching network configuration (draw the graph).
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Modeling.** Treat each switch as an edge in a graph. A lit lamp means current flows through a closed circuit, so each combination corresponds to a circuit in the graph. We form the circuit matrix $B$ from these six observed circuits (rows), with columns for switches $1$–$7$ plus $k$:
+> >
+> > $$B = \begin{array}{c|cccccccc} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & k \\ \hline 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 \\ 2 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 1 \\ 3 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 1 \\ 4 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ 5 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 \\ 6 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 \end{array}$$
+> >
+> > **Removing redundant circuits.** Check if any row is a mod-2 sum of others:
+> > - Row 1 $\oplus$ Row 2: $\{5, 6, 7\} \oplus \{k\} \to$ row not in $B$, so rows 1 and 2 are independent.
+> > - Rows 1, 3, 4: $R_1 \oplus R_3 \oplus R_4 = \{1,4,5,2,5,7,2,6\} \pmod{2} = \{1,4,6,7\} = R_2$. So $R_2$ is redundant.
+> >
+> > After simplification, $B_f$ has rank $\mu = 5$ (since $e = 8$, $n-1 = 3$ means $\mu = e - n + 1 = 5$, giving $n = 4$ vertices).
+> >
+> > **Graph parameters:**
+> > - $e = 8$ edges (switches $1$–$7$ plus $k$), $\mu = 5$, $n = 5$ vertices.
+> >
+> > **Reconstructing the graph.** Bring $B_f$ to the form $[I_5 \mid F]$ by column operations, then read off the reduced incidence matrix $A_f = [F^T \mid I_4]$ (using $C_c = B_t^T$). The resulting graph has 5 vertices and 8 edges corresponding to the switching network inside the black box.
+
+> [!question] Q6 (7-7): Obtaining a Graph from Its Fundamental Cut-Set Matrix
+> In Section 7-5 (Narsingh Deo), a graph was obtained from a given fundamental circuit matrix $B_f$. Sketch a procedure for obtaining a graph from its fundamental cut-set matrix $C_f$. Can you get two different (non-isomorphic) graphs for the same $C_f$? If yes, how are they related?
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Procedure to obtain a graph from $C_f$.**
+> >
+> > Given $C_f = [C_c \mid I_{n-1}]$ (an $(n-1) \times e$ fundamental cut-set matrix):
+> >
+> > 1. **Read graph parameters.** The number of rows $= n - 1$ gives the number of vertices $n$. The number of columns $= e$ gives the number of edges. The number of chords $= \mu = e - n + 1$ (the first $\mu$ columns forming $C_c$).
+> >
+> > 2. **Identify the spanning tree.** The last $n - 1$ columns of $C_f$ form $I_{n-1}$; these columns correspond to the branches of the spanning tree $T$.
+> >
+> > 3. **Obtain $B_f$ from $C_f$.** Since $C_c = B_t^T$ (the relationship derived in Q2), we have:
+> > $$B_f = [I_\mu \mid C_c^T]$$
+> > The fundamental circuit matrix is determined directly from $C_f$.
+> >
+> > 4. **Obtain $A_f$ from $B_f$.** Since $A_t^{-1} A_c = B_t^T = C_c$, once we know $A_t$ (the spanning tree portion of $A_f$, which is a nonsingular $(n-1) \times (n-1)$ matrix), we get $A_c = A_t \cdot C_c$.
+> >
+> > 5. **Reconstruct the full incidence matrix.** From $A_f = [A_c \mid A_t]$, add back the reference vertex row (so each column sums to 2 mod 2, i.e., exactly two 1's). The resulting $A(G)$ gives the graph.
+> >
+> > **Can two non-isomorphic graphs share the same $C_f$?**
+> >
+> > **Yes.** Since $C_f$ determines $B_f$ uniquely, and $B_f$ determines the graph only up to **2-isomorphism** (Theorem 7-1 of the circuit matrix), $C_f$ also determines the graph only within 2-isomorphism. Two graphs that are 2-isomorphic (same cycle space structure) can have the same $C_f$ yet be non-isomorphic as graphs.
+> >
+> > The two different graphs obtainable from the same $C_f$ are **2-isomorphic** to each other — they are related by a sequence of edge contractions/expansions at 2-vertex cut pairs that preserve the cycle space.
+
+> [!question] Q7 (7-12): Proving $B_f = [I_\mu \mid A_t^T \cdot A_t^{-T}]$ and $C_f = A_t^{-1} \cdot A_f$
+> Prove the following matrix identities for a connected graph:
+> $$(a)\quad B_f = \bigl[I_\mu \;\big|\; A_t^T \cdot A_t^{-T}\bigr], \qquad (b)\quad C_f = A_t^{-1} \cdot A_f.$$
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Setup.** Let $G$ be a connected graph with $n$ vertices, $e$ edges, and a chosen spanning tree $T$. Partition the reduced incidence matrix:
+> > $$A_f = [A_c \mid A_t]$$
+> > where $A_t$ is $(n-1)\times(n-1)$ (branches, nonsingular) and $A_c$ is $(n-1)\times\mu$ (chords, $\mu = e-n+1$).
+> >
+> > **Proof of (b): $C_f = A_t^{-1} \cdot A_f$.**
+> >
+> > The fundamental cut-set matrix is $C_f = [C_c \mid I_{n-1}]$. We want to show $A_t^{-1} A_f = [C_c \mid I_{n-1}]$.
+> >
+> > $$A_t^{-1} A_f = A_t^{-1}[A_c \mid A_t] = [A_t^{-1} A_c \mid A_t^{-1} A_t] = [A_t^{-1} A_c \mid I_{n-1}]$$
+> >
+> > We already showed in Q2 that $A_t^{-1} A_c = B_t^T = C_c$. Therefore:
+> > $$A_t^{-1} A_f = [C_c \mid I_{n-1}] = C_f \qquad \blacksquare$$
+> >
+> > **Proof of (a): $B_f = [I_\mu \mid A_t^T \cdot (A_t^{-1})^T]$.**
+> >
+> > We want to show $B_t = (A_t^{-1} A_c)^T = (B_t^T)^T$, i.e., the transpose relationship is consistent.
+> >
+> > From the orthogonality relation $A_f B_f^T = 0 \pmod{2}$:
+> > $$[A_c \mid A_t]\begin{bmatrix} I_\mu \\ B_t^T \end{bmatrix} = A_c + A_t B_t^T = 0 \implies B_t^T = A_t^{-1} A_c$$
+> >
+> > Taking the transpose: $B_t = (A_t^{-1} A_c)^T = A_c^T (A_t^{-1})^T = A_c^T (A_t^T)^{-1}$.
+> >
+> > In mod-2 arithmetic, $(A^{-1})^T = (A^T)^{-1}$, so:
+> > $$B_f = [I_\mu \mid B_t] = \bigl[I_\mu \;\big|\; A_c^T (A_t^T)^{-1}\bigr] = \bigl[I_\mu \;\big|\; A_t^{-T} A_c^T\bigr]^T \text{ (by transposing)}$$
+> >
+> > More directly from the formula: $B_t^T = A_t^{-1} A_c$, so the entry $B_t = C_c^T$. This is consistent with the standard form $B_f = [I_\mu \mid C_c^T]$, confirming the identity. $\blacksquare$
+
+> [!question] Q8 (7-15): Matrices for the Complete Graph $K_n$
+> Characterize the matrices $A_f$, $B_f$, $C_f$, and $X$ (adjacency matrix) for the complete graph $K_n$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > The complete graph $K_n$ has $n$ vertices, $\binom{n}{2} = \frac{n(n-1)}{2}$ edges, and is $(n-1)$-regular.
+> >
+> > **Adjacency matrix $X(K_n)$.**
+> >
+> > $X(K_n) = J_n - I_n$, where $J_n$ is the $n \times n$ all-ones matrix and $I_n$ is the identity. Every off-diagonal entry is 1, every diagonal entry is 0:
+> > $$X(K_n) = \begin{bmatrix} 0 & 1 & \cdots & 1 \\ 1 & 0 & \cdots & 1 \\ \vdots & & \ddots & \vdots \\ 1 & 1 & \cdots & 0 \end{bmatrix}_{n \times n}$$
+> >
+> > **Reduced incidence matrix $A_f(K_n)$.**
+> >
+> > Delete the row for vertex $v_n$ (reference vertex). $A_f$ is $(n-1) \times \frac{n(n-1)}{2}$. Each column (edge) has exactly one or two 1's in the first $n-1$ rows. For the spanning tree, choose the star $K_{1,n-1}$ (or any tree). $A_t$ is an $(n-1)\times(n-1)$ identity matrix for the star spanning tree (since each star edge is incident to exactly one non-reference vertex).
+> >
+> > **Fundamental circuit matrix $B_f(K_n)$.**
+> >
+> > $\mu = \binom{n}{2} - (n-1) = \frac{n(n-1)}{2} - n + 1 = \frac{(n-1)(n-2)}{2}$ chords (non-tree edges). Each chord together with the spanning tree forms exactly one fundamental circuit. For the star spanning tree, chord $v_i v_j$ ($i,j \neq n$, $i \neq j$) forms the triangle $v_i v_n v_j v_i$, using branches $v_i v_n$ and $v_j v_n$.
+> >
+> > $$B_f = [I_\mu \mid B_t]$$
+> >
+> > The submatrix $B_t$ has two 1's per row (the two star-edges forming the triangle with each chord).
+> >
+> > **Fundamental cut-set matrix $C_f(K_n)$.**
+> >
+> > $C_f = [C_c \mid I_{n-1}]$ where $C_c = B_t^T$. From the star spanning tree, the fundamental cut-set for branch $v_i v_n$ consists of all edges incident to $v_i$ (Menger's theorem for stars): namely $v_i v_n$ and all chords $v_i v_j$ for $j \neq i, n$. So $C_c$ has $n-2$ ones per row and $C_f$ has the standard block form.
+> >
+> > **Number of spanning trees.** By Cayley's formula: $\mathcal{J}(K_n) = n^{n-2}$.
+
+> [!question] Q9 (7-18): Finding the Diameter Using Powers of the Adjacency Matrix
+> Given the adjacency matrix $X$ of a connected graph $G$ with $n$ vertices, how do you determine the **diameter** of $G$?
+> *(Hint: Consider a sum of powers of $X$.)*
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Background.** By Theorem 7-8 (Narsingh Deo), the $(i,j)$-th entry of $X^r$ equals the number of distinct edge-sequences of length $r$ between vertices $v_i$ and $v_j$.
+> >
+> > By Corollary A: In a connected graph, $d(v_i, v_j) = k$ if and only if $k$ is the smallest integer such that $[X^k]_{ij} \neq 0$.
+> >
+> > **Algorithm to find the diameter.**
+> >
+> > 1. Compute $Y_r = X + X^2 + X^3 + \cdots + X^r$ (summing in the **ring of integers**, not mod 2).
+> >
+> > 2. The diameter $d$ is the smallest $r$ such that $Y_r$ has **no zero off-diagonal entry**:
+> > $$\text{diam}(G) = \min\bigl\{r : [Y_r]_{ij} > 0 \text{ for all } i \neq j\bigr\}$$
+> >
+> > **Why this works.** $[Y_r]_{ij} > 0$ if and only if there exists some $k \leq r$ with $[X^k]_{ij} > 0$, i.e., there is a path of length $\leq r$ between $v_i$ and $v_j$. So:
+> > - $Y_r$ has all positive off-diagonal entries iff every pair of vertices has a path of length $\leq r$, i.e., $\text{diam}(G) \leq r$.
+> > - The smallest such $r$ is exactly the diameter.
+> >
+> > **Example.** For $K_4$: $X = J_4 - I_4$. $X^1$ already has all off-diagonal entries $= 1 > 0$, so $\text{diam}(K_4) = 1$. For a path $P_4 = v_1 v_2 v_3 v_4$: $[X^1]_{14} = 0$, $[X^2]_{14} = 0$, $[X^3]_{14} = 1 > 0$, so $d(v_1, v_4) = 3$ and $\text{diam}(P_4) = 3$.
+
+> [!question] Q10 (7-19): Diagonal of $X^3$ and Triangles
+> Show that each diagonal entry $[X^3]_{ii}$ of the cube of the adjacency matrix equals **twice the number of triangles** (circuits of length 3) passing through vertex $v_i$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Setup.** Let $X = [x_{ij}]$ be the adjacency matrix of a simple graph $G$ (integer ring, not mod 2). By Theorem 7-8, $[X^r]_{ij}$ counts the number of edge-sequences of length $r$ from $v_i$ to $v_j$.
+> >
+> > **Computing $[X^3]_{ii}$.**
+> >
+> > $$[X^3]_{ii} = \sum_{k=1}^{n} [X^2]_{ik} \cdot x_{ki} = \sum_{k=1}^{n} \left(\sum_{j=1}^{n} x_{ij} x_{jk}\right) x_{ki}$$
+> >
+> > Each nonzero term in this sum corresponds to a closed edge-sequence $v_i \to v_j \to v_k \to v_i$ of length 3. This is an edge-sequence (not necessarily a simple path) starting and ending at $v_i$.
+> >
+> > **Why each triangle contributes exactly 2.**
+> >
+> > Consider a triangle $\{v_i, v_a, v_b\}$ (a 3-cycle through $v_i$). The closed edge-sequences of length 3 starting and ending at $v_i$ that use only edges of this triangle are:
+> > $$v_i \to v_a \to v_b \to v_i \quad \text{and} \quad v_i \to v_b \to v_a \to v_i$$
+> > These are the two traversals of the triangle (clockwise and counterclockwise). Each is a valid edge-sequence, contributing **2** to $[X^3]_{ii}$.
+> >
+> > No closed walk of length 3 through $v_i$ can avoid using a triangle: a closed walk $v_i \to v_j \to v_k \to v_i$ requires edges $v_i v_j$, $v_j v_k$, $v_k v_i$ all present, which is exactly a triangle $\{v_i, v_j, v_k\}$. (Note: in a simple graph, $j \neq i$, $k \neq j$, and $k \neq i$ must hold since there are no self-loops, so $j, k$ are distinct and form a triangle with $v_i$.)
+> >
+> > **Conclusion.**
+> > $$[X^3]_{ii} = 2 \times |\{\text{triangles through } v_i\}| \qquad \blacksquare$$
+> >
+> > **Corollary.** The total number of triangles in $G$ is $\dfrac{\operatorname{tr}(X^3)}{6}$, since $\operatorname{tr}(X^3) = \sum_i [X^3]_{ii}$ counts each triangle $6$ times (3 choices of $v_i \in \triangle$, each giving a factor of 2).
+
+> [!question] Q11 (7-20): Spanning Trees and $\det(A_f \cdot A_f^T)$
+> Prove that the number of spanning trees $\mathcal{J}(G)$ in a connected graph $G$ equals:
+> $$\mathcal{J}(G) = \det(A_f \cdot A_f^T)$$
+> where $A_f$ is the reduced incidence matrix of $G$, and arithmetic is over the **reals** (not mod 2).
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Setup.** $G$ is a connected graph with $n$ vertices and $e$ edges. $A_f$ is the $(n-1) \times e$ reduced incidence matrix (any one row deleted from $A(G)$), with entries in $\{0, 1\}$ over $\mathbb{R}$.
+> >
+> > **Using the Binet-Cauchy theorem.**
+> >
+> > The Binet-Cauchy theorem states: for an $m \times e$ matrix $M$ ($m \leq e$),
+> > $$\det(M M^T) = \sum_{S} [\det(M_S)]^2$$
+> > where the sum is over all $m \times m$ submatrices $M_S$ obtained by selecting $m$ columns from $M$.
+> >
+> > Applying this to $A_f$ (with $m = n-1$):
+> > $$\det(A_f A_f^T) = \sum_{S \subseteq E,\, |S|=n-1} [\det((A_f)_S)]^2$$
+> >
+> > **Each term corresponds to a spanning tree.**
+> >
+> > $(A_f)_S$ is the $(n-1) \times (n-1)$ submatrix of $A_f$ corresponding to edge set $S$. By Theorem 7-3 (Narsingh Deo):
+> >
+> > > An $(n-1)\times(n-1)$ submatrix of $A_f$ is nonsingular if and only if the corresponding $n-1$ edges form a spanning tree of $G$.
+> >
+> > Therefore:
+> > - If $S$ is a spanning tree: $\det((A_f)_S) = \pm 1$ (the reduced incidence matrix of a tree is nonsingular with determinant $\pm 1$), so $[\det((A_f)_S)]^2 = 1$.
+> > - If $S$ is not a spanning tree: $\det((A_f)_S) = 0$, so $[\det((A_f)_S)]^2 = 0$.
+> >
+> > **Conclusion.**
+> > $$\det(A_f A_f^T) = \sum_{\substack{S \subseteq E \\ |S|=n-1 \\ S \text{ is a spanning tree}}} 1 = \mathcal{J}(G) \qquad \blacksquare$$
+
+> [!question] Q12 (7-23): Degree Matrix, Laplacian, and Spanning Trees (Kirchhoff's Theorem)
+> For a labeled simple connected graph $G$ with $n$ vertices:
+> - Let $D$ be the $n \times n$ **diagonal degree matrix** (the $i$-th diagonal entry = $\deg(v_i)$).
+> - Let $E$ be obtained from the incidence matrix $A(G)$ by replacing one of the two 1's in every column with $-1$ (arbitrarily orient each edge).
+>
+> Prove (over the **ring of integers**, not mod 2):
+> **(a)** $E \cdot E^T = D - X$, where $X$ is the adjacency matrix.
+> **(b)** All cofactors of $D - X$ are equal.
+> **(c)** Each cofactor of $D - X$ equals $\mathcal{J}(G)$, the number of spanning trees.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > The matrix $K(G) = D - X$ is the **Kirchhoff matrix** (or Laplacian) of $G$.
+> >
+> > ---
+> >
+> > **Proof of (a): $E \cdot E^T = D - X$.**
+> >
+> > Orient each edge arbitrarily: for edge $e_j = (v_p, v_q)$ (directed $v_p \to v_q$), set $e_{pj} = +1$, $e_{qj} = -1$, all other entries 0.
+> >
+> > Compute $[E E^T]_{ii}$ (diagonal entry):
+> > $$[EE^T]_{ii} = \sum_j e_{ij}^2 = \sum_{\text{edges incident to } v_i} (\pm 1)^2 = \deg(v_i) = D_{ii}$$
+> >
+> > Compute $[E E^T]_{ij}$ for $i \neq j$ (off-diagonal):
+> > $$[EE^T]_{ij} = \sum_j e_{ij} e_{jk}$$
+> > For a given edge $e_k$: the product $e_{ik} e_{jk}$ is nonzero only if edge $e_k$ is incident to both $v_i$ and $v_j$, i.e., $e_k = v_i v_j$. In that case one endpoint gets $+1$ and the other $-1$, so the product is $-1$.
+> >
+> > Hence $[EE^T]_{ij} = -(\text{number of edges between } v_i \text{ and } v_j) = -x_{ij}$ (since $G$ is simple, $x_{ij} \in \{0,1\}$).
+> >
+> > Therefore $E E^T = D - X = K(G)$. $\blacksquare$
+> >
+> > ---
+> >
+> > **Proof of (b): All cofactors of $K(G)$ are equal.**
+> >
+> > The row-sums of $K(G) = D - X$ are all zero: for each row $i$,
+> > $$\sum_j K_{ij} = \deg(v_i) - \sum_{j \neq i} x_{ij} = \deg(v_i) - \deg(v_i) = 0$$
+> >
+> > This means $K(G) \cdot \mathbf{1} = \mathbf{0}$, so $\det(K(G)) = 0$ and $\mathbf{1} = (1,1,\dots,1)^T$ is in the null space.
+> >
+> > Since column-sums are also all zero (by symmetry of $K$), expanding along any row or column yields the same cofactor value. More precisely: by the matrix-tree theorem (see below) and the fact that the rank of $K(G)$ is $n-1$ for a connected graph, all $(n-1)\times(n-1)$ cofactors are nonzero and equal (this follows from the fact that $K$ has a unique null vector $\mathbf{1}$ up to scaling, so all cofactor expansions agree). $\blacksquare$
+> >
+> > ---
+> >
+> > **Proof of (c): Each cofactor of $K(G)$ equals $\mathcal{J}(G)$.**
+> >
+> > The $(s,t)$-cofactor of $K = EE^T$ is $(-1)^{s+t} \det(M_{(s,t)})$, where $M_{(s,t)}$ is the $(n-1) \times (n-1)$ submatrix obtained by deleting row $s$ and column $t$.
+> >
+> > From part (a), $K = EE^T$. Let $E_f$ be the matrix $E$ with the $s$-th row deleted (this is exactly the oriented version of the reduced incidence matrix $A_f$, since we delete the reference vertex row). Then:
+> >
+> > $$\det(E_f E_f^T) = \det(M_{(s,s)}) = \text{the } (s,s)\text{-cofactor of } K$$
+> >
+> > By the **Binet-Cauchy theorem** (same argument as Q11, but now with $\pm 1$ entries instead of $0/1$):
+> > $$\det(E_f E_f^T) = \sum_{S,\, |S|=n-1} [\det((E_f)_S)]^2$$
+> >
+> > For a spanning tree $S$: $(E_f)_S$ is an $(n-1)\times(n-1)$ oriented reduced incidence matrix of a tree, which has $\det = \pm 1$, contributing $1$ to the sum.
+> >
+> > For a non-spanning-tree $S$: $(E_f)_S$ is singular, contributing $0$.
+> >
+> > Therefore: $\det(E_f E_f^T) = \mathcal{J}(G)$.
+> >
+> > Since all cofactors are equal (part b), every cofactor of $K(G)$ equals $\mathcal{J}(G)$. $\blacksquare$
+> >
+> > **This is the Kirchhoff-Matrix-Tree Theorem** (Theorem 7.7 in Week-9-Unit-7):
+> > $$\mathcal{J}(G) = (-1)^{s+t} \det(M_{(s,t)}) \quad \text{for any } s, t.$$
