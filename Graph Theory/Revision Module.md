@@ -114,6 +114,32 @@
 
 ---
 
+### Chinese Postman Problem
+
+> [!note] Definition
+> The **Chinese Postman Problem** (Route Inspection Problem) asks for the **shortest closed walk** that traverses every edge of a weighted graph **at least once** and returns to the starting vertex.
+
+> [!abstract] Key Idea
+> - If $G$ is **Eulerian** (all vertices have even degree), the optimal solution is simply an Eulerian circuit with total weight $\sum_{e \in E} w(e)$.
+> - If $G$ has vertices of **odd degree**, some edges must be repeated. The goal is to find the minimum-weight set of edges to duplicate so that all vertices become even-degree.
+
+> [!abstract] Algorithm (Undirected Graph)
+> 1. Find all vertices of odd degree. By the handshaking lemma, their count is always even — say $\{v_1, v_2, \ldots, v_{2k}\}$.
+> 2. Find the **minimum-weight perfect matching** on the odd-degree vertices, where the weight between any two odd vertices $v_i$ and $v_j$ is the shortest-path distance $d(v_i, v_j)$ (computed via Dijkstra or Floyd–Warshall).
+> 3. For each matched pair $(v_i, v_j)$, **duplicate the edges** along the shortest path between them in $G$.
+> 4. The resulting multigraph is Eulerian. Find an Eulerian circuit in it.
+> 5. **Total cost** = $\displaystyle\sum_{e \in E} w(e)\ +\ \text{weight of the minimum perfect matching}$.
+
+> [!tip] Special Cases
+> - **Two odd-degree vertices:** Only one pairing exists; duplicate the shortest path between them.
+> - **Four odd-degree vertices:** Check all three perfect matchings and pick the minimum.
+> - **Directed graph version:** Requires balancing in-degree and out-degree at each vertex using a minimum-cost flow formulation.
+
+> [!important] Remark
+> The Chinese Postman Problem is solvable in **polynomial time** for undirected graphs, in contrast to the Hamiltonian cycle problem (NP-complete). The bottleneck is computing minimum-weight perfect matching, which runs in $O(n^3)$.
+
+---
+
 ### Hamiltonian Graphs — Necessary and Sufficient Conditions
 
 > [!note] Definition

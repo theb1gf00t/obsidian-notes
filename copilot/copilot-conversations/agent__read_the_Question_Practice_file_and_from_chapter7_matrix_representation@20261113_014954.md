@@ -6,7 +6,7 @@ sessionId: "8093d941-cc6f-4a95-8d1d-236cbde096d8"
 agentLabel: "read the Question Practice file and from chapter7: matrix re…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":61769,"contextWindow":200000,"inputTokens":1,"outputTokens":1,"cacheReadTokens":58963,"cacheWriteTokens":2804,"updatedAt":1794516617221}'
+usage: '{"usedTokens":62901,"contextWindow":200000,"inputTokens":1,"outputTokens":1,"cacheReadTokens":62106,"cacheWriteTokens":793,"updatedAt":1794517555877}'
 ---
 
 **user**: read the [[Question Practice]] file and from chapter7: matrix representation of graphs select 4-5 questions that cover the main topics of the chapter.
@@ -51,3 +51,14 @@ These five span: incidence matrix fundamentals → rank theory → circuit matri
 6. **Fleury's Algorithm** — constructing Eulerian circuits with the bridge-avoidance rule
 7. **Hamiltonian Graphs** — Ore's theorem, Dirac's theorem, necessary component conditions, and the remark that no complete characterization exists
 [Timestamp: 2026/11/13 02:19:33]
+
+**user**: add chinese postman here as well.
+[Timestamp: 2026/11/13 02:35:41]
+
+**ai**: Added. The **Chinese Postman Problem** section now sits between Fleury's Algorithm and Hamiltonian Graphs, covering:
+
+- The core idea (duplicate edges at odd-degree vertices to make the graph Eulerian)
+- The 4-step algorithm (find odd vertices → minimum perfect matching → duplicate edges → Eulerian circuit)
+- Special cases for 2 and 4 odd-degree vertices
+- A remark contrasting its polynomial-time solvability with the NP-complete Hamiltonian problem
+[Timestamp: 2026/11/13 02:35:41]
