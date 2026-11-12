@@ -717,6 +717,134 @@
 
 ---
 
+## Chapter 7 (Matrix): Matrix Representation of Graphs
+
+---
+
+### Definitions
+
+> [!note] Adjacency Matrix
+> Let $G$ be a graph with vertices $v_1, v_2, \ldots, v_n$ and edges $e_1, e_2, \ldots, e_m$. The **adjacency matrix** $A(G) = [a_{ij}]$ is the $n \times n$ matrix where
+> $$a_{ij} = \begin{cases} \text{number of edges joining } v_i \text{ and } v_j, & i \neq j \\ 2 \times (\text{number of loops at } v_i), & i = j \end{cases}$$
+> $A(G)$ is a symmetric matrix. For a simple graph, every entry is 0 or 1 and every diagonal entry is 0 (a **binary** or **zero-one** matrix).
+
+> [!note] Incidence Matrix
+> The **incidence matrix** $B(G) = [b_{ij}]$ is the $n \times m$ matrix where
+> $$b_{ij} = \begin{cases} 0, & v_i \text{ is not incident with } e_j \\ 1, & v_i \text{ is incident with } e_j \text{ and } e_j \text{ is not a loop} \\ 2, & v_i \text{ is incident with } e_j \text{ and } e_j \text{ is a loop} \end{cases}$$
+> For a simple graph, $B(G)$ is a zero-one matrix. Each column has exactly two 1's (one per endpoint); the row sum equals $\deg(v_i)$.
+
+> [!note] Circuit Matrix
+> Let the number of distinct circuits in $G$ be $q$ and the number of edges be $m$. The **circuit matrix** $C_c(G) = [c_{ij}]$ is the $q \times m$ zero-one matrix where
+> $$c_{ij} = \begin{cases} 1, & \text{if the } i\text{th circuit includes the } j\text{th edge} \\ 0, & \text{otherwise} \end{cases}$$
+
+> [!note] Fundamental Circuit Matrix
+> A **fundamental circuit matrix** $C_c^f$ is the submatrix of $C_c$ whose rows correspond to the set of fundamental circuits with respect to some spanning tree. If $\mu = m - n + 1$ is the nullity (number of fundamental circuits), then $C_c^f$ is a $\mu \times m$ matrix. With columns arranged so that the $\mu$ chords come first:
+> $$C_c^f = [I_\mu \mid C_c^t]$$
+> where $I_\mu$ is the $\mu \times \mu$ identity and $C_c^t$ is the $\mu \times (n-1)$ submatrix for the spanning-tree branches.
+
+> [!note] Cut-Set Matrix
+> The **cut-set matrix** $C_s(G) = [s_{ij}]$ has rows corresponding to cut-sets and columns to edges:
+> $$s_{ij} = \begin{cases} 1, & \text{if the } i\text{th cut-set contains the } j\text{th edge} \\ 0, & \text{otherwise} \end{cases}$$
+
+> [!note] Fundamental Cut-Set Matrix
+> The **fundamental cut-set matrix** $C_s^f$ of a connected graph $G$ with $m$ edges and $n$ vertices is an $(n-1) \times m$ submatrix of $C_s$ whose rows correspond to fundamental cut-sets with respect to some spanning tree. With columns arranged so that the $n-1$ branches come last:
+> $$C_s^f = [C_s^c \mid I_{n-1}]$$
+> where $C_s^c$ is the $(n-1) \times (m-n+1)$ submatrix for the chords.
+
+> [!note] Reduced Incidence Matrix
+> Removing any one row from the incidence matrix $B(G)$ of a connected graph gives an $(n-1) \times m$ submatrix $B_f$ called the **reduced incidence matrix**. The deleted vertex is the **reference vertex**. $B_f$ has rank $n-1$.
+
+> [!note] Laplacian (Kirchhoff) Matrix
+> The **Laplacian** (or **Kirchhoff matrix**) $K(G)$ is the $n \times n$ matrix obtained from $A(G)$ by:
+> 1. Changing the sign of every off-diagonal entry (from $+$ to $-$).
+> 2. Replacing the $i$-th diagonal entry by $\deg(v_i)$.
+>
+> Equivalently, $K(G) = D(G) - A(G)$ where $D(G)$ is the diagonal degree matrix.
+
+> [!note] Number of Spanning Trees $\mathcal{J}(G)$
+> $\mathcal{J}(G)$ denotes the number of distinct spanning trees of $G$ (two trees are distinct if their edge sets differ). Key facts:
+> - $\mathcal{J}(G) = 0$ iff $G$ is disconnected.
+> - $\mathcal{J}(G) = 1$ iff $G$ is a tree.
+> - $\mathcal{J}(K_n) = n^{n-2}$ (Cayley's formula).
+
+---
+
+### Theorems
+
+> [!abstract] Theorem 7.1 — Powers of the Adjacency Matrix
+> Let $A = [a_{ij}]$ be the adjacency matrix of a simple graph $G$. Then the $(i,j)$-th entry $[A^p]_{ij}$ of $A^p$ is the number of walks of length $p$ from $v_i$ to $v_j$.
+
+> [!abstract] Theorem 7.2 — Distance via Adjacency Matrix
+> If $G$ is a connected simple graph, then the distance $d(v_i, v_j)$ is the smallest integer $p \ge 0$ such that $[A^p]_{ij} \neq 0$.
+
+> [!abstract] Theorem 7.3 — Rank of the Incidence Matrix
+> If $B(G)$ is the incidence matrix of a connected graph $G$ with $n$ vertices, then $\operatorname{rank}(B(G)) = n - 1$.
+
+> [!abstract] Theorem 7.4 — Orthogonality of $C_c$ and $B$
+> Let $C_c$ and $B$ be, respectively, the circuit matrix and the incidence matrix of a self-loop-free graph, with columns arranged in the same edge order. Then every row of $C_c$ is orthogonal to every row of $B$ over $GF(2)$:
+> $$B C_c^T = C_c B^T = 0 \pmod{2}$$
+
+> [!abstract] Theorem 7.5 — Rank of the Circuit Matrix
+> If $C_c$ is the circuit matrix of a connected graph $G$ with $m$ edges and $n$ vertices, then $\operatorname{rank}(C_c) = m - n + 1$.
+
+> [!abstract] Theorem 7.6 — Rank of the Cut-Set Matrix
+> The rank of the cut-set matrix $C_s(G)$ equals the rank of the incidence matrix $B(G)$, which equals the rank of the graph $G$ (i.e., $n - 1$ for a connected graph).
+
+> [!abstract] Theorem 7.7 — Kirchhoff-Matrix-Tree Theorem
+> Let $G$ be a loopless graph, $A(G)$ its adjacency matrix, and $K(G)$ its Kirchhoff (Laplacian) matrix. All $(n-1) \times (n-1)$ cofactors of $K(G)$ have the same value, equal to $\mathcal{J}(G)$:
+> $$\mathcal{J}(G) = (-1)^{s+t} \det(M_{(s,t)})$$
+> where $M_{(s,t)}$ is the $(n-1) \times (n-1)$ matrix obtained from $K(G)$ by deleting the $s$-th row and $t$-th column.
+
+---
+
+### Corollaries
+
+> [!tip] Corollary — Rank of $B(G)$ for Disconnected Graphs
+> If $B(G)$ is the incidence matrix of a simple graph $G$ with $n$ vertices and $k$ components, then $\operatorname{rank}(B(G)) = n - k$.
+
+> [!tip] Corollary — Reduced Incidence Matrix of a Tree is Nonsingular
+> The reduced incidence matrix of a tree is a square matrix of order $n-1$ and rank $n-1$; hence it is nonsingular.
+
+> [!tip] Corollary — Rank of $C_c$ for Disconnected Graphs
+> For a disconnected graph with $k$ components, $e$ edges, and $n$ vertices: $\operatorname{rank}(C_c) = m - n + k$.
+
+> [!tip] Corollary — Cayley's Formula from Kirchhoff
+> Applying the Kirchhoff-Matrix-Tree Theorem to $K_n$ gives $\mathcal{J}(K_n) = n^{n-2}$.
+
+> [!tip] Corollary — Spanning Trees Under Edge Multiplication
+> If $G^{(k)}$ is obtained from a simple graph $G$ by replacing every edge with $k$ parallel edges, then $\mathcal{J}(G^{(k)}) = k^{n-1} \mathcal{J}(G)$.
+
+---
+
+### Important Results and Remarks
+
+> [!important] Remark — Block-Diagonal Structure of $B(G)$
+> If $G$ is disconnected with components $G_1$ and $G_2$, the incidence matrix can be written in block-diagonal form:
+> $$B(G) = \begin{bmatrix} B(G_1) & 0 \\ 0 & B(G_2) \end{bmatrix}$$
+> The same holds for the circuit matrix $C_c(G)$ and the cut-set matrix $C_s(G)$.
+
+> [!important] Remark — Orthogonality of $C_c^f$ and $C_s^f$
+> Since every circuit and every cut-set share an even number of edges, every row of $C_s$ is orthogonal to every row of $C_c$ over $GF(2)$:
+> $$C_c C_s^T = C_s C_c^T = 0 \pmod{2}$$
+
+> [!important] Result — Relationships among $B_f$, $C_c^f$, and $C_s^f$
+> With a common spanning tree and the same edge ordering:
+> - $B_f = [B_c \mid B_t]$ (chords | branches)
+> - $C_c^f = [I_\mu \mid C_c^t]$ and $C_s^f = [C_s^c \mid I_{n-1}]$
+> - From $B_f (C_c^f)^T = 0 \pmod 2$: $\;B_t^{-1} B_c = (C_c^t)^T$ over $GF(2)$
+> - $C_s^c = -(C_c^t)^T = (C_c^t)^T$ over $GF(2)$
+> - Given $B$ or $B_f$, one can construct $C_c^f$ and $C_s^f$; given either fundamental matrix, one can construct the other; but $B_f$ cannot in general be recovered from $C_c^f$ or $C_s^f$ alone.
+
+> [!important] Remark — Row Interpretations
+> - Each column of $B(G)$ has exactly two 1's (one per endpoint of the edge).
+> - The number of 1's in row $i$ of $B(G)$ equals $\deg(v_i)$.
+> - A row of all 0's in $B(G)$ corresponds to an isolated vertex.
+> - Parallel edges produce identical columns in both $B(G)$ and $C_s(G)$.
+> - A column of all 0's in $C_c(G)$ corresponds to a bridge (non-circuit edge).
+> - A column of all 0's in $C_s(G)$ corresponds to a self-loop.
+
+---
+
 ## Miscellaneous
 
 ---
