@@ -568,6 +568,155 @@
 
 ---
 
+## Chapter 11: Directed Graphs
+
+---
+
+### Definitions
+
+> [!note] Directed Graph (Digraph)
+> A **directed graph** $D$ is a triple $(V, A, I_D)$ where $V$ and $A$ are disjoint sets and $I_D : A \to V \times V$ is a function. An element of $V$ is a **vertex**; an element of $A$ is an **arc**. $|V| = n$, $|A| = m$.
+
+> [!note] Tail, Head, Simple Digraph
+> If $I_D(x) = (u, v)$, then $x$ is denoted $x(u, v)$, $u$ is the **tail** of $x$, and $v$ is the **head** of $x$; $x$ is an arc from $u$ to $v$. A loop $x(u,u)$ has $u$ as both its head and tail. A digraph with no multiple arcs and no loops is a **simple digraph**.
+
+> [!note] Underlying Graph
+> The **underlying graph** $G(D)$ of a digraph $D(V, A, I_D)$ is obtained by ignoring the direction of arcs: $V(G) = V$, $E(G) = A$, and $I_G(a) = (u,v)$ if $I_D(a) = (u,v)$ or $(v,u)$.
+
+> [!note] Out-degree, In-degree, Out/In-Neighbors
+> The **out-degree** $\text{outdeg}_D(v)$ is the number of arcs with $v$ as tail; $N_{\text{out}}(v) = \{x \in V(D) : (v,x) \in A(D)\}$. The **in-degree** $\text{indeg}_D(v)$ is the number of arcs with $v$ as head; $N_{\text{in}}(v) = \{x \in V(D) : (x,v) \in A(D)\}$. If $D$ is simple, $|N_{\text{out}}(v)| = \text{outdeg}(v)$ and $|N_{\text{in}}(v)| = \text{indeg}(v)$.
+
+> [!note] Digraph Isomorphism
+> Two digraphs $D_1(V_1, A_1, I_{D_1})$ and $D_2(V_2, A_2, I_{D_2})$ are **isomorphic** ($D_1 \simeq D_2$) if there exist bijections $f: V_1 \to V_2$ and $g: A_1 \to A_2$ such that $x$ is an arc from $u$ to $v$ in $D_1$ iff $g(x)$ is an arc from $f(u)$ to $f(v)$ in $D_2$.
+
+> [!note] Directed Walk, Trail, Path, Cycle
+> A **directed walk** $W(v_0, v_t) = (v_0, a_1, v_1, a_2, v_2, \ldots, v_{t-1}, a_t, v_t)$ has $a_i$ as an arc from $v_{i-1}$ to $v_i$; $v_0$ is the **origin**, $v_t$ the **terminus**, and its **length** is $t$. A walk is a **directed trail** if all arcs are distinct, and a **directed path** if all vertices (hence arcs) are distinct. A walk is **closed** if $v_0 = v_t$. A closed walk with all vertices distinct except $v_0 = v_t$ is a **directed cycle**.
+
+> [!note] Weakly, Unilaterally, Strongly Connected
+> A digraph is **weakly connected** if its underlying graph is connected. It is **unilaterally connected** if for every pair $u, v$, there is a directed path from $u$ to $v$ or from $v$ to $u$. It is **strongly connected (strong)** if for every pair $u, v$, there is a directed path from $u$ to $v$ **and** from $v$ to $u$.
+> $$\text{Strong} \implies \text{Unilateral} \implies \text{Weak}$$
+> (converses do not hold).
+
+> [!note] Orientation of a Graph
+> If $G$ is a graph, an **orientation** of $G$ is a digraph $D(G)$ obtained by orienting each edge $(x,y)$ of $G$ from $x$ to $y$ or $y$ to $x$ (not both). A loopless graph $G$ has $2^m$ orientations (some possibly isomorphic).
+
+> [!note] Strong Orientation, Strongly Orientable
+> An orientation $D(G)$ is a **strong orientation** if $D(G)$ is strong. A graph $G$ is **strongly orientable** if some orientation of it is strongly connected.
+
+> [!note] Eulerian Trail / Eulerian Digraph
+> A directed trail containing all arcs of $D$ is an **Eulerian trail** (open or closed). $D$ is an **Eulerian digraph** if it contains a closed Eulerian trail.
+
+> [!note] Hamilton Directed Path / Cycle / Digraph
+> A directed path containing all vertices of $D$ is a **Hamilton directed path**. A directed cycle containing all vertices is a **Hamilton directed cycle**. $D$ is a **Hamilton digraph** if it contains a directed Hamilton cycle.
+
+> [!note] Reachability
+> A vertex $v$ is **reachable** from $u$ if there is a directed path from $u$ to $v$.
+
+> [!note] Tournament
+> An orientation of a complete graph is called a **tournament**. In a tournament $D$, for every pair of distinct vertices $u, v$, exactly one of $(u,v) \in A(D)$ or $(v,u) \in A(D)$ holds.
+
+> [!note] Converse Digraph
+> The **converse digraph** $\overleftarrow{D}$ of $D$ has $V(\overleftarrow{D}) = V(D)$, and $(u,v) \in A(\overleftarrow{D})$ iff $(v,u) \in A(D)$.
+
+---
+
+### Theorems
+
+> [!abstract] Theorem 11.1 — Sum of Degrees
+> For every digraph $D$:
+> $$\sum_{v \in V(D)} \text{outdeg}(v) = \sum_{v \in V(D)} \text{indeg}(v) = m$$
+
+> [!abstract] Theorem 11.2 — Characterization of Strong Digraphs
+> A digraph $D$ is strong if and only if it contains a closed directed walk which contains all its vertices.
+
+> [!abstract] Theorem 11.3 — Characterization of Unilaterally Connected Digraphs
+> A digraph $D$ is unilaterally connected if and only if it contains a directed walk (not necessarily closed) containing all the vertices of $D$.
+
+> [!abstract] Theorem 11.4 — Directed Cycle from Degree Bound
+> Let $D$ be a simple digraph satisfying, for some integer $p$, either:
+> (1) $\text{outdeg}(v) \ge p \ge 1$ for every vertex $v$, or
+> (2) $\text{indeg}(v) \ge p \ge 1$ for every vertex $v$.
+> Then $D$ contains a directed cycle of length $\ge p+1$.
+
+> [!abstract] Theorem 11.5 — Strong Orientability Characterization
+> A connected graph $G$ is strongly orientable if and only if $G$ has no cut-edges.
+
+> [!abstract] Theorem 11.6 — Characterization of Eulerian Digraphs
+> A digraph $D$ is Eulerian if and only if:
+> (i) $D$ is weakly connected, and
+> (ii) $\text{outdeg}(v) = \text{indeg}(v)$ for every vertex $v$.
+
+> [!abstract] Theorem 11.7 — Ghouila-Houri's Theorem (1960)
+> If $D$ is a simple digraph such that:
+> (i) $n \ge 3$,
+> (ii) $\text{outdeg}(v) \ge \dfrac{n}{2}$ for every vertex $v$, and
+> (iii) $\text{indeg}(v) \ge \dfrac{n}{2}$ for every vertex $v$,
+> then $D$ contains a directed Hamilton cycle.
+
+> [!abstract] Theorem 11.8 — Reachability from Maximum Out-Degree Vertex
+> If $u$ is a vertex of maximum out-degree in a tournament $D$, then every vertex is reachable from $u$ by a directed path of length at most $2$.
+
+> [!abstract] Theorem 11.9 — Hamilton Path in Tournaments
+> Every tournament $D$ contains a directed Hamilton path.
+
+> [!abstract] Theorem 11.10 — Cycles of Every Length in Strong Tournaments
+> Every strong tournament $D$ on $n \ge 3$ vertices contains a directed cycle of length $k$, for every $k$, $3 \le k \le n$.
+
+---
+
+### Corollaries
+
+> [!tip] Corollary to Theorem 11.4
+> If $D$ is a digraph satisfying any of the conditions stated in Theorem 11.4, then $D$ contains a directed cycle.
+
+> [!tip] Corollary to Theorem 11.3 — Tournaments are Unilaterally Connected
+> Every tournament is unilaterally connected.
+
+> [!tip] Corollary to Theorems 11.2 and 11.10 — Strong Tournament Characterization
+> A tournament is strong if and only if it contains a directed Hamilton cycle.
+
+---
+
+### Important Results and Remarks
+
+> [!important] Remark — Dropping "Directed"
+> In walk/trail/path/cycle definitions, the adjective "directed" can be dropped if it is clear from context that digraphs are under discussion.
+
+> [!important] Remark — Walks Do Not Reverse
+> If there exists a $(v_0, v_t)$-directed walk, it is **not** necessary that a $(v_t, v_0)$-directed walk exists.
+
+> [!important] Remark — Walk Implies Path
+> If there exists a $(v_0, v_t)$-directed walk, there exists a $(v_0, v_t)$-directed path (obtained by shortcutting repeated vertices).
+
+> [!important] Remark — Connectivity Hierarchy is Strict
+> Strongly connected $\implies$ unilaterally connected $\implies$ weakly connected, but none of the converse implications hold in general.
+
+> [!important] Remark — One-Way Traffic Problem
+> The strong-orientability question models: *when is it possible to make the roads of a city one-way so that every corner is reachable from every other corner?* Theorem 11.5 answers this: exactly when the road network (as a graph) has no cut-edges.
+
+> [!important] Remark — $P_3$ is Not Strongly Orientable; $K_3$ Is
+> $P_3$ (path on 3 vertices) does not admit a strong orientation, since its middle edge is a cut-edge. $K_3$ admits a strong orientation (orient it as a directed triangle).
+
+> [!important] Remark — Hamilton Digraph Implications
+> - $D$ contains a directed Hamilton cycle $\implies$ $D$ contains a directed Hamilton path.
+> - $D$ contains a directed Hamilton path $\;\not\Rightarrow\;$ $D$ contains a directed Hamilton cycle.
+> - $D$ contains a directed Hamilton path $\implies$ $D$ is unilaterally connected (Theorem 11.3).
+> - $D$ is Hamilton $\implies$ $D$ is strong (Theorem 11.2).
+
+> [!important] Remark — No Full Characterization of Hamilton Digraphs
+> As with Hamilton graphs (Chapter 6), there is no known full characterization of Hamilton digraphs. Theorem 11.7 (Ghouila-Houri) gives only a sufficient condition, analogous to Dirac's condition for Hamilton graphs.
+
+> [!important] Remark — Tournaments Need Not Be Hamiltonian
+> A tournament need not contain a directed Hamilton cycle (e.g., a non-strong tournament). However, every **strong** tournament on $\ge 3$ vertices contains a directed Hamilton cycle (Theorem 11.10 / its corollary).
+
+> [!important] Remark — Proof Technique for Theorem 11.4 (Analogy)
+> The proof of Theorem 11.4 is similar to that of Theorem 2.2: choose a directed path of maximum length $P(x,y)$; if condition (1) holds, examine $N_{\text{out}}(y)$; if condition (2) holds, examine $N_{\text{in}}(x)$.
+
+> [!important] Remark — Proof Technique for Theorem 11.6 (Analogy)
+> The proof of Theorem 11.6 (Eulerian digraph characterization) is similar to the proof of Theorem 5.1 (Eulerian graph characterization).
+
+---
+
 ## Miscellaneous
 
 ---
