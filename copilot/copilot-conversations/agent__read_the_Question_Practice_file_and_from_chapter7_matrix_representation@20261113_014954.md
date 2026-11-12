@@ -37,3 +37,9 @@ Covers the Binet-Cauchy theorem application, connecting the reduced incidence ma
 
 These five span: incidence matrix fundamentals → rank theory → circuit matrix → adjacency matrix & walks → determinantal spanning tree formula. Want me to export these into a separate practice file?
 [Timestamp: 2026/11/13 01:49:54]
+
+**user**: in the revision module, make a section of pre midsem and then in it include hevel hakimi, erdos gallai, dijkstra, floyd warshall, eulerian graphs, fleury algorithm and then finally necessary and sufficient condition for hamiltonian graphs.
+[Timestamp: 2026/11/13 02:19:33]
+
+**ai**: Reading the Revision Module file first.Now I have the full file. I'll add a "Pre-Midsem" section at the top with all the requested topics.
+[Timestamp: 2026/11/13 02:19:33]
