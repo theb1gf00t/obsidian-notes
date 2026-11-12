@@ -3597,7 +3597,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > **Structure.** If every vertex has out-degree $1$ *and* in-degree $1$, then every weak component is a directed cycle: by Q2 each component has exactly one directed cycle, and inside a component the $1$-in/$1$-out condition forbids any arc pointing into the cycle from outside (that vertex would need an out-arc too, and its unique out-arc would have to stay on the cycle, giving it in-degree $2$). So
+> > **Structure.** If every vertex has out-degree $1$ *and* in-degree $1$, then every weak component is exactly a directed cycle. Indeed, by Q2 each component has exactly one directed cycle $C$; and if some vertex $z\notin V(C)$ lay in the same component, then following out-arcs from $z$ would eventually reach $C$, so some arc $w\to v$ would enter $V(C)$ from outside — but $v$ already receives the arc from its predecessor on $C$, giving $\mathrm{indeg}(v)\ge 2$, a contradiction. So
 > >
 > > $$D \;=\; \text{a disjoint union of directed cycles, with no loops (}D\text{ is simple).}$$
 > >
@@ -3652,6 +3652,890 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > $$\sum_{v}(d^+(v))^2-\sum_{v}(d^-(v))^2=\sum_{v}\deg_G(v)\,\big(d^+(v)-d^-(v)\big),$$
 > >
 > > which need not vanish when the degrees differ. For example, the path $a-b-c$ oriented as $a\to b\leftarrow c$ has out-degrees $(1,0,1)$ and in-degrees $(0,2,0)$, so $\sum(d^+)^2=2\neq 4=\sum(d^-)^2$.
+
+> [!question] Q5: $k$-Regular Digraphs
+> A simple digraph $D$ is called $k$-regular if $\mathrm{outdeg}(v)=\mathrm{indeg}(v)=k$ for every vertex $v\in V(D)$.
+>
+> (a) Draw a 2-regular digraph on 5 vertices.
+> (b) Let $k$ and $n$ be integers with $0\le k<n$. Describe a construction to obtain a $k$-regular digraph on $n$ vertices.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### (a) A 2-regular digraph on 5 vertices
+> >
+> > Take the vertices $\{0,1,2,3,4\}$ and put **two arc-disjoint directed Hamilton cycles** on them:
+> >
+> > $$0\to1\to2\to3\to4\to0 \qquad\text{and}\qquad 0\to2\to4\to1\to3\to0 .$$
+> >
+> > Every vertex lies on both cycles, so it has exactly $2$ out-going and exactly $2$ in-coming arcs:
+> >
+> > ![[ch11_2regular_5v.png]]
+> >
+> > Degree check: out-degrees $=(2,2,2,2,2)$, in-degrees $=(2,2,2,2,2)$, and $m=nk=5\cdot2=10$ arcs.
+> >
+> > **Why this is the only possible shape.** By Kőnig's edge-colouring theorem the arc set of a $k$-regular digraph splits into $k$ perfect matchings ("1-factors"); each perfect matching, read as a map $v\mapsto$ its matched out-neighbour, is a permutation of $V$, so its arcs form a disjoint union of directed cycles covering all $n$ vertices. Thus every $k$-regular digraph is the union of $k$ permutation digraphs. For $k=2,\ n=5$ that is exactly two permutational cycles on $5$ vertices — here two Hamilton cycles.
+> >
+> > ### (b) Construction for arbitrary $0\le k<n$
+> >
+> > Label the vertices by $\mathbb{Z}_n=\{0,1,\dots,n-1\}$ and put an arc from $i$ to each of the $k$ "successors"
+> >
+> > $$(i,\,i+1),\ (i,\,i+2),\ \dots,\ (i,\,i+k)\qquad (\text{indices mod } n).$$
+> >
+> > Equivalently $A(D)=\{(i,j)\ :\ j-i\equiv t \pmod n,\ 1\le t\le k\}$.
+> >
+> > * **Out-degree:** $i$ dominates exactly $i+1,\dots,i+k$, so $\mathrm{outdeg}(i)=k$.
+> > * **In-degree:** $i$ is dominated exactly by $i-1,\dots,i-k$, so $\mathrm{indeg}(i)=k$.
+> > * **Simplicity:** no loops ($t\not\equiv0$, since $1\le t\le k\le n-1$) and no repeated arcs.
+> >
+> > This is the *circulant* (or "cyclic shift") digraph $C_n(1,2,\dots,k)$. For $k=0$ it is the empty digraph; for $k=n-1$ it is the complete digraph $\overleftrightarrow{K_n}$.
+> >
+> > $$\boxed{D=\big(\mathbb{Z}_n,\ \{(i,i+t):1\le t\le k\}\big)\ \text{is }k\text{-regular on }n\text{ vertices.}}$$
+> >
+> > The range $0\le k<n$ in the statement is exactly the range in which a simple $k$-regular digraph on $n$ vertices can exist: $k\le n-1$ is forced by simplicity ($i$ has only $n-1$ possible out-neighbours), and $m=nk\le n(n-1)$ is then automatic.
+
+> [!question] Q6: Odd Out-Degree at Every Vertex
+> Prove or disprove: For every $n\ge1$, there is a simple digraph on $n$ vertices in which every vertex has odd out-degree.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **The statement is false — but only because of $n=1$.** Here is the full picture.
+> >
+> > **$n=1$: impossible.** A simple digraph has no loops, so the single vertex has out-degree $0$, which is even. So the assertion fails for $n=1$.
+> >
+> > **Every $n\ge2$: possible.** Take the **directed $n$-cycle**
+> >
+> > $$0\to1\to2\to\cdots\to n-1\to0 .$$
+> >
+> > It is simple (for $n=2$ it is the 2-cycle $0\leftrightarrow1$, still simple — two distinct arcs), and every vertex has out-degree $1$, which is odd.
+> >
+> > $$\boxed{\text{False for }n=1;\ \text{true for every }n\ge2.}$$
+> >
+> > **Stronger version (useful to remember).** Fix any *odd* $d$ with $d\le n-1$. The construction of Q5(b) with $k=d$ gives a $d$-regular, hence simple, digraph on $n$ vertices in which **every** out-degree equals $d$, which is odd. So for every $n\ge2$ and every odd $d\le n-1$ an example exists; in particular when $n$ is even one can even take $d=n-1$, i.e. the complete digraph $\overleftrightarrow{K_n}$.
+> >
+> > **Moral.** There is no parity obstruction for digraphs (unlike the "even number of odd-degree vertices" theorem for graphs): the only obstruction here is geometry at $n=1$.
+
+> [!question] Q7: Pairs of Digraphs with the Same Vertex-Deleted Deck
+> (a) Construct pairs $(D_1,D_2)$ of simple digraphs on $n$ vertices for $n=2,3,4$ where $V(D_1)=\{u_1,\dots,u_n\}$ and $V(D_2)=\{v_1,\dots,v_n\}$ such that (i) $D_1\not\simeq D_2$; (ii) $D_1-u_i\simeq D_2-v_i$ for $i=1,2,\dots,n$.
+>
+> (b) Verify that the digraphs $D_1$ and $D_2$ shown in Figure 11.22 have the properties (i) and (ii) stated above.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Throughout, "$D-x$" means the digraph obtained by deleting the vertex $x$ **and all arcs incident with it** (the remaining arcs keep their labels).
+> >
+> > ### (a) Examples for $n=2,3,4$
+> >
+> > **$n=2$.** Let $D_1$ have no arcs and let $D_2$ have the single arc $v_1\to v_2$.
+> >
+> > * (i) $D_1$ has $0$ arcs, $D_2$ has $1$ arc, so $D_1\not\simeq D_2$.
+> > * (ii) $D_1-u_1$ and $D_2-v_1$ are both the one-vertex digraph with no arcs; likewise $D_1-u_2\simeq D_2-v_2$. ✓
+> >
+> > **$n=3$.** Let $D_1$ have arcs $u_1\to u_2$, $u_1\to u_3$, and let $D_2$ have arcs $v_1\to v_3$, $v_2\to v_1$.
+> >
+> > * (i) Out-degrees of $D_1$ are $(2,1,0)$; of $D_2$ they are $(1,1,0)$ — different multisets, so $D_1\not\simeq D_2$.
+> > * (ii) The three vertex deletions give:
+> >
+> > | deleted | $D_1-$ that vertex | $D_2-$ that vertex |
+> > |---|---|---|
+> > | $1$ | $\varnothing$ on $\{u_2,u_3\}$ | $\varnothing$ on $\{v_2,v_3\}$ |
+> > | $2$ | $u_1\to u_3$ | $v_1\to v_3$ |
+> > | $3$ | $u_1\to u_2$ | $v_2\to v_1$ |
+> >
+> > In each row the two digraphs are isomorphic (with $u_1\mapsto v_1$, $u_3\mapsto v_3$ in row 2, and $u_1\mapsto v_2$, $u_2\mapsto v_1$ in row 3). ✓
+> >
+> > **$n=4$.** Let
+> >
+> > $$D_1:\ u_1\to u_2,\ u_1\to u_3,\ u_2\to u_4,\ u_3\to u_2 ;\qquad D_2:\ v_1\to v_3,\ v_2\to v_1,\ v_2\to v_3,\ v_4\to v_2 .$$
+> >
+> > * (i) Out-degrees of $D_1$ are $(2,1,1,0)$; of $D_2$ they are $(2,1,0,0)$. So $D_1\not\simeq D_2$.
+> > * (ii) The vertex-deleted digraphs match, with these isomorphisms:
+> >
+> > | $i$ | $D_1-u_i$ | $D_2-v_i$ | isomorphism |
+> > |---|---|---|---|
+> > | $1$ | $u_2\to u_4,\ u_3\to u_2$ | $v_2\to v_3,\ v_4\to v_2$ | $u_2\mapsto v_2,\ u_3\mapsto v_4,\ u_4\mapsto v_3$ |
+> > | $2$ | $u_1\to u_3$ | $v_1\to v_3$ | $u_1\mapsto v_1,\ u_3\mapsto v_3$ |
+> > | $3$ | $u_1\to u_2,\ u_2\to u_4$ | $v_2\to v_1,\ v_4\to v_2$ | $u_1\mapsto v_2,\ u_2\mapsto v_4,\ u_4\mapsto v_1$ |
+> > | $4$ | $u_1\to u_2,\ u_1\to u_3,\ u_3\to u_2$ | $v_1\to v_3,\ v_2\to v_1,\ v_2\to v_3$ | $u_1\mapsto v_2,\ u_2\mapsto v_3,\ u_3\mapsto v_1$ |
+> >
+> > Each displayed map is a bijection on the three remaining vertices carrying the arc set of $D_1-u_i$ onto that of $D_2-v_i$. ✓
+> >
+> > **What this shows.** For simple digraphs the vertex-deleted *deck* does **not** determine the digraph — the analogue of the "reconstruction conjecture" fails badly in the directed setting, already at $n=2$ (and the examples above are far from unique).
+> >
+> > ### (b) Figure 11.22
+> >
+> > ![[ch11_fig11_22.png]]
+> >
+> > The two digraphs of the figure are (reading the arcs off the drawing):
+> >
+> > $$A(D_1)=\{(v_1v_2),(v_1v_3),(v_1v_4),(v_2v_4),(v_2v_5),(v_3v_2),(v_3v_5),(v_4v_3),(v_4v_5),(v_5v_1)\},$$
+> >
+> > $$A(D_2)=\{(u_1u_2),(u_1u_5),(u_2u_4),(u_2u_5),(u_3u_1),(u_3u_2),(u_3u_4),(u_4u_1),(u_5u_3),(u_5u_4)\},$$
+> >
+> > where $ab$ abbreviates the arc $a\to b$. Both have $10$ arcs, no 2-cycles, the same out-degree sequence $(3,2,2,2,1)$ and the same in-degree sequence $(3,2,2,2,1)$ — so coarse invariants are useless here.
+> >
+> > **(i) $D_1\not\simeq D_2$.** Count the directed Hamilton cycles. A computer-free count: $D_1$ has exactly $3$ directed Hamilton cycles, $D_2$ has exactly $2$; isomorphic digraphs would have the same number. Hence $D_1\not\simeq D_2$. ✓
+> >
+> > **(ii) $D_1-v_i\simeq D_2-u_i$ for every $i$.** Explicit isomorphisms (each verified by mapping the arc list):
+> >
+> > | $i$ | isomorphism $D_1-v_i\to D_2-u_i$ |
+> > |---|---|
+> > | $1$ | $v_2\mapsto u_2,\ v_3\mapsto u_3,\ v_4\mapsto u_5,\ v_5\mapsto u_4$ |
+> > | $2$ | $v_1\mapsto u_5,\ v_3\mapsto u_4,\ v_4\mapsto u_3,\ v_5\mapsto u_1$ |
+> > | $3$ | $v_1\mapsto u_1,\ v_2\mapsto u_2,\ v_4\mapsto u_5,\ v_5\mapsto u_4$ |
+> > | $4$ | $v_1\mapsto u_3,\ v_2\mapsto u_2,\ v_3\mapsto u_1,\ v_5\mapsto u_5$ |
+> > | $5$ | $v_1\mapsto u_3,\ v_2\mapsto u_1,\ v_3\mapsto u_4,\ v_4\mapsto u_2$ |
+> >
+> > For instance, deleting $v_1$ from $D_1$ leaves $\{(v_2v_4),(v_2v_5),(v_3v_2),(v_3v_5),(v_4v_3),(v_4v_5)\}$, which under $v_2\mapsto u_2,\ v_3\mapsto u_3,\ v_4\mapsto u_5,\ v_5\mapsto u_4$ becomes
+> >
+> > $$\{(u_2u_5),(u_2u_4),(u_3u_2),(u_3u_4),(u_5u_3),(u_5u_4)\} = A(D_2-u_1),$$
+> >
+> > exactly the arc set of $D_2$ with $u_1$ deleted. The other four rows are checked identically.
+> >
+> > $$\boxed{D_1\not\simeq D_2\ \text{ yet }\ D_1-v_i\simeq D_2-u_i\ \text{for all }i=1,\dots,5.}$$
+
+> [!question] Q8: Weakly Connected Digraphs Have $m\ge n-1$
+> If $D$ is a weakly connected digraph, then show that $m\ge n-1$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Let $G$ be the **underlying graph** of $D$: same vertex set, and $uv\in E(G)$ whenever $(u,v)$ or $(v,u)$ is an arc of $D$.
+> >
+> > * " $D$ weakly connected" *means precisely* that $G$ is connected: a weak path in $D$ is exactly a path in $G$, and vice versa.
+> > * $G$ has the same $n$ vertices as $D$, and $|E(G)|\le m$, because distinct arcs of $D$ may share the same underlying edge (a 2-cycle $u\leftrightarrow v$ gives only one edge $uv$).
+> >
+> > A connected graph on $n$ vertices has at least $n-1$ edges (a spanning tree has exactly $n-1$, and every connected graph contains a spanning tree). Hence
+> >
+> > $$m\ \ge\ |E(G)|\ \ge\ n-1. \qquad\blacksquare$$
+> >
+> > $$\boxed{m\ge n-1}$$
+> >
+> > **Sharpness.** A directed Hamilton path $v_1\to v_2\to\cdots\to v_n$ has exactly $m=n-1$ arcs and is weakly (indeed unilaterally) connected, so the bound cannot be improved. Note also that the bound is *not* sufficient: a directed Hamilton path has $n-1$ arcs and is not strong, which is why Q10 needs the stronger hypothesis.
+
+> [!question] Q9: Many Arcs Force Weak Connectivity
+> If $D$ is a digraph with $m\ge(n-1)(n-2)+1$, then show that $D$ is weakly connected.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Proof by contraposition.** Suppose $D$ is *not* weakly connected. Let its weak components have vertex sets of sizes $n_1,n_2,\dots,n_r$ with $r\ge2$ and $\sum_i n_i=n$. Arcs never join different components, so
+> >
+> > $$m=\sum_{i=1}^{r} m_i\ \le\ \sum_{i=1}^{r} n_i(n_i-1),$$
+> >
+> > because a simple digraph on $n_i$ vertices has at most $n_i(n_i-1)$ arcs ($n_i$ choices of tail times $n_i-1$ choices of a different head).
+> >
+> > **Claim.** $\sum_i n_i(n_i-1)\le (n-1)(n-2)$.
+> >
+> > Indeed, moving one vertex from a part of size $b\ge2$ to a part of size $a\ge1$ changes the sum by
+> >
+> > $$\big[(a+1)a+(b-1)(b-2)\big]-\big[a(a-1)+b(b-1)\big]=2a-2(b-1)=2(a-b+1).$$
+> >
+> > This is positive whenever $a\ge b-1$, so the sum is maximised by making the parts as unequal as possible, i.e. by taking $r=2$ with parts $n-1$ and $1$:
+> >
+> > $$\sum_i n_i(n_i-1)\ \le\ (n-1)(n-2)+1\cdot 0=(n-1)(n-2).$$
+> >
+> > Therefore a non-weakly-connected digraph satisfies $m\le(n-1)(n-2)$, contradicting $m\ge(n-1)(n-2)+1$. Hence $D$ must be weakly connected. $\blacksquare$
+> >
+> > $$\boxed{m\ge(n-1)(n-2)+1\ \Longrightarrow\ D\text{ is weakly connected.}}$$
+> >
+> > **Sharpness (see Q12(a)).** The bound is best possible: the complete digraph on $n-1$ vertices together with one isolated vertex is disconnected and has exactly $(n-1)(n-2)$ arcs.
+
+> [!question] Q10: Arc Bounds for a Strong Simple Digraph
+> If $D$ is a strongly connected simple digraph, then show that $n\le m\le n(n-1)$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Lower bound $m\ge n$.** In a strong digraph every vertex has out-degree $\ge1$: if $\mathrm{outdeg}(v)=0$ then no vertex other than $v$ is reachable from $v$, contradicting strong connectivity (for $n\ge2$). Therefore
+> >
+> > $$m=\sum_{v\in V}\mathrm{outdeg}(v)\ \ge\ \sum_{v\in V}1\ =\ n .$$
+> >
+> > (Equivalently, by Q8 and out-degree positivity: every strong digraph contains a closed directed walk through all its vertices, so $m\ge n$.)
+> >
+> > **Upper bound $m\le n(n-1)$.** $D$ is simple, so between an ordered pair $(u,v)$ with $u\neq v$ there is at most one arc. There are $n(n-1)$ ordered pairs of distinct vertices, hence at most $n(n-1)$ arcs.
+> >
+> > $$\boxed{n\le m\le n(n-1)}$$
+> >
+> > **Both bounds are attained.**
+> >
+> > * $m=n$: the directed $n$-cycle $v_1\to v_2\to\cdots\to v_n\to v_1$ is strong with exactly $n$ arcs.
+> > * $m=n(n-1)$: the complete digraph $\overleftrightarrow{K_n}$ (all $n(n-1)$ possible arcs) is strong with $n(n-1)$ arcs.
+> >
+> > **Interpretation.** The lower bound says strong connectivity costs at least one out-arc per vertex; the upper bound says that once all $n(n-1)$ arcs are present nothing more can be added. By Q12, *neither* bound can be moved: $n-1$ arcs can still give weak (even unilateral) connectivity but never strong connectivity, which is exactly why the threshold for "forced" strong connectivity in Q11 is quadratic rather than linear.
+
+> [!question] Q11: Many Arcs Force Strong Connectivity
+> If $D$ is a simple digraph with $m\ge(n-1)^2+1$, then show that $D$ is strongly connected.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Proof by contradiction.** Suppose $D$ is not strong. Two cases.
+> >
+> > **Case 1: $D$ is not even weakly connected.** By Q9 (contrapositive), $m\le(n-1)(n-2)$. But $(n-1)(n-2)<(n-1)^2<(n-1)^2+1$, contradiction.
+> >
+> > **Case 2: $D$ is weakly connected but not strong.** By Q24, $V(D)$ splits into non-empty parts $A,B$ such that **every** arc between $A$ and $B$ goes from $A$ to $B$. Put $a=|A|$, $b=|B|$, so $a+b=n$ and $a,b\ge1$. Counting the arcs:
+> >
+> > * inside $A$: at most $a(a-1)$ (simple digraph on $a$ vertices);
+> > * inside $B$: at most $b(b-1)$;
+> > * between $A$ and $B$: at most $ab$, since only the $a\cdot b$ ordered pairs $(u,v)$ with $u\in A,\ v\in B$ may carry an arc.
+> >
+> > Hence
+> >
+> > $$m\le a(a-1)+b(b-1)+ab = a^2+b^2-a-b+ab.$$
+> >
+> > Using $a^2+b^2+2ab=(a+b)^2=n^2$, i.e. $a^2+b^2=n^2-2ab$, this becomes
+> >
+> > $$m\le n^2-2ab-(a+b)+ab=n^2-n-ab.$$
+> >
+> > Finally $ab\ge n-1$: for fixed $a+b=n$ the product $ab=a(n-a)$ is minimised at $a=1$ or $a=n-1$, giving $ab\ge 1\cdot(n-1)=n-1$. Therefore
+> >
+> > $$m\le n^2-n-(n-1)=n^2-2n+1=(n-1)^2,$$
+> >
+> > contradicting $m\ge(n-1)^2+1$.
+> >
+> > Both cases are impossible, so $D$ is strongly connected. $\blacksquare$
+> >
+> > $$\boxed{m\ge(n-1)^2+1\ \Longrightarrow\ D\text{ is strongly connected.}}$$
+> >
+> > **Sharpness (see Q12(e)).** The complete digraph on $n-1$ vertices plus one vertex $x$ that dominates all of them has exactly $(n-1)(n-2)+(n-1)=(n-1)^2$ arcs and is **not** strong, so the "$+1$" is indispensable.
+
+> [!question] Q12: Extreme Examples and the Merits of the Bounds
+> Give an example of a simple digraph with the following properties: (a) $m=(n-1)(n-2)$, which is disconnected; (b) $m=n$, which is strongly connected; (c) $m=n-1$, which is weakly connected; (d) $m=n-1$, which is unilaterally connected; (e) $m=(n-1)^2$, which is not strongly connected. In view of the existence of these examples, discuss the merits of the bounds stated in Exercises 8 to 11.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Assume $n\ge3$ (for $n=2$ some of the counts coincide trivially). "$ab$" abbreviates $a\to b$.
+> >
+> > ### (a) $m=(n-1)(n-2)$, disconnected
+> >
+> > Take the **complete digraph on $n-1$ vertices** $v_1,\dots,v_{n-1}$, which has exactly $(n-1)(n-2)$ arcs, and add one **isolated** vertex $x$. The digraph has exactly $(n-1)(n-2)$ arcs and is disconnected because $x$ is isolated. This is the densest possible disconnected simple digraph on $n$ vertices.
+> >
+> > ### (b) $m=n$, strongly connected
+> >
+> > The **directed $n$-cycle** $v_1\to v_2\to\cdots\to v_n\to v_1$ has $n$ arcs and is strong (from any vertex you can walk forwards around the cycle to any other, and backwards for the reverse direction).
+> >
+> > ### (c) $m=n-1$, weakly connected
+> >
+> > The **directed Hamilton path** $v_1\to v_2\to\cdots\to v_n$ has $n-1$ arcs and its underlying graph is the path $P_n$, which is connected, so the digraph is weakly connected.
+> >
+> > ### (d) $m=n-1$, unilaterally connected
+> >
+> > The **same** directed Hamilton path works: for $i<j$ there is the directed path $v_i\to v_{i+1}\to\cdots\to v_j$, so every pair of vertices is comparable (unilateral connectivity is *stronger* than weak connectivity, and the directed path has it).
+> >
+> > ### (e) $m=(n-1)^2$, not strongly connected
+> >
+> > Take the complete digraph on $\{v_1,\dots,v_{n-1}\}$ — that is $(n-1)(n-2)$ arcs — and add a new vertex $x$, with arcs $x\to v_i$ for **every** $i=1,\dots,n-1$ (so $x$ dominates the whole clique), and **no** arc $v_i\to x$. Then
+> >
+> > $$m=(n-1)(n-2)+(n-1)=(n-1)^2,$$
+> >
+> > and the digraph is **not** strong: no vertex of the clique can reach $x$ (all clique vertices, and all their out-neighbours, lie in the clique).
+> >
+> > ### Discussion: the merits of the bounds of Q8–Q11
+> >
+> > | Bound | Sharp example | What it says |
+> > |---|---|---|
+> > | Q8: weak $\Rightarrow m\ge n-1$ | (c) | one arc per vertex really is enough for weak connectivity, so the hypothesis "$m\ge n-1$" cannot be strengthened to "$m\ge n$" |
+> > | Q9: $m\ge (n-1)(n-2)+1\Rightarrow$ weak | (a) | the exact threshold: at $(n-1)(n-2)$ arcs disconnection is still possible |
+> > | Q10: strong $\Rightarrow n\le m$ | (c),(d) | $n-1$ arcs can give weak/unilateral connectivity but never strong connectivity |
+> > | Q10: strong $\Rightarrow m\le n(n-1)$ | $\overleftrightarrow{K_n}$ | attained; nothing stronger is possible |
+> > | Q11: $m\ge(n-1)^2+1\Rightarrow$ strong | (e) | the exact threshold for *forced* strong connectivity |
+> >
+> > Three merits deserve emphasis.
+> >
+> > 1. **Each bound is sharp (best possible).** The examples (a) and (e) sit exactly one arc *below* the thresholds of Q9 and Q11, and (c),(d) show that "$m\ge n$" in Q10 cannot be lowered. So the theorems cannot be improved: they are exact threshold results, not merely sufficient conditions with slack.
+> >
+> > 2. **They quantify the density needed to *force* a connectivity property.** Weak connectivity is forced from $\sim n^2$ arcs (Q9) — even though $n-1$ arcs already *suffice* (Q8) — and strong connectivity is forced from $(n-1)^2+1$ arcs (Q11) — even though $n$ arcs already suffice (Q10). The gap between "possible at $m$" and "unavoidable at $m$" is thus quadratic, and examples (a)–(e) are exactly the witness digraphs that make this gap explicit.
+> >
+> > 3. **They exhibit the asymmetry of the two questions.** For graphs, one edge per vertex ($n-1$) already forces connectivity; for digraphs, directionality means that the same number of arcs can be arranged into a directed path (weak and unilateral, (c),(d)) or into a "one-way valve" structure (e) that is dense yet not strong. Density alone forces a directed property only in the quadratic range.
+
+> [!question] Q13: Strong $\iff$ Converse Strong
+> Show that a digraph is strong if and only if its converse digraph is strong. (The converse digraph $D^{\leftarrow}$ has $V(D^{\leftarrow})=V(D)$ and $(u,v)\in A(D^{\leftarrow})$ iff $(v,u)\in A(D)$.)
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Key observation.** Reversing every arc reverses every directed walk: if $v_0\to v_1\to\cdots\to v_k$ is a directed walk in $D$, then
+> >
+> > $$v_k\to v_{k-1}\to\cdots\to v_0$$
+> >
+> > is a directed walk in $D^{\leftarrow}$ (each arc $v_{i}v_{i+1}$ of $D$ becomes the arc $v_{i+1}v_i$ of $D^{\leftarrow}$). Conversely every directed walk of $D^{\leftarrow}$ arises this way from one of $D$. Hence, for all $x,y\in V$,
+> >
+> > $$y \text{ is reachable from } x \text{ in } D \iff x \text{ is reachable from } y \text{ in } D^{\leftarrow}. \tag{$*$}$$
+> >
+> > **($\Rightarrow$)** Let $D$ be strong and take $x,y\in V$. By strongness of $D$, $y$ is reachable from $x$, so by $(*)$ $x$ is reachable from $y$ in $D^{\leftarrow}$. As $x,y$ were arbitrary, every vertex of $D^{\leftarrow}$ is reachable from every other, i.e. $D^{\leftarrow}$ is strong.
+> >
+> > **($\Leftarrow$)** Apply the same argument with the roles of $D$ and $D^{\leftarrow}$ exchanged, using the identity $\big(D^{\leftarrow}\big)^{\leftarrow}=D$.
+> >
+> > $$\boxed{D\text{ is strong}\iff D^{\leftarrow}\text{ is strong.}}$$
+> >
+> > **Consequence.** Every theorem about strong digraphs has a *dual* version obtained by reversing all arcs: e.g. Q11 stays true, and "every vertex has out-degree $\ge1$" dualises to "every vertex has in-degree $\ge1$". This is the directed analogue of taking complements in undirected graph theory.
+
+> [!question] Q14: Strong Orientations of the Graphs of Figure 11.23
+> Use the proof of Theorem 11.5 to give a strong orientation to the following graphs.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **The tool (Theorem 11.5 and its proof).** A connected graph $G$ has a strong orientation **iff** $G$ has no cut-edge. The *constructive* proof is an ear decomposition:
+> >
+> > 1. Since $G$ has no cut-edge, $G$ contains a cycle; orient that cycle cyclically. Its vertices are now mutually reachable.
+> > 2. While some vertex is un-oriented, choose a path ("ear") $P=s\,x_1\,x_2\cdots x_t\,s'$ whose **endpoints** $s,s'$ are already in the oriented part $S$ and whose internal vertices $x_1,\dots,x_t$ are outside $S$ (such an ear exists because $G$ is connected; because $G$ has no cut-edge one may always choose it so that it really returns to $S$). Orient all of $P$ consistently from $s$ to $s'$.
+> > 3. Then every internal vertex $x_i$ is reachable from $S$ (walk forwards from $s$) and can reach $S$ (walk forwards to $s'$), so $S\cup V(P)$ is again strongly oriented. Repeat.
+> >
+> > Every edge of $G$ gets exactly one direction, and at the end all vertices are mutually reachable. (Note also: if $G$ has a cut-edge, that edge lies in no cycle, so no orientation can be strong — the condition is necessary as well.)
+> >
+> > ![[ch11_fig11_23.png]]
+> >
+> > ### Graph $A$ (left): $8$ vertices, $11$ edges
+> >
+> > Its edge set is $\{CA,CB,CD,CE,AB,CF,FD,FE,FG,FH,GH\}$: the triangle $ABC$, the $4$-cycle $CDFE$ with chord $CF$, and the triangle $FGH$. There is no cut-edge — every edge lies on a cycle ($CA,AB,BC$ on triangle $ABC$; $CD,DF,FE,EC$ on the $4$-cycle $CDFE$; $CF$ on $CDFC$; $FG,GH,HF$ on the triangle $FGH$).
+> >
+> > **Ear decomposition and orientation.**
+> >
+> > * Start with the cycle $C\to D\to F\to E\to C$ (oriented cyclically).
+> > * Add the ear $C\to A\to B\to C$ (a closed ear based at $C$).
+> > * Add the ear $F\to G\to H\to F$.
+> > * Finally the chord $CF$: orient it $C\to F$.
+> >
+> > $$A(D)=\{C\to D,\ D\to F,\ F\to E,\ E\to C,\ C\to A,\ A\to B,\ B\to C,\ F\to G,\ G\to H,\ H\to F,\ C\to F\}.$$
+> >
+> > **It is strong.** From $C$: $C\to A\to B$ covers $A,B$; $C\to D\to F$ covers $D,F$, then $F\to E$ and $F\to G\to H$ cover $E,G,H$. And everything returns to $C$: $A\to B\to C$, $B\to C$, $D\to F\to E\to C$, $F\to E\to C$, $E\to C$, $G\to H\to F\to E\to C$, $H\to F\to E\to C$. Every vertex is reachable from $C$ **and** can reach $C$; hence every vertex is reachable from every other. ✓
+> >
+> > ### Graph $B$ (right): $K_{2,4}$, with parts $X=\{x_1,x_2\}$ and $Y=\{y_1,y_2,y_3,y_4\}$
+> >
+> > $K_{2,4}$ is connected with no cut-edge (it is bipartite and 2-connected: every edge lies on a 4-cycle). Using ears:
+> >
+> > * Start with the cycle $x_1\to y_1\to x_2\to y_2\to x_1$.
+> > * Add the ear $x_1\to y_3\to x_2$.
+> > * Add the ear $x_1\to y_4\to x_2$.
+> >
+> > $$A(D)=\{x_1\to y_1,\ y_1\to x_2,\ x_2\to y_2,\ y_2\to x_1,\ x_1\to y_3,\ y_3\to x_2,\ x_1\to y_4,\ y_4\to x_2\}.$$
+> >
+> > **It is strong.** $x_1$ reaches everything: $y_1$ directly, $x_2$ via $x_1\to y_1\to x_2$, $y_2$ via $x_1\to y_1\to x_2\to y_2$, and $y_3,y_4$ directly. Everything reaches $x_1$: $y_1\to x_2\to y_2\to x_1$; $x_2\to y_2\to x_1$; $y_2\to x_1$; $y_3\to x_2\to y_2\to x_1$; $y_4$ similarly. So all vertices are mutually reachable. ✓
+> >
+> > All $8$ edges receive exactly one direction in each case, so this is an orientation (not merely an assignment of arcs), and it is strong.
+
+> [!question] Q15: $D-v$ Strong Forces Unilateral Connectivity
+> If $D$ is a weakly connected simple digraph such that $D-v$ is strong for some vertex $v\in V(D)$, then show that $D$ is unilaterally connected.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Write $V^-=N^-(v)$ (in-neighbours of $v$) and $V^+=N^+(v)$ (out-neighbours of $v$). We must show: for every pair $x,y$ of vertices, $x$ reaches $y$ or $y$ reaches $x$.
+> >
+> > **Pairs not involving $v$.** For $x,y\neq v$, strongness of $D-v$ gives directed paths $x\to\cdots\to y$ and $y\to\cdots\to x$ inside $D-v$; in particular they are comparable. ✓
+> >
+> > **Pairs involving $v$.** Three cases.
+> >
+> > * **$V^-=\varnothing$.** Then $v\to u$ for every $u\neq v$, so $v$ reaches every vertex and each pair $(v,u)$ is comparable. ✓
+> > * **$V^+=\varnothing$.** Then $u\to v$ for every $u\neq v$, so every vertex reaches $v$. ✓
+> > * **$V^-\neq\varnothing$ and $V^+\neq\varnothing$.** Choose $y\in V^-$ and $x\in V^+$, so $y\to v\to x$. Since $D-v$ is strong, there is a directed path $x\to\cdots\to y$ in $D-v$. Concatenating,
+> >
+> > $$y\to v\to x\to\cdots\to y$$
+> >
+> > is a closed directed walk through $v$. Now take any $u\neq v$. Again by strongness of $D-v$ there is a path $u\to\cdots\to y$ in $D-v$ (trivial if $u=y$), hence
+> >
+> > $$u\to\cdots\to y\to v,$$
+> >
+> > so $u$ reaches $v$; and there is a path $x\to\cdots\to u$ in $D-v$ (trivial if $u=x$), hence
+> >
+> > $$v\to x\to\cdots\to u,$$
+> >
+> > so $v$ reaches $u$. Thus $u$ and $v$ are mutually reachable, in particular comparable. ✓
+> >
+> > **Where weak connectivity is used.** Only to exclude the degenerate possibility that $v$ has **no** neighbour at all: if $v$ were isolated (so $V^+=V^-=\varnothing$), the middle two cases would give nothing, and $D$ would fail to be unilateral (nothing reaches or is reached by $v$). Weak connectivity of $D$ guarantees $v$ has at least one neighbour — but note the two middle cases already cover the situations $V^-=\varnothing$ or $V^+=\varnothing$ with a non-isolated $v$.
+> >
+> > $$\boxed{D-v\text{ strong }+\ D\text{ weakly connected}\ \Longrightarrow\ D\text{ is unilaterally connected.}}$$
+> >
+> > **Remark.** Strong connectivity of $D-v$ alone does **not** give strong connectivity of $D$: e.g. $v$ may point into $D-v$ with no arc coming back, as in Q12(e). "Unilateral" is exactly the right conclusion.
+
+> [!question] Q16: The Adjacency Matrix of a Digraph
+> The adjacency matrix $M=[a_{ij}]$ of a digraph $D$ on $n$ vertices $v_1,\dots,v_n$ is the $n\times n$ matrix with $a_{ij}=1$ if $(v_i,v_j)\in A(D)$ and $a_{ij}=0$ otherwise. Show that (a) $\sum_{j=1}^n a_{ij}=\mathrm{outdeg}(v_i)$; (b) $\sum_{j=1}^n a_{ij}=\mathrm{indeg}(v_i)$; (c) the $(i,j)$-entry $[M^p]_{ij}$ of $M^p$ is the number of directed walks of length $p$ from $v_i$ to $v_j$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **A typo in the printed statement.** As printed, (a) and (b) both read $\sum_{j=1}^n a_{ij}$; the second one must have the summation over the **row index**:
+> >
+> > $$(a)\ \sum_{j=1}^{n}a_{ij}=\mathrm{outdeg}(v_i),\qquad (b)\ \sum_{i=1}^{n}a_{ij}=\mathrm{indeg}(v_j).$$
+> >
+> > (Otherwise (b) would just repeat (a) with $i$ renamed.) Both statements below are proved in this corrected form.
+> >
+> > ### (a) Row sums are out-degrees
+> >
+> > Fix $i$. Since $a_{ij}\in\{0,1\}$,
+> >
+> > $$\sum_{j=1}^{n}a_{ij}=\big|\{j\ :\ a_{ij}=1\}\big|=\big|\{j\ :\ (v_i,v_j)\in A(D)\}\big|=\mathrm{outdeg}(v_i).$$
+> >
+> > (Note $a_{ii}=0$ because $D$ has no loops, so the sum really counts arcs and not a loop.)
+> >
+> > ### (b) Column sums are in-degrees
+> >
+> > Fix $j$. Then
+> >
+> > $$\sum_{i=1}^{n}a_{ij}=\big|\{i\ :\ a_{ij}=1\}\big|=\big|\{i\ :\ (v_i,v_j)\in A(D)\}\big|=\mathrm{indeg}(v_j).$$
+> >
+> > **Immediate consequence.** Summing (a) over $i$ (or (b) over $j$) gives the handshake identity of Module 11, Theorem 11.1:
+> >
+> > $$\sum_{i,j}a_{ij}=\sum_i \mathrm{outdeg}(v_i)=\sum_j \mathrm{indeg}(v_j)=m .$$
+> >
+> > ### (c) $[M^p]_{ij}$ counts directed walks of length $p$ from $v_i$ to $v_j$
+> >
+> > **Proof by induction on $p$.**
+> >
+> > *Base $p=1$:* $[M]_{ij}=a_{ij}=1$ iff $(v_i,v_j)$ is an arc, i.e. iff there is exactly one directed walk of length $1$ from $v_i$ to $v_j$. ✓
+> >
+> > *Inductive step.* Assume the claim for $p$. By the definition of matrix multiplication,
+> >
+> > $$[M^{p+1}]_{ij}=\sum_{k=1}^{n}[M^{p}]_{ik}\,a_{kj}.$$
+> >
+> > Now $[M^p]_{ik}$ is the number of directed walks $v_i\to\cdots\to v_k$ of length $p$ (induction hypothesis) and $a_{kj}=1$ exactly when $v_k\to v_j$ is an arc. Every directed walk of length $p+1$ from $v_i$ to $v_j$ has a unique last-but-one vertex $v_k$ and is obtained by appending the arc $v_k v_j$ to a walk of length $p$ from $v_i$ to $v_k$. Hence the summand counts exactly the walks of length $p+1$ whose penultimate vertex is $v_k$, and summing over $k$ counts all walks of length $p+1$ from $v_i$ to $v_j$. ✓
+> >
+> > **Useful consequences.** (All are standard tools for digraph problems.)
+> >
+> > * $D$ is **strong** iff for every ordered pair $(i,j)$ there is some $p\ge1$ with $[M^p]_{ij}>0$; thus strong connectivity is computable from the powers of $M$ (equivalently, from $(I+M)^{n-1}$, whose positive entries mark reachability).
+> > * The total number of directed walks of length $p$ in $D$ is $\mathbf 1^{T}M^{p}\mathbf 1$.
+> > * The number of **closed** directed walks of length $p$ is $\mathrm{tr}(M^{p})=\sum_i [M^p]_{ii}$; in particular $\mathrm{tr}(M^2)=0$ for a simple digraph (no loops), while $\mathrm{tr}(M^3)=3\cdot(\text{number of directed triangles})$.
+
+> [!question] Q17: An Orientation With $|\mathrm{outdeg}-\mathrm{indeg}|\le1$
+> Every graph $G$ has an orientation $D$ such that $|\mathrm{outdeg}(v)-\mathrm{indeg}(v)|\le1$ for every vertex $v$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Idea: reduce to Eulerian graphs by adding one new vertex.** Recall that every connected Eulerian graph (all degrees even) admits a closed Euler trail, i.e. a closed walk using every edge exactly once.
+> >
+> > **Step 1 (make all degrees even).** Let $O=\{v\in V(G)\ :\ \deg_G(v)\text{ is odd}\}$. By the handshake lemma $|O|$ is even. Add a **new vertex** $x$ and join $x$ to every vertex of $O$, forming $G'$. Then
+> >
+> > * each $v\in O$ gains exactly one incident edge, so $\deg_{G'}(v)=\deg_G(v)+1$ is even;
+> > * each $v\notin O$ keeps its even degree;
+> > * $\deg_{G'}(x)=|O|$ is even.
+> >
+> > So every component of $G'$ is Eulerian.
+> >
+> > **Step 2 (orient along Euler trails).** Take, in each component of $G'$, a closed Euler trail $x_1x_2\cdots x_\ell x_1$ and orient every edge of it **in the direction of travel**. Along a closed trail each visit to a vertex contributes one arriving and one departing edge, so in the resulting orientation $D'$ of $G'$
+> >
+> > $$\mathrm{outdeg}_{D'}(v)=\mathrm{indeg}_{D'}(v)\qquad\text{for every }v\in V(G').$$
+> >
+> > **Step 3 (delete $x$).** Delete $x$ together with all $|O|$ edges incident with it. This leaves exactly the graph $G$, oriented: call the orientation $D$. For each $v\in V(G)$ at most **one** edge was removed (the edge $vx$, present iff $v\in O$). Since in $D'$ the in- and out-degrees of $v$ were equal, removing a single incident edge changes the difference by at most $1$:
+> >
+> > $$v\notin O:\ \mathrm{outdeg}_D(v)-\mathrm{indeg}_D(v)=0,\qquad v\in O:\ \big|\mathrm{outdeg}_D(v)-\mathrm{indeg}_D(v)\big|=1 .$$
+> >
+> > $$\boxed{\big|\mathrm{outdeg}_D(v)-\mathrm{indeg}_D(v)\big|\le 1\quad\text{for all }v.}$$
+> >
+> > **Remarks.**
+> >
+> > * The parity is forced: $\mathrm{outdeg}(v)+\mathrm{indeg}(v)=\deg_G(v)$, so $|\mathrm{outdeg}-\mathrm{indeg}|\equiv \deg_G(v)\pmod 2$. Hence the best possible bound is $0$ at even-degree vertices and $1$ at odd-degree vertices — exactly what the construction achieves.
+> > * Summing, $\sum_v(\mathrm{outdeg}-\mathrm{indeg})=0$, so the orientation of Step 2 also shows the "balance" identity of Theorem 11.1 in a constructive way.
+
+> [!question] Q18: An $r$-Regular Superdigraph
+> Let $D$ be a digraph and let $r=\max_{v\in V}\{\mathrm{outdeg}(v),\mathrm{indeg}(v)\}$. Prove that there is an $r$-regular digraph $H$ such that $D$ is a subdigraph of $H$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Two preliminary remarks.**
+> >
+> > 1. $r\le n-1$ always, because $D$ is simple.
+> > 2. $H$ may need **more vertices** than $D$. For example, let $D$ be the complete digraph on $3$ vertices plus one isolated vertex; then $r=2$, but $D$ cannot be extended to a $2$-regular digraph on the *same* $4$ vertices: the three clique vertices already have out- and in-degree $2$, so no arc can be added at them, while the isolated vertex would need out-degree and in-degree $2$. So we shall build $H$ on $V(D)$ plus a pool of fresh vertices.
+> >
+> > **The plan.** We build $H$ as the union of $r$ **permutation digraphs** $\sigma_1,\dots,\sigma_r$ of a large vertex set $W\supseteq V(D)$: each $\sigma_t$ is a bijection $W\to W$ with no fixed point, and we add the arc $(u,\sigma_t(u))$ for every $u$ and every $t$. Then:
+> >
+> > * every vertex has out-degree exactly $r$ and in-degree exactly $r$ (one arc per $t$, in and out), i.e. $H$ is $r$-regular;
+> > * no loops (no fixed points) and no repeated arc (we ensure $\sigma_1(u),\dots,\sigma_r(u)$ are pairwise distinct for every $u$), i.e. $H$ is simple.
+> >
+> > So it suffices to find $\sigma_1,\dots,\sigma_r$ whose arcs *include all arcs of $D$*.
+> >
+> > **Step 1 (colour the arcs of $D$).** Build a bipartite graph $B$ with parts $L=\{u^{L}:u\in V\}$, $R=\{w^{R}:w\in V\}$ and one edge $u^{L}w^{R}$ for each arc $(u,w)\in A(D)$. A vertex $u^L$ has degree $\mathrm{outdeg}(u)\le r$ and $w^R$ has degree $\mathrm{indeg}(w)\le r$, so $\Delta(B)\le r$. By **König's line-colouring theorem** the edges of $B$ can be properly coloured with $r$ colours; each colour class is a matching, i.e. a *partial injection* $P_t\subseteq V\times V$ (no two arcs of the same colour share a tail or a head). Every arc of $D$ now has a colour $t\in\{1,\dots,r\}$, and $P_1\cup\dots\cup P_r=A(D)$.
+> >
+> > **Step 2 (complete each $P_t$ to a permutation).** Fix a pool $P$ of $K=4r+2$ fresh vertices and put $W=V\cup P$, so $|W|=n+K$. For $t=1,\dots,r$, extend the partial injection $P_t$ to a **permutation** $\sigma_t$ of $W$ by pairing the unmatched rows with the unmatched columns — forbidden pairs being: the diagonal $(u,u)$, the arcs of $D$ (which would create a repeated arc), and the pairs already used by $\sigma_1,\dots,\sigma_{t-1}$ (which would also create a repeated arc). Thus each row forbids at most
+> >
+> > $$1\ (\text{diagonal})+r\ (\text{out-arcs in }D)+(t-1)\ (\text{earlier colours})\ \le\ 2r+1=:f,$$
+> >
+> > and each column forbids at most $1+r+(t-1)\le f$ rows as well. The number of unmatched rows (= unmatched columns) is
+> >
+> > $$q=|W|-|P_t|\ \ge\ K\ =\ 4r+2\ =\ 2f .$$
+> >
+> > **Hall's condition holds.** Let $S$ be a set of unmatched rows and let $T$ be the set of unmatched columns that are forbidden for *every* row of $S$. If $T\neq\varnothing$, pick $c\in T$: then all $|S|$ rows of $S$ lie in the forbidden-neighbourhood of $c$, so $|S|\le f$; and the set of *allowed* columns of $S$ is exactly $C\setminus T$, hence
+> >
+> > $$|N(S)|=q-|T|\ \ge\ q-f\ \ge\ 2f-f\ =\ f\ \ge\ |S| .$$
+> >
+> > If $T=\varnothing$ then $N(S)$ is everything, so $|N(S)|=q\ge|S|$. By Hall's theorem a system of distinct representatives exists, i.e. the required completion to a permutation $\sigma_t$ exists.
+> >
+> > **Step 3 (conclude).** Having completed all $r$ colours, define
+> >
+> > $$A(H)=\big\{(u,\sigma_t(u))\ :\ u\in W,\ 1\le t\le r\big\}.$$
+> >
+> > Then $H$ is a simple $r$-regular digraph on $|W|=n+4r+2$ vertices (if $r=0$ take $H$ empty, which is $0$-regular), and
+> >
+> > $$A(D)=P_1\cup\cdots\cup P_r\subseteq A(H),$$
+> >
+> > so $D$ is a subdigraph of $H$. $\blacksquare$
+> >
+> > $$\boxed{\text{Every digraph is a subdigraph of an }r\text{-regular digraph, }r=\max\{\mathrm{outdeg},\mathrm{indeg}\}.}$$
+> >
+> > **Why the bound $r$ is the right one.** No $r'$-regular superdigraph with $r'<r$ can exist, since the out- and in-degrees of $H$ are at least those of $D$; so the value $r$ is best possible. The proof also shows the structural meaning of the statement: every digraph sits inside a union of $r$ permutation digraphs, i.e. inside a digraph "made of $r$ layers of disjoint directed cycles".
+
+> [!question] Q19: Regular Tournaments Exist Exactly for Odd Order
+> Prove that there exist regular tournaments of every odd order but there are no regular tournaments of even order.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > ### No regular tournament of even order
+> >
+> > Suppose $T$ is a regular tournament on $n$ vertices, every vertex having out-degree $d$. Counting arcs by tails,
+> >
+> > $$nd=\sum_{v}\mathrm{outdeg}(v)=|A(T)|=\binom n2=\frac{n(n-1)}{2},$$
+> >
+> > so
+> >
+> > $$d=\frac{n-1}{2}.$$
+> >
+> > Since $d$ must be an integer, $n-1$ is even, i.e. $n$ is **odd**. Hence no regular tournament of even order exists. $\blacksquare$
+> >
+> > ### A regular tournament of every odd order
+> >
+> > Let $n=2h+1$ (so $h=(n-1)/2$). Take the vertices $\mathbb{Z}_n=\{0,1,\dots,n-1\}$ and, for every $i$, put arcs from $i$ to its $h$ "successors"
+> >
+> > $$i\to i+1,\quad i\to i+2,\quad \dots,\quad i\to i+h \qquad(\text{mod } n).$$
+> >
+> > This is the **carousel (cyclic) tournament** $C_n$.
+> >
+> > * **It is a tournament:** for each unordered pair $\{i,j\}$ exactly one of $j-i$ and $i-j$ lies in $\{1,\dots,h\}$ modulo $n$ (because $n=2h+1$), so exactly one of $i\to j$, $j\to i$ is present.
+> > * **It is regular:** every vertex has out-degree $h=(n-1)/2$ and, by the same count, in-degree $h$.
+> >
+> > $$\boxed{\text{Regular tournaments exist for every odd }n\text{ (the carousel), and for no even }n.}$$
+> >
+> > **Extra: a regular tournament is automatically strong.** Suppose a regular tournament $T$ were not strongly connected. By Q24 there is a partition $V=A\sqcup B$ ($A,B\neq\varnothing$) with **every** arc between $A,B$ pointing from $A$ to $B$. For $u\in A$,
+> >
+> > $$\mathrm{outdeg}(u)\ \ge\ \underbrace{|B|}_{\text{all of }B}+\underbrace{0}_{\text{arcs inside }A\text{ may be in}}+\ldots\ \ge\ |B|\ =\ n-|A|,$$
+> >
+> > Wait — more directly: $u$ dominates **all** of $B$, and at most $|A|-1$ vertices of $A$, so $\mathrm{outdeg}(u)=|B|+(\text{out-neighbours in }A)$. If $|A|\ge2$ then $\mathrm{outdeg}(u)\ge|B|+1=n-|A|+1\le n-1$, so $\mathrm{outdeg}(u)\ge n-|A|+1\ge n-(n-1)+1=2$; and in any case $\mathrm{outdeg}(u)\ge|B|$. Since $T$ is regular, $|B|\le (n-1)/2$, hence $|A|=n-|B|\ge (n+1)/2$, and symmetric reasoning for $v\in B$ gives $\mathrm{indeg}$... The clean way is to use the average:
+> >
+> > $$\sum_{u\in A}\mathrm{outdeg}(u)=|A|\cdot\frac{n-1}{2}=\underbrace{|A|(|A|-1)/2}_{\text{arcs inside }A}+\underbrace{|A||B|}_{\text{all cross arcs }A\to B},$$
+> >
+> > so
+> >
+> > $$|A|\cdot\frac{n-1}{2}=\frac{|A|(|A|-1)}{2}+|A|(n-|A|).$$
+> >
+> > Dividing by $|A|>0$: $\dfrac{n-1}{2}=\dfrac{|A|-1}{2}+n-|A|$, i.e. $\dfrac{n-1}{2}=n-\dfrac{|A|+1}{2}$, i.e. $|A|+1 = 2n-(n-1)=n+1$, i.e. $|A|=n$, contradicting $|B|\neq\varnothing$. (The key point: all cross arcs leave $A$, so the sum of out-degrees over $A$ is *exactly* the number of arcs with tail in $A$.) Hence a regular tournament is strong, and by the corollary to Theorem 11.10 it has a directed Hamilton cycle — consistent with the carousel containing $0\to1\to\cdots\to n-1\to0$.
+
+> [!question] Q20: At Most One Source and At Most One Sink in a Tournament
+> Show that in a tournament there is at most one vertex of out-degree zero and at most one vertex of in-degree zero.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **Out-degree zero.** Let $u\neq v$ be two vertices. In a tournament exactly one of the arcs $(u,v),(v,u)$ is present. So at least one of $u,v$ is the tail of an arc, i.e. has out-degree $\ge1$. Hence **two distinct vertices cannot both have out-degree $0$**: at most one vertex is a *sink* (out-degree $0$).
+> >
+> > **In-degree zero.** Symmetrically, at least one of $u,v$ is the head of the arc between them, so at least one of $u,v$ has in-degree $\ge1$. Hence at most one vertex has in-degree $0$ — at most one *source*.
+> >
+> > $$\boxed{\#\{\text{sinks}\}\le1,\qquad \#\{\text{sources}\}\le1.}$$
+> >
+> > **Remarks.**
+> >
+> > * These two vertices, when they exist, are unique and are the *last* and *first* vertices of every transitive ordering: in a transitive tournament the out-degrees are $0,1,\dots,n-1$ (Q25), so exactly one sink and exactly one source occur.
+> > * The bound cannot be improved to zero: the transitive tournament on $n\ge2$ vertices has one sink and one source.
+> > * Contrast with general digraphs: an arbitrary simple digraph can have many sources and many sinks (e.g. an independent set with no arcs has $n$ sources and $n$ sinks).
+
+> [!question] Q21: Deleting $k\le n-3$ Vertices From a Strong Tournament
+> Let $D$ be a strong tournament. Given any $k$ with $1\le k\le n-3$, show that there exists a set $S\subseteq V(D)$ of $k$ vertices such that $D-S$ is strongly connected.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **The tool (Theorem 11.10).** A strong tournament on $m\ge3$ vertices contains directed cycles of **every** length $3,4,\dots,m$.
+> >
+> > **The corollary we use.** If $m\ge3$ and $T$ is a strong tournament on $m$ vertices, then $T$ contains a strong subtournament on $m-1$ vertices. Indeed, by Theorem 11.10, $T$ contains a directed cycle $C$ of length $m-1$; the subtournament $T[V(C)]$ induced by the vertices of $C$ contains the closed directed walk $C$ through all its vertices, hence it is strongly connected (walk forwards around $C$); it has $m-1$ vertices. So $T-x$ is strong, where $x$ is the unique vertex outside $C$.
+> >
+> > **Proof of the statement by iteration.** We show by induction on $j=0,1,\dots,k$ that there are vertices $x_1,\dots,x_j$ such that $D-\{x_1,\dots,x_j\}$ is a strong tournament on $n-j\ge n-k\ge3$ vertices.
+> >
+> > * $j=0$: $D$ is strong by hypothesis.
+> > * Step: suppose $D-\{x_1,\dots,x_j\}$ is a strong tournament with $n-j\ge n-k+1\ge4$ vertices. Apply the corollary with $m=n-j\ge4$ (so that $m-1\ge3$ is a legal cycle length): there is a vertex $x_{j+1}$ whose deletion leaves a strong tournament on $n-j-1$ vertices.
+> >
+> > After $k$ steps we obtain $S=\{x_1,\dots,x_k\}$ with $|S|=k$ and $D-S$ a strong tournament on $n-k\ge3$ vertices. $\blacksquare$
+> >
+> > $$\boxed{\text{For every }1\le k\le n-3\text{ there is }S,\ |S|=k,\text{ with }D-S\text{ strong.}}$$
+> >
+> > **Why $k\le n-3$ is exactly the range.** A strong tournament needs at least $3$ vertices (on $1$ or $2$ vertices no tournament is strong: one vertex is trivially strong only by convention, and a 2-vertex tournament has a single arc, so the head cannot reach the tail). Deleting $n-3$ vertices leaves $3$ vertices — a directed triangle, which is strong. Deleting $n-2$ vertices would leave $2$ vertices, which can never be strong, so the hypothesis $k\le n-3$ cannot be relaxed.
+
+> [!question] Q22: A Tournament on 5 Vertices With All Out-Degrees Equal
+> (a) Draw a tournament on $5$ vertices in which every vertex has the same out-degree.
+> (b) If a tournament has $n$ vertices and every vertex has out-degree $d$, find $d$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a) The carousel tournament.** Put the vertices $0,1,2,3,4$ on a pentagon in cyclic order, and let each vertex beat the two vertices that follow it in the cyclic order:
+> >
+> > $$i\to i+1,\qquad i\to i+2\qquad(\text{indices mod }5).$$
+> >
+> > Explicit arc list: $0\to1$, $0\to2$; $1\to2$, $1\to3$; $2\to3$, $2\to4$; $3\to4$, $3\to0$; $4\to0$, $4\to1$. That is $5+5=10=\binom52$ arcs, so **every** pair of vertices is joined by exactly one arc and we indeed have a tournament.
+> >
+> > ![[ch11_regular_tournament_5v.png]]
+> >
+> > *Why it is a tournament.* For two vertices $i\neq j$ look at the difference $j-i \pmod 5$. If $j-i\in\{1,2\}$ then $i\to j$; if $j-i\in\{3,4\}$ then $j\to i$. The two cases are exhaustive and exclusive, so exactly one arc joins $i$ and $j$.
+> >
+> > *Why all out-degrees are equal.* $\mathrm{outdeg}(i)=\big|\{i+1,i+2\}\big|=2$ for every $i$; correspondingly $\mathrm{indeg}(i)=\big|\{i-1,i-2\}\big|=2$. So the tournament is **$2$-regular** in the sense of Q19 — every vertex has the same out-degree and the same in-degree.
+> >
+> > **(b) The value of $d$.** Count arcs in two ways. A tournament on $n$ vertices has one arc per unordered pair, so
+> >
+> > $$m=\binom{n}{2}=\frac{n(n-1)}{2},$$
+> >
+> > and by the digraph handshake (Theorem 11.1) the out-degrees sum to $m$:
+> >
+> > $$m=\sum_{v}\mathrm{outdeg}(v)=n\cdot d.$$
+> >
+> > Equating,
+> >
+> > $$n\,d=\frac{n(n-1)}{2}\quad\Longrightarrow\quad \boxed{\,d=\frac{n-1}{2}\,}$$
+> >
+> > **Consequences.**
+> >
+> > * $d$ must be an integer, so **$n$ must be odd** — an even-order tournament can never have all out-degrees equal. (Equivalently: $\sum_v \mathrm{outdeg}(v)=n(n-1)/2$ is not divisible by $n$ when $n$ is even.) This is the same obstruction as in Q19; the construction above for $n=5$ generalises to the carousel on $2h+1$ vertices with $d=h=\frac{n-1}{2}$.
+> > * Since a tournament on $n$ vertices has out-degrees between $0$ and $n-1$, we need $\frac{n-1}{2}\le n-1$, which holds for all $n\ge1$; for $n=1$ we get $d=0$, consistent with the single trivial vertex.
+> > * For $n=5$ the formula gives $d=2$, matching the drawing: every vertex has exactly two out-neighbours and two in-neighbours.
+
+> [!question] Q23: A Unilateral (But Not Strong) and a Strong Tournament on 5 Vertices
+> Draw:
+> (a) a unilaterally connected (but not strongly connected) tournament on $5$ vertices;
+> (b) a strongly connected tournament on $5$ vertices.
+> Justify that your tournaments indeed have the required properties.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(a) Unilateral but not strong: a triangle feeding a directed path.** Take vertices $a,b,c,x,y$ and the arcs
+> >
+> > $$a\to b\to c\to a,\qquad a\to x,\quad b\to x,\quad c\to x,\qquad x\to y.$$
+> >
+> > That is $3+3+1=7$ arcs out of the $\binom52=10$ possible — a tournament, since the missing pairs are exactly none (check: inside $\{a,b,c\}$ all three pairs are used; each of $a,b,c$ is joined to $x$; $x$ is joined to $y$).
+> >
+> > ![[ch11_unilateral_tournament_5v.png]]
+> >
+> > *Unilateral.* We must check that for every pair $u,v$ **at least one** of $u\leadsto v$, $v\leadsto u$ holds.
+> >
+> > * $u,v\in\{a,b,c\}$: the triangle is strong, so both directions are reachable.
+> > * $u\in\{a,b,c\}$ and $v=x$: $u\to x$ directly.
+> > * $u\in\{a,b,c\}$ and $v=y$: $u\to x\to y$.
+> > * $u=x$, $v=y$: $x\to y$.
+> > * $u=y$ and $v\in\{a,b,c,x\}$: $v\to x\to y$ (or $x\to y$).
+> >
+> > So every pair is comparable by a directed path: $D$ is unilaterally connected.
+> >
+> > *Not strong.* $\mathrm{outdeg}(y)=0$, so no vertex whatsoever is reachable from $y$; in particular $y\not\leadsto a$. Hence $D$ is **not** strongly connected (the sink $y$ is a one-vertex "dead end").
+> >
+> > $$\boxed{D \text{ is unilateral, with } \mathrm{diam}\text{-type obstruction: } y \text{ is a sink.}}$$
+> >
+> > **Moral.** This is the cheapest way to break strong connectivity in a tournament: keep a strong block (the triangle) and hang a transitive "tail" off it. Note $m=7=\binom52-3$: the bound of Q11 ($m\ge(n-1)^2+1=17$ would force strong connectivity) is far from being met, so no contradiction.
+> >
+> > **(b) Strong: the carousel of Q22.** Use the same $5$-vertex tournament as in Q22(a): $i\to i+1$ and $i\to i+2$ mod $5$, with arc list $0\to1,0\to2,1\to2,1\to3,2\to3,2\to4,3\to4,3\to0,4\to0,4\to1$.
+> >
+> > *Why it is strong.* It contains the **directed Hamilton cycle**
+> >
+> > $$0\to1\to2\to3\to4\to0,$$
+> >
+> > so from any vertex $i$ we can walk forward around the cycle and reach $i+1,i+2,i+3,i+4$ — that is, all other vertices. Hence every vertex reaches every other vertex: $D$ is strongly connected (indeed its diameter is $2$: the cycle gives distance $\le 4$, and the chords $i\to i+2$ cut it to $\le 2$).
+> >
+> > ![[ch11_regular_tournament_5v.png]]
+> >
+> > **Cross-check with the theory.** By the corollary to Theorem 11.10, a tournament is strong **iff** it has a directed Hamilton cycle; the cycle $0\to1\to2\to3\to4\to0$ certifies strong connectivity at a glance. Comparing with (a): the unilateral tournament there has $7$ arcs and a sink, the strong one here has $10$ arcs and no sink — consistent with the fact (Q24) that a tournament fails to be strong exactly when all arcs across some cut point the same way.
+
+> [!question] Q24: Non-Strong Tournaments and One-Way Cuts
+> Show that a tournament $D$ is not strongly connected if and only if there is a partition of $V(D)$ into two subsets $A$ and $B$ such that every arc between $A$ and $B$ is of the form $(u,v)$ with $u\in A$, $v\in B$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **($\Leftarrow$) A one-way cut destroys strong connectivity.** Suppose $V(D)=A\cup B$ with $A,B\neq\varnothing$ and every arc between the two parts goes from $A$ to $B$.
+> >
+> > Take $b\in B$ and $a\in A$. If there were a directed path $b=x_0\to x_1\to\cdots\to x_r=a$, let $j$ be the first index with $x_j\in A$. Then $x_j\neq x_0$ (as $x_0=b\in B$), so $x_{j-1}\in B$ and $x_{j-1}\to x_j$ is an arc from $B$ to $A$ — impossible. Hence $b\not\leadsto a$, and $D$ is not strong.
+> >
+> > **($\Rightarrow$) A non-strong tournament has such a cut.** Choose a vertex $v_0$ and let
+> >
+> > $$B=\{w\in V : v_0\leadsto w\}\quad(\text{the set of vertices reachable from } v_0),$$
+> >
+> > so $v_0\in B$. Since $D$ is not strong, some vertex $u$ is not reachable from $v_0$, so $u\notin B$ and $A:=V\setminus B\neq\varnothing$; also $B\neq\varnothing$. Now $B$ is **closed under out-neighbours**: if $w\in B$ and $w\to z$, then $v_0\leadsto w\to z$, so $z\in B$. Hence there is no arc from $B$ to $A$.
+> >
+> > But $D$ is a tournament, so every pair $(a,b)$ with $a\in A$, $b\in B$ is joined by exactly one arc; it is **not** $b\to a$ (no arc leaves $B$), hence it must be $a\to b$. Therefore all arcs between $A$ and $B$ run from $A$ to $B$, as required.
+> >
+> > $$\boxed{D\text{ not strong}\iff \exists\,V=A\sqcup B,\ A,B\neq\varnothing,\ \text{all arcs between them point }A\to B.}$$
+> >
+> > **Remarks.**
+> >
+> > * The partition is exactly a "cut" in the **condensation**: contract each strongly connected component; the condensation of a tournament is a transitive tournament, i.e. the components can be ordered $C_1,C_2,\dots,C_t$ so that *all* arcs go from $C_i$ to $C_j$ for $i<j$. Then $A=C_1\cup\cdots\cup C_j$, $B=C_{j+1}\cup\cdots\cup C_t$ works for every $j$, and $D$ is strong iff $t=1$.
+> > * The partition is not unique: any initial segment of the condensation order gives one. The *maximal* choice is $A=V\setminus B$ with $B$ the **sink** component (the set of vertices that can reach nothing outside), and the *minimal* choice is $A=$ the source component.
+> > * This is the structural reason behind several earlier exercises: a strong tournament has no such cut, while the unilateral example of Q23(a) has the cut $A=\{a,b,c,x\}$, $B=\{y\}$.
+
+> [!question] Q25: Transitive Tournaments and the Out-Degree Sequence $0,1,\dots,n-1$
+> A tournament $D$ is called **transitive** if $(u,w)\in A(D)$ whenever $(u,v)\in A(D)$ and $(v,w)\in A(D)$. Show that a tournament is transitive if and only if the vertices of $D$ can be ordered $v_1,v_2,\dots,v_n$ such that $\mathrm{outdeg}(v_1)=0$, $\mathrm{outdeg}(v_2)=1$, $\dots$, $\mathrm{outdeg}(v_n)=n-1$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **A lemma we need: a transitive tournament has a sink (a vertex of out-degree $0$).**
+> >
+> > *First, a transitive tournament has no directed cycle.* Suppose $x_1\to x_2\to\cdots\to x_r\to x_1$ is a directed cycle of **minimum** length $r\ge3$. From $x_1\to x_2$ and $x_2\to x_3$, transitivity gives $x_1\to x_3$. If $r=3$ this contradicts the arc $x_3\to x_1$ (a tournament has only one arc between $x_1$ and $x_3$). If $r\ge4$, then $x_1\to x_3\to x_4\to\cdots\to x_r\to x_1$ is a shorter directed cycle, contradicting minimality. So there is no directed cycle.
+> >
+> > *Now take a longest directed path $P:\,x_1\to x_2\to\cdots\to x_k$.* Its last vertex $x_k$ has out-degree $0$: if $x_k\to z$ with $z$ on $P$, we get a directed cycle; if $z$ is not on $P$, then $P$ extended by $z$ is a longer directed path. Both are impossible.
+> >
+> > **($\Rightarrow$) Transitive $\Rightarrow$ out-degrees $0,1,\dots,n-1$.** Induct on $n$; the case $n=1$ is clear. Let $D$ be a transitive tournament on $n\ge2$ vertices and let $v$ be a sink (out-degree $0$, existing by the lemma).
+> >
+> > * $D-v$ is still a tournament, and it is still transitive (transitivity is inherited by subtournaments).
+> > * Every other vertex dominates $v$ (as $v$ has out-degree $0$), so for $x\neq v$,
+> >
+> > $$\mathrm{outdeg}_{D-v}(x)=\mathrm{outdeg}_{D}(x)-1.$$
+> >
+> > By induction, order the vertices of $D-v$ as $u_1,\dots,u_{n-1}$ with $\mathrm{outdeg}_{D-v}(u_i)=i-1$; then $\mathrm{outdeg}_D(u_i)=i$. Setting $v_1:=v$ (out-degree $0$) and $v_{i+1}:=u_i$ gives $\mathrm{outdeg}(v_i)=i-1$ for $i=1,\dots,n$. $\blacksquare$
+> >
+> > **($\Leftarrow$) Out-degrees $0,1,\dots,n-1$ $\Rightarrow$ transitive.** Suppose the ordering $v_1,\dots,v_n$ satisfies $\mathrm{outdeg}(v_i)=i-1$. Fix $i$ and look at the subtournament $S_i$ induced by $V_i=\{v_1,\dots,v_i\}$. Count the arcs with tail in $V_i$ in two ways:
+> >
+> > * By the given out-degrees, the number of arcs leaving $V_i$ is
+> >
+> > $$\sum_{j=1}^{i}\mathrm{outdeg}(v_j)=\sum_{j=1}^{i}(j-1)=\binom{i}{2}.$$
+> >
+> > * Inside $V_i$ there are exactly $\binom{i}{2}$ arcs (it is a tournament on $i$ vertices), and each of them leaves $V_i$ in the above sense.
+> >
+> > Hence **no arc joins $V_i$ to $V\setminus V_i$**. As $D$ is a tournament, this means that for every $j>i$ the arc between $v_i$ and $v_j$ must be $v_j\to v_i$: all arcs point from higher index to lower index.
+> >
+> > Now suppose $v_i\to v_j$ and $v_j\to v_k$. Then $j<i$ and $k<j$, so $k<i$, hence $v_i\to v_k$. That is exactly transitivity. $\blacksquare$
+> >
+> > $$\boxed{D\text{ transitive}\iff \{\mathrm{outdeg}(v)\}_v=\{0,1,\dots,n-1\}\iff D \text{ is acyclic (Q26).}}$$
+> >
+> > **Remarks.**
+> >
+> > * The ordering is **unique** (it is forced by the out-degrees, which are all distinct), and it is the reverse of a topological order: $v_n$ is the **source** (beats everybody, out-degree $n-1$) and $v_1$ is the **sink**. In the matrix/adjacency picture the arc set is exactly $\{(v_j,v_i): j>i\}$, i.e. the adjacency matrix is strictly lower triangular.
+> > * Up to isomorphism there is exactly **one** transitive tournament of each order $n$ — so "transitive" is a complete structural description, not just a property.
+> > * The two vertices $v_n$ and $v_1$ are the unique source and unique sink of Q20.
+
+> [!question] Q26: Transitive $\iff$ No Directed Cycle
+> Show that a tournament is transitive if and only if it does not contain any directed cycle.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **($\Rightarrow$) Transitive $\Rightarrow$ acyclic.** This is the lemma from Q25: if $x_1\to x_2\to\cdots\to x_r\to x_1$ is a shortest directed cycle ($r\ge3$), transitivity applied to $x_1\to x_2\to x_3$ gives $x_1\to x_3$; for $r=3$ that contradicts the arc $x_3\to x_1$, and for $r\ge4$ it produces the shorter cycle $x_1\to x_3\to\cdots\to x_r\to x_1$. Either way, no directed cycle exists.
+> >
+> > **($\Leftarrow$) Acyclic $\Rightarrow$ transitive.** Suppose $D$ has no directed cycle, and take vertices with $u\to v$ and $v\to w$ (all three distinct, as there are no loops). Since $D$ is a tournament, exactly one of $u\to w$, $w\to u$ holds. If $w\to u$, then
+> >
+> > $$u\to v\to w\to u$$
+> >
+> > is a directed $3$-cycle — contradiction. Therefore $u\to w$, which is precisely transitivity. $\blacksquare$
+> >
+> > $$\boxed{\text{transitive}\iff\text{acyclic}\iff \text{out-degrees are } 0,1,\dots,n-1.}$$
+> >
+> > **Remarks.**
+> >
+> > * The three descriptions are equivalent by Q25, and the last one is often the most usable: to test transitivity in $O(n^2)$ just compute the out-degrees and check they are all distinct (hence $\{0,1,\dots,n-1\}$).
+> > * Acyclic digraphs in general have a topological ordering, and by Q25 a transitive tournament's ordering is forced: $v_n\to v_{n-1}\to\cdots\to v_1$ along the "beats" relation.
+> > * Consequence for scores: a tournament is transitive iff its score sequence is $(0,1,\dots,n-1)$; every other tournament contains a directed triangle, and in fact contains directed cycles of length $3$ (the shortest cycle in a tournament is always a triangle, since a shortest cycle has no chords and a tournament chord would split it — see the argument above).
+
+> [!question] Q27: Three Identities for the Out-Degrees of a Tournament
+> If $T$ is a tournament on $n$ vertices $v_1,v_2,\dots,v_n$ with $\mathrm{outdeg}(v_i)=s_i$, $i=1,2,\dots,n$, show that
+> (a) $\sum_{i=1}^{n}s_i\ge \dfrac{k(k-1)}{2}$, $\ 1\le k<n$;
+> (b) $\sum_{i=1}^{n}s_i=\dfrac{n(n-1)}{2}$;
+> (c) $\sum_{i=1}^{n}s_i^{2}=\sum_{i=1}^{n}\big(n-1-s_i\big)^{2}$.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > **(b) first, since everything else rests on it.** Count the arcs by their tails: every arc has exactly one tail, and the number of arcs with tail $v_i$ is $s_i$. Hence
+> >
+> > $$\sum_{i=1}^{n}s_i=m=\binom{n}{2}=\frac{n(n-1)}{2}.$$
+> >
+> > (This is Theorem 11.1, $\sum_v \mathrm{outdeg}(v)=\sum_v \mathrm{indeg}(v)=m$, combined with $m=\binom n2$ for a tournament.) Equivalently, the average score is $\dfrac{n-1}{2}$. $\blacksquare$
+> >
+> > **(a) As printed.** The statement is
+> >
+> > $$\sum_{i=1}^{n}s_i \ \ge\ \frac{k(k-1)}{2}\qquad\text{for every } 1\le k<n,$$
+> >
+> > and by (b) the left side equals $\frac{n(n-1)}{2}$, so the inequality reads $\frac{n(n-1)}{2}\ge\frac{k(k-1)}{2}$, i.e. $n(n-1)\ge k(k-1)$, which holds for all $k\le n$ because $x\mapsto x(x-1)$ is increasing for $x\ge1$. So the printed inequality is true but trivial — it carries no information about the individual scores.
+> >
+> > **The meaningful version (the intended statement).** The useful inequality is for **every $k$-element subset** $S\subseteq V(T)$:
+> >
+> > $$\sum_{v\in S}s_v\ \ge\ \binom{k}{2}\qquad\text{for every } S \text{ with } |S|=k.$$
+> >
+> > *Proof.* Count the arcs whose **tail** lies in $S$. Splitting them according to where the head lies,
+> >
+> > $$\sum_{v\in S}s_v=\underbrace{\#\{\text{arcs inside } S\}}_{=\binom{k}{2}}+\underbrace{\#\{\text{arcs from } S \text{ to } V\setminus S\}}_{\ge 0}\ \ge\ \binom{k}{2}.$$
+> >
+> > The first term is exactly $\binom{k}{2}$ because $S$ induces a tournament on $k$ vertices. Equality holds iff no arc leaves $S$, i.e. iff $S$ is a set of "sinks" (all arcs between $S$ and its complement point into $S$) — which by Q24 means $S$ is a union of terminal strong components. $\blacksquare$
+> >
+> > **Why this is the right form: Landau's theorem.** A nondecreasing sequence $s_1\le s_2\le\cdots\le s_n$ of integers is the score sequence of some tournament on $n$ vertices **iff**
+> >
+> > $$\sum_{i=1}^{k}s_i\ \ge\ \binom{k}{2}\quad\text{for all } 1\le k\le n,\qquad\text{with equality for } k=n.$$
+> >
+> > The necessity is the subset inequality above applied to the $k$ smallest scores (their sum is minimal among $k$-subsets); the sufficiency is Landau's construction. Taking $S$ to be the $k$ vertices of **largest** score instead gives the companion bound $\sum_{i=n-k+1}^{n}s_i\le \binom{n}{2}-\binom{n-k}{2}$, which is the same inequality applied to the converse tournament.
+> >
+> > **(c) The two "degree squares" agree.** In a tournament $v_i$ is joined to the other $n-1$ vertices, and each such vertex is either an out-neighbour or an in-neighbour, so
+> >
+> > $$\mathrm{indeg}(v_i)=(n-1)-s_i .$$
+> >
+> > Therefore the identity says exactly $\sum_i \mathrm{outdeg}(v_i)^2=\sum_i \mathrm{indeg}(v_i)^2$ — the tournament analogue of Q4 (there $G$ was $k$-regular; here $G=K_n$ and the orientation is arbitrary, so every vertex has total degree $n-1$). Direct expansion:
+> >
+> > $$\sum_{i=1}^{n}\Big[(n-1-s_i)^2-s_i^2\Big]=\sum_{i=1}^{n}\Big[(n-1)^2-2(n-1)s_i\Big]=n(n-1)^2-2(n-1)\sum_{i=1}^{n}s_i .$$
+> >
+> > Substituting $\sum_i s_i=\frac{n(n-1)}{2}$ from (b),
+> >
+> > $$=n(n-1)^2-2(n-1)\cdot\frac{n(n-1)}{2}=n(n-1)^2-n(n-1)^2=0 . \qquad\blacksquare$$
+> >
+> > $$\boxed{\sum_i s_i=\binom n2,\qquad \sum_{v\in S}s_v\ge\binom{|S|}{2},\qquad \sum_i s_i^2=\sum_i (n-1-s_i)^2 .}$$
+> >
+> > **Remarks.**
+> >
+> > * Equivalently, (c) says the variance of the scores equals the variance of the "losses" $n-1-s_i$: both sequences are symmetric about the mean $\frac{n-1}{2}$, consistent with the carousel of Q22 where $s_i\equiv\frac{n-1}{2}$ and both sides equal $n\left(\frac{n-1}{2}\right)^2$.
+> > * A quick sanity check on $n=3$: the transitive tournament has scores $(0,1,2)$, so $\sum s_i^2=5$ and $\sum(2-s_i)^2=4+1+0=5$ ✓; the directed triangle has $(1,1,1)$, giving $3=3$ ✓.
+> > * (c) is what makes the "sum of squares" invariant blind to the direction of the arcs, and it is the identity behind the standard proof that $\sum s_i^2$ is minimised by the regular carousel and maximised by the transitive tournament: expanding $\sum_i\big(s_i-\frac{n-1}{2}\big)^2=\sum_i s_i^2-\frac{n(n-1)^2}{4}$ shows the spread of the scores is measured by $\sum s_i^2$.
+
+> [!question] Q28: Winners (Kings) in a Tournament
+> A vertex $v$ in a tournament $T$ is called a **winner** if every vertex can be reached from $v$ by a directed path of length $\le2$. Show the following:
+> (a) No tournament has exactly two winners.
+> (b) For every $n\neq 2,4$ there is a tournament of order $n$ in which every vertex is a winner.
+>
+> > [!success]- Solution (Click to expand)
+> >
+> > Throughout, "winner" means: for every $x\neq v$, either $v\to x$ or there is $w$ with $v\to w\to x$. (Such vertices are usually called **kings** — the "king chicken" terminology.)
+> >
+> > **Lemma 1 (Landau): a vertex of maximum out-degree is a winner.** Let $\mathrm{outdeg}(v)$ be maximum and suppose some $x$ is not reachable from $v$ in $\le2$ steps. Then $v\not\to x$, so $x\to v$; and for every $w\in N^+(v)$ we cannot have $w\to x$ (else $v\to w\to x$), so $x\to w$. Hence $x$ beats $v$ **and every out-neighbour of $v$**, giving
+> >
+> > $$\mathrm{outdeg}(x)\ \ge\ 1+|N^+(v)|=\mathrm{outdeg}(v)+1,$$
+> >
+> > contradicting maximality. $\square$
+> >
+> > **Lemma 2: every vertex that is beaten by somebody is beaten by a winner.** Let $c$ have $N^-(c)=\{y:y\to c\}\neq\varnothing$. The subtournament $T[N^-(c)]$ is nonempty, so by Lemma 1 it has a vertex $d$ that is a winner **of that subtournament**, i.e. $d$ reaches every vertex of $N^-(c)$ in $\le2$ steps using only vertices of $N^-(c)$. Now check that $d$ is a winner of $T$:
+> >
+> > * every $y\in N^-(c)$: reachable from $d$ in $\le2$ steps (inside $N^-(c)$);
+> > * $c$ itself: $d\to c$ directly, since $d\in N^-(c)$;
+> > * every $x\notin N^-(c)\cup\{c\}$, i.e. every $x$ with $c\to x$: then $d\to c\to x$, so $d$ reaches $x$ in $2$ steps.
+> >
+> > So $d$ is a winner of $T$, and $d\to c$. $\square$
+> >
+> > **(a) Proof that exactly two winners is impossible.** Suppose the winners are exactly $c$ and $d$.
+> >
+> > * $d$ is a winner, so $d$ reaches $c$ in at most $2$ steps. In particular $c$ is beaten by somebody (by $d$ if $d\to c$, otherwise by the intermediate vertex of a path $d\to p\to c$).
+> > * By Lemma 2, $c$ is beaten by a **winner**. The only winners are $c$ and $d$, and $c\not\to c$, so that winner must be $d$: hence $d\to c$.
+> > * Repeating the same argument with the roles of $c$ and $d$ exchanged (now using that $c$ is a winner and $d$ is beaten, since $d\to c$ means $c$ is beaten... rather, $d$ is beaten by $c$), we get $c\to d$.
+> >
+> > But a tournament contains exactly one of the arcs $(c,d)$, $(d,c)$ — contradiction. Hence no tournament has exactly two winners. $\blacksquare$
+> >
+> > **A second way to see it (out-degree/chain argument).** If $s$ beats $w$ and all of $N^+(w)$ where $w$ is *not* a winner, then every vertex reachable in $\le2$ from $w$... the short version: a non-winner $w$ has a vertex $x$ with $x\to w$ and $x\to N^+(w)$, so $\mathrm{outdeg}(x)>\mathrm{outdeg}(w)$; iterating from any non-winner produces a chain of strictly increasing out-degrees that must terminate at a winner, and the two chains starting from the two hypothetical winners force a third. The counting-free argument above is cleaner, so we use that.
+> >
+> > $$\boxed{\#\{\text{winners}\}\neq 2\ \text{ for every tournament.}}$$
+> >
+> > **(b) Tournaments in which everybody is a winner, for all $n\ne2,4$.**
+> >
+> > **$n=1$.** The single vertex vacuously reaches every other vertex (there is none). ✓
+> >
+> > **$n=3$.** The directed triangle $0\to1\to2\to0$: each vertex reaches the third vertex in $2$ steps. All three are winners. ✓
+> >
+> > **$n$ odd, $n=2h+1\ge5$: the carousel.** Vertices $0,1,\dots,2h$ in cyclic order, arcs $i\to i+j$ for $j=1,2,\dots,h$ (indices mod $2h+1$). Vertex $i$ beats $i+1,\dots,i+h$ outright, and the remaining $h$ vertices $i+h+1,\dots,i+2h$ are all beaten by $i+h$ (whose out-neighbours are $i+h+1,\dots,i+2h$). So every vertex reaches all others in $\le2$ steps, and every vertex is a winner. For $h=2$ this is exactly the Q22 carousel, where we checked it directly. ✓
+> >
+> > **$n$ even, $n=2h+2\ge6$: carousel on $2h+1$ vertices plus one extra vertex $z$.** Let $C=\{0,1,\dots,2h\}$ carry the carousel above, and add the arcs
+> >
+> > $$z\to 0,\qquad z\to h,\qquad i\to z\ \text{ for every } i\in C\setminus\{0,h\}.$$
+> >
+> > This is a tournament: $z$ is joined to each $i\in C$ by exactly one arc, and $C$ is already a tournament. Check that every vertex is a winner.
+> >
+> > * $z$: $z\to0$ and $0$ beats $1,\dots,h$; $z\to h$ and $h$ beats $h+1,\dots,2h$. So all of $C$ is at distance $\le2$, and $0,h$ at distance $1$. ✓
+> > * $i\notin\{0,h\}$: $i\to z$ (distance $1$). In $C$, $i$ beats $i+1,\dots,i+h$, and the remaining $h$ vertices $i+h+1,\dots,i+2h$ are beaten by $i+h$ — but note that also covers $z$'s immediate neighbourhood implicitly: $i\to z$ already handles $z$, so everything is at distance $\le2$. ✓
+> > * $i=0$: $0\to 1,\dots,h$; the vertices $h+1,\dots,2h$ are beaten by $h$; and $z$ is reached as $0\to1\to z$ (here $1\ne h$ because $h\ge2$). ✓
+> > * $i=h$: $h\to h+1,\dots,2h$ and $h\to z$. The vertices $0,1,\dots,h-1$ are all beaten by $2h$ (whose out-neighbours are $0,1,\dots,h-1$), and $h\to2h$ since $2h=h+h\in N^+(h)$. ✓
+> >
+> > So for every even $n\ge6$ such a tournament exists. For $n=6$ ($h=2$) the arc list is: $0\to1,0\to2,1\to2,1\to3,2\to3,2\to4,3\to4,3\to0,4\to0,4\to1$ on $C$, plus $z\to0,z\to2,1\to z,3\to z,4\to z$ — that is $15=\binom62$ arcs. ✓
+> >
+> > **$n=2$ is impossible.** With two vertices the winner (the tail of the single arc) reaches the other in $1$ step, but the head cannot reach the tail at all. So there is exactly one winner, never two. ✓
+> >
+> > **$n=4$ is impossible.** Suppose all four vertices of a $4$-vertex tournament $T$ are winners. Since $m=\binom42=6$ and the average out-degree is $6/4=1.5$, some vertex $v$ has $\mathrm{outdeg}(v)\le1$. A winner must have out-degree $\ge1$ (with out-degree $0$ it reaches nobody), so $\mathrm{outdeg}(v)=1$: let $N^+(v)=\{w\}$. Let $a,b$ be the two in-neighbours of $v$; since $v$ is a winner, it must reach $a$ and $b$ in $2$ steps, and the only way is $v\to w\to a$, $v\to w\to b$. Hence $w\to a$ and $w\to b$, so $w$'s out-neighbours are exactly $\{a,b\}$ (it loses to $v$) and $\mathrm{outdeg}(w)=2$. Finally, between $a$ and $b$ exactly one arc lies; say $a\to b$ (the other case is symmetric under swapping the names $a,b$). Then $b$ beats $v$ only: $a\to b$, $w\to b$, $v\to b$ is false ($b\to v$). So $N^+(b)=\{v\}$, and $b$'s unique out-neighbour $v$ beats only $w$, so $b$ cannot reach $a$ — contradicting that $b$ is a winner. Hence no $4$-vertex tournament has all vertices as winners. ✓
+> >
+> > $$\boxed{\forall\,n\ne2,4\ \exists\ \text{a tournament of order } n \text{ with every vertex a winner.}}$$
+> >
+> > **Remarks.**
+> >
+> > * (a) and (b) together are a special case of Maurer's theorem: for all $n\ge k\ge1$ there is an $n$-tournament with exactly $k$ winners, except $k=2$ (any $n$) and $(n,k)=(4,4)$ — which is precisely the failure of (b) at $n=2$ (only $k=1$ possible) and $n=4$ (only $k=1,3$ possible).
+> > * The all-winners examples are the densest possible: in the carousel every vertex is a winner with the **minimum** possible out-degree $\frac{n-1}{2}$, showing that being a winner is far weaker than having large out-degree. On the other hand, by Lemma 1 a max-out-degree vertex is always a winner, and by Lemma 2 winners are "everywhere": in any tournament every beaten vertex is beaten by a winner.
+> > * For $n$ even the "carousel $+$ one vertex" blow-up is the standard construction; the two forbidden values are genuinely exceptional, since $n=2$ has only $2$ tournaments (one winner each) and $n=4$ has $64$ tournaments, of which none has $4$ winners — the $4$-vertex score sequences being $(0,1,2,3)$, $(0,2,2,2)$ and $(1,1,2,2)$, and each of them forces a non-winner as the case analysis above shows.
 
 
 
