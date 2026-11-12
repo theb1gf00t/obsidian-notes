@@ -4124,47 +4124,51 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > **Two preliminary remarks.**
+> > **Proof.** If $r=0$, then every vertex of $D$ already has out-degree $0$ and in-degree $0$, so $H=D$ is already $0$-regular. Assume now that $r\ge1$.
 > >
-> > 1. $r\le n-1$ always, because $D$ is simple.
-> > 2. $H$ may need **more vertices** than $D$. For example, let $D$ be the complete digraph on $3$ vertices plus one isolated vertex; then $r=2$, but $D$ cannot be extended to a $2$-regular digraph on the *same* $4$ vertices: the three clique vertices already have out- and in-degree $2$, so no arc can be added at them, while the isolated vertex would need out-degree and in-degree $2$. So we shall build $H$ on $V(D)$ plus a pool of fresh vertices.
+> > For each vertex $v\in V(D)$ define its **out-deficiency** $a_v$ and **in-deficiency** $b_v$ by
 > >
-> > **The plan.** We build $H$ as the union of $r$ **permutation digraphs** $\sigma_1,\dots,\sigma_r$ of a large vertex set $W\supseteq V(D)$: each $\sigma_t$ is a bijection $W\to W$ with no fixed point, and we add the arc $(u,\sigma_t(u))$ for every $u$ and every $t$. Then:
+> > $$a_v=r-\mathrm{outdeg}_D(v)\qquad\text{and}\qquad b_v=r-\mathrm{indeg}_D(v).$$
 > >
-> > * every vertex has out-degree exactly $r$ and in-degree exactly $r$ (one arc per $t$, in and out), i.e. $H$ is $r$-regular;
-> > * no loops (no fixed points) and no repeated arc (we ensure $\sigma_1(u),\dots,\sigma_r(u)$ are pairwise distinct for every $u$), i.e. $H$ is simple.
+> > By definition of $r$ we have $0\le a_v\le r$ and $0\le b_v\le r$ for every $v\in V(D)$. Moreover, since the sum of all out-degrees of $D$ equals the sum of all in-degrees (both equal $|A(D)|$), the total out-deficiency equals the total in-deficiency:
 > >
-> > So it suffices to find $\sigma_1,\dots,\sigma_r$ whose arcs *include all arcs of $D$*.
+> > $$M=\sum_{v\in V(D)}a_v=r\,|V(D)|-|A(D)|=\sum_{v\in V(D)}b_v .$$
 > >
-> > **Step 1 (colour the arcs of $D$).** Build a bipartite graph $B$ with parts $L=\{u^{L}:u\in V\}$, $R=\{w^{R}:w\in V\}$ and one edge $u^{L}w^{R}$ for each arc $(u,w)\in A(D)$. A vertex $u^L$ has degree $\mathrm{outdeg}(u)\le r$ and $w^R$ has degree $\mathrm{indeg}(w)\le r$, so $\Delta(B)\le r$. By **König's line-colouring theorem** the edges of $B$ can be properly coloured with $r$ colours; each colour class is a matching, i.e. a *partial injection* $P_t\subseteq V\times V$ (no two arcs of the same colour share a tail or a head). Every arc of $D$ now has a colour $t\in\{1,\dots,r\}$, and $P_1\cup\dots\cup P_r=A(D)$.
+> > ### 1. Creating stubs and a bijection
 > >
-> > **Step 2 (complete each $P_t$ to a permutation).** Fix a pool $P$ of $K=4r+2$ fresh vertices and put $W=V\cup P$, so $|W|=n+K$. For $t=1,\dots,r$, extend the partial injection $P_t$ to a **permutation** $\sigma_t$ of $W$ by pairing the unmatched rows with the unmatched columns — forbidden pairs being: the diagonal $(u,u)$, the arcs of $D$ (which would create a repeated arc), and the pairs already used by $\sigma_1,\dots,\sigma_{t-1}$ (which would also create a repeated arc). Thus each row forbids at most
+> > * For each vertex $v\in V(D)$ create $a_v$ labelled **out-stubs** $(v,1),(v,2),\dots,(v,a_v)$. Since $a_v\le r$, each out-stub of $v$ has a distinct label $s\in\{1,2,\dots,r\}$.
+> > * Similarly, for each vertex $w\in V(D)$ create $b_w$ labelled **in-stubs** $[w,1],[w,2],\dots,[w,b_w]$.
 > >
-> > $$1\ (\text{diagonal})+r\ (\text{out-arcs in }D)+(t-1)\ (\text{earlier colours})\ \le\ 2r+1=:f,$$
+> > Because there are $M$ out-stubs and $M$ in-stubs in total, we may choose an arbitrary bijection $\phi$ pairing each out-stub $(v,s)$ with a unique in-stub $[w,t]$.
 > >
-> > and each column forbids at most $1+r+(t-1)\le f$ rows as well. The number of unmatched rows (= unmatched columns) is
+> > ### 2. Constructing the superdigraph $H$
 > >
-> > $$q=|W|-|P_t|\ \ge\ K\ =\ 4r+2\ =\ 2f .$$
+> > Take $r+1$ disjoint copies of $D$, denoted $D_0,D_1,\dots,D_r$, where the copy of a vertex $v\in V(D)$ in $D_i$ is written $v^{(i)}$.
 > >
-> > **Hall's condition holds.** Let $S$ be a set of unmatched rows and let $T$ be the set of unmatched columns that are forbidden for *every* row of $S$. If $T\neq\varnothing$, pick $c\in T$: then all $|S|$ rows of $S$ lie in the forbidden-neighbourhood of $c$, so $|S|\le f$; and the set of *allowed* columns of $S$ is exactly $C\setminus T$, hence
+> > Start with the disjoint union $D_0\sqcup D_1\sqcup\cdots\sqcup D_r$ (so $D\cong D_0$ is clearly a subdigraph of $H$), and add new arcs as follows: for every out-stub $(v,s)$ paired with $\phi(v,s)=[w,t]$, and for every index $i\in\{0,1,\dots,r\}$, add the directed arc
 > >
-> > $$|N(S)|=q-|T|\ \ge\ q-f\ \ge\ 2f-f\ =\ f\ \ge\ |S| .$$
+> > $$v^{(i)}\longrightarrow w^{(i+s\bmod (r+1))}.$$
 > >
-> > If $T=\varnothing$ then $N(S)$ is everything, so $|N(S)|=q\ge|S|$. By Hall's theorem a system of distinct representatives exists, i.e. the required completion to a permutation $\sigma_t$ exists.
+> > ### 3. Verifying the properties of $H$
 > >
-> > **Step 3 (conclude).** Having completed all $r$ colours, define
+> > **Check 1 — $H$ is a simple digraph (no loops, no parallel arcs).**
 > >
-> > $$A(H)=\big\{(u,\sigma_t(u))\ :\ u\in W,\ 1\le t\le r\big\}.$$
+> > * Because $s\in\{1,2,\dots,r\}$, we have $i+s\not\equiv i\pmod{r+1}$. Thus every newly added arc joins two *different* copies $D_i$ and $D_j$ with $i\neq j$: no loops are created, and no new arc duplicates an existing arc inside any $D_i$.
+> > * For a fixed vertex $v^{(i)}$, its outgoing added arcs correspond to its out-stubs $(v,1),\dots,(v,a_v)$, which have **distinct** offsets $s$. These arcs therefore land in **distinct** copies $D_{(i+s)\bmod(r+1)}$, so at most one of them ends at any given vertex $w^{(j)}$; hence $v^{(i)}$ has at most one arc to any fixed $w^{(j)}$.
 > >
-> > Then $H$ is a simple $r$-regular digraph on $|W|=n+4r+2$ vertices (if $r=0$ take $H$ empty, which is $0$-regular), and
+> > **Check 2 — every out-degree of $H$ is $r$.** Each vertex $v^{(i)}$ inherits $\mathrm{outdeg}_D(v)$ arcs inside $D_i$, plus exactly $1$ new outgoing arc for each of its $a_v$ out-stubs. Hence
 > >
-> > $$A(D)=P_1\cup\cdots\cup P_r\subseteq A(H),$$
+> > $$\mathrm{outdeg}_H\big(v^{(i)}\big)=\mathrm{outdeg}_D(v)+a_v=\mathrm{outdeg}_D(v)+\big(r-\mathrm{outdeg}_D(v)\big)=r .$$
 > >
-> > so $D$ is a subdigraph of $H$. $\blacksquare$
+> > **Check 3 — every in-degree of $H$ is $r$.** Each vertex $w^{(j)}$ inherits $\mathrm{indeg}_D(w)$ arcs inside $D_j$. For each of its $b_w$ in-stubs $[w,t]$, let $(v,s)=\phi^{-1}\big([w,t]\big)$ be its unique matched out-stub; the unique index $i\equiv j-s\pmod{r+1}$ then gives the unique new arc $v^{(i)}\to w^{(j)}$ corresponding to $[w,t]$. These $b_w$ new arcs have pairwise distinct tails: two in-stubs matched to out-stubs of *different* vertices give different tails, and two in-stubs matched to out-stubs $(v,s)$, $(v,s')$ of the *same* vertex $v$ have $s\neq s'$ (labels are distinct), so the tails $v^{(j-s)}$, $v^{(j-s')}$ lie in different copies. Thus
+> >
+> > $$\mathrm{indeg}_H\big(w^{(j)}\big)=\mathrm{indeg}_D(w)+b_w=\mathrm{indeg}_D(w)+\big(r-\mathrm{indeg}_D(w)\big)=r .$$
+> >
+> > Hence $H$ is an $r$-regular simple digraph containing $D$ as a subdigraph. $\blacksquare$
 > >
 > > $$\boxed{\text{Every digraph is a subdigraph of an }r\text{-regular digraph, }r=\max\{\mathrm{outdeg},\mathrm{indeg}\}.}$$
 > >
-> > **Why the bound $r$ is the right one.** No $r'$-regular superdigraph with $r'<r$ can exist, since the out- and in-degrees of $H$ are at least those of $D$; so the value $r$ is best possible. The proof also shows the structural meaning of the statement: every digraph sits inside a union of $r$ permutation digraphs, i.e. inside a digraph "made of $r$ layers of disjoint directed cycles".
+> > **Why the bound $r$ is the right one.** No $r'$-regular superdigraph with $r'<r$ can exist, since the out- and in-degrees of $H$ are at least those of $D$; so the value $r$ is best possible. Note also that the construction uses $(r+1)\,n$ vertices: extra vertices are genuinely necessary (e.g. the complete digraph on $3$ vertices plus an isolated vertex has $r=2$ but cannot be extended to a $2$-regular digraph on the same $4$ vertices, since the clique vertices are already saturated).
 
 > [!question] Q19: Regular Tournaments Exist Exactly for Odd Order
 > Prove that there exist regular tournaments of every odd order but there are no regular tournaments of even order.
