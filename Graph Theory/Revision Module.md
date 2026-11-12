@@ -1,5 +1,151 @@
 # Graph Theory — Revision Module
 
+## Pre-Midsem
+
+---
+
+### Havel-Hakimi Algorithm
+
+> [!note] Definition
+> The **Havel-Hakimi algorithm** determines whether a sequence of non-negative integers $d_1 \ge d_2 \ge \cdots \ge d_n$ is **graphical** (i.e., realizable as the degree sequence of a simple graph).
+
+> [!abstract] Theorem — Havel-Hakimi
+> A sequence $S = (d_1, d_2, \ldots, d_n)$ with $d_1 \ge d_2 \ge \cdots \ge d_n \ge 0$ is graphical if and only if the sequence
+> $$S' = (d_2 - 1,\ d_3 - 1,\ \ldots,\ d_{d_1+1} - 1,\ d_{d_1+2},\ \ldots,\ d_n)$$
+> (rearranged in non-increasing order) is also graphical. The base case is: the all-zero sequence is graphical (empty graph).
+
+> [!tip] Algorithm Steps
+> 1. Sort the sequence in non-increasing order.
+> 2. If all entries are 0, the sequence **is** graphical.
+> 3. If the largest entry $d_1 > n - 1$, or any entry is negative, the sequence is **not** graphical.
+> 4. Remove $d_1$; subtract 1 from each of the next $d_1$ entries. Re-sort and repeat.
+
+---
+
+### Erdős–Gallai Theorem
+
+> [!abstract] Theorem — Erdős–Gallai
+> A sequence of non-negative integers $d_1 \ge d_2 \ge \cdots \ge d_n$ is graphical if and only if:
+> 1. $\displaystyle\sum_{i=1}^{n} d_i$ is even, and
+> 2. For every $k = 1, 2, \ldots, n$:
+> $$\sum_{i=1}^{k} d_i \;\le\; k(k-1) + \sum_{i=k+1}^{n} \min(d_i,\ k)$$
+
+> [!tip] Remark
+> The Erdős–Gallai condition gives a direct closed-form check, while Havel-Hakimi is a recursive procedure. Both are equivalent characterizations of graphical sequences.
+
+---
+
+### Dijkstra's Algorithm
+
+> [!note] Definition
+> **Dijkstra's algorithm** finds the **shortest path** (minimum weight) from a single source vertex $s$ to all other vertices in a weighted graph with **non-negative edge weights**.
+
+> [!abstract] Algorithm
+> **Input:** Weighted graph $G = (V, E, w)$ with $w(e) \ge 0$, source $s \in V$.
+>
+> 1. Initialize: $d(s) = 0$, $d(v) = \infty$ for all $v \ne s$. Set $S = \emptyset$ (visited).
+> 2. While $S \ne V$:
+>    - Pick $u \notin S$ with minimum $d(u)$.
+>    - Add $u$ to $S$.
+>    - For each neighbor $v \notin S$ of $u$: if $d(u) + w(u,v) < d(v)$, update $d(v) \leftarrow d(u) + w(u,v)$.
+> 3. Output: $d(v)$ = shortest-path distance from $s$ to $v$ for all $v$.
+
+> [!tip] Key Properties
+> - **Time complexity:** $O(n^2)$ with adjacency matrix; $O((n + m)\log n)$ with a min-heap.
+> - **Does not work** with negative edge weights (use Bellman-Ford instead).
+> - Produces a **shortest-path tree** rooted at $s$.
+
+---
+
+### Floyd–Warshall Algorithm
+
+> [!note] Definition
+> **Floyd–Warshall** computes the **all-pairs shortest paths** in a weighted graph, handling both positive and negative edge weights (but no negative cycles).
+
+> [!abstract] Algorithm
+> **Input:** Weighted graph with $n$ vertices; weight matrix $W$ where $W[i][j] = w(i,j)$ if $(i,j) \in E$, $0$ if $i = j$, and $\infty$ otherwise.
+>
+> Initialize $D^{(0)} = W$. For $k = 1$ to $n$:
+> $$D^{(k)}[i][j] = \min\!\left(D^{(k-1)}[i][j],\; D^{(k-1)}[i][k] + D^{(k-1)}[k][j]\right)$$
+> After $n$ iterations, $D^{(n)}[i][j]$ = shortest-path distance from $v_i$ to $v_j$.
+
+> [!tip] Key Properties
+> - **Time complexity:** $O(n^3)$; **Space:** $O(n^2)$.
+> - Works for directed and undirected graphs.
+> - A negative diagonal entry $D[i][i] < 0$ after the algorithm signals a **negative cycle**.
+> - Can also reconstruct paths using a predecessor matrix $\Pi$.
+
+---
+
+### Eulerian Graphs
+
+> [!note] Definitions
+> - An **Eulerian trail** is a trail (no repeated edges) that visits every edge of $G$ exactly once.
+> - An **Eulerian circuit** (closed Eulerian trail) starts and ends at the same vertex.
+> - A graph $G$ is **Eulerian** if it contains an Eulerian circuit.
+
+> [!abstract] Theorem — Necessary and Sufficient Condition for Eulerian Graphs
+> A connected graph $G$ is **Eulerian** if and only if **every vertex has even degree**.
+
+> [!tip] Corollary — Eulerian Trail (Open)
+> A connected graph $G$ has an **open Eulerian trail** (starting and ending at different vertices) if and only if it has **exactly two vertices of odd degree**. The trail starts and ends at those two odd-degree vertices.
+
+> [!important] Remark
+> - For **directed graphs**: $G$ is Eulerian iff it is weakly connected and $\text{indeg}(v) = \text{outdeg}(v)$ for every vertex $v$.
+
+---
+
+### Fleury's Algorithm
+
+> [!note] Definition
+> **Fleury's algorithm** constructs an Eulerian circuit (or trail) in a graph that satisfies the Eulerian conditions.
+
+> [!abstract] Algorithm
+> **Precondition:** $G$ is connected with 0 (for a circuit) or 2 (for a trail) odd-degree vertices.
+>
+> 1. If finding a circuit, start at any vertex. If finding a trail, start at an odd-degree vertex.
+> 2. At each step, traverse an edge $e = (u, v)$ from the current vertex $u$ such that:
+>    - $e$ is **not a bridge** of the remaining graph, **unless** there is no other choice.
+> 3. Remove edge $e$ (and any isolated vertices created) from $G$.
+> 4. Move to $v$. Repeat until all edges are traversed.
+
+> [!tip] Key Remark — Bridge Test
+> At each step, prefer a **non-bridge** edge. An edge is a bridge if removing it disconnects the remaining graph. This can be checked using DFS/BFS. The algorithm terminates with the Eulerian circuit/trail.
+
+---
+
+### Hamiltonian Graphs — Necessary and Sufficient Conditions
+
+> [!note] Definition
+> - A **Hamiltonian path** visits every vertex of $G$ exactly once.
+> - A **Hamiltonian cycle** is a Hamiltonian path that returns to the starting vertex.
+> - A graph is **Hamiltonian** if it contains a Hamiltonian cycle.
+
+> [!abstract] Necessary Condition — Ore's Theorem (Sufficient)
+> If $G$ is a simple graph on $n \ge 3$ vertices such that for every pair of non-adjacent vertices $u, v$:
+> $$\deg(u) + \deg(v) \ge n$$
+> then $G$ is Hamiltonian.
+
+> [!abstract] Sufficient Condition — Dirac's Theorem
+> If $G$ is a simple graph on $n \ge 3$ vertices with minimum degree:
+> $$\delta(G) \ge \frac{n}{2}$$
+> then $G$ is Hamiltonian. (Dirac's theorem is a special case of Ore's.)
+
+> [!important] Necessary Condition — Component Test (Ore-type Obstruction)
+> If $G$ is Hamiltonian, then for every non-empty $S \subsetneq V(G)$:
+> $$o(G - S) \le |S|$$
+> where $o(H)$ is the number of odd components of $H$. (This is also the condition in Tutte's theorem for perfect matchings.)
+
+> [!important] Necessary Condition — Vertex Deletion
+> If $G$ is Hamiltonian, then for every non-empty $S \subsetneq V(G)$:
+> $$c(G - S) \le |S|$$
+> where $c(G - S)$ is the number of connected components of $G - S$.
+
+> [!tip] Remark — No Complete Characterization
+> Unlike Eulerian graphs, there is **no known necessary and sufficient condition** for a graph to be Hamiltonian. The problem of determining whether a graph is Hamiltonian is **NP-complete**. Ore's and Dirac's conditions are sufficient but not necessary.
+
+---
+
 ## Chapter 7: Matchings, Covers, and Independent Sets
 
 ---
