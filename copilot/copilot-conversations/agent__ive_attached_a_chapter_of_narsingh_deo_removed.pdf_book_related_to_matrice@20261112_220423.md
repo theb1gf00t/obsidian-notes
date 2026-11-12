@@ -61,3 +61,10 @@ Here are the most relevant questions from Narsingh Deo Chapter 7 that align with
 
 Would you like me to add these questions (and later their answers) to [[Question Practice.md]] under a new chapter heading for Week-9/Unit-7?
 [Timestamp: 2026/11/12 22:04:23]
+
+**user**: solve these in question practice for this chapter.
+in [[Question Practice]]
+[Timestamp: 2026/11/12 22:11:55]
+
+**ai**: Let me read the full Question Practice file to understand the existing structure before adding.I see — Chapter 7 in Question Practice refers to a different chapter (graph theory chapters about bipartite graphs, etc.) — not matrices. I need to find where the matrix chapter questions would go. Let me check what chapters are covered and what Chapter 11 ends at.The file has chapters 7–11 on graph theory topics, and the matrix representation chapter (Week-9/Unit-7 from the PDF) needs to be added as a new chapter. Let me check how many lines are in the file to append correctly.Now I'll append the new chapter with all 12 selected questions and their full solutions to the end of the file.
+[Timestamp: 2026/11/12 22:11:55]
