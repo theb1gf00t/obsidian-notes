@@ -4196,11 +4196,13 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > $$\boxed{\text{Regular tournaments exist for every odd }n\text{ (the carousel), and for no even }n.}$$
 > >
-> > **Extra: a regular tournament is automatically strong.** Suppose a regular tournament $T$ were not strongly connected. By Q24 there is a partition $V=A\sqcup B$ ($A,B\neq\varnothing$) with **every** arc between $A,B$ pointing from $A$ to $B$. For $u\in A$,
+> > **Extra: a regular tournament is automatically strong.** Suppose a regular tournament $T$ were not strongly connected. By the one-way-cut characterisation proved in Q24 below, there is a partition $V=A\sqcup B$ ($A,B\neq\varnothing$) with **every** arc between $A,B$ pointing from $A$ to $B$.
 > >
-> > $$\mathrm{outdeg}(u)\ \ge\ \underbrace{|B|}_{\text{all of }B}+\underbrace{0}_{\text{arcs inside }A\text{ may be in}}+\ldots\ \ge\ |B|\ =\ n-|A|,$$
+> > **The count.** A vertex $u\in A$ dominates all of $B$, plus some vertices inside $A$:
 > >
-> > Wait — more directly: $u$ dominates **all** of $B$, and at most $|A|-1$ vertices of $A$, so $\mathrm{outdeg}(u)=|B|+(\text{out-neighbours in }A)$. If $|A|\ge2$ then $\mathrm{outdeg}(u)\ge|B|+1=n-|A|+1\le n-1$, so $\mathrm{outdeg}(u)\ge n-|A|+1\ge n-(n-1)+1=2$; and in any case $\mathrm{outdeg}(u)\ge|B|$. Since $T$ is regular, $|B|\le (n-1)/2$, hence $|A|=n-|B|\ge (n+1)/2$, and symmetric reasoning for $v\in B$ gives $\mathrm{indeg}$... The clean way is to use the average:
+> > $$\mathrm{outdeg}(u)=\underbrace{|B|}_{\text{all of }B}+\underbrace{\mathrm{outdeg}_{T[A]}(u)}_{\text{inside }A}.$$
+> >
+> > Summing over $u\in A$ counts each arc with tail in $A$ exactly once — the $\binom{|A|}{2}$ arcs inside $A$ plus all $|A||B|$ cross arcs:
 > >
 > > $$\sum_{u\in A}\mathrm{outdeg}(u)=|A|\cdot\frac{n-1}{2}=\underbrace{|A|(|A|-1)/2}_{\text{arcs inside }A}+\underbrace{|A||B|}_{\text{all cross arcs }A\to B},$$
 > >
@@ -4291,11 +4293,11 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 >
 > > [!success]- Solution (Click to expand)
 > >
-> > **(a) Unilateral but not strong: a triangle feeding a directed path.** Take vertices $a,b,c,x,y$ and the arcs
+> > **(a) Unilateral but not strong: a triangle feeding a transitive pair.** Take vertices $a,b,c,x,y$ and the arcs
 > >
-> > $$a\to b\to c\to a,\qquad a\to x,\quad b\to x,\quad c\to x,\qquad x\to y.$$
+> > $$a\to b\to c\to a,\qquad a\to x,\ b\to x,\ c\to x,\qquad a\to y,\ b\to y,\ c\to y,\qquad x\to y.$$
 > >
-> > That is $3+3+1=7$ arcs out of the $\binom52=10$ possible — a tournament, since the missing pairs are exactly none (check: inside $\{a,b,c\}$ all three pairs are used; each of $a,b,c$ is joined to $x$; $x$ is joined to $y$).
+> > That is $3+3+3+1=10=\binom52$ arcs, so every pair is joined by exactly one arc and we have a tournament: inside $\{a,b,c\}$ the three pairs are used, each of $a,b,c$ sends one arc to each of $x,y$, and the remaining pair is $x\to y$.
 > >
 > > ![[ch11_unilateral_tournament_5v.png]]
 > >
@@ -4303,15 +4305,15 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > * $u,v\in\{a,b,c\}$: the triangle is strong, so both directions are reachable.
 > > * $u\in\{a,b,c\}$ and $v=x$: $u\to x$ directly.
-> > * $u\in\{a,b,c\}$ and $v=y$: $u\to x\to y$.
+> > * $u\in\{a,b,c\}$ and $v=y$: $u\to y$ directly (also $u\to x\to y$).
 > > * $u=x$, $v=y$: $x\to y$.
-> > * $u=y$ and $v\in\{a,b,c,x\}$: $v\to x\to y$ (or $x\to y$).
+> > * $u=y$ and $v\in\{a,b,c,x\}$: $v\to y$ (directly for $v\in\{a,b,c\}$, and $x\to y$).
 > >
 > > So every pair is comparable by a directed path: $D$ is unilaterally connected.
 > >
 > > *Not strong.* $\mathrm{outdeg}(y)=0$, so no vertex whatsoever is reachable from $y$; in particular $y\not\leadsto a$. Hence $D$ is **not** strongly connected (the sink $y$ is a one-vertex "dead end").
 > >
-> > $$\boxed{D \text{ is unilateral, with } \mathrm{diam}\text{-type obstruction: } y \text{ is a sink.}}$$
+> > $$\boxed{D \text{ is unilateral but not strong: } A=\{a,b,c,x\}\to\{y\} \text{ is a one-way cut.}}$$
 > >
 > > **Moral.** This is the cheapest way to break strong connectivity in a tournament: keep a strong block (the triangle) and hang a transitive "tail" off it. Note $m=7=\binom52-3$: the bound of Q11 ($m\ge(n-1)^2+1=17$ would force strong connectivity) is far from being met, so no contradiction.
 > >
@@ -4325,7 +4327,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > ![[ch11_regular_tournament_5v.png]]
 > >
-> > **Cross-check with the theory.** By the corollary to Theorem 11.10, a tournament is strong **iff** it has a directed Hamilton cycle; the cycle $0\to1\to2\to3\to4\to0$ certifies strong connectivity at a glance. Comparing with (a): the unilateral tournament there has $7$ arcs and a sink, the strong one here has $10$ arcs and no sink — consistent with the fact (Q24) that a tournament fails to be strong exactly when all arcs across some cut point the same way.
+> > **Cross-check with the theory.** By the corollary to Theorem 11.10, a tournament is strong **iff** it has a directed Hamilton cycle; the cycle $0\to1\to2\to3\to4\to0$ certifies strong connectivity at a glance. Comparing with (a): both are tournaments on $5$ vertices with the same number of arcs, yet (a) has the one-way cut $A=\{a,b,c,x\}$, $B=\{y\}$ (every arc between the parts points into $y$), exactly the obstruction of Q24, while the carousel admits no such cut.
 
 > [!question] Q24: Non-Strong Tournaments and One-Way Cuts
 > Show that a tournament $D$ is not strongly connected if and only if there is a partition of $V(D)$ into two subsets $A$ and $B$ such that every arc between $A$ and $B$ is of the form $(u,v)$ with $u\in A$, $v\in B$.
@@ -4496,11 +4498,11 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > * $d$ is a winner, so $d$ reaches $c$ in at most $2$ steps. In particular $c$ is beaten by somebody (by $d$ if $d\to c$, otherwise by the intermediate vertex of a path $d\to p\to c$).
 > > * By Lemma 2, $c$ is beaten by a **winner**. The only winners are $c$ and $d$, and $c\not\to c$, so that winner must be $d$: hence $d\to c$.
-> > * Repeating the same argument with the roles of $c$ and $d$ exchanged (now using that $c$ is a winner and $d$ is beaten, since $d\to c$ means $c$ is beaten... rather, $d$ is beaten by $c$), we get $c\to d$.
+> > * Repeating the same argument with the roles exchanged: $c$ is a winner, so $c$ reaches $d$ in at most $2$ steps, hence $d$ is beaten by somebody; by Lemma 2 it is beaten by a winner, and the only candidates $c,d$ give $c\to d$.
 > >
 > > But a tournament contains exactly one of the arcs $(c,d)$, $(d,c)$ — contradiction. Hence no tournament has exactly two winners. $\blacksquare$
 > >
-> > **A second way to see it (out-degree/chain argument).** If $s$ beats $w$ and all of $N^+(w)$ where $w$ is *not* a winner, then every vertex reachable in $\le2$ from $w$... the short version: a non-winner $w$ has a vertex $x$ with $x\to w$ and $x\to N^+(w)$, so $\mathrm{outdeg}(x)>\mathrm{outdeg}(w)$; iterating from any non-winner produces a chain of strictly increasing out-degrees that must terminate at a winner, and the two chains starting from the two hypothetical winners force a third. The counting-free argument above is cleaner, so we use that.
+> > **Why Lemma 2 is the crux.** It says the winners are "upward closed" under beating: the set of vertices that beat a given vertex always contains a winner. So a beaten winner must be beaten by another winner — and two winners cannot beat each other.
 > >
 > > $$\boxed{\#\{\text{winners}\}\neq 2\ \text{ for every tournament.}}$$
 > >
@@ -4519,7 +4521,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > > This is a tournament: $z$ is joined to each $i\in C$ by exactly one arc, and $C$ is already a tournament. Check that every vertex is a winner.
 > >
 > > * $z$: $z\to0$ and $0$ beats $1,\dots,h$; $z\to h$ and $h$ beats $h+1,\dots,2h$. So all of $C$ is at distance $\le2$, and $0,h$ at distance $1$. ✓
-> > * $i\notin\{0,h\}$: $i\to z$ (distance $1$). In $C$, $i$ beats $i+1,\dots,i+h$, and the remaining $h$ vertices $i+h+1,\dots,i+2h$ are beaten by $i+h$ — but note that also covers $z$'s immediate neighbourhood implicitly: $i\to z$ already handles $z$, so everything is at distance $\le2$. ✓
+> > * $i\notin\{0,h\}$: $i\to z$ covers $z$ in one step. In $C$, $i$ beats $i+1,\dots,i+h$, and the remaining $h$ vertices $i+h+1,\dots,i+2h$ are all beaten by $i+h$ (since the carousel on $2h+1$ vertices gives $i+h\to i+h+1,\dots,i+2h$). ✓
 > > * $i=0$: $0\to 1,\dots,h$; the vertices $h+1,\dots,2h$ are beaten by $h$; and $z$ is reached as $0\to1\to z$ (here $1\ne h$ because $h\ge2$). ✓
 > > * $i=h$: $h\to h+1,\dots,2h$ and $h\to z$. The vertices $0,1,\dots,h-1$ are all beaten by $2h$ (whose out-neighbours are $0,1,\dots,h-1$), and $h\to2h$ since $2h=h+h\in N^+(h)$. ✓
 > >
@@ -4527,7 +4529,7 @@ _(Note: A partition $(V_1, V_2, \dots, V_p)$ of $V(G)$ is called a clique partit
 > >
 > > **$n=2$ is impossible.** With two vertices the winner (the tail of the single arc) reaches the other in $1$ step, but the head cannot reach the tail at all. So there is exactly one winner, never two. ✓
 > >
-> > **$n=4$ is impossible.** Suppose all four vertices of a $4$-vertex tournament $T$ are winners. Since $m=\binom42=6$ and the average out-degree is $6/4=1.5$, some vertex $v$ has $\mathrm{outdeg}(v)\le1$. A winner must have out-degree $\ge1$ (with out-degree $0$ it reaches nobody), so $\mathrm{outdeg}(v)=1$: let $N^+(v)=\{w\}$. Let $a,b$ be the two in-neighbours of $v$; since $v$ is a winner, it must reach $a$ and $b$ in $2$ steps, and the only way is $v\to w\to a$, $v\to w\to b$. Hence $w\to a$ and $w\to b$, so $w$'s out-neighbours are exactly $\{a,b\}$ (it loses to $v$) and $\mathrm{outdeg}(w)=2$. Finally, between $a$ and $b$ exactly one arc lies; say $a\to b$ (the other case is symmetric under swapping the names $a,b$). Then $b$ beats $v$ only: $a\to b$, $w\to b$, $v\to b$ is false ($b\to v$). So $N^+(b)=\{v\}$, and $b$'s unique out-neighbour $v$ beats only $w$, so $b$ cannot reach $a$ — contradicting that $b$ is a winner. Hence no $4$-vertex tournament has all vertices as winners. ✓
+> > **$n=4$ is impossible.** Suppose all four vertices of a $4$-vertex tournament $T$ are winners. Since $m=\binom42=6$, the average out-degree is $6/4=1.5$, so some vertex $v$ has $\mathrm{outdeg}(v)\le1$. A winner must have out-degree $\ge1$ (with out-degree $0$ it reaches nobody), so $\mathrm{outdeg}(v)=1$: let $N^+(v)=\{w\}$ and let $a,b$ be the two in-neighbours of $v$ (so $V=\{v,w,a,b\}$). Since $v$ is a winner it must reach $a$ and $b$ in $2$ steps, and every path out of $v$ starts $v\to w$; hence $w\to a$ and $w\to b$. So $w$'s out-neighbours are exactly $\{a,b\}$ (it loses to $v$), i.e. $\mathrm{outdeg}(w)=2$. Between $a$ and $b$ exactly one arc lies; say $a\to b$ (the other case is symmetric under swapping the names $a,b$). Then $b$'s out-neighbourhood is exactly $\{v\}$: indeed $a\to b$, $w\to b$ and $b\to v$. But then $b$ reaches only $v$ (in $1$ step) and $w$ (in $2$ steps, as $v\to w$), never $a$. So $b$ is not a winner — contradiction. Hence no $4$-vertex tournament has all vertices as winners. ✓
 > >
 > > $$\boxed{\forall\,n\ne2,4\ \exists\ \text{a tournament of order } n \text{ with every vertex a winner.}}$$
 > >
