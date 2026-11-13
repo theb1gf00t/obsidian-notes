@@ -51,6 +51,44 @@ The car-accident thought experiment from the lecture makes the distinction concr
 | "A dent on the side" | Large **plastic** deformation, but no separation |
 | "The car broke into pieces" | **Fracture** — the material could no longer carry load |
 
+#### What a "mechanical property" actually is
+
+A **mechanical property** is the *response of a material to an applied load*, expressed as a quantity that can be measured in a reproducible test and inserted into a design calculation. It is therefore not an intrinsic constant like density: it is a *behaviour*, defined only relative to a specified test (specimen geometry, loading mode, temperature, strain rate). This is why "strength" is meaningless without saying *strength in what loading mode, at what temperature, at what speed*.
+
+Every engineering component is loaded in a particular way, and a *different* property governs each case:
+
+| Component | Dominant loading | Property that decides the design |
+| --- | --- | --- |
+| Bridge girder, building column | Bending / compression | Stiffness (deflection limit), yield strength |
+| Car body panel | Bending + impact | Formability (ductility), toughness |
+| Turbine blade | Centrifugal tension + creep | Creep strength at temperature, fatigue life |
+| Pressure vessel | Biaxial tension | Yield strength, fracture toughness, DBTT |
+| Cutting tool, drill bit | Compression + wear | Hardness, wear resistance, hot hardness |
+| Spring | Bending/torsion, cyclic | Resilience, fatigue limit |
+| Hip implant | Bending + corrosion | Fatigue strength, modulus match to bone |
+| Optical fibre, silicon wafer | Bending, thermal stress | Fracture strength (flaw-controlled) |
+
+#### Where the numbers come from — and why they matter
+
+The chain of reasoning in materials engineering is *processing → structure → properties → performance*. Mechanical testing is the step that closes the loop: it converts microstructural reality (grain size, dislocation density, porosity, phase fractions) into the design numbers an engineer can use, and it lets a metallurgist work backwards from a failed part to the microstructural cause.
+
+Three distinct uses of mechanical testing:
+
+1. **Design** — provide *allowable stresses* (yield strength divided by a factor of safety) so a component can be sized.
+2. **Quality control / acceptance** — check that a delivered batch meets specification (a hardness check on a forged shaft, a Charpy test on a pressure-vessel plate).
+3. **Failure analysis and alloy development** — explain *why* a part broke, and rank candidate compositions/processes.
+
+#### Failures that shaped the subject
+
+Mechanical properties are studied because getting them wrong kills people. Three canonical cases, all of which recur in this topic:
+
+- **Titanic (1912)** — hull steel with a high DBTT, in ice-cold water, under impact loading (see §2.7). The Charpy tests on recovered plate showed a transition temperature near the water temperature.
+- **Liberty ships (1942–45)** — all-welded hulls of a steel with inadequate notch toughness; several broke in two at low temperature, some while at dock. The direct ancestor of modern fracture-toughness specifications.
+- **Comet airliner (1954)** — fatigue cracks from square window corners, initiated by stress concentration and driven by repeated pressurisation cycles far below the yield stress (§1.5). The ancestor of damage-tolerance design.
+
+> [!note] The design mindset
+> A material is never chosen for a single number. Design asks: *is it stiff enough? strong enough? does it give warning before failing? does it stay tough at the service temperature? can it be made into the required shape?* Those five questions map exactly onto the five key design properties in §1.6.
+
 ### 1.2 Deformation: elastic, plastic, fracture
 
 > [!important] Definitions
@@ -68,6 +106,33 @@ The central design question of this whole topic:
 
 To answer it we need a language that is independent of the size of the specimen — hence **stress** and **strain**.
 
+#### The three responses compared
+
+| | **Elastic** | **Plastic** | **Fracture** |
+| --- | --- | --- | --- |
+| Recoverable? | Fully, on unloading | No — permanent set remains | No — the body is separated |
+| Atomic mechanism | Bond stretching/compression, bond angles bending; atoms displaced by a small fraction of $r_0$ | Dislocation glide (shear of atomic planes), twinning; bonds are *broken and re-made* | Cohesive bonds broken across a plane; crack nucleation + propagation |
+| Strain magnitude (metals) | $\lesssim 0.005$ (0.5 %) | 0.01 – 1.0 (1 %–100 %+) | total strain at breaking |
+| Stress measure | $E$ (slope) | yield strength, flow stress | fracture strength, toughness |
+| Depends strongly on | bond stiffness, temperature (weakly) | temperature, strain rate, grain size, prior deformation | flaws, temperature, strain rate, constraint |
+| Reversible in time? | Instantaneous (except anelasticity, §2.9) | No | No |
+
+A useful way to remember the physics: **elasticity is a property of the bonds; plasticity is a property of the defects (dislocations); fracture is a property of the flaws (cracks, pores, inclusions).** Almost every confusing observation in this topic — why a strong material is brittle, why a small crystal is stronger than a big one, why a scratch can halve the strength of glass — follows from that one sentence.
+
+> [!important] Elastic limit, proportional limit, yield point
+> These are three *different* landmarks that are often the same number for metals and different for polymers and grey cast iron.
+> **Proportional limit** — stress up to which stress $\propto$ strain (Hooke's law holds).
+> **Elastic limit** — stress up to which all deformation is recoverable (may exceed the proportional limit slightly).
+> **Yield point** — stress at which a measurable *permanent* strain appears (in practice, 0.2 % offset; §2.11).
+
+> [!warning] "Failure" is broader than "fracture"
+> A component has failed when it can no longer do its job. That includes:
+> - **fracture** (separation) — the obvious case;
+> - **excessive elastic deflection** (a shaft that whips, a mirror that distorts) — the material is perfectly intact;
+> - **excessive plastic deformation** (a bolt that stretches, a roof that sags);
+> - **loss of function by surface damage** — wear, corrosion, fretting.
+> Design therefore uses *stiffness* limits as often as *strength* limits.
+
 ### 1.3 Types of loading
 
 ![[MP - Types of Loading.excalidraw]]
@@ -82,6 +147,38 @@ Two kinds of strain follow from these loadings:
 
 1. **Change in dimension** — elongation, shortening (normal strain).
 2. **Angular distortion** — the change of angle between two initially perpendicular lines (shear strain).
+
+#### Each loading mode in mechanics terms
+
+| Mode | Stress produced | How it varies across the section | Typical failure mode |
+| --- | --- | --- | --- |
+| **Tension** | $\sigma = P/A_0$ (uniform) | Constant along the gauge length | Necking → ductile rupture, or cleavage |
+| **Compression** | $\sigma = -P/A_0$ | Uniform (away from ends) | Barrelling/shear bands (ductile) or splitting (brittle) |
+| **Shear** | $\tau = V/A$ (average) | Parabolic for a rectangular section, max at the neutral axis | Shear fracture at $45^\circ$ to the axis in tension |
+| **Torsion** | $\tau = Tr/J$, max at $r = R$ | Linear from zero on the axis to max at the surface | Helical shear fracture at $45^\circ$ |
+| **Bending** | $\sigma = My/I$ | Linear from zero at the neutral axis to max at the surfaces | Fracture on the tensile face (brittle) or yield of the tensile face first (ductile) |
+
+Two results worth carrying forward, because they explain why torsion and bending tests exist at all:
+
+- **Torsion** is a pure-shear test. For a circular shaft of radius $R$ and polar moment $J = \pi R^4/2$,
+  $$ \tau_{\max} = \frac{T R}{J}, \qquad \theta = \frac{T L}{G J} $$
+  so a single torsion test gives the **shear modulus** $G$ and the **shear yield strength** $\tau_y$ directly — quantities that a tensile test only gives indirectly (through $G = E/2(1+\nu)$). Torsion also avoids the necking instability, so it can reach much larger strains than tension.
+- **Bending** is not a fundamental mode. The top fibres are in compression and the bottom fibres in tension, with a **neutral axis** in between that is stress-free. For an elastic beam, $\sigma = M y / I$ with $I = bd^3/12$ for a rectangle, so the maximum surface stress is $\sigma = 6M/(bd^2)$. This is exploited in §3.1 to test brittle materials, which are far stronger in compression than in tension.
+
+#### Hydrostatic stress — the loading that produces no yielding
+
+If equal normal stresses act on all faces ($\sigma_{11}=\sigma_{22}=\sigma_{33}=-p$) with zero shear, the state is **hydrostatic compression**. Because plastic flow is driven by *shear*, and a hydrostatic state has no shear on any plane, it produces **no plastic deformation and no fracture** — it only changes volume elastically:
+
+$$ \frac{\Delta V}{V} = -3(1-2\nu)\frac{p}{E} = -\frac{p}{K} $$
+
+with $K$ the bulk modulus. This is why:
+- a submarine hull, a deep-sea sphere or a specimen under a 10 kbar pressure cell does not "crush" plastically;
+- the **triaxial tension** that builds up inside a neck or ahead of a notch *does* promote fracture, because it adds hydrostatic tension that opens cracks (this is the physical content of the Bridgman correction in §2.18 and of notch brittleness in §2.7);
+- **superplastic forming** and **hydrostatic extrusion** can reach enormous strains — the superimposed pressure suppresses void growth and fracture.
+
+#### Combined loading is the normal case
+
+Real components see several modes at once: a rotating shaft carries bending + torsion + axial load; a tooth of a gear carries contact pressure + bending + sliding shear. Because the equations of elasticity are linear, the stresses from each load case **superpose**: add the tensors component by component, then compare the resulting multiaxial state with a yield criterion (von Mises or Tresca, §1.4) rather than with the uniaxial yield strength.
 
 ### 1.4 Concepts of stress and strain
 
@@ -103,6 +200,82 @@ $$ \sigma_{ij} = \begin{bmatrix} \sigma_{11} & \sigma_{12} & \sigma_{13} \\ \sig
 - **Off-diagonal terms** are **shear stresses** (parallel to the face): $\sigma_{12} = \sigma_{21}$, $\sigma_{13} = \sigma_{31}$, $\sigma_{23} = \sigma_{32}$ — the tensor is symmetric (moment equilibrium), so only **six** components are independent.
 - Likewise the fourth-rank stiffness tensor $C_{ijkl}$ has $3^4 = 81$ components, reducible to **21** independent constants for the most general crystal, and to just **2** ($E$ and $\nu$) for an isotropic material.
 
+![[MP1 - Stress tensor at a point.png|420]]
+
+*Figure — the nine stress components acting on an elemental cube; the three visible faces carry one normal stress each and two shear stresses each.*
+
+#### Why nine components, and how they reduce
+
+The stress at a point is a **second-rank tensor** because it is a linear map from a surface normal $\mathbf{n}$ to a traction vector $\mathbf{t}$: $t_i = \sigma_{ij}n_j$. It is a *tensor*, not a scalar, because a bar loaded in tension along $z$ also has shear stresses on planes inclined to $z$ — the number observed depends on the orientation of the plane you cut.
+
+1. **Symmetry** ($\sigma_{ij}=\sigma_{ji}$, from moment equilibrium of an infinitesimal element) reduces 9 → **6** independent components.
+2. **Principal axes** — for any stress state there is one orientation in which all shear stresses vanish. The three normal stresses on those planes are the **principal stresses** $\sigma_1 \ge \sigma_2 \ge \sigma_3$, and they are the eigenvalues of $\sigma_{ij}$. Design codes are usually written in terms of them.
+3. **Invariants** — the combinations
+   $$ I_1 = \sigma_1+\sigma_2+\sigma_3, \qquad I_2 = \sigma_1\sigma_2+\sigma_2\sigma_3+\sigma_3\sigma_1, \qquad I_3 = \sigma_1\sigma_2\sigma_3 $$
+   are independent of the coordinate system, so *any* physically meaningful failure criterion must be expressible in them.
+4. **Mohr's circle** is the graphical version: for a given $\sigma_{ij}$ it gives the normal and shear stress on every possible plane, and the largest circle's radius is the maximum shear stress $\tau_{\max}=(\sigma_1-\sigma_3)/2$.
+
+**Yield criteria for multiaxial stress.** A uniaxial yield strength $\sigma_y$ is not directly applicable to a multiaxial state; two criteria replace it:
+
+$$ \sigma_{\text{vM}} = \sqrt{\tfrac12\left[(\sigma_1-\sigma_2)^2+(\sigma_2-\sigma_3)^2+(\sigma_3-\sigma_1)^2\right]} = \sigma_y \quad\text{(von Mises, distortion energy)} $$
+
+$$ \tau_{\max} = \frac{\sigma_1-\sigma_3}{2} = \frac{\sigma_y}{2} \quad\text{(Tresca, maximum shear)} $$
+
+Both depend only on *differences* of principal stresses — confirming that a hydrostatic stress cannot cause yielding. They differ by at most 15.5 %, and they let a tensile-test yield strength be applied to any complex load case.
+
+#### Strain as a tensor, and the two strain measures
+
+The **strain tensor** is the symmetric part of the displacement gradient:
+
+$$ \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right) $$
+
+Its diagonal terms are **normal strains** ($\Delta L/L_0$); the off-diagonal terms are the *tensor* shear strains, which are **half** the engineering shear strain: $\gamma_{xy} = 2\varepsilon_{xy}$. The factor of 2 is a constant source of error — the physical distortion of a square element is $\gamma = \Delta x/y_0 = \tan\theta \approx \theta$, and it is $\gamma$ that appears in $G$ and in the strain-energy expressions.
+
+#### Counting the elastic constants
+
+The fourth-rank stiffness tensor $C_{ijkl}$ maps strain to stress, $\sigma_{ij}=C_{ijkl}\varepsilon_{kl}$. Because both stress and strain are symmetric, $C_{ijkl}=C_{jikl}=C_{ijlk}$, the $81$ components collapse as:
+
+| Symmetry | Independent elastic constants | Examples |
+| --- | --- | --- |
+| Triclinic (no symmetry) | **21** | — |
+| Monoclinic | 13 | gypsum |
+| Orthorhombic | 9 | polyethylene crystals, wood |
+| Hexagonal / transversely isotropic | 5 | Mg, Zn, Ti, graphite, drawn fibres |
+| Cubic | 3 ($C_{11}, C_{12}, C_{44}$) | Al, Cu, Fe, Ni, diamond, Si |
+| Isotropic (polycrystal average) | **2** | any random polycrystal, glass |
+
+For a **cubic** crystal the *direction* of loading changes the measured modulus — the elastic anisotropy ratio is
+
+$$ A = \frac{2C_{44}}{C_{11}-C_{12}} \qquad (A=1\ \text{isotropic}) $$
+
+with $A_{\text{Al}}\approx1.2$, $A_{\text{Fe}}\approx2.5$, $A_{\text{Cu}}\approx3.2$, $A_{\text{W}}\approx1.0$. In aluminium the $\langle111\rangle$ direction is stiffer ($\sim76$ GPa) than $\langle100\rangle$ ($\sim63$ GPa); in a random polycrystal these average to $\sim70$ GPa.
+
+#### Units and magnitudes
+
+$$ 1\ \text{MPa} = 10^6\ \text{Pa} = 10^6\ \text{N/m}^2, \quad 1\ \text{GPa} = 10^3\ \text{MPa}, \quad 1\ \text{ksi} = 6.895\ \text{MPa}, \quad 1\ \text{MPa} = 145\ \text{psi} $$
+
+Strain is dimensionless (m/m or %). Typical room-temperature moduli, for order-of-magnitude intuition:
+
+| Class | Material | $E$ (GPa) |
+| --- | --- | --- |
+| Covalent ceramic | diamond | 1000–1050 |
+| | SiC / $\text{Si}_3\text{N}_4$ | 400–450 / 300 |
+| Ionic ceramic | $\text{Al}_2\text{O}_3$ | 380–400 |
+| | glass (soda-lime) | 70–80 |
+| Metal | steel | 200–215 |
+| | nickel, tungsten | 200, 400 |
+| | cast iron | 100–170 |
+| | titanium alloy (Ti-6Al-4V) | 110–120 |
+| | copper, aluminium | 110–128, 69–72 |
+| | magnesium | 45 |
+| Composite | CFRP (fibre direction) | 70–200 |
+| Polymer | PMMA, PS | 2.4–3.4 |
+| | HDPE | 0.7–1.4 |
+| Elastomer | natural rubber | 0.001–0.01 |
+
+> [!note] Why $E$ is the least structure-sensitive property
+> $E$ depends almost entirely on **bonding** and only weakly on microstructure. Alloying, cold work, grain size, phase changes and heat treatment move the yield strength by factors of 2–5 but move $E$ by only a few percent. Only porosity and cracks (which reduce the load-bearing section) change $E$ appreciably. This is why "$E$ = property of the bond, $\sigma_y$ = property of the defects" is such a useful summary.
+
 ### 1.5 Examples of mechanical tests
 
 | Test | What it measures | Typical use |
@@ -122,6 +295,27 @@ Notes on the less obvious ones (from the class notes):
 - **Impact:** a sudden blow is delivered (pendulum hammer). The **energy absorbed** in breaking the specimen is measured — the *notch toughness*. Standard geometries are the **Izod** and **Charpy** tests. A ductile material deforms and absorbs much energy; a brittle material absorbs little and snaps.
 - **Creep:** slow, continuous deformation under a **constant load** at high temperature — usually quoted as $T \gtrsim 0.4\,T_m$ (melting point in kelvin).
 
+#### What each test really delivers
+
+| Test | Standard | Raw output | Derived properties | Main limitation |
+| --- | --- | --- | --- | --- |
+| Tension | ASTM E8 / ISO 6892 | Load–elongation | $E$, YS, UTS, %EL, %RA, $n$, $K$ | Requires a machinable, grip-able specimen; unstable after necking |
+| Compression | ASTM E9 | Load–deformation | Compressive YS, compressive strength, $E$ | Buckling of slender specimens; friction/barrelling at platens |
+| Torsion | ASTM E143 | Torque–twist | $G$, shear YS, shear strength | Non-uniform stress if section is not circular |
+| Bend (3/4-point) | ASTM C1161, C674 | Load–deflection | Flexural strength (MOR) | Only the surface fibre sees the maximum stress |
+| Hardness | ASTM E10/E18/E92/E384 | Indent size or depth | HB, HV, HK, HRx; estimate of UTS | Empirical; indenter/size effects; not a fundamental property |
+| Fatigue | ASTM E466, E606 | Cycles to failure at a stress amplitude | S–N curve, endurance limit, fatigue strength | Long test times; scatter; specimen-sensitive |
+| Impact (Charpy/Izod) | ASTM E23 / ISO 148 | Absorbed energy | Notch toughness vs temperature, DBTT | Comparative, not a design stress; geometry-dependent |
+| Creep / stress rupture | ASTM E139 | Strain vs time, time to rupture | Secondary creep rate, rupture life, activation energy | Months-long tests; extrapolation needed |
+
+**Fatigue, in more detail.** Failure occurs by the initiation and growth of a crack under *cyclic* stress whose peak is below the yield strength. The fatigue life is divided into initiation (most of the life at low stress) and propagation. Results are plotted as an **S–N curve** (stress amplitude vs number of cycles on a log scale). Ferrous alloys and titanium show a true **endurance limit** — a stress below which the life is effectively infinite ($>10^7$ cycles); aluminium, copper and most polymers do not, and must be designed for a finite life. Fatigue is the single most common cause of service failure in rotating and vibrating machinery, precisely because the part shows no visible deformation beforehand.
+
+**Impact testing, in more detail.** A heavy pendulum strikes a **notched** specimen and the energy absorbed is read from the height of the swing. The notch is essential: it produces a triaxial stress state and a high strain rate, which is what makes the test sensitive to the ductile–brittle transition. Results are reported in joules (or ft·lb) and are *not* a material constant — they depend on notch geometry and specimen size. The **27 J (20 ft·lb) at −20 °C** type criteria in ship and pressure-vessel codes come directly from this test (§2.7).
+
+**Creep, in more detail.** Under a constant load at high temperature the strain–time curve has three stages: **primary** (decreasing rate — work hardening dominates), **secondary/steady-state** (constant minimum rate — hardening balanced by recovery, the stage used for design), and **tertiary** (accelerating — necking and void growth, ending in rupture). The steady-state rate is described by
+$$ \dot{\varepsilon}_s = A\sigma^n\exp\!\left(-\frac{Q}{RT}\right) $$
+with a stress exponent $n\approx3$–$5$ for dislocation creep and $Q$ the activation energy for self-diffusion; at low stress and fine grain size, diffusional creep takes over with $n\approx1$.
+
 ### 1.6 Key mechanical design properties
 
 | Property | Meaning | Measured by |
@@ -137,6 +331,53 @@ Notes on the less obvious ones (from the class notes):
 > **Brittle** — the material fractures *suddenly, with little or no plastic deformation* (cast iron, glass, ceramics, and steels at low temperature). There is no warning.
 > The same material can be ductile or brittle depending on **temperature, strain rate and the presence of a notch** — see the Yoffee diagram in §2.7.
 
+#### The five properties, in engineering language
+
+- **Stiffness** ($E$, or $G$) sets the *deflection* for a given load. It is a **design limit in its own right** — a bridge that sags 1 m has failed its serviceability requirement even if no metal has yielded. It cannot be changed by heat treatment; only by changing the material (or the section shape, which is a *geometry* fix, not a materials fix).
+- **Strength** sets the *load* a part can carry. Design is normally based on **yield**, not fracture, because yield is a well-defined, reproducible, structure-insensitive-in-the-small quantity, and because a part that yields visibly gives warning.
+- **Hardness** is a *localised* strength: resistance of the surface to being pushed in. It is the cheapest surrogate for strength and wear resistance.
+- **Ductility** is the *warning system*: the amount of plastic strain before fracture. It is what allows a part to redistribute stress at a stress concentration, and it is what allows a material to be *formed* (rolled, drawn, bent, deep-drawn).
+- **Toughness** is *energy absorbed before fracture*, i.e. strength **and** ductility together. A tough material resists the propagation of a crack. It is the property that decides whether a small manufacturing flaw becomes a catastrophic failure.
+
+$$\text{Strength} \neq \text{Toughness} \neq \text{Hardness}$$
+
+#### Typical values, for scale
+
+| Material | $E$ (GPa) | Yield strength (MPa) | UTS (MPa) | Elongation (%) | Hardness |
+| --- | --- | --- | --- | --- | --- |
+| Mild steel (A36) | 200 | 250 | 400–500 | 20–25 | 120 HB |
+| High-strength low-alloy steel | 205 | 550 | 620 | 18 | 180 HB |
+| Quenched & tempered 4340 | 205 | 1500 | 1800 | 8–12 | 50 HRC |
+| Austenitic stainless 304 | 193 | 205 | 515 | 40 | 80 HRB |
+| Aluminium 6061-T6 | 69 | 275 | 310 | 12 | 95 HB |
+| Titanium Ti-6Al-4V | 114 | 830 | 900 | 10–15 | 35 HRC |
+| Copper (annealed) | 110 | 70 | 220 | 45 | 40 HB |
+| Alumina (99.5 %) | 380 | — (brittle) | 300 (flexural) | $\sim0$ | 1500 HV |
+| Soda-lime glass | 70 | — | 70 (flexural) | $\sim0$ | 550 HV |
+| PMMA | 3.0 | 70 | 70 | 2–5 | — |
+| Nylon 6,6 | 3.0 | 80 | 85 | 60 | — |
+| Natural rubber | 0.005 | — | 20–30 | 500–800 | — |
+
+#### Factor of safety
+
+Design does not use the measured strength directly:
+
+$$ \sigma_{\text{allowable}} = \frac{\sigma_y}{n}, \qquad n = 1.5\text{–}2 \text{ (normal service)},\ 2\text{–}4 \text{ (shock/fatigue)},\ 4\text{+ (pressure vessels, uncertain loads)} $$
+
+The safety factor covers scatter in the material data, uncertainty in the load, stress concentrations not captured by the simple formula, and consequences of failure. It is a *legal and economic* choice as much as a technical one.
+
+#### Stiffness vs strength trade-off, and specific properties
+
+A material can be stiff but weak (glass), strong but compliant (some polymers), or both (steel). For **moving parts** the relevant quantities are the *specific* ones — property divided by density:
+
+| Specific property | Expression | Winner |
+| --- | --- | --- |
+| Specific stiffness | $E/\rho$ | CFRP, ceramics, Al, Ti |
+| Specific strength | $\sigma_y/\rho$ | CFRP, Ti alloys, Al-Li |
+| Specific toughness | $K_{Ic}/\rho$ | Al alloys, steel |
+
+This is the basis of **Ashby material-selection charts** (modulus–density, strength–density bubble charts): the material classes form clusters, and the selection lines are iso-performance lines of the form $E = C\rho$. Polymers lie bottom-left, metals in the middle, ceramics top-right (stiff, strong, but brittle), composites occupy the gap. The charts make the trade-offs in this table visible at a glance.
+
 ### 1.7 Mechanical testing ↔ deformation mechanisms
 
 Mechanical tests are only the *symptom*; the *cause* is what happens to atoms and dislocations. The lecture maps the bridge explicitly:
@@ -151,6 +392,40 @@ Mechanical tests are only the *symptom*; the *cause* is what happens to atoms an
 
 All of these are developed in §2.
 
+#### The length-scale ladder
+
+| Scale | What exists there | What it controls |
+| --- | --- | --- |
+| Atomic ($10^{-10}$ m) | Bonds, potential well $U(r)$ | $E$, theoretical strength, melting point |
+| Dislocation core ($10^{-9}$ m) | Peierls–Nabarro friction, core width | Yield stress, temperature dependence of strength |
+| Dislocation substructure ($10^{-7}$–$10^{-6}$ m) | Pile-ups, cells, locks | Work hardening, $n$ |
+| Grain ($10^{-5}$–$10^{-4}$ m) | Grain boundaries, orientation | Yield strength (Hall–Petch), ductility |
+| Specimen ($10^{-3}$–$10^{-1}$ m) | Flaws, surface finish, constraint | Strength of brittle materials, DBTT |
+| Component | Stress concentrations, residual stress | Fatigue life, fracture |
+
+Each row explains a distinct part of a mechanical test. The atomic scale fixes the *slope* of the curve, the dislocation scale fixes *where the curve bends*, and the specimen scale fixes *where it ends*.
+
+#### Mechanism → measurable signature
+
+| Observation in a test | Underlying mechanism |
+| --- | --- |
+| Straight elastic line, slope = $E$ | Bond stretching; no defects involved |
+| Yield at $\sim10^{-3}$–$10^{-4}G$ instead of $G/10$ | Dislocation glide, not rigid plane shear |
+| Upper/lower yield point, Lüders plateau | Unpinning of dislocations from interstitial (C, N) atmospheres |
+| Rising plastic branch (work hardening) | Dislocation multiplication, $t \propto b\sqrt{\rho}$, jog/lock formation |
+| Strong temperature dependence of $\sigma_y$ in BCC | Peierls–Nabarro lattice friction, kink-pair nucleation |
+| Weak temperature dependence in FCC | Obstacle-controlled glide, forest hardening |
+| Yield stress $\propto d^{-1/2}$ | Grain-boundary barrier to slip (Hall–Petch) |
+| Ductility limited in HCP | Only 3 basal slip systems $<5$ required by von Mises |
+| Time-dependent strain at high $T$ | Dislocation climb + diffusional flow (creep) |
+| No warning before failure | Crack propagation with negligible plastic zone (fatigue, cleavage) |
+
+The key relationships that connect these scales (developed in §2):
+
+$$ \tau_y \approx \tau_0 + \alpha G b\sqrt{\rho} \quad\text{(forest hardening)}, \qquad \sigma_y = \sigma_0 + k_y d^{-1/2}\ \text{(Hall–Petch)}, \qquad \tau \approx \frac{Gb}{2\pi L}\ \text{(Orowan, obstacle spacing } L\text{)} $$
+
+So a single tensile test is really a *probe of defect populations*: two specimens of the same composition and different grain size give different yield stresses, different work-hardening rates and different ductilities, all from the same atoms and bonds.
+
 ### 1.8 Tensile test: first look
 
 The tensile test pulls a specimen along its axis at a constant rate and records **load** and **elongation**, which are converted to **stress** and **strain**.
@@ -160,6 +435,22 @@ The tensile test pulls a specimen along its axis at a constant rate and records 
 
 The same test on the *same* material can produce either curve depending on temperature — this is the subject of §2.7.
 
+![[MP - Brittle vs ductile tensile curves.png|480]]
+
+*Figure — engineering stress–strain curves for a ductile metal (steel, with upper and lower yield points and a long work-hardening regime) and a brittle material (grey cast iron or a ceramic), which is linear-elastic to fracture.*
+
+**Reading the ductile curve feature by feature:**
+
+1. **Linear elastic rise** — slope $E$; at this point the strain is entirely bond stretching and is fully recoverable.
+2. **Upper yield point $\to$ lower yield point** — a sudden drop. It is caused by the *unpinning* of dislocations from solute atmospheres: once a few dislocations break free they multiply and the stress needed falls. The associated plastic band (**Lüders band**) propagates along the gauge length at constant stress, producing the flat plateau.
+3. **Work hardening** — the curve rises again as the dislocation density climbs; the specimen deforms uniformly.
+4. **UTS (maximum) and necking** — the load reaches a maximum when the *increase* in strength from work hardening is exactly offset by the *decrease* in cross-section.
+5. **Fracture** — in a ductile round bar the neck develops a **cup-and-cone** appearance: a central fibrous zone of micro-void coalescence, surrounded by a $45^\circ$ **shear lip**. In a brittle fracture, the surface shows flat **cleavage facets** and no neck.
+
+The brittle curve, by contrast, has **no yielding at all**: fracture happens on the linear elastic line, at a stress that is strongly dependent on the largest flaw in the specimen (hence the enormous scatter, and hence the statistical treatment in §3.1–§3.2).
+
+**What the machine actually records** is load and crosshead displacement; the stress–strain curve is computed afterwards using the *initial* area and gauge length. Two corrections are needed to get physically meaningful data: the machine's own elastic compliance must be subtracted from the displacement, and the specimen must be loaded through a *reduced-section* gauge so that it yields away from the grips (§2.6).
+
 > [!tip] Exam pointer
 > Part I is mostly *vocabulary*. Be able to state, in one line each: elastic vs plastic vs fracture vs failure; the four loading modes; the difference between engineering and true stress/strain; and the property ↔ test mapping in §1.6.
 
@@ -168,6 +459,10 @@ The same test on the *same* material can produce either curve depending on tempe
 ## 2. Mechanical Properties — II
 
 ### 2.1 Atomic model of elastic behaviour
+
+![[MP2 - Interatomic force-distance curve.png|420]]
+
+*Figure — the interatomic force–distance curve: zero force at $r_0$; a tensile force $F'$ at $r'>r_0$, a compressive force $F''$ at $r''<r_0$. The curve is steeper for compression than for tension, which is the origin of thermal expansion.*
 
 Elastic deformation is nothing but a small change in the **interatomic spacing**. The interaction between two atoms is described by a potential energy $U(r)$ with a minimum at the equilibrium separation $r_0$:
 
@@ -200,6 +495,69 @@ where $b$ is the Burgers vector, $d$ the interplanar spacing and $w$ the width o
 
 - **Wide core** (metals — metallic bonding, non-directional) → exponential term small → **low Peierls stress** → easy glide, ductile.
 - **Narrow core** (covalent/ionic ceramics) → **high Peierls stress** → hard, brittle.
+
+#### The potential well, quantitatively
+
+The two standard model potentials are the **Morse** potential (bonding, three parameters) and the **Lennard-Jones** potential:
+
+$$ U(r) = 4\epsilon\left[\left(\frac{\sigma}{r}\right)^{12}-\left(\frac{\sigma}{r}\right)^{6}\right] $$
+
+the $r^{-12}$ term being the Pauli/ion-core repulsion and the $r^{-6}$ term the van der Waals attraction. Expanding any such $U(r)$ about its minimum in a Taylor series gives
+
+$$ U(r) \approx U(r_0) + \underbrace{\frac{dU}{dr}\Big|_{r_0}}_{=\,0}(r-r_0) + \frac12\frac{d^2U}{dr^2}\Big|_{r_0}(r-r_0)^2 + \cdots $$
+
+The first non-zero term is **parabolic**, i.e. the force is *linear* in displacement:
+
+$$ F = \frac{dU}{dr} \approx \left.\frac{d^2U}{dr^2}\right|_{r_0}(r-r_0) = k\,(r-r_0) $$
+
+That is Hooke's law, derived from the shape of the potential well. The modulus of a solid is this bond stiffness multiplied by the number of bonds per unit area:
+
+$$ E = \frac{k}{r_0}\ \propto\ \frac{1}{r_0}\left.\frac{d^2U}{dr^2}\right|_{r_0} $$
+
+Three consequences, all directly examinable:
+
+1. **$E$ scales with the depth and steepness of the well.** Deep wells (high melting point, high cohesive energy) → high $E$. A useful empirical correlation is $E \approx$ few hundred $\times$ melting temperature in K divided by molar volume, and in practice $\alpha = E/(k_BT_m)$ per atomic volume is roughly constant for crystals of a given bond type. Diamond has the deepest well of all and the highest modulus.
+2. **$E$ decreases with temperature**, roughly linearly, by typically **2–5 % per 100 K**, because thermal expansion increases $r_0$ and the potential well becomes effectively shallower (anharmonicity). This is why the "room-temperature modulus" must be quoted with a temperature for high-temperature design.
+3. **Elastic strain is small** because the parabola is only a good approximation for $|r-r_0| \ll r_0$. Real elastic strains are $\approx 0.1$–$1\,$% — only a small fraction of an interatomic spacing. Beyond that, the higher-order (anharmonic) terms dominate and the stress–strain relation becomes **non-linear**; rubber is the extreme case, where the "bonds" are chain conformations and enormous non-linear recoverable strains are the norm.
+
+#### Theoretical cohesive (fracture) strength
+
+The same force–displacement curve gives the *maximum tensile force a bond can sustain*, obtained by setting $dF/dr = 0$ on the tensile side. Equating the work done in separating two planes to the surface energy $2\gamma_s$ gives the **theoretical cohesive strength**:
+
+$$ \sigma_{\text{th}} \approx \sqrt{\frac{E\gamma_s}{a_0}} \approx \frac{E}{10} \ \ (10\text{–}15\,\%\ \text{of } E) $$
+
+Compare with the **theoretical shear strength** $\tau_{\text{th}} \approx G/2\pi$ derived above. Both are one to two orders of magnitude *above* what is measured (real strengths are $E/100$ to $E/1000$). But the *reasons* are different, and the distinction matters:
+
+| Quantity | Theoretical | Measured | Ratio | Why the gap? |
+| --- | --- | --- | --- | --- |
+| Shear (yield) strength | $G/2\pi \approx G/6$ | $10^{-3}$–$10^{-4}G$ | $10^3$–$10^4$ | **Dislocations** — plasticity is not rigid-plane sliding |
+| Cohesive (fracture) strength | $\sqrt{E\gamma_s/a_0}\approx E/10$ | $E/100$–$E/1000$ | $10$–$100$ | **Flaws** — a crack concentrates stress at its tip |
+
+So the two great weaknesses of real materials have separate explanations: **dislocations explain why metals are soft; cracks explain why brittle solids are weak.** Both are "defects", but they are different defects with different consequences — and that is the organising idea of the whole of §2 and §3.
+
+> [!important] The Frenkel derivation, step by step
+> 1. Assume the sheared planes slide as rigid blocks and the resisting shear stress is a periodic function of displacement $x$ with period $b$ (the repeat distance in the slip direction):
+> $$ \tau = \tau_{\max}\sin\frac{2\pi x}{b} $$
+> 2. For small $x$ this must reduce to Hooke's law in shear, $\tau = G\gamma = Gx/d$, where $d$ is the interplanar spacing.
+> 3. Therefore $\tau_{\max}\dfrac{2\pi x}{b} = G\dfrac{x}{d}$, giving
+> $$ \tau_{\max} = \frac{Gb}{2\pi d} $$
+> 4. Taking $b \approx d$ (close-packed plane and direction) gives $\tau_{\max}\approx G/2\pi \approx G/6$.
+> The measured CRSS of a soft FCC metal is $\sim10^{-5}G$ — a factor of $10^4$ discrepancy. A dislocation does not shear the whole plane at once; it shears one line of bonds at a time, so the *applied* stress only has to supply the (small) Peierls friction.
+
+#### The Peierls–Nabarro stress in physical terms
+
+$$ \tau_{PN} = \frac{2G}{1-\nu}\exp\!\left(-\frac{2\pi w}{b}\right), \qquad w = \frac{d}{1-\nu} $$
+
+The exponential is the whole story: the resistance falls off **exponentially with the width of the dislocation core** $w$, measured in units of $b$. A dislocation whose core is spread over many atomic spacings is "smeared out" and barely notices the discrete lattice; a dislocation squeezed into one atomic spacing feels every atom it passes.
+
+- **Metals**: non-directional metallic bonding spreads the core over $w\sim2$–$5b$ → $\tau_{PN}$ is a small fraction of $G$ → easy glide even at low temperature. This is why FCC metals stay ductile to cryogenic temperatures.
+- **Covalent/ionic solids**: directional, stiff bonds keep the core narrow → $\tau_{PN}$ is a large fraction of $G$ (approaching the theoretical shear strength) → the crystal prefers to *fracture* rather than to deform plastically. Diamond, SiC, sapphire and silicon are hard and brittle for exactly this reason, and they become *ductile* only above $\sim0.5T_m$ (silicon is brittle at room temperature despite being a semiconductor; silicon is used as a "brittle" material in MEMS for the same reason).
+- **BCC metals sit in between**: their screw dislocation cores are *non-planar*, spread over three intersecting $\{110\}$ planes, which gives a high and strongly **temperature-dependent** Peierls stress. This is the origin of the sharp yield drop, the strong temperature dependence of $\sigma_y$ in iron, and the **DBTT** (§2.7). It also explains why BCC metals are strong at low temperature (high $\tau_{PN}$) but why that strength is useless — they fracture before yielding.
+- **Motion of a dislocation past the Peierls barrier requires kink-pair nucleation**: the dislocation advances by forming a pair of kinks on its line, each kink being a short segment that has already crossed the barrier. The activation energy for kink-pair formation sets the temperature dependence of the yield stress, giving the characteristic $\ln(1/T)$ behaviour seen in BCC metals.
+
+![[MP1 - Slipped and unslipped regions of a crystal.png|460]]
+
+*Figure — a dislocation as the boundary between a slipped and an unslipped region of the crystal: the "interfacial region" is the dislocation core, of width $w$, and the lattice above and below it is perfect except for the elastic distortion around the core.*
 
 ### 2.2 Deformation by slip and twinning
 

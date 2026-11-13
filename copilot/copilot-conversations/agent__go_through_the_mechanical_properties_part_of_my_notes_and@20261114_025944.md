@@ -12,5 +12,5 @@ tags:
 do this section by section of the mechanical properties part. make sure the theory is enough for in depth understanding of whatever's mentioned in the three source pdfs of mechanical properties.
 [Timestamp: 2026/11/14 02:59:44]
 
-**ai**: I'll start by reading the current state of the Mechanical Properties section in your notes, then work through the source PDFs section by section.Now let me extract the content of the three source PDFs.
+**ai**: I'll start by reading the current state of the Mechanical Properties section in your notes, then work through the source PDFs section by section.Now let me extract the content of the three source PDFs.Slides are mostly image-based. Let me render them and read them visually.Now let me extract the genuine figures from the PDFs into the vault as attachments.Now I'll expand the notes section by section, starting with **Part I**.Now **Part II** — the physics-heavy sections.
 [Timestamp: 2026/11/14 02:59:44]
