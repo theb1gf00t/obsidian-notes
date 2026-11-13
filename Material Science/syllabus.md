@@ -17,8 +17,9 @@ pdfs:
 	3. Mechanical Properties - III
 	4. Shockley and Frankel Partial Dislocations
 	5. Composites
-	6. Electrical and Electronic Properties
-	7. Mechanical properties
-	8. 
+	6. Electrical and Electronic Properties - part 1
+	7. Electric and Electronic properties - part 2
+	8. Magnetic properties
+	9. Dielectric materials and polarization optical properties.
 	   
 End semester examination will include all of the syllabus.

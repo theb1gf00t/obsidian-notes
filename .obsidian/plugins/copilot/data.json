@@ -51,7 +51,7 @@
   "defaultConversationNoteName": "{$topic}@{$date}_{$time}",
   "inlineEditCommands": [],
   "projectList": [],
-  "lastDismissedVersion": "4.0.19",
+  "lastDismissedVersion": "4.0.20",
   "lastShownStartupVersion": "4.0.20",
   "passMarkdownImages": true,
   "enableAutonomousAgent": true,
@@ -99,7 +99,7 @@
   "convertedDocOutputFolder": "",
   "agentMode": {
     "byok": {},
-    "activeBackend": "claude",
+    "activeBackend": "opencode",
     "backends": {
       "codex": {
         "defaultModel": {
