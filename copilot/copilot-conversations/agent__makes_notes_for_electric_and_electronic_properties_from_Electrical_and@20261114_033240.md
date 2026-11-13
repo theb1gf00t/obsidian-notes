@@ -11,4 +11,6 @@ tags:
 [Timestamp: 2026/11/14 03:32:40]
 
 **ai**: I'll start by exploring the relevant folders and files.
+
+**Error:** Internal error: Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go
 [Timestamp: 2026/11/14 03:32:40]
