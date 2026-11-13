@@ -483,9 +483,9 @@ Hence a **deep, steep, narrow potential well → high modulus** (covalent cerami
 
 If a perfect crystal were sheared, the shear stress would vary roughly sinusoidally with displacement, giving
 
-$$ \tau_{\text{theoretical}} \approx \frac{G}{2\pi} \approx \frac{G}{6}\ \text{to}\ \frac{G}{30} $$
+$$ \tau_{\text{theoretical}} \approx \frac{Gb}{2\pi d} \approx \frac{G}{2\pi}\ \ (\text{for } b \approx d) \approx \frac{G}{6} $$
 
-where $G$ is the shear modulus. Measured yield stresses are typically $10^{-3}$–$10^{-4}\,G$ — three to four orders of magnitude lower. **This discrepancy is the classic proof that plastic deformation occurs by the motion of dislocations, not by the simultaneous sliding of whole planes.**
+where $b$ is the repeat distance along the slip direction and $d$ the interplanar spacing; depending on the $b/d$ ratio of the crystal, the estimate ranges from about $G/6$ down to $G/30$. Measured yield stresses are typically $10^{-3}$–$10^{-4}\,G$ — three to four orders of magnitude lower. **This discrepancy is the classic proof that plastic deformation occurs by the motion of dislocations, not by the simultaneous sliding of whole planes.**
 
 The stress needed to move a dislocation through the lattice is the **Peierls–Nabarro stress**:
 
@@ -516,9 +516,9 @@ $$ E = \frac{k}{r_0}\ \propto\ \frac{1}{r_0}\left.\frac{d^2U}{dr^2}\right|_{r_0}
 
 Three consequences, all directly examinable:
 
-1. **$E$ scales with the depth and steepness of the well.** Deep wells (high melting point, high cohesive energy) → high $E$. A useful empirical correlation is $E \approx$ few hundred $\times$ melting temperature in K divided by molar volume, and in practice $\alpha = E/(k_BT_m)$ per atomic volume is roughly constant for crystals of a given bond type. Diamond has the deepest well of all and the highest modulus.
+1. **$E$ scales with the depth and steepness of the well.** Deep wells (high melting point, high cohesive energy) → high $E$. A useful correlation is that the ratio $E\,\Omega/(k_BT_m)$ (with $\Omega$ the atomic volume) is roughly constant within a class of solids of the same bond type, so $E$ tracks the melting point: diamond, the deepest well, has the highest modulus; lead, with a low melting point and a shallow well, has one of the lowest among metals.
 2. **$E$ decreases with temperature**, roughly linearly, by typically **2–5 % per 100 K**, because thermal expansion increases $r_0$ and the potential well becomes effectively shallower (anharmonicity). This is why the "room-temperature modulus" must be quoted with a temperature for high-temperature design.
-3. **Elastic strain is small** because the parabola is only a good approximation for $|r-r_0| \ll r_0$. Real elastic strains are $\approx 0.1$–$1\,$% — only a small fraction of an interatomic spacing. Beyond that, the higher-order (anharmonic) terms dominate and the stress–strain relation becomes **non-linear**; rubber is the extreme case, where the "bonds" are chain conformations and enormous non-linear recoverable strains are the norm.
+3. **Elastic strain is small** because the parabola is only a good approximation for $|r-r_0| \ll r_0$. Real elastic strains are $\approx 0.1$–$1$ % — only a small fraction of an interatomic spacing. Beyond that, the higher-order (anharmonic) terms dominate and the stress–strain relation becomes **non-linear**; rubber is the extreme case, where the "bonds" are chain conformations and enormous non-linear recoverable strains are the norm.
 
 #### Theoretical cohesive (fracture) strength
 
@@ -630,7 +630,7 @@ Slip requires the *smallest possible disturbance of the lattice*, and both choic
 
 In FCC, the perfect dislocation $\tfrac{a}{2}\langle110\rangle$ can lower its energy by dissociating into two **Shockley partials** joined by a strip of **stacking fault**:
 
-$$ \frac{a}{2}[10\bar1] \longrightarrow \frac{a}{6}[2\bar1\bar1] + \frac{a}{6}[\bar12\bar1] $$
+$$ \frac{a}{2}[\bar110] \longrightarrow \frac{a}{6}[\bar211] + \frac{a}{6}[\bar12\bar1] $$
 
 The balance between the repulsion of the partials and the fault energy $\gamma_{SF}$ sets the **separation** of the partials, and hence the *effective width* of the dislocation core. This single quantity controls a surprising amount of behaviour:
 
@@ -1223,7 +1223,7 @@ $$ dP = \sigma_T\,dA + A\,d\sigma_T = 0 \quad\Longrightarrow\quad \frac{d\sigma_
 
 $$ \boxed{\ \text{Necking begins when}\ \ \dfrac{d\sigma_T}{d\varepsilon_T} = \sigma_T\ } $$
 
-This is the **Considère construction**: plot the true stress and also the tangent from the origin... more usefully, plot $\sigma_T$ and its derivative; the point where the tangent to the $\sigma_T$–$\varepsilon_T$ curve passes through the origin is the instability point. Two important consequences:
+**Graphical form (the Considère construction):** on a plot of true stress against true strain, necking begins where the straight line drawn from the origin is tangent to the curve — that is, where the *slope* of the curve equals the *secant* from the origin, $\sigma_T/\varepsilon_T$. Two important consequences:
 
 1. **Necking is a geometric instability, not a material failure.** A material with no work hardening would neck immediately at yield; a strongly work-hardening material resists localisation. Ductility in tension is therefore *set by the work-hardening rate*.
 2. **Combining with Hollomon**, $\sigma_T = K\varepsilon_T^n$, gives $d\sigma_T/d\varepsilon_T = nK\varepsilon_T^{n-1} = n\sigma_T/\varepsilon_T$, so the criterion becomes
@@ -1379,6 +1379,54 @@ $$ \sigma_T = K\,\varepsilon_T^{\,n} $$
 
 A **high $n$** (0.44, annealed Cu and 304 SS) means a material that work-hardens strongly and therefore stretches a lot before necking — good formability. A **low $n$** (0.12, tempered 4340) means little uniform elongation.
 
+![[MP2 - Hollomon n and K values.png|460]]
+
+*Figure — the table of $n$ and $K$ values for various alloys (Callister, Table 7.4); note that $n$ varies by almost a factor of four between annealed copper and tempered 4340 steel.*
+
+#### Why the log–log plot is a straight line
+
+Taking logarithms of $\sigma_T=K\varepsilon_T^{\,n}$:
+
+$$ \log\sigma_T = \log K + n\log\varepsilon_T $$
+
+so a plot of $\log\sigma_T$ vs $\log\varepsilon_T$ has slope $n$ and intercept $\log K$ at $\varepsilon_T=1$ — which is why $K$ is called the *strength coefficient* and is quoted in MPa (or psi). $K$ is *not* a strength in the design sense; it is the extrapolated stress at unit true strain, and it is usually much larger than the UTS.
+
+#### The link to the UTS and to Considère
+
+Combining the Hollomon law with the Considère condition (§2.15) gives three useful results:
+
+$$ \varepsilon_{T,u} = n \qquad\text{(true strain at the UTS)} $$
+
+$$ \sigma_{UTS} = K\left(\frac{n}{e}\right)^{n}, \qquad e = 2.718 $$
+
+$$ \sigma_{T,u} = K n^{n} $$
+
+The first is the most useful in practice: **read $n$ straight off the tensile curve** as the true strain at maximum load. The second lets a specification be checked from $K$ and $n$ without a full curve, and it shows why a high-$n$ material has a UTS that is a large fraction of $K$, while a low-$n$ material's UTS is much lower than $K$.
+
+#### Worked example
+
+> A steel has $K=600$ MPa and $n=0.21$. Estimate the UTS, the true stress at the UTS, and the flow stress at a true strain of 0.10.
+
+- UTS: $\sigma_{UTS} = 600\,(0.21/e)^{0.21} = 600 \times (0.0773)^{0.21}$.
+  $\ln(0.0773) = -2.560$, times $0.21 = -0.5376$, so $(0.0773)^{0.21}=e^{-0.5376}=0.584$. Hence $\sigma_{UTS}\approx 350$ MPa.
+- True stress at UTS: $\sigma_{T,u} = 600\,(0.21)^{0.21}$. $\ln 0.21=-1.561$, times 0.21 = $-0.3278$, so $e^{-0.3278}=0.720$ → $\sigma_{T,u}\approx432$ MPa. (Check: $\sigma_T=\sigma(1+\varepsilon)$ at necking → $350\times1.21 = 424$ MPa ✓.)
+- Flow stress at $\varepsilon_T=0.10$: $\sigma_T = 600(0.10)^{0.21} = 600\times e^{0.21\ln0.1} = 600 e^{-0.4835}=600\times0.6166\approx370$ MPa.
+
+Note how flat the flow curve is: ten-fold strain increases the flow stress by only a factor of $\sim$1.6. That is what $n\approx0.2$ means.
+
+#### Where Hollomon fails, and what is used instead
+
+- **Below the yield point** the equation is not valid (it predicts zero stress at zero strain); it applies only from the onset of plastic flow.
+- **Double-$n$ behaviour**: many metals (particularly austenitic stainless and some aluminium alloys) show two slopes on the log–log plot — a low $n$ at small strains (easy glide, planar slip) and a higher $n$ at large strains (twinning, multiple slip). A single $n$ then underestimates large-strain formability.
+- **Other empirical laws**:
+  $$ \text{Ludwik: } \sigma_T=\sigma_0+K\varepsilon_T^{\,n}, \qquad \text{Swift: } \sigma_T=K(\varepsilon_0+\varepsilon_T)^{n}, \qquad \text{Voce: } \sigma_T=\sigma_{sat}-(\sigma_{sat}-\sigma_0)e^{-\varepsilon_T/\varepsilon_c} $$
+  The Voce form describes **saturation** of work hardening (dynamic recovery), which Hollomon never does.
+- **Strain-rate sensitivity** is added as $\sigma_T = K\varepsilon_T^{\,n}\dot{\varepsilon}^{\,m}$, with $m\approx0.01$–0.05 for metals at room temperature and $m\approx0.3$–0.5 for superplastic alloys.
+
+#### Why $n$ matters commercially
+
+$n$ is the single best predictor of **stretch formability**: a high-$n$ sheet resists local thinning (the Considère criterion is pushed to larger strain), so it can be deep-drawn and stretch-formed without splitting. That is why automotive sheet is specified by $n$ (and by the strain-hardening ratio $r$, the Lankford coefficient, which measures normal vs through-thickness thinning). It also explains why **annealed** sheet is used for forming and then **painted/baked or work-hardened** in service.
+
 ### 2.19 Elastic recovery after plastic deformation
 
 - When the load is released during a test, the specimen unloads **parallel to the elastic line**; the recovered strain is $\sigma/E$.
@@ -1386,8 +1434,36 @@ A **high $n$** (0.44, annealed Cu and 304 SS) means a material that work-hardens
 - On **reloading**, the material yields at approximately the *previous* maximum stress — direct evidence of work hardening.
 - An elastic recovery also occurs at fracture, so the measured elongation contains a small elastic contribution.
 
+![[MP2 - Elastic recovery on unloading.png|420]]
+
+*Figure — unloading from a point on the plastic branch runs parallel to the elastic line; the horizontal distance between the loading and unloading curves is the elastic strain recovery. Reapplying load retraces the same line and yields again near the previous maximum stress.*
+
+#### Springback, quantitatively
+
+If a sheet is bent to a radius $R_0$ and the load is released, the elastic recovery is
+
+$$ \frac{1}{R_f} = \frac{1}{R_0} - \frac{3\sigma_y}{E\,t}\quad\text{(approximate, thin sheet of thickness } t\text{)} $$
+
+so the final radius is larger than the tool radius and the part "opens up". Practical consequences and remedies:
+
+- **Over-bending** — the die is machined with a smaller radius than the target, so that springback lands the part on dimension.
+- **Bottoming / coining** — pressing the sheet against the die so that the through-thickness stress state becomes compressive everywhere, suppressing the recovery.
+- **Stretch forming** — deforming in tension so that the whole section is yielded in one direction; the residual stress gradient is smaller.
+- **Compensation in high-strength steels and aluminium** — springback scales as $\sigma_y/E$, so it is far worse for high-strength steel ($\sigma_y/E\approx0.008$) than for mild steel ($\approx0.0012$). This is a real manufacturing problem for automotive AHSS and a reason hydroforming and hot forming are used.
+
+#### Residual stresses
+
+Because unloading is elastic and non-uniform (the outer fibres of a bent sheet have yielded more than the neutral axis), the final part retains a **residual stress** pattern: tension on one surface, compression on the other. Consequences — both useful and dangerous:
+
+- **Distortion** on machining: removing material unbalances the residual stress and the part warps.
+- **Fatigue and stress-corrosion cracking**: tensile residual stresses at a surface add to service stress and accelerate crack growth.
+- **Beneficial residual stress**: **shot peening**, **surface rolling** and **autofrettage** (pre-pressurising a cylinder so the bore is left in compression) deliberately introduce compressive surface stress, which dramatically improves fatigue life. **Tempered glass** works the same way — the surface is in compression, so a crack will not propagate until the compression is overcome.
+
+> [!note] Reloading, and why it matters
+> On reloading, the curve follows the unloading line and yields again near the previous maximum stress. This is *proof* of work hardening with no microscopy needed, and it is the basis of **proof testing**: a pressure vessel is pressurised above its service pressure (but below yield) so that any part that survives has been proven, and the yield strength has been raised slightly by the pre-strain. The same effect is the **Bauschinger effect** in reverse — after tensile pre-strain, the compressive yield strength is reduced.
+
 > [!tip] Exam pointer — Part II
-> The most examined items are: the Schmid factor derivation and $\sigma_y = \tau_{CRSS}/m$ with $m_{\max}=0.5$; the true vs engineering conversion $\sigma_T=\sigma(1+\varepsilon)$, $\varepsilon_T=\ln(1+\varepsilon)$; $U_r = \sigma_y^2/2E$; the Hollomon equation and $n$; and the $b^2$ energy criterion for a dislocation reaction.
+> The most examined items are: the Schmid factor derivation and $\sigma_y = \tau_{CRSS}/m$ with $m_{\max}=0.5$; the true vs engineering conversion $\sigma_T=\sigma(1+\varepsilon)$, $\varepsilon_T=\ln(1+\varepsilon)$; $U_r = \sigma_y^2/2E$; the Hollomon equation and $n$; and the $b^2$ energy criterion for a dislocation reaction. The newer additions worth being able to state in one line each: the Frenkel estimate $\tau\approx G/2\pi$ vs the measured $10^{-4}G$; the Peierls stress falling exponentially with core width; the Considère condition and $n=\varepsilon_{T,u}$; the Taylor factor $M\approx3.06$; and the Hall–Petch pile-up derivation.
 
 ---
 
@@ -1413,6 +1489,48 @@ where $F_f$ is the fracture load.
 
 **Names.** The stress at fracture in this test is variously called the **flexural strength**, **modulus of rupture**, **fracture strength** or **bend strength** — all the same quantity.
 
+![[MP3 - Three point bending test.png|420]]
+
+*Figure — the three-point bend arrangement: a bar on two support pins, loaded at mid-span, with the top surface in compression and the bottom surface in tension; the two standard cross-sections (rectangular and circular) are also shown.*
+
+#### Where the formula comes from
+
+For a beam of rectangular section, width $b$ and depth $d$, the second moment of area about the neutral axis is
+
+$$ I = \frac{bd^3}{12}, \qquad c = \frac{d}{2}, \qquad M_{\max} = \frac{FL}{4} $$
+
+so
+
+$$ \sigma = \frac{Mc}{I} = \frac{(FL/4)(d/2)}{bd^3/12} = \frac{3FL}{2bd^2} $$
+
+For a circular section of radius $r$: $I = \pi r^4/4$, $c=r$, giving
+
+$$ \sigma = \frac{(FL/4)r}{\pi r^4/4} = \frac{FL}{\pi r^3} $$
+
+Both assume: (i) the beam is elastic, (ii) deflections are small, (iii) shear stresses are negligible (span-to-depth ratio $L/d\ge8$–$10$; for ceramics $L/d\approx4$–$8$ is usual, and a shear correction can be applied), and (iv) the material is homogeneous and isotropic.
+
+#### Why bending instead of tension for ceramics
+
+1. **Specimen preparation** — a simple rectangular bar can be cut and ground; a waisted tensile specimen of a hard, brittle ceramic is difficult and expensive to machine without introducing flaws.
+2. **Gripping** — a tensile specimen must be gripped, and every grip contact introduces a stress concentration that will fracture a brittle material at the grip rather than in the gauge. Bending needs only support pins.
+3. **Strength asymmetry** — ceramics are much stronger in compression than in tension (typically $\sigma_{comp}\approx10\,\sigma_{tens}$ for glasses and porosities), so a tensile test wastes the material's capability; the bend test puts only the bottom fibre in tension, which is where failure occurs anyway.
+4. **Small specimens** — components are often small; bend bars can be made from available material.
+
+**The cost**: only a small volume of the specimen is at the maximum stress, so the test samples a small population of flaws. Because ceramic strength is **flaw-controlled and highly scattered** (a Weibull distribution, §3.2), the flexural strength of a small bend bar is systematically *higher* than the tensile strength of a large component. This is a size effect, not a materials effect, and it must be allowed for in design.
+
+#### Four-point bending
+
+In four-point bending the load is applied through two inner rollers, so the central span experiences a **constant bending moment** and a uniform maximum stress over a region of length $L-2a$. Advantages over three-point bending:
+
+- a *larger volume* of material is tested at the maximum stress, so the strength is more representative and less optimistic;
+- the region of maximum stress is free of contact stresses from the loading rollers;
+- it is the preferred geometry in standards for advanced ceramics (ASTM C1161).
+
+The trade-off is a more complex rig and a larger specimen.
+
+> [!note] What "flexural strength" is not
+> It is not the true uniaxial tensile strength. It is the *modulus of rupture* — the stress computed from the elastic beam formula at the fracture load. If the material yields (metals) or has a non-linear stress–strain response (some ceramics, all polymers), this computed stress differs from the true surface stress. It is nonetheless the standard engineering number, and it is comparable between materials only when measured with the same specimen geometry and loading rate.
+
 ### 3.2 Stress–strain behaviour of ceramics and the influence of porosity
 
 - The stress–strain curve of a ceramic is **linear elastic up to fracture** — there is essentially **no plastic deformation**. The fracture strain is tiny ($\sim10^{-4}$–$10^{-3}$), so $E$ is large and the area under the curve (toughness) is small.
@@ -1421,6 +1539,47 @@ where $F_f$ is the fracture load.
 $$ E = E_0\left(1 - 1.9P + 0.9P^2\right) \qquad\qquad \sigma_{fs} = \sigma_0 \exp(-nP) $$
 
 where $P$ is the **volume fraction porosity** and $E_0,\sigma_0$ are the values at zero porosity. The exponential drop in strength ($n\approx4$–$7$) is far steeper than the drop in modulus — a few percent porosity can halve the strength. This is why ceramic processing is obsessed with densification (sintering, hot pressing, HIPing).
+
+![[MP3 - Stress-strain curve for ceramics.png|400]]
+
+*Figure — stress–strain curves for alumina and glass: linear elastic to fracture, with fracture strains of a few parts in $10^4$ — there is no plastic region at all.*
+
+![[MP3 - Modulus vs porosity.png|380]]
+
+*Figure — Young's modulus against volume fraction porosity: a shallow, almost parabolic decrease described by $E=E_0(1-1.9P+0.9P^2)$.*
+
+![[MP3 - Flexural strength vs porosity.png|380]]
+
+*Figure — flexural strength against porosity: a much steeper, exponential fall, $\sigma_{fs}=\sigma_0e^{-nP}$ with $n\approx4$–$7$.*
+
+#### Interpreting the two porosity equations
+
+- **The modulus equation** $E=E_0(1-1.9P+0.9P^2)$ is essentially a *rule of mixtures* correction: a pore carries no load, so the load-bearing area is reduced, and the pore also perturbs the local stress field. The effect is gentle and *reversible* — a porous ceramic is still stiff, just less so, and the relation is nearly the same whether the pores are spherical or irregular.
+- **The strength equation** $\sigma_{fs}=\sigma_0e^{-nP}$ is far more severe because a pore is a **stress concentrator**, not merely missing area. A spherical pore of radius $r$ in a field $\sigma$ raises the local stress at its equator to $\sim3\sigma$ (for a spherical cavity, $K_t=3$ in the elastic solution; sharper pores and pore clusters give much higher values). A pore that touches a grain boundary or a surface flaw can *be* the critical crack. Since brittle fracture is governed by the *largest* flaw, the strength is exponentially sensitive to the *number* of pores — hence the exponential law and the $n\approx4$–$7$ values.
+- **Practical numbers**: a 10 % porosity alumina might retain 80 % of its modulus but only 50 % of its strength; a 99.5 % dense alumina versus a 96 % dense one can differ by a factor of 2 in strength while both look "solid".
+- **Processing implications**: **sintering** (diffusional densification at $T\approx0.7T_m$) removes porosity; **hot pressing / HIPing** (pressure-assisted sintering) removes the last few percent, which is where most of the strength is; **additives** (MgO in alumina) inhibit grain growth so that pores are not trapped inside grains. Porosity also degrades **optical transparency** (pores scatter light), **thermal conductivity** and **dielectric breakdown strength**, so the same processing discipline is needed for functional ceramics.
+
+#### The statistics of brittle strength: Weibull
+
+Because failure initiates at the *weakest* flaw, the strength of nominally identical ceramic specimens scatters widely (coefficient of variation 10–30 %, versus 1–3 % for metals). The standard description is the **Weibull distribution**:
+
+$$ P_f = 1-\exp\!\left[-\left(\frac{\sigma}{\sigma_0}\right)^{m}\right] $$
+
+where $m$ is the **Weibull modulus** — a measure of the *uniformity* of the flaw population. Metals and ductile materials effectively have $m>50$; engineering ceramics have $m\approx5$–15; a very well-processed fine-grained ceramic can reach $m\approx20$. A low $m$ means the strength data are broad, so a large safety factor is needed.
+
+Two consequences that follow directly:
+
+- **Size effect** — a larger component has a higher probability of containing a large flaw, so its strength is lower. The strength therefore depends on the tested volume, which is why bend-bar data cannot be applied naively to a big part.
+- **Proof testing** — loading every part to a proof stress removes the weak ones and *certifies a minimum strength*, which is how brittle components (spark plugs, ceramic insulators, optical fibres) are qualified.
+
+| Ceramic | $E$ (GPa) | Flexural strength (MPa) | Fracture strain |
+| --- | --- | --- | --- |
+| Soda-lime glass | 70 | 70 | $10^{-3}$ |
+| Alumina (99.5 %) | 380 | 300–400 | $10^{-3}$ |
+| Silicon carbide | 410 | 400–600 | $10^{-3}$ |
+| Silicon nitride | 300 | 600–900 | $10^{-3}$ |
+| Zirconia (TZP) | 200 | 900–1200 | $5\times10^{-3}$ |
+| Concrete | 30 | 3–5 (tension) | $10^{-4}$ |
 
 ### 3.3 Hardness: definition and advantages
 
@@ -1442,6 +1601,42 @@ $$ \text{TS (MPa)} \approx 3.45 \times \text{HB} $$
 
 This empirical relation (and its counterparts for other alloys) is used for rapid QC where a full tensile test is impractical.
 
+![[MP3 - Hardness vs tensile strength.png|380]]
+
+*Figure — tensile strength plotted against Brinell hardness for steels, brass and nodular cast iron: each class follows its own approximately straight line, with steels offset from the non-ferrous metals.*
+
+#### Why hardness correlates with strength at all
+
+Both quantities measure the **same physical event**: the onset of plastic flow. Under a spherical or pyramidal indenter the material beneath the tip is in a complex, constrained, triaxial compression state, and it yields when the local shear stress reaches the shear yield strength. The mean pressure under the indenter (the hardness) is therefore a fixed multiple of the uniaxial flow stress — **Tabor's relation**:
+
+$$ H \approx 3\,\sigma_y \qquad (H \text{ in MPa, } \sigma_y \text{ in MPa}) $$
+
+The factor 3 comes from the geometry of the plastic zone: a hydrostatically constrained region yields at a mean pressure about three times the uniaxial yield stress (for a perfectly plastic material, the slip-line field gives $p\approx2.57\sigma_y$ for a wedge and $\approx3\sigma_y$ for a sphere; strain hardening raises it further). Applying this to the steel correlation above:
+
+$$ \sigma_{UTS}\approx 3.45\,HB \quad\Longleftrightarrow\quad HB \approx 3.45\,\frac{\sigma_{UTS}}{3} \approx \sigma_{UTS} $$
+
+so numerically $HB\approx\sigma_{UTS}$ (MPa) for steels — a coincidence of the units and the factor.
+
+#### What hardness is *not*
+
+- **Not a fundamental property.** It has no unique definition independent of the test: it depends on indenter shape, load, loading rate, dwell time, and the material's work-hardening behaviour. A Brinell number and a Vickers number for the same steel are numerically similar but conceptually different measurements.
+- **Not a strength for design.** It cannot be inserted into a stress calculation; it is a *ranking* and *QC* parameter, and only through an empirical correlation does it estimate a strength.
+- **Not toughness.** See the warning callout above: a hard surface resists penetration but a crack can run through it with little energy. Hardness and fracture toughness are often inversely related, which is why tool steels are hard but brittle, and why tough grades are softer.
+- **Not uniform.** Surface hardness after machining, grinding, decarburisation, shot peening, nitriding or induction hardening differs from the core. Hardness *gradients* are used deliberately (case-hardened gears: hard case for wear, tough core for shock) and are measured by traverses across a section.
+
+#### Advantages, in design and production terms
+
+| Advantage | Consequence |
+| --- | --- |
+| Fast | One measurement in seconds; thousands of parts per shift |
+| Cheap | Simple, robust machines; no specimen preparation for Rockwell/Brinell |
+| Essentially non-destructive | The part can still be used (one small indent) |
+| Local | Measures the surface, a weld, a heat-affected zone, an individual phase (microindentation) |
+| Estimative | Gives a first estimate of tensile strength, wear resistance, machinability, cold formability |
+| Portable | Portable hardness testers (Leeb, UCI, rebound) for field inspection of large structures |
+
+Typical industrial uses: incoming inspection of bar stock; verification of heat treatment (a quench-and-temper cycle is checked by HRC); case-depth measurement; weld qualification; monitoring of cold-work level; sorting mixed materials (a hardness traverse distinguishes a 1045 from a 4140).
+
 ### 3.4 Hardness-testing techniques — summary
 
 | Test | Indenter | Load | Hardness number |
@@ -1452,6 +1647,26 @@ This empirical relation (and its counterparts for other alloys) is used for rapi
 | **Rockwell / superficial Rockwell** | Diamond cone (120°) or steel/WC ball ($\tfrac{1}{16}$ in., $\tfrac{1}{8}$ in., $\tfrac{1}{4}$ in.) | 15, 30, 45, 60, 100, 150 kg | From depth of penetration $h$ |
 
 ($P$ in kg; $D, d, l$ in mm.)
+
+![[MP3 - Hardness testing techniques table.png|480]]
+
+*Figure — the lecture table (Callister, Table 7.5) of hardness-testing techniques with indenter shapes, side/top views, formulas and the standard designation of each number.*
+
+#### Choosing between them
+
+| | **Brinell** | **Vickers** | **Knoop** | **Rockwell** |
+| --- | --- | --- | --- | --- |
+| Indent size | Largest ($\sim1$–5 mm) | Small ($\sim50$–500 µm) | Small, elongated | Medium |
+| Load range | 500–3000 kg | 1 g – 1000 g (micro), up to 50 kg (macro) | 1 g – 1000 g | 15–150 kg (superficial 15–45 kg) |
+| Measurement | Diameter by microscope | Diagonals by microscope | Long diagonal by microscope | Depth, read directly |
+| Speed | Slow (measurement) | Slow | Slow | Fast |
+| Best for | Coarse/inhomogeneous microstructures (cast iron), large parts | General purpose, hard materials, case depth, phase hardness | Very brittle ceramics, thin coatings, oriented features | Routine QC of metals, production lines |
+| Weakness | Large indent; unsuitable for thin parts | Needs polished surface, optical measurement | Same | Several scales; not for very hard/thin without care |
+
+Two practical distinctions matter:
+
+- **Macro vs micro indentation**: Brinell and Rockwell are macro tests where the indent samples many grains, so they give a *bulk average*. Vickers and Knoop are micro tests where the indent can be placed inside a single grain or a thin coating, so they give a *local* value. The same material often shows different numbers at the two scales (the **indentation size effect**, §3.9).
+- **Strength-based vs depth-based**: Brinell and Vickers report a *stress-like* quantity (load divided by indent area), so HB and HV are close to each other and roughly proportional to strength. Rockwell reports a *depth*, and its number is arbitrary and scale-dependent — hence the many letter scales and the restricted ranges.
 
 ### 3.5 The Rockwell test
 
@@ -1486,6 +1701,48 @@ Each $0.002$ mm of depth equals one hardness point. For each scale, values are m
 - **Stacking specimens** one on top of another is **not** recommended.
 - The surface must be **smooth and flat**, and perpendicular to the indenter axis.
 
+![[MP3 - Rockwell scales table.png|480]]
+
+*Figure — the standard Rockwell (7.6a) and superficial Rockwell (7.6b) scale tables: scale symbol, indenter and major load.*
+
+![[MP3 - Rockwell scale applications.png|480]]
+
+*Figure — the Rockwell scale-selection table with typical applications for each scale.*
+
+#### The test sequence, step by step
+
+1. The specimen is placed on a flat, rigid anvil and the indenter is brought into contact.
+2. The **minor load** (10 kg) is applied. This seats the indenter, breaks through surface contamination and eliminates the effect of surface roughness — the depth reached under the minor load becomes the *reference zero*.
+3. The dial is zeroed.
+4. The **major load** is applied and held for a specified dwell (typically 10–15 s, allowing plastic flow to finish).
+5. The major load is removed, the minor load remains, and the **permanent increase in depth** $h$ is read on the dial. Each division corresponds to $0.002$ mm.
+
+$$ HR = 100 - \frac{h}{0.002}\ \text{(diamond spheroconical)} \qquad\qquad HR = 130 - \frac{h}{0.002}\ \text{(ball)} $$
+
+**Why 100 and 130?** The scales are defined so that numbers increase with hardness. For the diamond cone, a depth increase of 0.2 mm corresponds to the full dial travel of 100 divisions, so $h=0$ gives 100 (the hardest reading). For ball indenters the geometry allows a deeper penetration before the dial runs out, so the zero point is set at 130. This is why the two families are not interchangeable and why the maximum meaningful reading differs.
+
+**Why the minor load improves accuracy.** Without it, the measured depth would include the elastic/plastic seating of a rough surface — typically tens of micrometres, i.e. tens of hardness points. The minor load removes this by making the reference a *loaded* state. The major load's depth is then purely the response of the material.
+
+#### Scale selection
+
+- Use the **hardest scale whose reading stays in the valid range**. Valid readings are roughly 20–100 (or up to 130 on some scales): below 20 the divisions are compressed and resolution is poor, above 100 the indenter may be penetrating the anvil or the material may be at the limit of the indenter.
+- **A**: cemented carbides, thin hardened steel, shallow case. **B**: soft steels, copper and aluminium alloys. **C**: steels, hard cast irons, titanium (the workhorse scale). **D**: thin steel, medium case. **E/F/G/H/K**: progressively softer non-ferrous metals and bearing metals.
+- For **thin** specimens or thin cases, use a **superficial** scale (15N/30N/45N, 15T/30T/45T) with low load so the indent depth stays under 1/10 of the thickness.
+- A useful rule: if the reading is above HRB 100, switch to HRC (the ball is flattening and the reading is no longer reliable); if below HRC 20, switch to HRB or a lower-load scale.
+
+#### Typical values worth remembering
+
+| Condition of steel | HRC |
+| --- | --- |
+| Annealed low-carbon steel | $\sim$10 (or HRB 80) |
+| Normalised medium-carbon steel | 20–25 |
+| Quenched and tempered (structural) | 30–40 |
+| Quenched and tempered (tool) | 45–55 |
+| As-quenched tool steel | 60–65 |
+| Cemented carbide | 70–75 (HRA) |
+
+**Corrections for cylindrical specimens.** On a curved surface the indent is shallower than on a flat, so the reading is high; tables give corrections for each diameter and scale. This is a standard source of error when testing shafts and pins.
+
 ### 3.6 The Brinell test
 
 - A hardened steel or **tungsten carbide ball of 10 mm diameter** is pressed into the surface.
@@ -1499,6 +1756,37 @@ $$ HB = \frac{2P}{\pi D\left[D - \sqrt{D^2 - d^2}\right]} $$
 - There is **only one Brinell scale** (in contrast to Rockwell's many letter scales).
 - Specimen thickness, edge distance, spacing and surface-finish requirements are the same as for Rockwell. The indentation is large, so Brinell averages over a coarse microstructure (useful for cast irons and inhomogeneous alloys) but is unsuitable for thin specimens.
 
+#### Deriving the Brinell formula
+
+Brinell hardness is the **load divided by the curved surface area of the spherical cap** — not by the projected circular area. From the geometry of a sphere of diameter $D$ indented to a chordal diameter $d$:
+
+$$ \text{depth of cap } h = \frac{D-\sqrt{D^2-d^2}}{2}, \qquad A_{\text{cap}} = \pi D h = \frac{\pi D\left[D-\sqrt{D^2-d^2}\right]}{2} $$
+
+$$ HB = \frac{P}{A_{\text{cap}}} = \frac{2P}{\pi D\left[D-\sqrt{D^2-d^2}\right]} $$
+
+This is the origin of the formula — and it explains why $HB$ is a *stress* (kgf/mm²) with a genuine physical meaning, unlike the Rockwell number.
+
+#### Load selection and the "constant $P/D^2$" rule
+
+Two specimens of the same material tested with different loads must give the same $HB$ — otherwise the test would be useless. Empirically, the indent geometry scales with $D$ only if the ratio $P/D^2$ is held constant. The standard values are:
+
+| Material | $P/D^2$ | Load with 10 mm ball |
+| --- | --- | --- |
+| Ferrous metals | 30 | 3000 kgf |
+| Copper alloys | 10 | 1000 kgf |
+| Aluminium, softer metals | 5 | 500 kgf |
+| Lead, tin, bearing metals | 2.5 | 250 kgf |
+
+Keeping $P/D^2$ constant keeps the *strain* under the ball constant; too low a load gives a shallow indent with large measurement error, too high a load may deform the anvil or over-strain the material. This is the **Meyer law**: $P = kd^n$, with $n\approx2.0$–2.5.
+
+#### Practical points
+
+- **The ball material**: hardened steel for $HB<350$; **tungsten carbide** for harder materials, to avoid ball flattening that would corrupt the result. Above $\sim$600 HB the method is not reliable.
+- **Dwell time 10–30 s** allows plastic flow to complete; for soft metals a longer dwell increases the indent, so the time must be standardised (15 s is common).
+- **Measurement**: the diameter is read in two perpendicular directions under a low-power microscope, and the mean is used. This is the slow step that makes Brinell unsuitable for high production rates.
+- **The large indent** ($\sim$2–5 mm) is both an advantage (averages inhomogeneity — good for cast iron, coarse forgings) and a limitation (damages finished surfaces, unusable on thin or small parts, and the minimum thickness is $\sim8$–10 × indent depth).
+- Because the indent is large, the result includes grain boundaries, porosity and inclusions — it reports the *engineering* hardness of the material rather than that of a single phase.
+
 ### 3.7 The Knoop and Vickers microindentation tests
 
 - A **very small diamond indenter of pyramidal geometry** is forced into the surface. **Vickers**: a square-based pyramid with a **136°** included angle. **Knoop**: an elongated pyramid with diagonal ratio $l/b = 7.11$ and face angles chosen so that the long diagonal is about seven times the short one.
@@ -1510,12 +1798,78 @@ $$ HV = 1.854\,\frac{P}{d^2} \qquad\qquad HK = 14.2\,\frac{P}{l^2} $$
 
 where $d$ is the mean Vickers diagonal and $l$ the long Knoop diagonal.
 
+#### Where the constants come from
+
+**Vickers.** The indenter is a square-based pyramid with a **face angle of 136°** (chosen so that the ratio of indent area to depth matches that of an ideal conical indenter producing the same strain as a Brinell ball — the 136° is not arbitrary). Hardness is load divided by the *contact surface area* of the four faces:
+
+$$ A = \frac{d^2}{2\sin(\theta/2)}, \quad \theta = 136^\circ \ \Longrightarrow\ A = \frac{d^2}{2\sin68^\circ} = 0.5393\,d^2 $$
+
+$$ HV = \frac{P}{A} = \frac{2P\sin68^\circ}{d^2} = 1.854\,\frac{P}{d^2} $$
+
+The constant $1.854 = 2/\sin 68^\circ$. Because the indent is *self-similar* (a pyramid produces geometrically similar indents at all loads), HV is in principle **independent of load** — a major advantage over the ball tests, and the reason Vickers is the standard for research and for hard materials.
+
+**Knoop.** The indenter is a rhombic-based pyramid with diagonal ratio $l/b = 7.11$ and face angles of 172.5° and 130°, giving $HK = 14.2\,P/l^2$. The elongated shape produces a shallow indent (depth $\approx l/30$), which is why Knoop is preferred for **thin coatings, brittle ceramics and case-depth traverses**: the plastic zone is shallow and does not extend through the layer being measured.
+
+#### Why microindentation matters
+
+- **Individual phases**: an indent of 10–50 µm can be placed inside a single grain, so the hardness of ferrite, pearlite, cementite, austenite, a precipitate or a weld-zone constituent can be measured separately. This is the basis of microstructural QC.
+- **Case depth and coatings**: a traverse of indentations from surface to core gives the hardness profile — the definition of effective case depth (typically the depth where hardness falls to a specified value, e.g. 550 HV for carburised steel).
+- **Thin foils and small features**: MEMS, thin films, additively manufactured lattices.
+- **Brittle materials**: Vickers is the workhorse; Knoop is used where cracking must be minimised (§3.9).
+
+#### Limitations and refinements
+
+- **Surface preparation is critical**: the diagonal is measured optically, and a poorly polished surface gives a ragged indent and a large error. Grinding and polishing (down to 1 µm diamond) is mandatory, and care must be taken not to introduce a deformed layer.
+- **Indentation size effect (ISE)**: at small loads the measured hardness is higher — the plastic zone is small, geometrically necessary dislocations are dense, and surface effects dominate. The value falls to a load-independent plateau at larger loads. This is why a hardness value must be quoted with its load.
+- **Cracking**: for hard/brittle materials a crack system forms around the indent. Its length can be used to estimate fracture toughness:
+  $$ K_{Ic} = \xi\left(\frac{E}{H}\right)^{1/2}\frac{P}{c^{3/2}} \qquad\text{(Anstis equation)} $$
+  with $c$ the crack length and $\xi\approx0.016$ — a way to measure toughness from a single indent.
+- **Instrumented (nano)indentation**: modern instruments record load vs depth continuously (Oliver–Pharr analysis) and give hardness *and* modulus from the unloading slope, at scales of nanometres — used for thin films and individual phases. This is a direct descendant of the Vickers/Knoop idea.
+
 ### 3.8 Hardness conversion
 
 - **Hardness is not a well-defined physical property** — it is a response to a particular indenter geometry, load and material behaviour. Because the experimental conditions differ so much between techniques, **no comprehensive conversion scheme exists**.
 - Conversion tables/charts have been determined **empirically** and depend on the **material type and characteristics**.
 - The most reliable conversion data exist for **steels** (that is why "TS = 3.45 HB" works well for steels and poorly for everything else).
 - A useful anchor: the **Mohs** scratch scale (talc = 1 … diamond = 10) is a completely different, ordinal hardness scale and cannot be converted to HB/HV/HK by formula.
+
+![[MP3 - Hardness conversion chart.png|420]]
+
+*Figure — the standard conversion chart relating Brinell, Vickers, Rockwell and Mohs hardness to tensile strength, with the material classes (tool steels, alloy steels, brasses, plastics) marked on the same axes.*
+
+#### Why conversion is possible at all — and why it is not exact
+
+Hardness numbers from different tests are different *functions* of the same underlying plastic response, so they are monotonically related. But the relationship is not unique because each test probes a different combination of:
+
+- **strain level** (a Brinell ball at $P/D^2=30$ reaches an effective strain of $\sim$8 %, while a Vickers pyramid reaches $\sim$8 % too but over a much smaller volume);
+- **volume sampled** (macro vs micro — see the indentation size effect);
+- **work-hardening behaviour** (a strongly work-hardening material gives a higher macro hardness relative to its yield strength than a non-hardening one);
+- **anisotropy and texture** (rolled sheet is harder in the through-thickness direction);
+- **elastic recovery** (diamond pyramid indents recover elastically on unloading, so the measured diagonal is smaller than the true contact size — a bigger effect in hard materials).
+
+Hence conversion tables are **empirical**, are material-specific, and are only reliable within the class for which they were established. **ASTM E140** gives standard tables for metals, but explicitly states that they are approximate and that the material must be "in the same condition" as the reference.
+
+| Approximate conversions for steels | | | |
+| --- | --- | --- | --- |
+| HRC | HV | HB (10 mm/3000 kg) | UTS (MPa) |
+| 20 | 238 | 226 | 780 |
+| 30 | 302 | 286 | 1000 |
+| 40 | 392 | 371 | 1290 |
+| 50 | 513 | 484 | 1690 |
+| 60 | 697 | 654 | 2290 |
+
+The spread in such tables is typically ±3–5 % of the hardness value, and much larger for cast irons, duplex stainless steels and cold-worked non-ferrous alloys.
+
+#### The Mohs scale — a different kind of hardness
+
+Mohs hardness is **ordinal and qualitative**: it ranks minerals by whether one scratches another (talc 1, gypsum 2, calcite 3, fluorite 4, apatite 5, orthoclase 6, quartz 7, topaz 8, corundum 9, diamond 10). Its steps are wildly non-uniform — the jump from 9 to 10 is a factor of about 4 in indentation hardness, while 1 to 2 is a small increment. It measures *scratch resistance* (a form of wear), not indentation resistance, so:
+
+- it cannot be converted to HB/HV/HK by formula;
+- it is still used in mineralogy and in the abrasives/ceramics industry because it maps directly onto the practical question "what will scratch what";
+- the modern instrumented equivalent is the **scratch test** (a stylus under a ramped load), which gives a quantitative scratch hardness.
+
+> [!warning] Don't mix scales in a specification
+> A drawing that specifies "hardness 45" is meaningless. Always quote the scale, the load and the indenter: "45 HRC", "600 HV1" (Vickers, 1 kg), "200 HBW 10/3000" (tungsten ball, 10 mm, 3000 kg). Conversion between scales should be treated as an estimate, not a measurement.
 
 ### 3.9 Hardness of ceramics
 
@@ -1524,13 +1878,72 @@ where $d$ is the mean Vickers diagonal and $l$ the long Knoop diagonal.
 - For both, the measured hardness **decreases with increasing load (indentation size effect)** and then reaches a **constant plateau** that is independent of load. The plateau value varies from ceramic to ceramic.
 - An **ideal** test uses a load large enough to be on the plateau, but not so large as to introduce excessive cracking.
 
+#### Why spherical indenters fail on ceramics
+
+A sphere produces a **Hertzian** stress field: high shear stresses at a depth of about half the contact radius, beneath a region of high hydrostatic compression. In a ductile metal that shear zone yields and forms a normal indent. In a ceramic there is no plastic flow to relieve it, so the tensile hoop stress at the contact periphery exceeds the (very low) tensile strength and a **ring/cone crack** forms — often before any measurable indent. The result is a damaged surface, not a hardness number.
+
+Pyramidal (Vickers) and rhombic (Knoop) indenters are used instead because they produce **localised shear** rather than a large tensile field; a small plastic zone does form under a sharp indenter even in a hard ceramic (the high hydrostatic pressure suppresses cracking), and the hardness is obtained from the indent size.
+
+#### The indentation size effect (ISE) in ceramics
+
+Plotted against load, hardness typically **decreases** with increasing load and then flattens:
+
+- **Low loads** — the indent is small relative to the surface damage layer, the plastic zone is constrained by the surrounding elastic material, and there are few defects within the sampled volume → **higher** apparent hardness.
+- **High loads** — the measured value approaches the true bulk hardness; but at very high loads the indent is surrounded by an extensive crack system, the measurement becomes unreliable, and the material may chip.
+
+The standard practice is therefore to report a **plateau value** measured with a load chosen so that the indent is large enough to be measured accurately (diagonal $\gtrsim$ 20 µm) but small enough that cracking is limited. Reporting "hardness" without the load is meaningless for ceramics.
+
+#### Typical values (Vickers, plateau)
+
+| Ceramic | HV (GPa) | Comment |
+| --- | --- | --- |
+| Talc (Mohs 1) | $\sim$0.02 | softest reference |
+| Soda-lime glass | 5.5–6 | cracks readily |
+| Quartz | 11–12 | Mohs 7 |
+| Alumina (99.5 %) | 15–18 | workhorse technical ceramic |
+| Zirconia (TZP) | 12–14 | transformation toughening gives toughness, lower hardness |
+| Silicon nitride | 15–20 | |
+| Silicon carbide | 22–30 | |
+| Boron carbide | 30–35 | armour ceramics |
+| Cubic boron nitride | 45–50 | |
+| Diamond | 70–100 | the practical limit of indentation |
+
+Note the pattern: **hardness and toughness are usually inversely related** — zirconia is comparatively soft but the toughest engineering ceramic, while diamond and B4C are the hardest and among the most brittle. This is the same trade-off as in hardened tool steels (§3.3), and it is why "hard coating on a tough substrate" is the standard design for cutting tools and wear parts.
+
 ### 3.10 Tear strength and hardness of polymers
 
 - **Tear strength** — the ability to resist tearing — is important for **thin films** (packaging). It is defined as the **energy required to tear apart a cut specimen of standard geometry**; the crack must be propagated through the specimen, so tear strength depends on both the **tensile strength** and the **thickness** of the film. Magnitudes of tensile and tear strength are related (both reflect chain alignment and intermolecular bonding).
 - Polymers are much softer than metals and ceramics, so **Rockwell** tests (with ball indenters and low loads) are frequently used; other techniques are the **Durometer** and **Barcol** tests, both designed for soft materials.
 
+#### Tear strength in more detail
+
+- **What it measures.** The energy (or force) needed to propagate a tear through a standard notched specimen. It is a *fracture* property, not a strength: it depends on the energy dissipated in the plastic/viscoelastic zone ahead of the tear tip.
+- **Standard tests.** The **Elmendorf** (pendulum) test for films and the **trouser-tear** and **Graves** tests for sheet; units are N/mm (force per thickness) or g/µm for thin films, sometimes mJ/mm² for energy per area.
+- **Thickness dependence.** Tear resistance rises with thickness but not linearly (the plastic zone is constrained differently), and for very thin films the value approaches a constant "intrinsic" tear resistance. This is why tear data are always quoted with the thickness.
+- **Relation to tensile strength.** Both reflect the same underlying chain alignment and intermolecular bonding, so a tougher, more oriented film tears less easily. Biaxially oriented films (BOPP, PET) have high tear resistance *along* the machine direction and low *across* it — a serious issue for packaging where the tear must run predictably.
+- **Why it matters.** A packaging film that tears at 1 N is a convenience; a cable insulation that tears is a failure; a balloon that tears is burst. Tear strength is also a routine QC measure for polymer processing consistency.
+
+#### Hardness of polymers
+
+Because polymers are soft and viscoelastic, the standard metals tests are unsuitable (a diamond cone would simply disappear into the material). The dedicated tests are:
+
+| Test | Indenter | Load | Scale | Typical use |
+| --- | --- | --- | --- | --- |
+| **Durometer (Shore A)** | Truncated cone | $\sim$0.8 kg (spring) | 0–100 | Soft rubbers, elastomers |
+| **Durometer (Shore D)** | Sharp cone | $\sim$4.5 kg (spring) | 0–100 | Rigid plastics |
+| **Rockwell R/L/M** | $\tfrac12$ in. or $\tfrac14$ in. ball | 60/100 kg | R, L, M | Rigid thermoplastics, similar to metals procedure |
+| **Barcol** | Spring-loaded steel point | Small | 0–100 | Field testing of composites, GRP, plastics |
+| **Ball indentation (ISO 2039)** | Steel ball | 36 kg | N/mm² | Standard for rigid plastics |
+
+Two points that make polymer hardness tricky:
+
+1. **Time dependence.** Because the material is viscoelastic, the reading drifts with the dwell time and with the loading rate. Standards specify a dwell (often 15 s) and the reading is meaningless without it.
+2. **Temperature dependence.** Hardness falls sharply as the temperature approaches $T_g$; a polymer that reads Shore D 80 at 20 °C may be Shore A 70 at 60 °C. Indentation hardness of polymers is really a *viscoelastic* measurement, and it is one of the most sensitive ways to detect a glass transition.
+
+Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles and tyre treads, Shore D 60–80 for rigid PVC, polycarbonate and nylon, Barcol 30–50 for glass-fibre composites.
+
 > [!tip] Exam pointer — Part III
-> Expect: why three-point bending is used for ceramics and the two $\sigma_{fs}$ formulae; the porosity equations $E = E_0(1-1.9P+0.9P^2)$ and $\sigma_{fs}=\sigma_0 e^{-nP}$; the definition of hardness and why it is not a fundamental property; the Rockwell depth formulae ($100 - h/0.002$ vs $130 - h/0.002$); and the Brinell/Vickers/Knoop expressions with their load ranges.
+> Expect: why three-point bending is used for ceramics and the two $\sigma_{fs}$ formulae; the porosity equations $E = E_0(1-1.9P+0.9P^2)$ and $\sigma_{fs}=\sigma_0 e^{-nP}$; the definition of hardness and why it is not a fundamental property; the Rockwell depth formulae ($100 - h/0.002$ vs $130 - h/0.002$); and the Brinell/Vickers/Knoop expressions with their load ranges. The added depth to be ready with: the derivation of each hardness formula from the indenter geometry (spherical cap area, square pyramid at 136°); Tabor's $H\approx3\sigma_y$ as the reason hardness tracks strength; why four-point bending is preferred for ceramics; Weibull statistics and the size effect; and the indentation size effect that makes a hardness number meaningless without its load.
 
 ---
 
@@ -1557,6 +1970,23 @@ where $d$ is the mean Vickers diagonal and $l$ the long Knoop diagonal.
 | Knoop hardness | $HK = 14.2P/l^2$ | $l/b = 7.11$ |
 | Rockwell number | $HR = 100 - h/0.002$ (diamond); $130 - h/0.002$ (ball) | $h$ in mm |
 | Strength from hardness | $TS\,(\text{MPa}) \approx 3.45\,HB$ | For steels |
+| Tabor relation | $H \approx 3\sigma_y$ | Hardness vs flow stress |
+| von Mises equivalent stress | $\sigma_{\text{vM}}=\sqrt{\tfrac12[(\sigma_1-\sigma_2)^2+(\sigma_2-\sigma_3)^2+(\sigma_3-\sigma_1)^2]}$ | Yields when $=\sigma_y$ |
+| Isotropic elastic constants | $G=\dfrac{E}{2(1+\nu)}$, $K=\dfrac{E}{3(1-2\nu)}$ | Two constants define the rest |
+| Volume change, uniaxial | $\Delta V/V=\varepsilon_z(1-2\nu)$ | Zero at $\nu=0.5$ |
+| Considère criterion | $d\sigma_T/d\varepsilon_T=\sigma_T$ | Onset of necking |
+| Uniform strain at UTS | $\varepsilon_{T,u}=n$ | With Hollomon law |
+| UTS from Hollomon | $\sigma_{UTS}=K(n/e)^n$ | $e=2.718$ |
+| True fracture strain | $\varepsilon_{T,f}=\ln\!\left(\dfrac{100}{100-\%RA}\right)$ | Gauge-independent ductility |
+| Bridgman correction | $\sigma_{\text{corr}}=\dfrac{\sigma_T}{(1+2R/a)\ln(1+a/2R)}$ | Triaxiality in the neck |
+| Taylor relation | $\tau=\tau_0+\alpha Gb\sqrt{\rho}$ | Forest hardening |
+| Hall–Petch | $\sigma_y=\sigma_0+k_y d^{-1/2}$ | Grain-size strengthening |
+| Taylor factor | $\sigma_y=M\tau_{CRSS}$, $M\approx3.06$ (FCC) | Polycrystal vs single crystal |
+| Creep rate | $\dot\varepsilon_s=A\sigma^n e^{-Q/RT}$ | $n\approx3$–5 (dislocation creep) |
+| Springback | $\dfrac{1}{R_f}=\dfrac{1}{R_0}-\dfrac{3\sigma_y}{Et}$ | Thin sheet, approximate |
+| Fracture toughness | $K_{Ic}=Y\sigma\sqrt{\pi a}$ | Flaw-tolerant design |
+| Weibull failure probability | $P_f=1-\exp[-(\sigma/\sigma_0)^m]$ | Brittle strength scatter |
+| Toughness from indent | $K_{Ic}=\xi(E/H)^{1/2}P/c^{3/2}$ | Anstis relation |
 
 > [!note] Source images
-> All figures in this note are original Excalidraw reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix.
+> All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/attachments/` with the `MP`/`MP2`/`MP3` prefix.
