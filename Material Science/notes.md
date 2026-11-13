@@ -7,7 +7,7 @@ tags:
 
 # Syllabus Map
 
-Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
 
 ## Post-Midsem Topics (from [[syllabus]])
 
@@ -20,7 +20,7 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 | 5 | Composites | — |
 | 6 | Electrical and Electronic Properties — Part 1 | — |
 | 7 | Electrical and Electronic Properties — Part 2 | — |
-| 8 | Magnetic Properties | — |
+| 8 | Magnetic Properties | ✅ noted below |
 | 9 | Dielectric Materials, Polarization, Optical Properties | — |
 
 > [!info] How the three parts fit together
@@ -1993,3 +1993,361 @@ Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles 
 
 > [!note] Source images
 > All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/attachments/` with the `MP`/`MP2`/`MP3` prefix.
+
+---
+
+# Magnetic Properties
+
+Every material is magnetic to some degree, but the *strength* of the response spans more than ten orders of magnitude — a diamagnetic solid barely pushes the lines of force out of its interior, a soft ferromagnet multiplies them thousands of times for the same applied field. This block builds that response from one microscopic quantity, the **Bohr magneton**, then shows how exchange coupling between neighbouring spins turns a collection of tiny atomic moments into domains, and how the domain behaviour turns into the hysteresis loop, the transformer core and the permanent magnet.
+
+Compiled from the lecture slides ([[Magnetic Properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]]. Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+
+> [!info] How the block fits together
+> The first third is *field bookkeeping*: $B$, $H$, $\mu$, $\mu_r$, and the three classes of magnetic response ranked by susceptibility (§8.1–§8.2). The middle third is *atomic origin*: where a permanent moment comes from (electron spin, Hund's rule, the Bohr magneton), why the moment of a free atom shrinks when the atom enters a crystal, and why only Fe, Co and Ni — and the heavy rare earths — keep their moments aligned at all (§8.3–§8.14). The last third is *engineering*: domains, the hysteresis loop, wall motion versus rotation, and the split between soft and hard magnetic materials that follows from the loop's shape (§8.15–§8.17).
+
+---
+
+## 8. Magnetic Properties
+
+### 8.1 Magnetic induction, field strength and permeability
+
+A magnetic field applied to vacuum produces a magnetic induction that is strictly proportional to the applied field strength; the constant of proportionality is the permeability of free space. In a solid the same relation holds with the permeability of the *material*, and the ratio of the two permeabilities is the single number that ranks how strongly a material responds. Everything later in this block — susceptibility, domains, hysteresis — sits on top of this distinction between the applied field $H$ and the resulting flux density $B$.
+
+$$ B = \mu_0 H $$
+
+In SI units the permeability of free space is $\mu_0 = 4\pi \times 10^{-7}\ \text{H m}^{-1}$ (henry per metre). It was *originally defined to have a value of unity* in the cgs system, which is why cgs susceptibilities and permeabilities are quoted as bare dimensionless numbers.
+
+If the field is applied to a solid medium, the magnetic induction in the solid is given by the same relationship with the permeability of the solid:
+
+$$ B = \mu H $$
+
+where $\mu$ is the permeability of the solid material through which the magnetic lines of force pass. In general $\mu \ne \mu_0$; the ratio of the two is the **relative permeability**:
+
+$$ \mu_r = \frac{\mu}{\mu_0} $$
+
+The magnetic induction in a solid is also defined in a second way, which separates the applied field from the material's own contribution:
+
+$$ \boxed{\ B = \mu_0 (H + M)\ } $$
+
+> [!important] Definitions
+> **Magnetic induction (magnetic flux density) $B$** — the flux per unit area inside the medium, in tesla ($\text{T}$) or weber per square metre ($\text{Wb m}^{-2}$).
+> **Field strength $H$** — the applied magnetic driving field, in ampere per metre ($\text{A m}^{-1}$).
+> **Permeability $\mu$** — the property of the medium through which the lines of force pass, in $\text{H m}^{-1}$; in general $\mu \ne \mu_0$.
+> **Relative permeability $\mu_r$** — the dimensionless ratio $\mu/\mu_0$.
+> **Magnetization $M$** — the magnetic moment per unit volume of the solid, in $\text{A m}^{-1}$ (see §8.6).
+
+Comparing the two definitions of $B$ gives $B=\mu_0(H+M)=\mu_0\mu_r H$, so $\mu_r = 1 + M/H$. The ratio $M/H$ is the **magnetic susceptibility** $\chi$ — the quantity by which the three classes of magnetic behaviour are actually ranked in §8.2.
+
+| Symbol | Quantity | SI unit |
+| --- | --- | --- |
+| $B$ | Magnetic induction / flux density | $\text{T} = \text{Wb m}^{-2}$ |
+| $H$ | Magnetic field strength | $\text{A m}^{-1}$ |
+| $M$ | Magnetization (moment per volume) | $\text{A m}^{-1}$ |
+| $\mu_0$ | Permeability of free space | $4\pi\times10^{-7}\ \text{H m}^{-1}$ |
+| $\mu$ | Permeability of the medium | $\text{H m}^{-1}$ |
+| $\mu_r$ | Relative permeability, $\mu/\mu_0$ | — |
+| $\chi$ | Susceptibility, $M/H$ | — |
+
+> [!warning] The two classical traps in this section
+> **$B$ and $H$ are not interchangeable.** $H$ is what the coil produces and is set by the current and geometry alone; $B$ is what the material does with it. A ferromagnet leaves $H$ unchanged but raises $B$ by a factor $\mu_r$ of $10^2$–$10^5$.
+> **$\mu_0$ is not 1.** In cgs it was defined as unity, so a cgs susceptibility of $10^{-5}$ and an SI susceptibility of $10^{-5}$ are the same number *only because* $\chi$ is dimensionless in both systems — but $\mu_r$ and $\mu$ are not. Always state the system when quoting $\mu$.
+
+### 8.2 Diamagnetism, paramagnetism and ferromagnetism
+
+The mechanical picture of magnetism in an atom is a current loop. The **orbital motion of the charge-carrying electrons** in an atom is analogous to a current-carrying coil; when a magnetic field is applied to an atom, the motion of the orbital electrons is modified in such a way that a *weak magnetic moment opposing the field* is induced. This interaction is diamagnetism.
+
+In a **diamagnetic** solid the lines of force due to an applied field are therefore repelled. The diamagnetic susceptibility is negative and very small in magnitude, typically of the order of $-10^{-5}$.
+
+An important exception is a **superconductor**, which is perfectly diamagnetic with a susceptibility value of $-1$: all the lines of force are repelled by a superconductor, which makes superconductors useful for shielding out magnetic fields.
+
+**Paramagnetic** solids have a small positive susceptibility, of the order of $10^{-3}$; it *decreases* with increasing temperature, because thermal energy tends to randomize the alignment. **Ferromagnetic** solids have a very large positive susceptibility, in the range $10^2$–$10^5$, and strongly attract the magnetic lines of force.
+
+| Class | Susceptibility $\chi$ | Response of the lines of force | Origin |
+| --- | --- | --- | --- |
+| **Diamagnetic** | $-10^{-5}$ (negative, very small) | Slightly repelled | Induced orbital moment *opposing* the field |
+| **Superconductor** | $-1$ (perfect diamagnet) | Completely expelled | Perfect shielding of the interior |
+| **Paramagnetic** | $+10^{-3}$, falls as $T$ rises | Weakly attracted | Alignment of permanent moments, fought by thermal energy |
+| **Ferromagnetic** | $+10^2$ to $10^5$ | Strongly attracted | Permanent moments already aligned by bonding forces |
+
+![[MAG - Diamagnetic paramagnetic ferromagnetic.png|440]]
+
+*Figure — the three responses side by side: (a) a diamagnetic solid repels the lines of force slightly, (b) a paramagnetic solid attracts them weakly, (c) a ferromagnetic solid attracts them very strongly, concentrating the flux inside itself.*
+
+> [!note] Why the superconductor is the exception that proves the rule
+> Diamagnetism is a *universal* consequence of orbital electrons, so every material is diamagnetic to the extent of $\sim10^{-5}$ — it is simply swamped whenever permanent moments exist. In a superconductor the induced screening currents are lossless, so the expulsion is complete rather than partial: $\chi=-1$ is the largest diamagnetic response physically possible, and it is why a magnet can be levitated over a superconducting cup.
+
+### 8.3 Paramagnetism: alignment of permanent moments
+
+Some atoms and molecules possess **intrinsic permanent magnetic moments**. In the absence of an externally applied field the moments of the atoms in a solid are randomly oriented with respect to one another, and the solid as a whole has no net magnetic moment. If an external field is applied, the moments tend to align themselves parallel to the applied field so as to lower their potential energy.
+
+Just as a suspended magnetic needle aligns itself spontaneously with the earth's magnetic field, there is a spontaneous tendency for the permanent moments of the atoms of the solid to align in the direction of the field, thereby *intensifying* the lines of force in the field direction — this phenomenon is **paramagnetism**.
+
+The aligning force on the permanent moments of the atoms in ordinary magnetic fields is rather small, so the paramagnetic effect is weak — this is exactly why $\chi_{\text{para}}\sim10^{-3}$ and why it falls with temperature: the alignment competes with thermal randomization and loses ground as $T$ rises.
+
+**Ferromagnetic solids** are those in which the permanent magnetic moments (due to electron spins) are *already aligned* by bonding forces, without any applied field. That is the whole structural difference between the two: paramagnetism is field-induced alignment of independent moments; ferromagnetism is spontaneous alignment produced by the chemical bond.
+
+> [!note] What "already aligned by bonding forces" is doing
+> The phrase is the entire content of §8.8–§8.9. There is no external field and no thermal assistance — the parallel arrangement of neighbouring spins must lower the *electronic* energy of the solid, by an amount (the exchange energy) that beats the entropy of randomization up to the Curie temperature. Ferromagnetism is therefore a bonding phenomenon, and like any bonding phenomenon it depends on interatomic distance.
+
+### 8.4 Magnetic moments due to electron spin
+
+Permanent magnetic moments can arise from three sources: the **orbital magnetic moment** of electrons, corresponding to the quantum number $m_l$; the **spin magnetic moment** of electrons, corresponding to the spin quantum number $m_s$; and the **spin magnetic moment of the nucleus**. Of these, the spin magnetic moments of the electrons are the only ones that are important from our point of view — the nuclear moment is some three orders of magnitude smaller, and the orbital contribution is largely quenched in the solids of interest.
+
+An electron can be crudely approximated as a charge-carrying particle spinning about its axis and thereby creating its own magnetic field. The magnetic moment of one electron spin is taken as one unit, called the **Bohr magneton** $\mu_B$:
+
+$$ \mu_B = 9.273 \times 10^{-24}\ \text{A m}^2 $$
+
+The net magnetic moment of two electrons of opposite spin is zero. Atoms or molecules whose quantum states have *all* electrons paired therefore have zero net magnetic moment; atoms with unpaired electrons do not. For instance, the alkali metal atoms have only one electron in the outermost $s$ orbital; that electron is unpaired and can align itself in an applied field, giving rise to paramagnetism.
+
+> [!important] Hund's rule — the order of filling
+> **All orbitals will be singly occupied before any is doubly occupied.**
+> **All of the unpaired electrons must have the same spin.**
+
+Hund's rule converts an electron count into a magnetic moment in units of $\mu_B$, because the moment is simply the excess of one spin direction over the other:
+
+| Orbital filling | Unpaired electrons | Net moment |
+| --- | --- | --- |
+| $p^3$ | 3 (all parallel) | $3\,\mu_B$ |
+| $p^4$ | 2 (fourth opposes) | $2\,\mu_B$ |
+| $d^5$ | 5 (all parallel) | $5\,\mu_B$ |
+| $d^9$ | 1 | $1\,\mu_B$ |
+| $f^7$ | 7 (all parallel) | $7\,\mu_B$ |
+
+An atom with 3 electrons in a $p$ orbital has all 3 spins aligned, giving a net magnetic moment of $3\,\mu_B$; an atom with 4 electrons in the $p$ orbital has a net moment of only $2\,\mu_B$, because the spin of the fourth electron is opposite to that of the first three. Similarly an atom with 5 electrons in a $d$ orbital has a net moment of five units, but an atom with 9 electrons in the $d$ orbital has a net moment of only one; 7 electrons in an $f$ orbital give 7 units.
+
+### 8.5 The solid state correction: 4s–3d overlap
+
+The simple deduction of the net moment from Hund's rule has to be modified in the solid state, where the electron energy levels of the outermost orbitals interact and form **energy bands**.
+
+In the transition metals the energy bands due to the $4s$ and the $3d$ orbitals may overlap to some extent; the $4s$ electrons spend some time in the $3d$ band. If the $3d$ electrons are five or more in number, the spins of the overlapping $4s$ electrons must be opposite to that of the unpaired $3d$ electrons — such an overlap therefore *reduces* the net magnetic moment.
+
+| Atom | Outer configuration | Moment as free atom ($\mu_B$) | Moment in the crystal ($\mu_B$) |
+| --- | --- | --- | --- |
+| Fe | $3d^6 4s^2$ | 4 | 2.2 |
+| Co | $3d^7 4s^2$ | 3 | 1.7 |
+| Ni | $3d^8 4s^2$ | 2 | 0.6 |
+| Gd | $4f^7$ (no $4f$ overlap) | 7 | 7 |
+
+The Fe atom with an outer electronic configuration $3d^6 4s^2$ has a moment of 4 units as a free atom but only 2.2 as part of the crystal; Co with $3d^7 4s^2$ has 1.7, and Ni with $3d^8 4s^2$ has only 0.6 unit in the crystal. In the case of Gd the net magnetic moment of seven in the free atom remains *unchanged* in the solid state, because there is no overlap of the $4f$ orbitals with the other energy bands — the $4f$ states stay atomic.
+
+> [!warning] Hund's rule gives an upper bound, not the crystal value
+> An exam answer that quotes $4\,\mu_B$ for iron is quoting the *free atom*. The engineering number is $2.2\,\mu_B$ per atom, and the difference is not a rounding correction but a band effect: $4s$ electrons leak into the $3d$ band and pair off part of the moment. This is also why Gd is the outlier, with its full 7 units retained.
+
+### 8.6 Magnetization
+
+The magnetization of a solid is the sum of the magnetic moments in unit volume of the solid:
+
+$$ M = \frac{\sum \mu}{V} $$
+
+$$ \left[\text{A m}^2/\text{m}^3\right] = \left[\text{A m}^{-1}\right] $$
+
+The unit works out to ampere per metre, the same as $H$ — which is why $M$ can be added directly to $H$ in $B=\mu_0(H+M)$.
+
+### 8.7 Hund's rule as spin-dependent electrostatic energy
+
+Hund's rule is a manifestation of the **spin-dependent electrostatic energy** of the electrons in an orbital. When the electrons have the same momentum and the same spin, a certain distance must separate them from one another in order to be consistent with the **Pauli exclusion principle**. This physical separation tends to *increase* their kinetic energy, but it *reduces* the electrostatic repulsive energy between them.
+
+Whether the electrons will align their spins or not therefore depends on the sign of the net change in energy. The stable, energetically favoured order of filling of electronic orbitals in atoms is what we call Hund's rule — it is not an arbitrary convention but the outcome of that energy balance.
+
+> [!note] Why the same balance reappears in the solid
+> This is the same competition that decides ferromagnetism in §8.8: parallel spins cost kinetic energy (the electrons are forced apart, raising the Fermi level) and gain electrostatic energy. In the free atom Hund's rule fixes the filling; in the crystal the same trade decides whether *neighbouring atoms* align their moments.
+
+### 8.8 Band overlap in the first transition series
+
+In the solid state the outer electronic orbitals of neighbouring atoms overlap and produce energy bands. Consider the overlapping and the formation of energy bands in the first transition metals.
+
+At the **left end** of the series the radius of the $3d$ orbitals in the atoms is large enough to give good overlap between neighbours in the crystalline state. The $3d$ band then contains all electrons paired up and there is no net magnetic moment in the crystal. We can say that the atoms are **antiferromagnetically coupled**, because the magnetic moments of a pair of atoms exactly cancel out.
+
+As we go to the **right** in the transition series the $3d$ orbitals shrink, because of greater attraction from the increasing charge on the nucleus, and consequently the overlap of the $3d$ orbitals decreases. The elements Fe, Co and Ni sit in the special situation where this decrease has gone far enough for the exchange interaction to become favourable (next section).
+
+### 8.9 The exchange interaction energy and the 1.5–2.0 criterion
+
+In Fe, Co and Ni the unpaired electrons in the $3d$ orbitals of neighbouring atoms align their spins in a parallel fashion and thereby lower their spin-dependent electrostatic energy. This lowering is partly offset by the rise in the Fermi level and the consequent increase in the average kinetic energy of the electrons; the increase in the Fermi level is directly attributable to the greater physical separation between electrons.
+
+The **net gain in energy** is called the exchange interaction energy:
+
+$$ E_{\text{exchange}} = E_{\text{unmagnetized}} - E_{\text{magnetized}} $$
+
+and it is a *sensitive function of the ratio of the atomic diameter to the 3d orbital diameter*. It turns out that only when this ratio lies between 1.5 and 2.0 is the exchange energy positive and parallel spins energetically favoured:
+
+$$ \boxed{\ 1.5 < \frac{d_{\text{atom}}}{d_{3d}} < 2.0 \ \Longrightarrow\ E_{\text{exchange}} > 0\ } $$
+
+Among the common metals only Fe, Co and Ni have positive exchange energy and are in the spontaneously magnetized state; these metals, or their ions, form the basis of the majority of magnetic materials.
+
+No overlap of the $d$ orbitals occurs in the higher transition series, because the $d$ electrons are strongly attracted to their respective nuclei, which have larger positive charges. The only other elemental crystals in which the exchange energy is appreciable belong to the first rare-earth series, such as **gadolinium, terbium and dysprosium** — there the $4f$ electrons align themselves in a parallel fashion.
+
+#### Why the criterion is a ratio and not a distance
+
+The exchange energy cannot be a function of the interatomic distance alone, because the same distance means different things in different atoms. What matters physically is how much the $3d$ wavefunctions of neighbouring atoms overlap: overlap needs both a large enough orbital ($d_{3d}$ small relative to the spacing) and a small enough separation ($d_{\text{atom}}$). The ratio $d_{\text{atom}}/d_{3d}$ carries both.
+
+The ratio also explains the shape of the transition series. Moving right, $d_{3d}$ shrinks faster than $d_{\text{atom}}$, so the ratio climbs *into* the window at Fe, Co and Ni and back *out* of it beyond them, where the $3d$ orbitals no longer overlap at all. Below the window (left end, large orbitals, strong overlap) the $3d$ band is full and the coupling is antiferromagnetic; above it (higher series, negligible overlap) no coupling at all survives. The window is the narrow band of the periodic table where the two effects are balanced — which is why only three elements out of the whole table are ferromagnetic.
+
+### 8.10 The Curie temperature
+
+Thermal energy tends to randomize the aligned spins, so all ferromagnetic materials become paramagnetic at a sufficiently high temperature. The transition temperature at which all the spin alignment is lost is the **Curie temperature** $T_C$.
+
+Just below the Curie temperature the susceptibility can be $10^2$ to $10^3$, *increasing* as the temperature decreases, because the alignment becomes more complete.
+
+The Curie temperature is a function of the magnitude of the exchange energy — the stronger the coupling, the more thermal energy is needed to destroy it:
+
+| Material | Exchange energy | Curie temperature |
+| --- | --- | --- |
+| **Co** | Highest | 1400 K |
+| **Fe** | Large | 1041 K ($768\,^\circ$C) |
+| **Gd** | Small | Below room temperature |
+
+Co, which has the highest exchange energy, has the highest Curie temperature, 1400 K; Gd, with a small exchange energy, has a Curie temperature below room temperature.
+
+### 8.11 Changing the ratio by alloying: the Heusler alloys
+
+The interatomic distance can be changed within limits by **alloying**. Mn in the elemental form is not ferromagnetic; on alloying, the exchange energy can become positive and the spins on neighbouring atoms can become aligned if the Mn–Mn distance is increased by the right amount, so that the ratio of the atomic diameter to the $3d$ orbital diameter falls in the range 1.5–2.0.
+
+This happens in the **Heusler alloys** $\text{Cu}_2\text{MnSn}$ and $\text{Cu}_2\text{MnAl}$, which are ferromagnetic even though none of their constituent elements is ferromagnetic on its own (Cu is diamagnetic, Mn and Sn are not ferromagnetic in the elemental state).
+
+> [!tip] The design lever this opens
+> Ferromagnetism is not a property of an element but of a *ratio* — and a ratio can be engineered by alloying. Heusler alloys are the proof of principle: diluting Mn in a Cu–Sn or Cu–Al matrix stretches the Mn–Mn spacing into the 1.5–2.0 window and switches the coupling on. The same logic, read backwards, explains why most alloying of a ferromagnet *weakens* it: the wrong spacing pushes the ratio out of the window.
+
+### 8.12 Ferrimagnetism
+
+In some compounds the constituent atoms may be **antiferromagnetically coupled but have different magnetic moments**. This gives rise to a net magnetic moment in each coupling, and the sum of the moments over all the couplings can result in a magnetization comparable in order of magnitude to ferromagnetism. This phenomenon is **ferrimagnetism**.
+
+![[MAG - Ferro antiferro ferrimagnetic coupling.png|460]]
+
+*Figure — (a) ferromagnetic, (b) antiferromagnetic and (c) ferrimagnetic coupling of electron spins in atoms, denoted by arrows; the length of an arrow is a measure of the magnetic moment of the atom. In (b) the antiparallel moments are equal and cancel exactly; in (c) they are unequal, so each pair leaves a net moment and the solid is magnetized.*
+
+| Coupling | Arrangement of neighbouring moments | Net moment |
+| --- | --- | --- |
+| **Ferromagnetic** | Parallel | Full sum of the moments |
+| **Antiferromagnetic** | Antiparallel, equal moments | Zero — exact cancellation |
+| **Ferrimagnetic** | Antiparallel, *unequal* moments | Difference of the sublattice moments |
+
+### 8.13 Ferrites, the inverse spinel, and magnetite
+
+Ferrites of the general formula $\text{Me}^{2+}\text{Fe}_2^{3+}\text{O}_4^{2-}$ can be ferrimagnetic. The divalent metal cation $\text{Me}^{2+}$ is usually $\text{Fe}^{2+}$, $\text{Ni}^{2+}$, $\text{Zn}^{2+}$, $\text{Mg}^{2+}$, $\text{Co}^{2+}$, $\text{Ba}^{2+}$, $\text{Mn}^{2+}$ or some combination of these ions.
+
+These compounds crystallize mostly as the **inverse spinel** structure — a different cation distribution from the normal spinel, in that all of the $A$ cations *and half of the $B$ cations* occupy octahedral sites, while the other half of the $B$ cations occupy tetrahedral sites, for the general formula $AB_2O_4$.
+
+As an example of the incomplete cancellation of magnetic moments, consider the crystal of magnetite, $\text{Fe}_3\text{O}_4$. The ferric ion, with two $4s$ electrons and one $3d$ electron removed from the neutral iron atom, has a magnetic moment of 5 units, and the ferrous ion has 4 units. All the ferric ions in magnetite are antiferromagnetically coupled, so the net magnetic moment of the compound arises from the ferrous ions only. The magnetization $M$ calculated on the basis of **4 net magnetic moments per $\text{Fe}_3\text{O}_4$** is in good agreement with the experimental value for magnetite, which is ferrimagnetic.
+
+#### Counting the moments in magnetite
+
+$\text{Fe}_3\text{O}_4$ contains one $\text{Fe}^{2+}$ and two $\text{Fe}^{3+}$ per formula unit:
+
+- $\text{Fe}^{3+} = 3d^5$: five unpaired spins, $5\,\mu_B$ each — but the two ferric ions are coupled antiparallel, so they contribute $5-5=0$.
+- $\text{Fe}^{2+} = 3d^6$: six $d$ electrons, i.e. five parallel plus one opposed, $4\,\mu_B$ — and it has no partner to cancel against.
+
+The surviving moment is therefore $4\,\mu_B$ per formula unit, on the octahedral ferrous site. This is the ferrimagnetic signature: the *sum* is not zero because the two sublattices carry different moments, and the measured magnetization agrees with the 4-unit count rather than with the 14 units that a naive sum of all three ions would give.
+
+### 8.14 The domain structure
+
+Iron has a high Curie temperature of 1041 K ($768\,^\circ$C) and, consequently, almost all the spins remain aligned at room temperature. Yet at room temperature an ordinary piece of iron is *not* magnetic in the absence of an applied field. To explain this discrepancy Weiss conceived the idea of **magnetic domains**.
+
+The unmagnetized iron crystal consists of a number of domains; within each domain the spins of all the atoms are aligned, but the spins of adjacent domains are not parallel. Because the domains are randomly oriented with respect to one another, their magnetic moments cancel out and the crystal as a whole is not magnetic. In the presence of an external field the domains tend to align with the field, resulting in a large net magnetization of the solid.
+
+> [!important] Definition
+> **Magnetic domain** — a region of a ferromagnetic crystal within which the electron spins of all atoms are aligned parallel; the crystal is the assembly of such regions, whose orientations differ.
+
+> [!note] Magnetization is domain alignment, not spin alignment
+> The process of magnetization of the iron crystal is *not* the aligning of the electron spins of the different atoms — those are already aligned inside every domain — but the alignment of the various domains, each of which is already ferromagnetic. The energy needed to turn a domain is therefore the energy of a boundary, not the exchange energy of §8.9, and this is why a ferromagnet responds to a field at all at room temperature.
+
+The **magnetostatic energy** of a ferromagnetic solid can be reduced if a number of domains are arranged such that no poles exist at the surface and no lines of force go out of the material. Hence a single domain tends to break up into several domains, even if this means an increase in the domain boundary energy; the domain size does not decrease indefinitely, because at some stage the increasing domain boundary energy would oppose the further splitting.
+
+![[MAG - Domain structure flux closure.png|400]]
+
+*Figure — (a) with one domain the magnetic lines of force go out of the material, storing magnetostatic energy in the surrounding space; (b) with several domains arranged head-to-tail the lines close inside the material and the magnetostatic energy is minimised: no surface poles, no external field.*
+
+### 8.15 The hysteresis loop
+
+The $B$–$H$ curve for a typical ferromagnetic material traces a **hysteresis loop**. As the applied field $H$ is increased, the magnetic induction $B$ increases slowly at first and then more rapidly; the rate of increase slows down again, eventually attaining a saturation value $B_s$. With further increase in the magnetic field there is no increase in the induction.
+
+If the field is reversed, the induction decreases, slowly at first, and reaches a residual value $B_r$ at zero field. $B_r$ represents the amount of residual induction left in the specimen after the removal of the field. If the application of the field is continued in the opposite direction, the domains tend to reverse their alignment, so that the remaining induction is lost at a certain value of the reverse field called the **coercive field** $H_c$. The process of reversal of domains continues to give a net magnetization in the opposite direction; after saturation occurs in this direction, restoring the original field direction completes the loop.
+
+![[MAG - Hysteresis loop.png|420]]
+
+*Figure — magnetic induction $B$ as a function of the applied field $H$ for a ferromagnetic material, tracing a hysteresis loop: the initial curve rises to saturation $B_s$, and on reversal the loop closes through the residual induction $B_r$ and the coercive field $H_c$.*
+
+> [!important] Definitions — the three numbers that describe a loop
+> **Saturation induction $B_s$** — the largest induction the material can reach; further increase of $H$ produces no increase in $B$.
+> **Residual induction (remanence) $B_r$** — the induction left in the specimen when the applied field is returned to zero.
+> **Coercive field (coercivity) $H_c$** — the reverse field required to bring the induction back to zero, i.e. to reverse the remaining domains.
+
+| Feature of the loop | Physical event | Where on the curve |
+| --- | --- | --- |
+| Slow initial rise | Reversible wall bowing; few domains favourably oriented | Just above the origin |
+| Steep middle section | Rapid growth of favourably oriented domains at the expense of others | Below saturation |
+| Approach to $B_s$ | Growth complete; rotation of the last domains begins | Near saturation |
+| $B_r$ at $H=0$ | Domains stay in their field-set orientation | On the $B$ axis |
+| $H_c$ at $B=0$ | Reverse field has undone the alignment | On the $H$ axis |
+
+### 8.16 The magnetization process: wall motion first, rotation last
+
+There are two possible ways to align a random domain structure by applying an external field: one is to **rotate a domain** in the direction of the field, and the other is to allow the **growth of the more favourably oriented domains** at the expense of the less favourably oriented ones.
+
+If the domain structure is compared with the grain structure of a polycrystalline material, the boundaries separating the domains — the **domain walls** — are the analogue of grain boundaries. The domain boundary energy is about $0.002\ \text{J m}^{-2}$. The domain walls, however, are some two orders of magnitude *thicker* than the grain boundaries, because there is a gradual transition from one domain orientation to the next across the wall. Also, unlike grain boundaries, domain boundaries can exist *within* a grain.
+
+Analogous to grain growth, the domain walls can move such that the more favourably oriented domains grow at the expense of the others:
+
+1. **Wall motion dominates below saturation.** In the earlier stages of magnetization, below the saturation region of the hysteresis curve, domain growth is dominant.
+2. **Growth is complete near saturation.** The growth is more or less complete as the saturation region is approached.
+3. **Rotation takes over.** Thereafter the most favourably oriented, fully grown domain tends to rotate so as to be in complete alignment with the field direction.
+4. **The slope falls because rotation costs more.** The energy required to rotate an entire domain is more than that required to move the domain walls during growth; consequently the slope of the $B$–$H$ curve decreases on approaching saturation.
+
+> [!note] The loop area is energy, and the area is paid every cycle
+> Each time the hysteresis loop is traversed, energy equal to the area of the loop is dissipated as heat. The power loss due to hysteresis in a transformer core therefore depends on the number of times the full loop is traversed per second — which is why the loss is quoted per cycle and why a transformer on 50 Hz heats less than the same core on 400 Hz.
+
+| Comparison | Grain boundary | Domain wall |
+| --- | --- | --- |
+| Energy per unit area | — | $\sim0.002\ \text{J m}^{-2}$ |
+| Thickness | Thin (a few atomic spacings) | $\sim$2 orders of magnitude thicker |
+| Transition across it | Abrupt | Gradual rotation of spins |
+| Confined to grains? | Separates grains | Can lie *inside* a grain |
+| Motion | Grain growth | Domain growth (magnetization) |
+
+### 8.17 Soft and hard magnetic materials
+
+**Soft magnetic materials** are used in applications requiring frequent reversals of the direction of magnetization. In soft magnetic materials the hysteresis losses must be kept to a minimum. When the induction is large for a small applied field the loop area is small and the hysteresis loss is reduced; the key factor in the design of a soft magnet is therefore to have **easily moving domain walls**.
+
+**Hard magnetic materials** are used to produce permanent magnets. Hysteresis losses are of no significance here, because no repeated reversal of the magnetization is involved in a permanent magnet; what matters is that they must have a **high residual induction $B_r$ and a large coercive force $H_c$**.
+
+The area of the hysteresis loop between $B_r$ and $H_c$ represents the energy required to demagnetize a permanent magnet. The maximum value of this area, $B_rH_c$, is called the **energy product**, and it must be as large as possible for permanent magnets. High-carbon steels and other low-alloy tungsten and chromium steels are used in the martensitic condition as permanent magnets.
+
+| | **Soft magnetic** | **Hard magnetic** |
+| --- | --- | --- |
+| Application | Transformers, motors, inductors — frequent reversals | Permanent magnets — no reversal |
+| Hysteresis loss | Must be minimised | Irrelevant |
+| Loop shape | Narrow, steep; large $B$ for small $H$ | Wide; large $B_r$ and large $H_c$ |
+| Figure of merit | Small loop area, high $\mu_r$ | Energy product $B_rH_c$ maximised |
+| Microstructural requirement | Easily moving domain walls | Pinned walls, high anisotropy |
+| Examples | Soft iron, Si–Fe, ferrites | High-C steels; low-alloy W and Cr steels, martensitic |
+
+![[MAG - Soft vs Hard Hysteresis.excalidraw]]
+
+#### The energy product
+
+The demagnetizing energy of a permanent magnet is the area of the second-quadrant rectangle bounded by $B_r$ on the $B$ axis and $H_c$ on the $H$ axis; its largest value is the energy product $B_rH_c$. The two requirements pull in opposite directions microstructurally: $B_r$ wants a large spontaneous moment (a Fe- or Co-rich phase), while $H_c$ wants that moment to be *hard to rotate*, i.e. strong magnetocrystalline anisotropy and pinned domain walls. Alloying for one usually costs the other, which is why permanent-magnet development is a search for the best product rather than the best of either number — and why the martensitic high-carbon and W/Cr steels of the slides, with their heavily pinned walls, were the historical route to a large $H_c$.
+
+> [!tip] Exam pointer — Magnetic Properties
+> Expect: the definitions and units of $B$, $H$, $\mu$, $\mu_r$, $M$ and $\chi$; $B=\mu_0H$, $B=\mu H$, $B=\mu_0(H+M)$; the susceptibility ranking (diamagnet $-10^{-5}$, superconductor $-1$, paramagnet $10^{-3}$ falling with $T$, ferromagnet $10^2$–$10^5$); the three sources of moment and why only electron spin matters; Hund's rule with the $p^3/p^4/d^5/d^9/f^7$ moments; the free-atom versus crystal moments of Fe (4 → 2.2), Co (3 → 1.7), Ni (2 → 0.6) and Gd (7 → 7); the exchange-energy criterion $1.5<d_{\text{atom}}/d_{3d}<2.0$; the Curie temperatures (Co 1400 K, Fe 1041 K, Gd below room temperature); ferrimagnetism versus antiferromagnetism versus ferromagnetism and the magnetite 4-$\mu_B$ count; Weiss domains and flux closure; the loop definitions $B_s$, $B_r$, $H_c$; wall motion before rotation and the falling slope near saturation; and the soft/hard split with the energy product $B_rH_c$. The added depth to be ready with: *why* Hund's rule is an electrostatic-energy rule, *why* the criterion is a ratio and how alloying (Heusler alloys) moves it, why domain walls are two orders of magnitude thicker than grain boundaries, and why the loop area is the per-cycle heat in a transformer core.
+
+---
+
+## Formula Summary — Magnetic Properties
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Induction in vacuum | $B=\mu_0 H$ | $\mu_0 = 4\pi\times10^{-7}\ \text{H m}^{-1}$ |
+| Induction in a solid | $B=\mu H$ | $\mu \ne \mu_0$ in general |
+| Relative permeability | $\mu_r=\mu/\mu_0$ | Dimensionless |
+| Induction and magnetization | $B=\mu_0(H+M)$ | $M$ in $\text{A m}^{-1}$ |
+| Susceptibility | $\chi=M/H$, $\mu_r=1+\chi$ | Negative for diamagnets, $-1$ for a superconductor |
+| Magnetization | $M=\sum\mu/V$ | $\text{A m}^2/\text{m}^3=\text{A m}^{-1}$ |
+| Bohr magneton | $\mu_B=9.273\times10^{-24}\ \text{A m}^2$ | Moment of one electron spin |
+| Moment from Hund's rule | $\mu = (n_\uparrow - n_\downarrow)\,\mu_B$ | e.g. $p^3\to3$, $d^9\to1$, $f^7\to7$ |
+| Exchange energy | $E_{\text{exchange}}=E_{\text{unmag}}-E_{\text{magnetized}}$ | Positive $\Rightarrow$ parallel spins favoured |
+| Ferromagnetism criterion | $1.5<\dfrac{d_{\text{atom}}}{d_{3d}}<2.0$ | Only Fe, Co, Ni among common metals |
+| Curie temperature | $T_C = f(E_{\text{exchange}})$ | Co 1400 K, Fe 1041 K, Gd below room temperature |
+| Hysteresis loss per cycle | $W=\oint B\,\mathrm{d}H$ | Equal to the loop area, dissipated as heat |
+| Energy product | $(BH)_{\max}\approx B_rH_c$ | Figure of merit for a permanent magnet |
+
+> [!note] Source images
+> All Excalidraw figures in this block are original reconstructions; the comparison of soft and hard hysteresis loops lives in the vault as `Excalidraw/MAG - Soft vs Hard Hysteresis.excalidraw.md`. The plots and schematics embedded above — the three magnetic responses (Fig. 1), the ferro/antiferro/ferrimagnetic coupling (Fig. 2), the domain flux closure (Fig. 3) and the hysteresis loop (Fig. 4) — are the original figures extracted from [[Magnetic Properties_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `MAG` prefix.
