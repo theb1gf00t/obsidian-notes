@@ -18,5 +18,7 @@ pdfs:
 	4. Shockley and Frankel Partial Dislocations
 	5. Composites
 	6. Electrical and Electronic Properties
+	7. Mechanical properties
+	8. 
 	   
 End semester examination will include all of the syllabus.
