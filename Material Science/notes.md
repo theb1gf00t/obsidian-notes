@@ -412,7 +412,7 @@ Each row explains a distinct part of a mechanical test. The atomic scale fixes t
 | Straight elastic line, slope = $E$ | Bond stretching; no defects involved |
 | Yield at $\sim10^{-3}$–$10^{-4}G$ instead of $G/10$ | Dislocation glide, not rigid plane shear |
 | Upper/lower yield point, Lüders plateau | Unpinning of dislocations from interstitial (C, N) atmospheres |
-| Rising plastic branch (work hardening) | Dislocation multiplication, $t \propto b\sqrt{\rho}$, jog/lock formation |
+| Rising plastic branch (work hardening) | Dislocation multiplication, $\tau \propto b\sqrt{\rho}$, jog/lock formation |
 | Strong temperature dependence of $\sigma_y$ in BCC | Peierls–Nabarro lattice friction, kink-pair nucleation |
 | Weak temperature dependence in FCC | Obstacle-controlled glide, forest hardening |
 | Yield stress $\propto d^{-1/2}$ | Grain-boundary barrier to slip (Hall–Petch) |
@@ -1113,17 +1113,20 @@ where $a$ is the crack length and $Y$ a geometry factor of order 1. It says the 
 
 Typical magnitudes:
 
-| Material | $U_r$ (kJ/m³) | Modulus of toughness (MJ/m³) | $K_{Ic}$ (MPa·m$^{1/2}$) |
-| --- | --- | --- | --- |
-| Mild steel | 150 | 80–120 | 100–150 |
-| 4340 QT (high strength) | 5000 | 5–10 | 40–60 |
-| Aluminium 2024-T3 | 550 | 20–30 | 30–40 |
-| Alumina | 20 | 0.02 | 3–4 |
-| Glass | 1 | 0.005 | 0.7–1 |
-| PMMA | 100 | 0.3 | 1–1.5 |
-| HDPE | 20 | 10–30 | 2–4 |
+| Material | $U_r$ (kJ/m³) | Modulus of toughness (MJ/m³) | $K_{Ic}$ (MPa·m$^{1/2}$) | Charpy energy (J) |
+| --- | --- | --- | --- | --- |
+| Mild steel | 150 | 80–100 | 100–150 | $>200$ (upper shelf) |
+| 4340 quenched & tempered | 5500 | 120–180 | 40–60 | 20–40 |
+| Aluminium 2024-T3 | 600 | 20–30 | 30–40 | — |
+| Alumina | 100 | 0.1 | 3–4 | $\sim$0.02 |
+| Glass | 35 | 0.03 | 0.7–1 | $\sim$0.01 |
+| PMMA | 800 | 0.5–1 | 1–1.5 | — |
+| HDPE | 450 | 10–30 | 2–4 | — |
 
-Note the pattern: **high-strength materials have high resilience but low toughness**. Strength and toughness pull in opposite directions because both cannot be maximised by the same microstructure.
+> [!warning] The three "toughnesses" do not agree with each other
+> Note that 4340 has a *higher* modulus of toughness than mild steel (its strength more than compensates for its lower ductility), yet it has a **lower** fracture toughness and a **much lower** Charpy energy. The modulus of toughness integrates the whole curve, so it rewards strength; $K_{Ic}$ and impact energy are dominated by the *local* fracture process, so they reward ductility and purity. A high-strength steel can therefore absorb a lot of energy in uniform tension and still fail catastrophically from a small crack. **When a specification says "tough", it is almost always referring to $K_{Ic}$ or impact energy, not to the area under the tensile curve.**
+
+The genuine trade-off is between **strength and $K_{Ic}$**: within one alloy family, every increment of strength (by alloying, cold work or ageing) reduces the fracture toughness, because the plastic zone that blunts a crack shrinks. That is the central compromise of high-strength alloy design.
 
 ### 2.13 Tensile curves for polymers
 
@@ -1263,7 +1266,7 @@ Assuming **constancy of volume** during plastic deformation ($A_0 l_0 = A_i l_i$
 $$ \sigma_T = \sigma(1+\varepsilon) \qquad\qquad \varepsilon_T = \ln(1+\varepsilon) $$
 
 - The volume-constancy assumption is valid **only up to the onset of necking** — beyond that the deformation is no longer uniform.
-- True strain in compression is negative, and $\varepsilon_T$ is additive whereas engineering strain is not: two successive strains of 0.5 give $\varepsilon_T = \ln 1.5 + \ln 1.5 = \ln 2.25$, not 1.0.
+- True strain in compression is negative, and $\varepsilon_T$ is **additive** whereas engineering strain is not: two successive true strains of $0.5$ simply add to $1.0$, but the engineering strains of the same two steps ($0.5$ each, i.e. $l_0\to1.5l_0\to2.25l_0$) combine to a total engineering strain of $1.25$, not $1.0$.
 - Also useful: $\varepsilon_T = \ln(A_0/A_i)$.
 - **After necking the two curves diverge completely**: the engineering curve falls while the true curve keeps rising. The fall of the engineering curve is a *geometric* artefact, not softening.
 
@@ -1283,7 +1286,7 @@ Both follow from the same assumption and are therefore valid only while deformat
 
 #### Why true strain is the "right" measure
 
-- **Additivity**: strain increments multiply lengths, so logarithms add. Drawing a wire from $l_0\to l_1\to l_2$ gives $\varepsilon_T = \ln(l_1/l_0)+\ln(l_2/l_1)=\ln(l_2/l_0)$. Engineering strains do not add: $0.5$ then $0.5$ gives $1.0$, whereas the true strain is $\ln 1.5+\ln 1.5 = 0.81$.
+- **Additivity**: strain increments multiply lengths, so logarithms add. Drawing a wire from $l_0\to l_1\to l_2$ gives $\varepsilon_T = \ln(l_1/l_0)+\ln(l_2/l_1)=\ln(l_2/l_0)$. Engineering strains do not add: the two steps $l_0\to1.5l_0\to2.25l_0$ are *each* an engineering strain of $0.5$, yet the total engineering strain is $1.25$, whereas the true strains add exactly, $\ln 1.5+\ln 1.5=\ln 2.25=0.811$.
 - **Symmetry in tension/compression**: reversing a true strain gives $-\varepsilon_T$ exactly; reversing an engineering strain of $+0.5$ gives $-0.33$, not $-0.5$. True strain treats the two directions consistently.
 - **Thickness reduction in rolling** is $\varepsilon_T = \ln(t_0/t_f)$, the standard formula in metal-forming analysis; a 50 % reduction in thickness is $\varepsilon_T = 0.693$, not 0.5.
 - **Large-strain equivalence**: for a general 3D deformation one uses the **effective (von Mises) strain** $\bar\varepsilon = \sqrt{\tfrac23(\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2)}$ in the same way as the von Mises stress, so that a multiaxial forming operation can be compared with a uniaxial flow curve.
@@ -1425,7 +1428,7 @@ Note how flat the flow curve is: ten-fold strain increases the flow stress by on
 
 #### Why $n$ matters commercially
 
-$n$ is the single best predictor of **stretch formability**: a high-$n$ sheet resists local thinning (the Considère criterion is pushed to larger strain), so it can be deep-drawn and stretch-formed without splitting. That is why automotive sheet is specified by $n$ (and by the strain-hardening ratio $r$, the Lankford coefficient, which measures normal vs through-thickness thinning). It also explains why **annealed** sheet is used for forming and then **painted/baked or work-hardened** in service.
+$n$ is the single best predictor of **stretch formability**: a high-$n$ sheet resists local thinning (the Considère criterion is pushed to larger strain), so it can be deep-drawn and stretch-formed without splitting. That is why automotive sheet is specified by $n$ (and by the normal plastic-strain ratio $r$, the Lankford coefficient, which measures resistance to through-thickness thinning). It also explains why **annealed** sheet is used for forming and then **painted/baked or work-hardened** in service.
 
 ### 2.19 Elastic recovery after plastic deformation
 
@@ -1556,7 +1559,7 @@ where $P$ is the **volume fraction porosity** and $E_0,\sigma_0$ are the values 
 
 - **The modulus equation** $E=E_0(1-1.9P+0.9P^2)$ is essentially a *rule of mixtures* correction: a pore carries no load, so the load-bearing area is reduced, and the pore also perturbs the local stress field. The effect is gentle and *reversible* — a porous ceramic is still stiff, just less so, and the relation is nearly the same whether the pores are spherical or irregular.
 - **The strength equation** $\sigma_{fs}=\sigma_0e^{-nP}$ is far more severe because a pore is a **stress concentrator**, not merely missing area. A spherical pore of radius $r$ in a field $\sigma$ raises the local stress at its equator to $\sim3\sigma$ (for a spherical cavity, $K_t=3$ in the elastic solution; sharper pores and pore clusters give much higher values). A pore that touches a grain boundary or a surface flaw can *be* the critical crack. Since brittle fracture is governed by the *largest* flaw, the strength is exponentially sensitive to the *number* of pores — hence the exponential law and the $n\approx4$–$7$ values.
-- **Practical numbers**: a 10 % porosity alumina might retain 80 % of its modulus but only 50 % of its strength; a 99.5 % dense alumina versus a 96 % dense one can differ by a factor of 2 in strength while both look "solid".
+- **Practical numbers**: a 10 % porosity alumina retains about 82 % of its modulus but only 50–60 % of its strength; a 99.5 % dense alumina and a 96 % dense one can differ by a factor of 2 in strength while both look "solid".
 - **Processing implications**: **sintering** (diffusional densification at $T\approx0.7T_m$) removes porosity; **hot pressing / HIPing** (pressure-assisted sintering) removes the last few percent, which is where most of the strength is; **additives** (MgO in alumina) inhibit grain growth so that pores are not trapped inside grains. Porosity also degrades **optical transparency** (pores scatter light), **thermal conductivity** and **dielectric breakdown strength**, so the same processing discipline is needed for functional ceramics.
 
 #### The statistics of brittle strength: Weibull
@@ -1613,9 +1616,9 @@ $$ H \approx 3\,\sigma_y \qquad (H \text{ in MPa, } \sigma_y \text{ in MPa}) $$
 
 The factor 3 comes from the geometry of the plastic zone: a hydrostatically constrained region yields at a mean pressure about three times the uniaxial yield stress (for a perfectly plastic material, the slip-line field gives $p\approx2.57\sigma_y$ for a wedge and $\approx3\sigma_y$ for a sphere; strain hardening raises it further). Applying this to the steel correlation above:
 
-$$ \sigma_{UTS}\approx 3.45\,HB \quad\Longleftrightarrow\quad HB \approx 3.45\,\frac{\sigma_{UTS}}{3} \approx \sigma_{UTS} $$
+$$ \sigma_{UTS}\approx 3.45\,HB \quad\Longleftrightarrow\quad HB \approx \frac{\sigma_{UTS}}{3.45} $$
 
-so numerically $HB\approx\sigma_{UTS}$ (MPa) for steels — a coincidence of the units and the factor.
+so a structural steel of 400 MPa UTS reads about 116 HB — which is consistent with the Tabor factor, because 116 kgf/mm² $\approx 1140$ MPa of indentation pressure, and the *flow stress at the large strain under the indenter* is much higher than the yield strength. The numerical coefficient 3.45 is therefore not a fundamental constant: it folds together the constraint factor (≈3), the work hardening under the indenter, and the ratio $\sigma_{UTS}/\sigma_y$ for steels. This is exactly why the correlation is material-specific.
 
 #### What hardness is *not*
 
@@ -1806,7 +1809,7 @@ $$ A = \frac{d^2}{2\sin(\theta/2)}, \quad \theta = 136^\circ \ \Longrightarrow\ 
 
 $$ HV = \frac{P}{A} = \frac{2P\sin68^\circ}{d^2} = 1.854\,\frac{P}{d^2} $$
 
-The constant $1.854 = 2/\sin 68^\circ$. Because the indent is *self-similar* (a pyramid produces geometrically similar indents at all loads), HV is in principle **independent of load** — a major advantage over the ball tests, and the reason Vickers is the standard for research and for hard materials.
+The constant $1.854 = 2\sin 68^\circ$. Because the indent is *self-similar* (a pyramid produces geometrically similar indents at all loads), HV is in principle **independent of load** — a major advantage over the ball tests, and the reason Vickers is the standard for research and for hard materials.
 
 **Knoop.** The indenter is a rhombic-based pyramid with diagonal ratio $l/b = 7.11$ and face angles of 172.5° and 130°, giving $HK = 14.2\,P/l^2$. The elongated shape produces a shallow indent (depth $\approx l/30$), which is why Knoop is preferred for **thin coatings, brittle ceramics and case-depth traverses**: the plastic zone is shallow and does not extend through the layer being measured.
 
