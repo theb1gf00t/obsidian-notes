@@ -573,6 +573,34 @@ The exponential is the whole story: the resistance falls off **exponentially wit
 
 Both are **shear** processes: the resolved shear stress on the plane, in the direction, does the work. Twinning is also important because the reoriented twin lamellae can *re-activate* otherwise hard slip systems, and twin boundaries act as barriers to dislocation motion.
 
+![[MP2 - Slip and twinning sequence.png|420]]
+
+*Figure — (a) before deformation; (b) after slip, the upper block is displaced by a whole number of lattice spacings and the surface shows a step; (c) after twinning, each plane is displaced by a fraction of a spacing, producing a mirror-image (twinned) region.*
+
+#### Slip in more detail
+
+- Slip is **quantised**: the offset at the surface is a whole number of Burgers vectors, $n b$, because every dislocation that emerges leaves a step of height $b$. A visible **slip line** on an electropolished surface is not one dislocation but a **slip band** containing hundreds of dislocations.
+- Slip is *not* a simultaneous rigid sliding of two half-crystals. It proceeds by the nucleation, glide and escape of dislocations; the surfaces of the slipped region remain perfect, and the crystal orientation on both sides of the slip plane is unchanged.
+- Slip is **conservative** (no atoms added or removed) and **athermal in principle** for FCC metals — it needs only the Peierls stress to be exceeded, plus the stress to bypass obstacles. It is therefore possible at absolute zero (given enough stress).
+- Because slip repeats indefinitely on the same system, it can produce **arbitrarily large strains**; this is why metals can be rolled to 99 % reduction in thickness.
+
+#### Twinning in more detail
+
+- In **deformation (mechanical) twinning** every successive plane is displaced by a *fraction* of a lattice vector, so the sheared volume is uniformly reoriented. For FCC the twin system is $\{111\}\langle112\rangle$ with a **twinning shear** of $1/\sqrt2 = 0.707$; for HCP it is $\{10\bar12\}\langle10\bar11\rangle$ (the common "tension twin") or $\{10\bar11\}\langle10\bar12\rangle$ (compression twin). BCC twins on $\{112\}\langle111\rangle$.
+- The twin is a **mirror image** of the parent lattice. It is *not* a phase; the crystal structure is identical, only its orientation differs.
+- Twinning accommodates only a **small, fixed** strain: once the twin has grown across the grain, no further deformation is possible on that system. It is therefore a *supplementary* mechanism, used when slip is restricted.
+- **When twinning dominates:** HCP metals (Mg, Zn, Cd, Ti) with few slip systems; BCC metals at low temperature or high strain rate (shock loading, explosive forming); FCC metals of **low stacking-fault energy** (brass, austenitic stainless steel — the "TWIP" steels exploit twinning-induced plasticity for exceptional ductility); and any metal at very large strains or during recrystallisation.
+- **Twin boundaries are effective barriers to slip** — they are coherent, low-energy boundaries that dislocations cannot cross easily, so a fine twin lamellar structure strengthens the material exactly as grain boundaries do (Hall–Petch-like). Twinning therefore both *enables* deformation (new orientations) and *hardens* (new barriers).
+- **Annealing twins** (seen as straight parallel bands in FCC metals such as copper, brass and austenitic stainless steel) form during heat treatment/grain growth, not by deformation — they do not contribute to shape change, but they do affect properties and are a microstructural fingerprint.
+
+| Feature | Slip | Twinning |
+| --- | --- | --- |
+| Stress required | Low (reaches CRSS early) | High (often $\sim$2–3× CRSS; or when slip is geometrically impossible) |
+| Temperature dependence | Weak in FCC, strong in BCC | Increases as temperature falls (twinning stress rises more slowly than slip stress) |
+| Strain produced | Unbounded | Bounded (a few %) |
+| Orientation change | None | Reorientation of the twinned volume |
+| Surface evidence | Slip steps/lines | Tilts/offsets, straight-sided lamellae |
+
 ### 2.3 Slip systems
 
 A **slip system** = one **slip plane** (the close-packed plane — highest atomic density, widest interplanar spacing, hence lowest shear resistance) + one **slip direction** (the close-packed direction within that plane) + the Burgers vector of the dislocation that glides.
@@ -585,6 +613,44 @@ A **slip system** = one **slip plane** (the close-packed plane — highest atomi
 | **NaCl (ionic)** | $\{110\}$ | $\langle 110\rangle$ | 6 | Slip on $\{110\}$ avoids bringing like-charged ions together |
 
 The **number of independent slip systems** controls ductility (von Mises criterion: at least 5 independent systems are needed for an arbitrary shape change of a polycrystal). This is why FCC metals are ductile and HCP metals are not.
+
+![[MP2 - Slip planes and directions table.png|440]]
+
+*Figure — the lecture table of slip planes and directions for FCC, BCC, NaCl and HCP, with the "less common" alternatives marked.*
+
+#### Why the close-packed plane and the close-packed direction win
+
+Slip requires the *smallest possible disturbance of the lattice*, and both choices reduce it:
+
+- **Close-packed direction**: the shortest lattice translation, i.e. the shortest Burgers vector $b$. Since the elastic energy of a dislocation is $\propto b^2$, this is the lowest-energy dislocation, and the offset produced per dislocation is smallest.
+- **Close-packed plane**: the largest interplanar spacing $d$. The shear stress needed to slide the planes is roughly $\propto 1/d$ (fewer bonds per unit area to break), the Peierls stress falls exponentially with $d$ (through $w = d/(1-\nu)$), and the atomic "corrugation" felt by the moving dislocation is smallest.
+- A **slip system** must combine both: $\{111\}$ with $\langle110\rangle$ in FCC, for instance, because the $\langle110\rangle$ direction lies *in* the $\{111\}$ plane.
+
+#### Stacking faults, partials and the width of the core
+
+In FCC, the perfect dislocation $\tfrac{a}{2}\langle110\rangle$ can lower its energy by dissociating into two **Shockley partials** joined by a strip of **stacking fault**:
+
+$$ \frac{a}{2}[10\bar1] \longrightarrow \frac{a}{6}[2\bar1\bar1] + \frac{a}{6}[\bar12\bar1] $$
+
+The balance between the repulsion of the partials and the fault energy $\gamma_{SF}$ sets the **separation** of the partials, and hence the *effective width* of the dislocation core. This single quantity controls a surprising amount of behaviour:
+
+| Stacking-fault energy | Fault ribbon | Glide style | Behaviour | Examples |
+| --- | --- | --- | --- | --- |
+| **High** ($\gamma_{SF}\gtrsim100$ mJ/m²) | Narrow, partials close | Wavy, easy **cross-slip** | Low work-hardening rate, high ductility, good for forming | Al, Cu-Zn with low Zn, Ni |
+| **Low** ($\gamma_{SF}\lesssim25$ mJ/m²) | Wide | **Planar** glide, cross-slip difficult | High work-hardening rate, high strength, more twinning, "springy" | 70/30 brass, 304 stainless steel, Cu-Al |
+
+This is why **brass work-hardens so much faster than aluminium** even though both are FCC, and why austenitic stainless steels are both strong and highly ductile (they work-harden and twin). It also explains why cross-slip (needed for dislocations to bypass obstacles and for dynamic recovery) is temperature-dependent: at high temperature the partials recombine thermally and cross-slip becomes easy, which is the basis of Stage III hardening and of recovery.
+
+#### Special cases
+
+- **BCC** slip is on $\{110\}$, $\{112\}$ and $\{123\}$ depending on temperature and stress state, always in $\langle111\rangle$. This "pencil glide" gives many *geometrically* possible systems, but the highly stressed non-planar screw core makes the CRSS strongly temperature-dependent. Result: BCC metals are strong but brittle at low $T$, ductile at high $T$.
+- **HCP** metals have only 3 basal systems (one plane $\times$ three directions), which by itself cannot satisfy von Mises. Ductility is rescued by (i) prismatic $\{10\bar10\}\langle11\bar20\rangle$ slip, (ii) pyramidal $\langle c+a\rangle$ slip with $b$ out of the basal plane (5 independent systems), and (iii) twinning, which reorients grains so that new systems become favourable. When these are all hard — as in Mg at room temperature, or Zn and Cd — the metal is brittle in polycrystalline form. Adding lithium to magnesium, or raising the temperature, activates $\langle c+a\rangle$ slip and restores ductility.
+- **Ionic crystals (NaCl, MgO, LiF)**: slip on $\{110\}\langle110\rangle$ keeps like-charged ions from approaching each other across the slip plane; $\{111\}$ slip would put $\text{Na}^+$ next to $\text{Na}^+$ and is electrostatically forbidden. Cubic ionic crystals are therefore *less* ductile than their 6 independent systems suggest.
+- **Covalently bonded crystals** (Si, Ge, diamond, SiC): $\{111\}\langle110\rangle$ slip is *geometrically* available, but the enormous Peierls stress means slip needs $T\gtrsim0.5T_m$. At room temperature they are brittle despite having 12 slip systems — a sharp reminder that **the number of slip systems is necessary but not sufficient for ductility; the CRSS must also be low enough.**
+- **Ordered alloys/intermetallics** (Ni$_3$Al, TiAl, FeAl): slip of a single dislocation destroys the ordered arrangement and creates an antiphase boundary, so dislocations must move as **superdislocations** with $b = a\langle110\rangle$ (twice as long, four times the energy), or in coupled pairs. This, plus the limited number of independent systems, is why intermetallics are strong at high temperature but brittle at room temperature.
+
+> [!note] Von Mises criterion — why exactly five?
+> A general deformation of a polycrystal requires an arbitrary *shape change at constant volume*. The strain tensor has 6 independent components; the constant-volume constraint removes 1, leaving **5 independent strain components**. Each independent slip system can supply only one, so at least 5 are needed for the *grain* to conform to its neighbours. With fewer, grain boundaries must crack or slide → low ductility. (Grain-boundary sliding and diffusional flow can relax this requirement, which is why fine-grained HCP metals at high temperature are more ductile.)
 
 ### 2.4 CRSS and the Schmid factor
 
@@ -616,6 +682,52 @@ Because different systems in the same crystal have different $m$ for the same ap
 > [!tip] Geometric relations worth remembering
 > For an axis lying in the plane containing $N$ and $D$: $\phi_1 + \phi_2 = 90^\circ$, so $m = \tfrac12\sin 2\phi_1$, maximum at $45^\circ$. Also $m = 0$ for both the "end-on" and "side-on" orientations — two of the classic single-crystal "hard orientations".
 
+![[MP2 - Schmid factor geometry.png|420]]
+
+*Figure — the tensile axis at angles $\phi_1$ (to the slip-plane normal) and $\phi_2$ (to the slip direction); the resolved shear stress is $\tau = \sigma\cos\phi_1\cos\phi_2$.*
+
+#### The same result in tensor form
+
+The resolved shear stress is the projection of the stress tensor onto the slip plane and the slip direction:
+
+$$ \tau_R = \sigma_{ij}\,b_i\,n_j \quad\text{(per unit } b\text{)} \qquad\text{so}\qquad m = b_i n_j / b $$
+
+where $\mathbf{n}$ is the slip-plane normal and $\mathbf{b}$ the unit slip direction. This **Schmid tensor** form is what finite-element crystal-plasticity codes use, and it makes two facts obvious:
+
+- The Schmid factor depends only on the **relative orientation** of the stress axis, plane normal and slip direction — not on the material.
+- For a *general* stress state, each of the 12 systems of an FCC crystal has its own $m$; the active one is whichever maximises $\tau_R$ for that stress state.
+
+#### Worked example (typical exam question)
+
+> A copper single crystal is loaded in tension along $[123]$. The primary slip system is $(111)[01\bar1]$. Find the Schmid factor and the yield stress if $\tau_{CRSS} = 0.8$ MPa.
+
+1. Normalise the axis: $\mathbf{t} = [123]/\sqrt{14} = (0.267,\,0.535,\,0.802)$.
+2. Plane normal: $\mathbf{n} = [111]/\sqrt3 = (0.577,\,0.577,\,0.577)$.
+3. Slip direction: $\mathbf{b} = [01\bar1]/\sqrt2 = (0,\,0.707,\,-0.707)$.
+4. $\cos\phi_1 = \mathbf{t}\cdot\mathbf{n} = (0.267+0.535+0.802)(0.577) = 0.926$.
+5. $\cos\phi_2 = \mathbf{t}\cdot\mathbf{b} = (0.535-0.802)(0.707) = -0.189$ (sign irrelevant for a shear component; take $+0.189$).
+6. $m = 0.926 \times 0.189 = 0.175$.
+7. $\sigma_y = \tau_{CRSS}/m = 0.8/0.175 \approx 4.6$ MPa.
+
+Note how *small* the yield stress is: a nearly-perfect copper crystal yields at a few MPa, whereas polycrystalline copper yields at $\sim70$ MPa. That factor of $\sim15$ is the combined effect of orientation averaging (Taylor factor $\sim$3), grain boundaries, and the initial dislocation density.
+
+#### Orientation dependence: the "soft" and "hard" orientations
+
+Because $\sigma_y = \tau_{CRSS}/m$, a single crystal's yield stress varies with orientation by a factor of $\infty$ in principle and by roughly $2$–$3$ in practice over the orientations that can actually be tested. Two features of the classic single-crystal data:
+
+- **Multiple slip near $m=0.5$**: when the axis is at $45^\circ$ to both plane and direction, *several* systems simultaneously reach $m\approx0.5$ (there are 8 systems with $m=0.5$ for the $\langle100\rangle$ axis, 6 for $\langle110\rangle$, 6 for $\langle111\rangle$... in fact the number depends on the axis). The crystal then deforms by multiple slip, work-hardens very rapidly, and the load–extension curve shows a sharp "corner". This is why the Schmid law holds well in the "single-slip" orientations and breaks down near high-symmetry axes.
+- **Latent hardening**: slip on the primary system hardens the *latent* (inactive) systems even more than itself. This violates the assumption that CRSS is a constant, and it is the reason real crystals show a higher flow stress than the simple Schmid prediction after a few percent strain.
+
+#### From single crystal to polycrystal: the Taylor factor
+
+In a polycrystal, grains are randomly oriented and each must accommodate the shape change of its neighbours (von Mises: 5 systems). Averaging the Schmid factors over all orientations and all active systems gives the **Taylor factor**
+
+$$ M = \frac{\sigma_y}{\tau_{CRSS}} \approx 3.06\ \text{(FCC, random texture)}, \qquad M\approx2.75\ \text{(BCC)} $$
+
+- $M$ is a *geometric* factor (it is the reciprocal of the average Schmid factor), so it changes with **texture**: a strong $\langle111\rangle$ fibre texture (drawn wire, rolled sheet) raises $M$ and therefore the strength.
+- The same idea explains why **polycrystals are stronger than single crystals**: not only orientation averaging but also grain-boundary constraint (each grain is prevented from deforming freely by its neighbours), which adds the Hall–Petch term.
+- Conversely, a **single crystal of a superalloy** (turbine blade) is *weaker* per unit CRSS but has no grain boundaries to slide or crack, so it has far better creep and fatigue resistance — which is why blades are directionally solidified or single-crystal.
+
 ### 2.5 Dislocation reactions and sessile (Lomer) locks
 
 ![[MP - Dislocation Reaction Sessile Lock.excalidraw]]
@@ -624,15 +736,63 @@ Dislocations gliding on **non-parallel** slip planes meet along the line of inte
 
 $$ \Delta E \propto b_3^2 - (b_1^2 + b_2^2) < 0 \quad\text{(reaction is favourable)} $$
 
-**Example (FCC).** Take $b_1 = \tfrac{a}{2}[101]$ gliding on $(1\bar{1}1)$ and $b_2 = \tfrac{a}{2}[0\,1\,\bar{1}]$ gliding on $(11\bar{1})$. They meet along the intersection line of the two planes and react:
+**Example (FCC).** Take $b_1 = \tfrac{a}{2}[011]$ gliding on $(1\bar{1}1)$ and $b_2 = \tfrac{a}{2}[10\bar{1}]$ gliding on $(11\bar{1})$. They meet along the intersection line of the two planes and react:
 
-$$ \frac{a}{2}[101] + \frac{a}{2}[0\,1\,\bar{1}] \longrightarrow \frac{a}{2}[110] $$
+$$ \frac{a}{2}[011] + \frac{a}{2}[10\bar{1}] \longrightarrow \frac{a}{2}[110] $$
 
 $$ b_1^2 + b_2^2 = \frac{a^2}{2} + \frac{a^2}{2} = a^2 \qquad\longrightarrow\qquad b_3^2 = \frac{a^2}{2} $$
 
 The strain energy therefore **decreases by 50 %**, so the reaction is energetically favourable. The product $\tfrac{a}{2}[110]$ lies **along the line of intersection**, i.e. in a $\{100\}$-type plane, which is *not* a close-packed slip plane of the FCC lattice. It is therefore **immobile — sessile** (a *Lomer lock*).
 
 **Consequence.** Dislocations gliding on the two planes **pile up** behind the lock. The pile-up produces a long-range back stress that opposes the applied stress, so a higher applied stress is needed for further deformation — this is one of the fundamental mechanisms of **work hardening** (§2.17).
+
+![[MP2 - Lomer sessile lock formation.png|440]]
+
+*Figure — two mobile dislocations on non-parallel $\{111\}$ planes meet along the line of intersection and react to form a sessile dislocation; further glide on either plane is blocked and dislocations pile up behind the lock.*
+
+> [!warning] Correct indices for the classic example
+> b$_1 = \tfrac{a}{2}[011]$ glides on $(1\bar11)$ and b$_2=\tfrac{a}{2}[10\bar1]$ glides on $(11\bar1)$; the intersection line of those two planes is $[110]$, and the sum $[011]+[10\bar1]=[110]$. (Both Burgers vectors must lie **in** their own plane — check with a dot product against the plane normal.) The product $\tfrac{a}{2}[110]$ is a $\langle110\rangle$ dislocation whose line lies in a $\{001\}$ plane, which is not a glide plane of the FCC lattice.
+
+#### Frank's rule — the general criterion
+
+A reaction $\mathbf{b}_1+\mathbf{b}_2 \to \mathbf{b}_3$ is energetically favourable if the elastic energy per unit length falls. Since $E_{el}\approx\alpha G b^2$ (with $\alpha\approx0.5$–$1$),
+
+$$ \boxed{\ b_3^2 < b_1^2 + b_2^2\ } \qquad\text{and}\qquad \mathbf{b}_3 = \mathbf{b}_1+\mathbf{b}_2\ \text{(Burgers vector conservation)} $$
+
+Both conditions must hold: **conservation of the Burgers vector** (it is a topological charge — the closure failure of a Burgers circuit — and cannot be created or destroyed at a node) and **reduction of energy**. The reaction above reduces $b^2$ from $a^2$ to $a^2/2$: a **50 %** drop. (If the product had $b_3^2 > b_1^2+b_2^2$ the dislocations would *repel*; if equal, the reaction is neutral.)
+
+Two useful corollaries:
+
+- **Two dislocations with the same $\mathbf{b}$ repel** each other (a reaction to $2\mathbf{b}$ would quadruple the energy) — hence dislocations arrange themselves into low-energy arrays (tilt and twist boundaries, cells).
+- **A dislocation can dissociate** (as in the Shockley partial reaction of §2.3) if the partials' energy sum is lower than the perfect dislocation's — this is why stacking faults exist at all.
+
+#### Types of sessile obstacle
+
+| Obstacle | What it is | How it is overcome |
+| --- | --- | --- |
+| **Lomer (Lomer–Cottrell) lock** | Product of a reaction between dislocations on intersecting planes; $\mathbf{b}$ not in a slip plane | Cannot glide at all; requires climb (high $T$) or very high stress to recombine |
+| **Cottrell atmosphere** | Solute/interstitial cloud pinning a dislocation (C, N in Fe) | Thermally activated unpinning → sharp yield point (§2.11) |
+| **Precipitate particle** | Second-phase particle in the glide plane | **Shearing** (if coherent and small) or **Orowan looping** (if hard) |
+| **Grain boundary / twin boundary** | Change of orientation | Slip transfer to the next grain; pile-up stress concentration |
+| **Jog / forest dislocation** | Dislocation threading the glide plane | Thermal activation; jog dragging (also generates point defects) |
+| **Surface oxide / coating** | Hard film | Cracking of the film; nucleation site for fatigue cracks |
+
+#### Pile-ups, stress concentration and the Hall–Petch relation
+
+A pile-up of $n$ dislocations blocked at an obstacle multiplies the applied stress at the head of the pile-up by roughly $n$:
+
+$$ \tau_{\text{head}} \approx n\,\tau_{\text{applied}}, \qquad n \approx \frac{\pi\,\tau_{\text{applied}}\,L}{Gb} $$
+
+where $L$ is the pile-up length (≈ the grain radius). Yielding of the *next* grain begins when $\tau_{\text{head}}$ reaches its CRSS, $\tau^{*}$. Setting $\tau_{\text{head}}=\tau^{*}$ and $L = d/2$ gives
+
+$$ \tau_{\text{applied}} \approx \sqrt{\frac{2Gb\,\tau^{*}}{\pi d}} \quad\Longrightarrow\quad \sigma_y = \sigma_0 + k_y d^{-1/2} $$
+
+which is precisely the **Hall–Petch equation**. The same pile-up stress concentration, applied to a *crack* instead of a grain boundary, is the mechanism by which a slip band nucleates a cleavage crack — the link between plasticity and brittle fracture in §2.7.
+
+> [!note] Why work hardening has three stages
+> - **Stage I (easy glide)** — single slip on the primary system, long free path, low hardening rate. Dominant in single crystals oriented for single slip.
+> - **Stage II (linear hardening)** — multiple slip begins; Lomer locks and forest dislocations form; hardening rate is high and nearly constant ($\theta\approx G/200$).
+> - **Stage III (parabolic/dynamic recovery)** — cross-slip lets dislocations bypass obstacles, so the hardening rate falls; in polycrystals, Stage II–III behaviour is what appears as the "rising plastic branch" of the tensile curve.
 
 ### 2.6 The tensile test: specimen, machine, curve
 
@@ -648,6 +808,44 @@ The strain energy therefore **decreases by 50 %**, so the reaction is energetica
 2. **Yielding** — the onset of plastic deformation at the yield strength $\sigma_y$ (in some low-carbon steels, an upper and a lower yield point appear by the yield-point phenomenon).
 3. **Strain hardening** — stress rises with strain up to the **UTS**, the maximum of the curve.
 4. **Necking and fracture** — after the UTS the deformation localises in a neck; the engineering stress falls (because it is computed on the original area) until fracture.
+
+![[MP2 - Tensile specimen geometry.png|460]]
+
+*Figure — the standard tensile specimen: enlarged grip ends, fillet radii, a reduced-section gauge length with the smaller diameter, and the dimensions marked.*
+
+![[MP2 - Universal testing machine.png|340]]
+
+*Figure — the load train of a universal testing machine: fixed crosshead with load cell, specimen, extensometer clipped to the gauge, and the moving crosshead.*
+
+#### Specimen geometry and why it is standardised
+
+- The standard round specimen has gauge diameter $d_0 = 12.8$ mm (0.505 in.) and gauge length $L_0 = 50$ mm (2 in.), i.e. $L_0 = 4d_0$; the **proportional** designation is $L_0 = 5.65\sqrt{S_0}$ (ISO), where $S_0$ is the original cross-sectional area. Flat specimens are used for sheet, with the same proportional relation.
+- The **reduced section** guarantees that the stress is highest in the gauge, so the specimen yields and breaks where the extensometer is attached, not in the grips. The **fillet radius** between gauge and grip reduces the stress concentration there; too small a fillet causes grip-end failures (a classic bad-data signature).
+- Because **% elongation depends on gauge length** (the neck contributes a fixed extra length, so a shorter gauge gives a larger %EL), $L_0$ must always be quoted with the ductility value. % reduction in area, measured at the neck, does not have this problem.
+
+#### The machine and the measurement chain
+
+| Element | Function | Practical point |
+| --- | --- | --- |
+| **Load cell** | Converts force to an electrical signal | Must be calibrated; range chosen so the test is in the top 10–90 % of capacity for accuracy |
+| **Extensometer** | Measures strain directly on the gauge (clip gauge, strain-gauge or optical) | Should be removed before fracture to avoid damage; machine crosshead displacement includes machine compliance and is *not* the specimen strain |
+| **Crosshead** | Applies displacement at controlled rate | Quoted as **strain rate** ($10^{-5}$–$10^{-1}\ \text{s}^{-1}$ for quasi-static tests); faster rates raise the measured strength, especially in polymers and BCC metals |
+| **Grips** | Transmit load without slipping or bending | Wedge, collet or shoulder grips; misalignment produces bending and premature failure |
+| **Data acquisition** | Records load–displacement pairs | The raw curve is corrected for machine compliance and for the extensometer's own stiffness before $E$ is computed |
+
+#### Lüders bands and the yield-point phenomenon
+
+The upper and lower yield points are not a curiosity — they are the visible signature of **solute pinning**:
+
+1. In annealed low-carbon steel, carbon and nitrogen atoms segregate to dislocations (**Cottrell atmospheres**) because the solute is smaller/larger than the host atom and relieves elastic strain by sitting in the dislocation's stress field.
+2. To move such a dislocation, it must be **torn away** from its atmosphere — this requires a stress peak (the upper yield point).
+3. Once free, dislocations multiply rapidly and glide at a lower stress (the lower yield point). The plastic zone spreads as a **Lüders band** — a visible band of roughened surface that sweeps along the gauge, giving the flat plateau.
+4. The band's propagation ends when the whole gauge has yielded; work hardening then takes over.
+
+Consequences: the sharp yield point causes **stretcher strains** (flamboyant markings) in deep-drawn sheet, which is why sheet is **temper-rolled** (skin-passed) to remove it. It also means the yield stress of such a steel depends on the specimen's history, not only on composition.
+
+> [!warning] Common exam trap
+> The slope of the *engineering* stress–strain curve in the elastic region equals $E$ only if the displacement used is the *specimen's* elongation. Many textbook problems give load–extension data from a machine; you must convert using the gauge length and area, not the full specimen length.
 
 ### 2.7 Brittle and ductile behaviour: temperature, and the Yoffee diagram
 
@@ -677,6 +875,43 @@ The **notch toughness** measured in a Charpy/Izod test plotted against temperatu
 
 **Materials for low-temperature service.** BCC carbon/alloy steels lose toughness quickly (hence the graded 3.5 % Ni, 5 % Ni, 9 % Ni steels for cryogenic tanks). **FCC** alloys — austenitic stainless steels (304, 310, 304 ELC), aluminium alloys (5083, 2219), nickel alloys (Inconel, Monel) and titanium alloys — retain toughness down to liquid-helium temperature because FCC has 12 slip systems and no DBTT of this kind.
 
+![[MP2 - Iron curves at three temperatures.png|440]]
+
+*Figure — the same material (iron) tested at $-200$, $-100$ and $25\ ^\circ\text{C}$: the low-temperature curve is almost linear to fracture; the room-temperature curve shows a long plastic region and a neck.*
+
+![[MP2 - Yoffee diagram.png|380]]
+
+*Figure — the Yoffee diagram: yield stress falls with temperature, cleavage fracture stress is nearly temperature-independent, and the intersection defines the DBTT.*
+
+![[MP2 - Materials for low temperature service.png|520]]
+
+*Figure — service limits of engineering alloys at low temperature: BCC carbon and low-alloy steels stop at moderate $T$, nickel steels extend lower, and FCC aluminium, nickel, titanium and austenitic stainless alloys reach liquid-helium temperature.*
+
+#### The physics behind the two curves
+
+Why does the yield stress fall with temperature while the fracture stress does not?
+
+- **Yield stress is thermally activated.** Dislocation motion past obstacles (Peierls barriers, solute atoms, forest dislocations) needs a *combination* of applied stress and thermal energy. At low temperature there is little thermal energy, so a higher applied stress is needed; as $T$ rises, the thermal contribution grows and $\sigma_y$ falls. The effect is strongest in BCC metals because their non-planar screw cores give a large Peierls barrier (§2.1), and weak in FCC metals where the Peierls barrier is small.
+- **Cleavage fracture stress is essentially athermal.** Breaking bonds across a plane does not need diffusion or thermal activation; the stress at which a pre-existing microcrack propagates depends on the crack size and on the surface energy, both nearly independent of temperature. It is a *stress-controlled* event, so it plots as a nearly horizontal line.
+- **Where they cross** is the DBTT. Below it, the material reaches the cleavage stress *before* it can generate the plastic flow needed to blunt the crack → brittle. Above it, it yields first, the plastic zone blunts the crack tip, and the material is ductile.
+
+#### Why a notch and a high strain rate shift the transition up
+
+- A **notch** creates a triaxial stress state: the axial stress is raised by a factor $\sim$2–3 relative to the von Mises equivalent stress, while the *shear* stress that drives slip is unchanged. So the local tensile stress reaches the cleavage stress while the shear stress is still below the CRSS — fracture wins. This is why brittle behaviour is always associated with **constraint** (thick sections, notches, welds, sharp corners).
+- A **high strain rate** (impact) leaves less time for thermal activation, so $\sigma_y$ rises, while the fracture stress does not — the yield curve is effectively shifted up, moving the intersection to a higher temperature.
+- **Grain size** affects the two curves differently: Hall–Petch raises $\sigma_y$ (strengthening, raising DBTT) but a finer grain size also reduces the size of the *microcrack* formed by a slip-band pile-up, and the cleavage stress scales as $d^{-1/2}$ — a finer grain size improves both strength and toughness. That is why grain refinement is the only strengthening mechanism that *lowers* the DBTT.
+- **Chemistry**: C, P, S, Sn, Sb, As raise the DBTT (segregation to grain boundaries weakens them, and P/Sn cause **temper embrittlement**); Ni lowers it. **Hydrogen** causes severe embrittlement at room temperature; **neutron irradiation** raises the DBTT by producing hardening and Cu-rich precipitates (a life-limiting issue for reactor pressure vessels).
+- **Thickness**: a thick section cannot relax the through-thickness stress by yielding at the free surfaces, so constraint is high — large sections are more brittle than thin ones, an uncomfortable fact for scaling.
+
+#### The Charpy transition curve
+
+Plotting absorbed energy against test temperature gives an S-shaped curve with three regions: **lower shelf** (low energy, pure cleavage, brittle), **transition** (steeply rising, mixed cleavage + ductile tearing), and **upper shelf** (high energy, fully ductile, fibrous). The DBTT is conventionally defined by a fixed energy level (**27 J** for ship steels), a fixed lateral expansion, or 50 % shear appearance. Because the transition region is very steep, a small temperature error causes a large energy error — hence the emphasis on temperature control and on reporting the *criterion* alongside the number.
+
+Historical note: the **Liberty ship** fractures occurred at hatch corners (stress concentration) in welded (no crack-arresting riveted seams) hulls at low temperature, and are the reason impact-testing requirements entered ship-classification rules.
+
+> [!note] Practical consequence for design codes
+> Pressure-vessel and ship codes require the steel's DBTT (measured by Charpy) to lie below the minimum service temperature by a margin. Where that cannot be guaranteed — very low temperature, very thick section, or hydrogen service — the material is changed to an FCC alloy (austenitic stainless, aluminium, nickel alloy), which has no such transition.
+
 ### 2.8 Properties obtained from the tensile test
 
 1. **Elastic modulus** and **resilience**
@@ -685,12 +920,57 @@ The **notch toughness** measured in a Charpy/Izod test plotted against temperatu
 4. **Elongation to failure** / **reduction in area** at fracture
 5. **Toughness**
 
+| Property | Symbol / definition | Units | Typical values | Design use |
+| --- | --- | --- | --- | --- |
+| Elastic modulus | $E = \sigma/\varepsilon$ (slope) | GPa | 200 (steel), 70 (Al), 380 (Al$_2$O$_3$) | Deflection, stiffness-critical parts |
+| Resilience | $U_r=\sigma_y^2/2E$ | J/m³ = Pa | 0.5–2 (steels), 0.6 (Al) | Springs, snap-fits, elastic energy storage |
+| Yield strength | $\sigma_y$ (0.2 % offset) | MPa | 250 (mild steel), 1500 (4340 QT) | The primary design allowable |
+| Tensile strength | $\sigma_{UTS}$ (max of curve) | MPa | 400–500 (mild steel), 1800 (4340) | Specification, QC, ranking, forming loads |
+| Elongation to failure | $\%EL = (l_f-l_0)/l_0\times100$ | % | 2 (PMMA), 25 (mild steel), 45 (Cu) | Ductility/warning, formability |
+| Reduction in area | $\%RA = (A_0-A_f)/A_0\times100$ | % | 50–60 (steels) | Ductility, cleanliness indicator |
+| Toughness (modulus) | $U_t=\int_0^{\varepsilon_f}\sigma\,d\varepsilon$ | J/m³ | $\sim10^8$ (ductile steel) | Energy absorption, crash structures |
+
+Two practical remarks:
+
+- **$E$ is measured from the steepest part of the curve**, which is why an extensometer (not crosshead displacement) is required — the elastic strain is only a few thousandths and machine compliance would dominate.
+- **Resilience and toughness are energies per unit volume**, so they are *not* the same as the impact energy in joules measured in a Charpy test (which is energy for a whole specimen, and includes notch effects). Keep the units straight.
+
 ### 2.9 Anelasticity and viscoelasticity
 
 - In real materials, part of the elastic strain is **time-dependent**: deformation continues slowly *after* the stress is applied, and on unloading some finite time is needed for complete recovery. This is **anelasticity**.
 - Its origin is time-dependent microscopic/atomistic processes accompanying the deformation (e.g. stress-induced ordering of solute atoms, grain-boundary relaxation).
 - In **metals** the anelastic component is small and usually neglected. In **polymers** it is large; the behaviour is then called **viscoelastic** (rubber-like).
 - Idealised responses: **elastic** (instant strain, instant recovery), **viscous** (strain grows linearly with time under constant load, permanent), and **viscoelastic** (intermediate — retarded elastic strain plus permanent flow).
+
+![[MP2 - Anelasticity elastic viscous viscoelastic.png|420]]
+
+*Figure — the standard four-panel comparison: load–time cycle (top) against strain–time response (bottom) for (a) elastic, (b) anelastic/viscoelastic, (c) viscous and (d) elastomeric behaviour.*
+
+#### Anelasticity in metals: small but not always negligible
+
+- The anelastic strain is typically $\sim0.1$ % of the elastic strain at room temperature, so it is ignored for stiffness calculations. But it is the basis of **internal-friction (damping) measurements**, which are exquisitely sensitive to point defects:
+  - the **Snoek effect** — interstitial C/N pairs in BCC iron reorient under stress, giving a damping peak whose height measures the interstitial content (a non-destructive chemical analysis);
+  - the **Zener (thermoelastic) peak** — heat flow between differently strained regions of a polycrystal;
+  - **grain-boundary relaxation** — sliding of boundaries accommodated by diffusion, appearing at high temperature and low frequency.
+- Anelasticity is why a *precisely* sized part (a quartz oscillator, a tuning fork, a precision spring) is chosen for low damping, and why high-damping alloys (Mn-Cu, cast iron) are chosen to suppress vibration and noise.
+
+#### Viscoelasticity in polymers: the same physics writ large
+
+Because polymer deformation involves the *uncoiling and sliding of long chains* rather than the stretching of strong bonds, the "elastic" response itself is time-dependent. Three consequences, all seen in service:
+
+1. **Creep** — under constant stress the strain continues to grow with time (chain uncoiling + chain sliding). A plastic pipe under internal pressure slowly bulges; a shelf sags.
+2. **Stress relaxation** — under constant *strain* (a bolt holding a gasket, a stretched seal) the stress decays with time. Bolted plastic joints loosen.
+3. **Hysteresis and damping** — on cyclic loading the unloading curve lies *below* the loading curve, so energy is dissipated per cycle (the area of the loop). This is why elastomers are good vibration isolators and why tyre rubber heats up.
+
+The simplest models:
+
+| Model | Configuration | Captures |
+| --- | --- | --- |
+| **Maxwell** (spring + dashpot in series) | $\dot{\varepsilon} = \dot{\sigma}/E + \sigma/\eta$ | Stress relaxation; steady flow under constant stress |
+| **Kelvin–Voigt** (spring + dashpot in parallel) | $\sigma = E\varepsilon + \eta\dot{\varepsilon}$ | Retarded (delayed) elastic strain; no permanent flow |
+| **Standard linear solid** | Both combined | Real polymer: instantaneous elastic + retarded elastic + viscous flow |
+
+The characteristic time is the **relaxation time** $\tau = \eta/E$. The ratio of the test time to this relaxation time (the *Deborah number*) decides what you observe: fast loading → glassy, stiff, brittle response; slow loading → rubbery, compliant, flowing response. This is why a silicone rubber ball bounces (fast) but sags under its own weight overnight (slow), and why the same polymer can be a "plastic" in a car bumper and a "rubber" in a seal.
 
 ### 2.10 Poisson's ratio
 
@@ -707,11 +987,87 @@ $$ E = 2G(1+\nu) $$
 
 so a high Poisson's ratio (or a low shear modulus) means a low modulus relative to $G$. Structural materials with high $E$ usually have low $\nu$; polymers have low $E$ and high $\nu$.
 
+![[MP2 - Poisson lateral contraction.png|420]]
+
+*Figure — axial extension $\varepsilon_z$ accompanied by lateral contractions $\varepsilon_x=\varepsilon_y$; the ratio defines $\nu$.*
+
+#### Deriving the relations between the four elastic constants
+
+For an isotropic solid only **two** constants are independent; the other two follow from them. Starting from the definition of $\nu$ and requiring that a hydrostatic pressure produce only a volume change:
+
+$$ G = \frac{E}{2(1+\nu)}, \qquad K = \frac{E}{3(1-2\nu)}, \qquad \lambda = \frac{E\nu}{(1+\nu)(1-2\nu)} $$
+
+The bulk modulus expression shows the meaning of the $0.5$ limit: as $\nu\to0.5$, $K\to\infty$ — the material becomes **incompressible**, which is exactly what a rubber is (its bulk modulus is $\sim$2 GPa while its shear modulus is $\sim$1 MPa, a ratio of $10^3$).
+
+#### Volume change under uniaxial tension
+
+$$ \frac{\Delta V}{V} = \varepsilon_z(1-2\nu) = \frac{\sigma}{E}(1-2\nu) $$
+
+So for $\nu = 0.3$ a tensile strain of 0.3 % produces a volume increase of only $0.12$ %, and for $\nu=0.5$ the volume is unchanged. This is the basis of the **constant-volume assumption** used in plasticity (§2.16): plastic deformation proceeds by shear, which does not change volume, so $A_0l_0=A_il_i$.
+
+#### Values, limits and the exotic cases
+
+| Material | $\nu$ |
+| --- | --- |
+| Cork | $\approx 0$ |
+| Ceramics, glasses | 0.2–0.3 |
+| Steels | 0.27–0.30 |
+| Aluminium alloys | 0.33 |
+| Titanium alloys | 0.31–0.34 |
+| Copper, brass | 0.33–0.35 |
+| Polymers (bulk) | 0.33–0.40 |
+| Elastomers | 0.49–0.499 |
+| **Theoretical limits** | $-1 < \nu < 0.5$ |
+
+- **$\nu\approx0$ (cork)** — the material does not expand sideways when compressed, which is exactly why cork is used in wine bottles: it must be compressed to seal without swelling against the glass.
+- **$\nu<0$ (auxetic materials)** — engineered foams and some crystals expand laterally when stretched. They are of interest because a negative $\nu$ gives enhanced shear modulus, indentation resistance and energy absorption.
+- **$\nu = 0.5$** — rubber and soft tissue; also the reason that a rubber band stretched 300 % hardly changes volume, and why rubber is a poor material for a pressure-tight seal designed to swell.
+
+> [!note] Why $\nu$ is a *bond* property, like $E$
+> $\nu$ is the ratio of lateral to axial strain, which for an isotropic solid is fixed by the geometry of bond stretching vs bond-angle bending. It is insensitive to microstructure, so alloying and cold work barely move it. It *does* vary with temperature and, in polymers, with time (viscoelastic Poisson effect) — a rubber's effective $\nu$ drifts towards 0.5 as the test becomes slower.
+
 ### 2.11 Yield stress and tensile strength
 
 - **Yield strength** is the stress at which plastic deformation begins. Because the elastic-to-plastic transition is gradual for most metals, it is defined by the **0.2 % offset** construction: draw a line parallel to the elastic portion, starting at $\varepsilon = 0.002$; its intersection with the curve is $\sigma_y$.
 - **Tensile strength (UTS)** is the maximum stress on the engineering curve; it marks the **onset of necking** and the end of uniform deformation.
 - Above the UTS, deformation is **localised** — the curve descends, but this does not mean the material is softening (see true stress, §2.16).
+
+![[MP2 - 0.2 percent offset yield strength.png|440]]
+
+*Figure — the 0.2 % offset construction (left) and the upper/lower yield points of a low-carbon steel with the 0.2 % offset yield strength marked on the same curve (right).*
+
+#### The offset construction, precisely
+
+1. Draw the elastic line through the origin with slope $E$.
+2. Draw a line parallel to it, offset by $\varepsilon = 0.002$ (0.2 %) on the strain axis.
+3. The intersection of this line with the stress–strain curve is $\sigma_y$ — the stress at which the material has accumulated 0.2 % **plastic** strain.
+
+The offset is 0.2 % because it is just at the resolution of a good extensometer and small enough to be a sensible "engineering yield"; for polymers 2 % or 1 % offsets are used because their transitions are much broader; for materials with a sharp yield point, the upper or lower yield point is used directly (with the convention stated).
+
+**Why an offset at all?** Most metals do not show a sharp break in slope: the transition from elastic to plastic is gradual as individual grains with favourable orientations yield one by one. A convention is therefore needed, and 0.2 % is internationally agreed.
+
+#### Factors that move the yield strength
+
+| Factor | Effect on $\sigma_y$ | Reason |
+| --- | --- | --- |
+| Lower temperature | Increases (strongly in BCC, weakly in FCC) | Thermal activation assists obstacle bypass |
+| Higher strain rate | Increases | Less time for thermal activation |
+| Finer grain size | Increases ($d^{-1/2}$) | Hall–Petch (§2.5) |
+| More alloying / solutes | Increases | Solid-solution hardening, atmospheres |
+| Cold work | Increases | Dislocation density $\rho$, forest hardening |
+| Precipitates | Increases (peak aged) | Orowan looping / particle shearing |
+| Porosity, cracks | Decreases | Reduced load-bearing section, stress concentration |
+| Hydrostatic pressure | Slight increase in tension tests | Suppresses void growth |
+
+#### Tensile strength: what it does and does not mean
+
+- $\sigma_{UTS}$ is the **maximum engineering stress**, and its significance is *geometric*: it marks the point where the rate of work hardening exactly balances the rate of area reduction (Considère condition, §2.15). It is not a "breaking stress" — the stress at fracture is *lower* on the engineering curve.
+- It is nevertheless the most-quoted strength number because it is easy to measure, reproducible, and it correlates with hardness and with fatigue strength. It is used for **specifications and quality control** and for estimating working loads in forming operations.
+- **Design is based on yield, not UTS**, because at the UTS the material has already deformed by many percent; a component at UTS is already unserviceable. The ratio $\sigma_{UTS}/\sigma_y$ is the **strain-hardening capacity**, a measure of the safety margin between first yield and final failure.
+- For **brittle materials** there is no yield, so the "strength" quoted is the fracture stress (flexural strength for ceramics, §3.1). For **polymers**, the "yield point" may be a maximum followed by **strain softening** (necking and cold drawing), so the curve shape needs care in interpretation.
+
+> [!note] Tension–compression asymmetry
+> Some materials yield at different stresses in tension and compression — cast iron, many polymers, glasses and geological materials. For polymers and foams this is a real effect (chain tension vs buckling of struts); for metals it is usually small. It matters because a "yield strength" measured in tension may not apply in a compressive design, and because bending, which has both, produces a shifted neutral axis.
 
 ### 2.12 Resilience and toughness
 
@@ -725,6 +1081,50 @@ so a high Poisson's ratio (or a low shear modulus) means a low modulus relative 
 
 A tough material needs both: a ceramic may have huge strength but negligible ductility → *low* toughness. This is why "toughness" and "strength" are not the same design property.
 
+![[MP2 - Resilience and toughness areas.png|400]]
+
+*Figure — the modulus of resilience is the small triangular area up to yield; the modulus of toughness is the whole area under the curve to fracture.*
+
+#### Resilience in detail
+
+The area of the elastic triangle is
+
+$$ U_r = \frac12\sigma_y\varepsilon_y = \frac{\sigma_y^2}{2E} \qquad [\text{J/m}^3] $$
+
+This is the **modulus of resilience**; the *proof resilience* is the same quantity multiplied by the volume of the part (total energy stored, in J). Design implications:
+
+- **Springs** should be made of high-yield, low-modulus material — hence spring steels (high $\sigma_y$) or, for non-metallic springs, polymers/composites (low $E$).
+- Because $U_r\propto\sigma_y^2$, doubling the yield strength *quadruples* the energy stored — a far stronger lever than any change in modulus.
+- Resilience is the relevant property for anything that must "bounce back" without permanent set: leaf springs, snap-fits, diaphragms, buffer springs, and the elastic range of a golf ball.
+
+#### Toughness in detail — three different quantities share the name
+
+| "Toughness" | Symbol / units | Definition | When used |
+| --- | --- | --- | --- |
+| **Modulus of toughness** | $U_t$, J/m³ | Area under the *whole* $\sigma$–$\varepsilon$ curve to fracture | Comparing materials, crash energy absorption per volume |
+| **Impact (notch) toughness** | J (or J/cm²) | Energy absorbed by a standard notched specimen in Charpy/Izod | Specification and DBTT determination (§2.7) |
+| **Fracture toughness** | $K_{Ic}$, MPa·m$^{1/2}$ (or $G_{Ic}$, J/m²) | Resistance to propagation of a pre-existing sharp crack | Damage-tolerant design, fitness-for-service assessment |
+
+The last of these is the one used in modern design codes, because the first two do not account for the *size* of the flaw. The relationship between them is
+
+$$ K_{Ic} = Y\sigma\sqrt{\pi a} $$
+
+where $a$ is the crack length and $Y$ a geometry factor of order 1. It says the *stress* a cracked body can carry falls as $1/\sqrt{a}$: doubling the crack length halves the allowable stress. This is the single most important equation behind "damage tolerance" design in aircraft and pressure vessels, and it explains why the same steel can be tough in a small specimen and brittle in a large structure.
+
+Typical magnitudes:
+
+| Material | $U_r$ (kJ/m³) | Modulus of toughness (MJ/m³) | $K_{Ic}$ (MPa·m$^{1/2}$) |
+| --- | --- | --- | --- |
+| Mild steel | 150 | 80–120 | 100–150 |
+| 4340 QT (high strength) | 5000 | 5–10 | 40–60 |
+| Aluminium 2024-T3 | 550 | 20–30 | 30–40 |
+| Alumina | 20 | 0.02 | 3–4 |
+| Glass | 1 | 0.005 | 0.7–1 |
+| PMMA | 100 | 0.3 | 1–1.5 |
+| HDPE | 20 | 10–30 | 2–4 |
+
+Note the pattern: **high-strength materials have high resilience but low toughness**. Strength and toughness pull in opposite directions because both cannot be maximised by the same microstructure.
+
 ### 2.13 Tensile curves for polymers
 
 Three characteristic shapes:
@@ -732,6 +1132,37 @@ Three characteristic shapes:
 - **Brittle** — linear elastic to a sudden break, very small strain (PMMA, PS at room temperature).
 - **Plastic** — yield, then cold drawing with a long plateau, then strain hardening and fracture (many thermoplastics).
 - **Elastomeric** — highly elastic: enormous recoverable strain (several hundred %), low modulus, no permanent set (rubbers/vulcanised elastomers).
+
+![[MP2 - Polymer tensile curves.png|440]]
+
+*Figure — the three characteristic polymer curves: brittle (PMMA/PS), plastic with cold drawing (many thermoplastics) and elastomeric (rubber).*
+
+![[MP2 - Polymer tensile curve annotated.png|400]]
+
+*Figure — the annotated plastic-type polymer curve: Young's modulus from the initial slope, the yield point (upper yield), the drop into cold drawing, the draw ratio, and the tensile strength at break.*
+
+#### What each shape means physically
+
+- **Brittle** (PMMA, PS, epoxy at room temperature) — below the glass transition temperature $T_g$ the chains are frozen; the material behaves like a stiff glass. Failure is by **crazing** (micro-cavitation ahead of the crack) followed by crack growth; the fracture surface is mirror-smooth near the origin with **hackle** markings further out. Strain to failure is a few percent.
+- **Plastic** (HDPE, PP, PET, nylon, PC) — above $T_g$ but below $T_m$ (or in a semicrystalline polymer), chains can slide past one another. The curve shows a **yield maximum**, then a drop (strain softening) as a neck forms, then a long **cold-drawing plateau** at nearly constant stress while the neck propagates, and finally **strain hardening** as the chains become aligned, followed by fracture.
+- **Elastomeric** (natural rubber, silicone, vulcanised EPDM) — lightly cross-linked chains above $T_g$. Deformation uncoils the chains, which is an **entropy** effect: the chain wants to return to a random coil, so the restoring force *increases* with extension (the curve rises steeply at high strain). Modulus is very low (1–10 MPa), failure strain huge (300–800 %), and recovery essentially complete. The energy lost per cycle (hysteresis) makes rubber a good damper.
+
+#### The strong dependence on temperature and rate
+
+For a polymer the same specimen can show all three types of curve:
+
+$$ T \ll T_g:\ \text{brittle} \qquad T \approx T_g:\ \text{leathery/plastic} \qquad T \gg T_g\ (\text{cross-linked}):\ \text{rubbery} $$
+
+Raising the test **rate** is equivalent to lowering the temperature (time–temperature superposition): a plastic bag that stretches slowly and gracefully will shatter if hit sharply. This is why polymer design data must always be quoted at a specified temperature *and* rate, and why "the same" PVC can be a rigid pipe or a flexible hose depending on plasticiser content.
+
+| Typical values (room temperature) | $E$ (GPa) | Yield stress (MPa) | Elongation (%) |
+| --- | --- | --- | --- |
+| PS (brittle) | 3.0 | — | 2–3 |
+| PMMA | 3.0 | 70 | 3–5 |
+| Nylon 6,6 | 3.0 | 80 | 60 |
+| HDPE | 1.0 | 30 | 300–800 |
+| PC | 2.4 | 65 | 100 |
+| Natural rubber | 0.005 | — | 500–800 |
 
 ### 2.14 Measures of strength and ductility
 
@@ -743,9 +1174,81 @@ $$ \%EL = \frac{l_f - l_0}{l_0}\times 100 \qquad\qquad \%RA = \frac{A_0 - A_f}{A
 - **Fracture strength is not used as a design criterion** — it is highly scattered, depends on flaws, and a design that allows stresses to approach fracture is already unsafe. Design is based on yield (with a factor of safety).
 - **% elongation to failure** and **% reduction in area** are measures of **ductility**. Reduction in area is often the more sensitive indicator, because it is measured at the neck where deformation is concentrated.
 
+#### The gauge-length dependence of %EL
+
+The total elongation is the sum of a *uniform* strain over the gauge and a *localised* strain concentrated in the neck. The neck contributes an approximately fixed length ($\sim\beta\sqrt{A_0}$), so its *relative* contribution grows as the gauge length shrinks. Empirically (Barba's law):
+
+$$ \Delta L = \beta\sqrt{A_0} + \varepsilon_u L_0 \qquad\Longrightarrow\qquad \%EL \text{ increases as } L_0 \text{ decreases} $$
+
+Hence a "20 % elongation" for a 25 mm gauge is not the same material property as "20 %" for a 50 mm gauge. The **Russell–Bailey** and **Oliver** relations are variants of the same idea. %RA has no such ambiguity, which is why it is preferred for comparing materials and why specifications quote both.
+
+#### Ductility in design
+
+- **Ductility is the warning system.** A ductile material at a stress concentration yields locally, redistributes load, and deforms visibly before breaking. A brittle one cracks. Codes therefore specify minimum elongation (e.g. $\ge$ 20 % for structural steel, $\ge$ 5 % for many pressure-vessel alloys).
+- **Ductility is a processing requirement.** Rolling, forging, drawing and deep-drawing all need large uniform elongation; formability is a separate (but related) property, measured by the forming-limit diagram, and it is controlled by $n$ (§2.18) and by the strain-rate sensitivity $m$.
+- **Ductility is not monotonic in temperature or purity.** Increasing strength by cold work or by ageing consumes ductility. Impurities (S, P) and inclusions reduce it sharply — a "clean steel" is a ductile steel.
+- **Brittleness** is often quantified as $\%RA < 5$ or as the absence of a yield point; for ceramics the Weibull modulus (§3.2) plays the same role by describing the scatter in strength.
+
+| Material class | $\%EL$ at 50 mm gauge | Character |
+| --- | --- | --- |
+| Ceramics, glasses | $\sim0$ (elastic only) | perfectly brittle |
+| Cast iron (grey) | $<1$ | brittle (flakes) |
+| Tool steel (hardened) | 1–3 | low ductility |
+| High-strength Al alloy | 10–12 | moderate |
+| Structural steel | 20–30 | ductile |
+| Austenitic stainless | 40–60 | very ductile |
+| Copper, gold (annealed) | 45–60 | very ductile |
+| Superplastic alloy | 300–1000 | exceptional ($m>0.3$) |
+
+> [!note] Why fracture strength is not used as a design criterion
+> The stress at fracture is (i) measured after the specimen has already failed to be useful, (ii) strongly dependent on the largest flaw, so it scatters by a factor of 2–10 between nominally identical brittle specimens, and (iii) reduced by any stress concentration or by the size of the component. Designing to fracture strength would mean designing to the point of no return. Design therefore uses **yield strength with a safety factor** (for ductile materials) or **fracture toughness with a flaw-size inspection limit** (for brittle/high-strength materials).
+
 ### 2.15 Necking
 
 After the UTS the cross-section decreases locally — a **neck** forms, and further deformation is confined to it. Because engineering stress uses $A_0$, the curve falls even though the *true* stress in the neck continues to rise. In **semicrystalline polymers** the neck is *stable*: it draws down and then propagates along the gauge length (cold drawing), giving a long plateau rather than a fall.
+
+![[MP2 - Necking in tension.png|420]]
+
+*Figure — the onset of necking at the tensile strength: the load maximum coincides with the point where the area reduction outruns the work hardening.*
+
+![[MP2 - Neck propagation semicrystalline polymer.png|400]]
+
+*Figure — in a semicrystalline polymer the neck stabilises and propagates along the gauge length (cold drawing), producing a long plateau instead of a descending branch.*
+
+#### The Considère criterion — why necking starts exactly at the UTS
+
+Necking begins when the *load* stops increasing, i.e. $dP=0$. With $P = \sigma_T A_i$ and constant volume ($A_i l_i$ = const, so $dA/A = -d\varepsilon_T$):
+
+$$ dP = \sigma_T\,dA + A\,d\sigma_T = 0 \quad\Longrightarrow\quad \frac{d\sigma_T}{d\varepsilon_T} = \sigma_T $$
+
+$$ \boxed{\ \text{Necking begins when}\ \ \dfrac{d\sigma_T}{d\varepsilon_T} = \sigma_T\ } $$
+
+This is the **Considère construction**: plot the true stress and also the tangent from the origin... more usefully, plot $\sigma_T$ and its derivative; the point where the tangent to the $\sigma_T$–$\varepsilon_T$ curve passes through the origin is the instability point. Two important consequences:
+
+1. **Necking is a geometric instability, not a material failure.** A material with no work hardening would neck immediately at yield; a strongly work-hardening material resists localisation. Ductility in tension is therefore *set by the work-hardening rate*.
+2. **Combining with Hollomon**, $\sigma_T = K\varepsilon_T^n$, gives $d\sigma_T/d\varepsilon_T = nK\varepsilon_T^{n-1} = n\sigma_T/\varepsilon_T$, so the criterion becomes
+$$ n = \varepsilon_{T,u} $$
+i.e. **the strain-hardening exponent equals the true uniform strain at the UTS.** This is one of the most examinable results in the whole topic, and it means that a tensile test gives $n$ directly as the true strain at maximum load.
+
+#### Strain-rate sensitivity and neck stability
+
+A neck is stable if the material in the neck becomes *stronger in strain rate* as it thins — positive strain-rate sensitivity,
+
+$$ \sigma = C\dot{\varepsilon}^{m} $$
+
+With $m>0$ the rapidly deforming neck region hardens and resists further localisation. This is why:
+
+- **Superplastic materials** ($m\approx0.3$–$0.5$, fine grain size, $T>0.5T_m$) can stretch to 300–1000 % without necking — they are used to form complex sheet shapes by blow forming;
+- **cold-drawn polymers** show a stable neck, because drawing is a rate-sensitive orientation process;
+- raising the test temperature or slowing the rate (both raising the *effective* $m$) delays necking and increases elongation.
+
+#### The triaxial stress state in the neck
+
+Once a neck forms, the necked region is constrained by the (still cylindrical) shoulders. This builds up **radial and hoop stresses** in addition to the axial one — a **triaxial tension** state. The axial stress computed as $F/A_{\text{neck}}$ therefore *overestimates* the true flow stress. Bridgman's correction is
+
+$$ \sigma_{\text{corr}} = \frac{\sigma_T}{\left(1+\dfrac{2R}{a}\right)\ln\!\left(1+\dfrac{a}{2R}\right)} $$
+
+where $a$ is the neck radius and $R$ the radius of curvature of the neck profile. The correction is small (a few %) at the start of necking and grows as the neck sharpens — this is exactly the gap between the "true" and "corrected" curves in §2.18. The same triaxiality is what makes notched bars brittle (§2.7): constraint raises the maximum principal stress without raising the shear stress that would relieve it by yielding.
 
 ### 2.16 True stress and true strain
 
@@ -763,6 +1266,42 @@ $$ \sigma_T = \sigma(1+\varepsilon) \qquad\qquad \varepsilon_T = \ln(1+\varepsil
 - True strain in compression is negative, and $\varepsilon_T$ is additive whereas engineering strain is not: two successive strains of 0.5 give $\varepsilon_T = \ln 1.5 + \ln 1.5 = \ln 2.25$, not 1.0.
 - Also useful: $\varepsilon_T = \ln(A_0/A_i)$.
 - **After necking the two curves diverge completely**: the engineering curve falls while the true curve keeps rising. The fall of the engineering curve is a *geometric* artefact, not softening.
+
+![[MP2 - True corrected engineering curves.png|440]]
+
+*Figure — engineering, true and corrected true stress–strain curves for a ductile metal: the engineering curve peaks and falls after the UTS, the true curve rises monotonically, and the corrected curve lies slightly below the true one in the necked region.*
+
+#### Where the conversions come from
+
+Starting from constancy of volume during plastic flow, $A_0l_0=A_il_i \Rightarrow A_i = A_0l_0/l_i$:
+
+$$ \sigma_T = \frac{F}{A_i} = \frac{F}{A_0}\cdot\frac{A_0}{A_i} = \sigma\cdot\frac{l_i}{l_0} = \sigma(1+\varepsilon) $$
+
+$$ \varepsilon_T = \int_{l_0}^{l_i}\frac{dl}{l} = \ln\frac{l_i}{l_0} = \ln(1+\varepsilon) = \ln\frac{A_0}{A_i} $$
+
+Both follow from the same assumption and are therefore valid only while deformation is **uniform** (before necking).
+
+#### Why true strain is the "right" measure
+
+- **Additivity**: strain increments multiply lengths, so logarithms add. Drawing a wire from $l_0\to l_1\to l_2$ gives $\varepsilon_T = \ln(l_1/l_0)+\ln(l_2/l_1)=\ln(l_2/l_0)$. Engineering strains do not add: $0.5$ then $0.5$ gives $1.0$, whereas the true strain is $\ln 1.5+\ln 1.5 = 0.81$.
+- **Symmetry in tension/compression**: reversing a true strain gives $-\varepsilon_T$ exactly; reversing an engineering strain of $+0.5$ gives $-0.33$, not $-0.5$. True strain treats the two directions consistently.
+- **Thickness reduction in rolling** is $\varepsilon_T = \ln(t_0/t_f)$, the standard formula in metal-forming analysis; a 50 % reduction in thickness is $\varepsilon_T = 0.693$, not 0.5.
+- **Large-strain equivalence**: for a general 3D deformation one uses the **effective (von Mises) strain** $\bar\varepsilon = \sqrt{\tfrac23(\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2)}$ in the same way as the von Mises stress, so that a multiaxial forming operation can be compared with a uniaxial flow curve.
+
+#### True fracture stress
+
+At fracture, the true stress is
+
+$$ \sigma_{T,f} = \frac{F_f}{A_f} $$
+
+where $A_f$ is the *measured* fracture area. This is much larger than the engineering fracture stress (for a ductile steel, $\sigma_f\approx0.7\sigma_{UTS}$ while $\sigma_{T,f}\approx1.5$–$2\sigma_{UTS}$), and the true fracture strain is
+
+$$ \varepsilon_{T,f} = \ln\frac{A_0}{A_f} = \ln\frac{100}{100-\%RA} $$
+
+which is a gauge-length-independent measure of ductility — the natural companion to %RA.
+
+> [!warning] Do not use these conversions after necking
+> Once the neck forms, the strain is no longer uniform across the gauge, so "the" true stress and "the" true strain of the specimen are ill-defined; $F/A_{\text{neck}}$ gives a *local* stress that overestimates the flow stress because of triaxiality. That is precisely why the "corrected" curve exists.
 
 ### 2.17 Work hardening / strain hardening
 
@@ -784,6 +1323,38 @@ In the plastic region the stress–strain curve has a **positive slope**: the st
 | **Piecewise linear (strain-hardening)** | Linear elastic up to yield, then a linear rising plastic branch — the simplest strain-hardening idealisation |
 
 Work hardening is exploited industrially (cold rolling, drawing, forging) and is removed by **annealing** (recovery + recrystallisation).
+
+#### The quantitative link to dislocation density
+
+The flow stress is related to the *total* dislocation density by the Taylor relation
+
+$$ \tau = \tau_0 + \alpha G b\sqrt{\rho}, \qquad \alpha \approx 0.3\text{–}0.5 $$
+
+Since $\rho$ increases roughly linearly with plastic strain in Stage II, $\tau\propto\sqrt{\varepsilon}$ — which is close to the observed parabolic hardening. This is the cleanest statement of the microscopic origin: **work hardening is the resistance of a dislocation population to its own motion.**
+
+| Process | Effect on $\rho$ (m$^{-2}$) |
+| --- | --- |
+| Well-annealed single crystal | $10^{8}$–$10^{10}$ |
+| Annealed polycrystal | $10^{10}$–$10^{12}$ |
+| Cold worked 10 % | $10^{13}$–$10^{14}$ |
+| Heavily deformed (90 %) | $10^{15}$–$10^{16}$ |
+| Theoretical maximum (cell walls) | $\sim10^{17}$ |
+
+#### Why dislocations obstruct each other
+
+1. **Forest hardening** — a dislocation gliding on its plane must cut through the dislocations threading that plane ("forest"). Each intersection creates a jog, costing energy.
+2. **Junction formation** — two dislocations on intersecting planes can react to form a segment that is not glissile (**Lomer locks**, §2.5). Junctions are strong obstacles.
+3. **Pile-ups at obstacles** — grain boundaries, twin boundaries, particles, and previously formed locks. The back stress from a pile-up reduces the effective stress on the source.
+4. **Cell/subgrain structure** — at large strains dislocations arrange into dense walls surrounding nearly dislocation-free cells, and the cell size sets the mean free path.
+5. **Twin boundaries** — in low-SFE metals (brass, TWIP steels) deformation twins subdivide the grains and add barriers, giving exceptionally high hardening rates.
+
+#### Consequences and practical aspects
+
+- **Uniform elongation is controlled by the hardening rate**: high hardening delays the Considère instability, so high-$n$ materials stretch further. This is why annealed copper and 304 stainless steel can be deep-drawn and why tempered 4340 cannot.
+- **The Bauschinger effect**: after tensile pre-strain, the compressive yield stress is *lower* than the tensile flow stress — the internal back stresses from pile-ups assist reverse flow. This matters in cyclic loading, in spring making, and in any forming operation with reversed strain.
+- **Recovery and recrystallisation**: annealing removes work hardening in two stages — *recovery* (dislocation rearrangement and annihilation, small property change) then *recrystallisation* (new strain-free grains nucleate and grow, hardness drops to the annealed value, ductility is restored). The temperature at which this happens in one hour is the **recrystallisation temperature**, roughly $0.3$–$0.4T_m$.
+- **Hot working vs cold working**: above the recrystallisation temperature, hardening is continuously removed by dynamic recovery/recrystallisation, so enormous strains are possible with low forces (rolling, forging, extrusion). Below it, the work hardening accumulates (cold rolling, wire drawing) and is used deliberately to strengthen the product.
+- **Work hardening is limited**: it cannot exceed the fracture strength, so a heavily drawn wire eventually fails; and it consumes all the ductility, so a cold-rolled sheet may be too brittle to bend.
 
 ### 2.18 The plastic flow curve and the Hollomon equation
 
