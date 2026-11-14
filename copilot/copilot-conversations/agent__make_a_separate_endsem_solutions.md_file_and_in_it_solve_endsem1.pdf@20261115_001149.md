@@ -6,7 +6,7 @@ sessionId: "dce15d59-7a84-4e7a-a833-7f65b958512e"
 agentLabel: "make a separate endsem_solutions.md file and in it solve end…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":238742,"contextWindow":1000000,"inputTokens":2,"outputTokens":7,"cacheReadTokens":236752,"cacheWriteTokens":1981,"updatedAt":1794685959107}'
+usage: '{"usedTokens":285026,"contextWindow":1000000,"inputTokens":2,"outputTokens":824,"cacheReadTokens":282148,"cacheWriteTokens":2052,"updatedAt":1794688178280}'
 lastAccessedAt: 1794685633273
 ---
 
@@ -73,3 +73,44 @@ solve in [[endsem_solutions]]
 - **Q7.** The wording is ambiguous. I read it as "can the shear component of a tensile stress cause yielding", and the answer says so.
 - **Notes error (`notes.md` §2.4).** It says m = 0 when the slip plane is perpendicular to the stress axis with φ₁ = 90°. φ₁ is measured to the plane normal, so φ₁ = 90° means the axis lies in the plane. I wrote the corrected version in Q7 and left `notes.md` unchanged.
 [Timestamp: 2026/11/15 01:18:15]
+
+**user**: is eddy loss in my syllabus?
+[Timestamp: 2026/11/15 01:55:53]
+
+**ai**: **No, not explicitly.** The syllabus lists "Magnetic Properties" as topic 8, and the slides (`Magnetic Properties_Odd_2026-27.pdf`) never mention eddy currents or eddy loss. The only loss they cover is **hysteresis loss**: the loop area is dissipated as heat each cycle, and it depends on how many times the loop is traversed per second. The word "eddy" appears nowhere in `notes.md`. It appears only in the Endsem 2 answers I wrote.
+
+That matters for how you use the solutions:
+- **Q25 and Q26 (eddy loss) and Q30 (Fe–Si vs ferrites)** use a standard-physics result the slides don't contain: $W_e \propto f^2/\rho$. The exam still asks about eddy loss, so it may have been covered in class or in the handwritten notes. I haven't checked `MO NOTES (1).pdf`, so look there.
+- **Q24, the hysteresis part of Q30, and Q23** are fully covered by the slides.
+
+Each of the affected answers is already marked "added depth beyond the slides", but the Q25 and Q26 answers are numerical and don't carry that flag as clearly. I can add a visible warning callout to Q25, Q26 and Q30 that says eddy loss isn't in the syllabus slides. I can also add a short eddy-loss subsection to `notes.md` §8.17. Tell me if you want either.
+[Timestamp: 2026/11/15 01:55:53]
+
+**user**: now in the same way solve [[endsem3.pdf]] in [[endsem_solutions]]
+[Timestamp: 2026/11/15 01:57:19]
+
+**ai**: I've added `# Endsem 3 Solutions` to the end of `endsem_solutions.md`, with all 18 questions solved in the same format. I haven't opened the note in Obsidian. A script check found no unquoted lines inside the callouts.
+
+The paper says to attempt any 12, and only your first 12 answers are marked. All 18 are solved so you can choose.
+
+**What's carried over.** Most of this paper repeats questions from the first paper. Those answers are copied in full, so each card stands alone:
+- **Q1** is the Shockley and Frank partials, without the HCP part.
+- **Q3(b)** is the sessile-lock reaction.
+- **Q5** is the ductile-to-brittle transition and the Yoffee diagram, split into the paper's 2 and 3 marks.
+- **Q6** is the hardness tests. I added Knoop with its formula, `HK = 14.2 P/l²`, and a comparison, because Endsem-1 didn't have it.
+- **Q7(a)** is carbon black vs silica.
+- **Q10 and Q12–Q18** are copies of the Endsem-1 answers.
+
+**New answers.**
+- **Q2** is the Schmid factor. It derives the resolved shear stress and proves the maximum is 0.5 with the inequality cos φ₁ cos φ₂ ≤ (cos²φ₁ + cos²φ₂)/2 ≤ ½. The proof relies on the slip direction being perpendicular to the plane normal.
+- **Q3(a)** is slip vs twinning.
+- **Q4** gives five one-mark definitions: Poisson ratio, anelasticity, necking, the 0.2 % offset yield stress, and modulus of resilience.
+- **Q7(b)** is steel in concrete. I used your handwritten "same expansion coefficient" note as the first reason, followed by no corrosion in cement and a strong bond.
+- **Q8** derives the longitudinal modulus (isostrain) and transverse modulus (isostress), with upper and lower bounds.
+- **Q9** is fibreglass, with its advantages, limits and uses.
+- **Q11** is zone refining. I extracted its phase diagram from `Phase_Diagrams.pdf` into `images/PD - Zone Refining Phase Diagram.png`. The answer walks through c₀ → c_s′ → c_s″ at rising temperatures, then the moving molten zone and the ten-pass 10⁻⁶ result.
+
+The section ends with a Formula Summary for the new questions only, since the carried-over formulas are already in the Endsem-1 summary.
+
+Everything in this paper is covered by your slides, so I didn't add any "added depth" answers. The exception is the Q2 maximum-value proof, which is my own derivation.
+[Timestamp: 2026/11/15 01:57:19]
