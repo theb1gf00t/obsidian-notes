@@ -61,7 +61,7 @@ tags:
 
 | Level | Means | Example |
 | --- | --- | --- |
-| `#` H1 | A **course block** — a group of related lecture PDFs, or the syllabus map | `# Syllabus Map`, `# Mechanical Properties` |
+| `#` H1 | A **course block** — a group of related lecture PDFs, or the syllabus map | `# Syllabus Map`, `# 1. Mechanical Properties — I`, `# Composites` |
 | `##` H2 | **One syllabus topic / PDF**, numbered in syllabus order | `## 1. Mechanical Properties — I`, `## 2. Mechanical Properties — II` |
 | `###` H3 | A **numbered section** inside the topic, following the lecture's own order | `### 2.4 CRSS and the Schmid factor` |
 | `####` H4 | An **enrichment subsection** — "added depth" that extends beyond the slides but stays on the topic | `#### Frank's rule — the general criterion` |
@@ -69,6 +69,7 @@ tags:
 Rules:
 
 - The **H2 number is the topic's position in `syllabus.md`** (1…9 for post-midsem). It never restarts or gets reused.
+- A topic family that spans several lecture PDFs (**1–3 Mechanical Properties**) is written as **one H1 block per syllabus topic** (`# 1.`, `# 2.`, `# 3.`), not as one wrapper H1 with three H2s: the family orientation paragraph sits under the first H1 and the shared `Formula Summary` under the last, so the outline stays flat. Blocks that hold a single topic keep the wrapper form (`# Composites` → `## 5. Composites`).
 - The **H3 number is `H2.topic-counter`** (`1.1`, `1.2`, … `2.19`, `3.10`). Counters run continuously within the H2 topic.
 - H4 subsections are **unnumbered** and titled descriptively (often an em-dash clause: `#### Why Hooke's law works`).
 - Do **not** use `#####`. Four levels is the maximum.

@@ -28,15 +28,13 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 
 ---
 
-# Mechanical Properties
+# 1. Mechanical Properties — I
 
 Materials in service are always subjected to forces or loads. Their response — **deformation**, and eventually **fracture or failure** — decides whether a design works. Mechanical testing exists to quantify that response so that materials can be selected, compared and designed with.
 
 ---
 
-## 1. Mechanical Properties — I
-
-### 1.1 Why study mechanical properties?
+## 1.1 Why study mechanical properties?
 
 - Every material in service carries **loads** — a bridge girder, a turbine blade, a car panel, a silicon wafer in a holder.
 - The response to load is **deformation**, and beyond a limit, **fracture/failure**.
@@ -51,7 +49,7 @@ The car-accident thought experiment from the lecture makes the distinction concr
 | "A dent on the side" | Large **plastic** deformation, but no separation |
 | "The car broke into pieces" | **Fracture** — the material could no longer carry load |
 
-#### What a "mechanical property" actually is
+### What a "mechanical property" actually is
 
 A **mechanical property** is the *response of a material to an applied load*, expressed as a quantity that can be measured in a reproducible test and inserted into a design calculation. It is therefore not an intrinsic constant like density: it is a *behaviour*, defined only relative to a specified test (specimen geometry, loading mode, temperature, strain rate). This is why "strength" is meaningless without saying *strength in what loading mode, at what temperature, at what speed*.
 
@@ -68,7 +66,7 @@ Every engineering component is loaded in a particular way, and a *different* pro
 | Hip implant | Bending + corrosion | Fatigue strength, modulus match to bone |
 | Optical fibre, silicon wafer | Bending, thermal stress | Fracture strength (flaw-controlled) |
 
-#### Where the numbers come from — and why they matter
+### Where the numbers come from — and why they matter
 
 The chain of reasoning in materials engineering is *processing → structure → properties → performance*. Mechanical testing is the step that closes the loop: it converts microstructural reality (grain size, dislocation density, porosity, phase fractions) into the design numbers an engineer can use, and it lets a metallurgist work backwards from a failed part to the microstructural cause.
 
@@ -78,7 +76,7 @@ Three distinct uses of mechanical testing:
 2. **Quality control / acceptance** — check that a delivered batch meets specification (a hardness check on a forged shaft, a Charpy test on a pressure-vessel plate).
 3. **Failure analysis and alloy development** — explain *why* a part broke, and rank candidate compositions/processes.
 
-#### Failures that shaped the subject
+### Failures that shaped the subject
 
 Mechanical properties are studied because getting them wrong kills people. Three canonical cases, all of which recur in this topic:
 
@@ -89,7 +87,7 @@ Mechanical properties are studied because getting them wrong kills people. Three
 > [!note] The design mindset
 > A material is never chosen for a single number. Design asks: *is it stiff enough? strong enough? does it give warning before failing? does it stay tough at the service temperature? can it be made into the required shape?* Those five questions map exactly onto the five key design properties in §1.6.
 
-### 1.2 Deformation: elastic, plastic, fracture
+## 1.2 Deformation: elastic, plastic, fracture
 
 > [!important] Definitions
 > **Elastic deformation** — reversible. The material returns to its original shape when the load is removed (e.g. a spring, a stretched rubber band). At the atomic level it is simply bond stretching: atoms move slightly from their equilibrium positions and spring back.
@@ -106,7 +104,7 @@ The central design question of this whole topic:
 
 To answer it we need a language that is independent of the size of the specimen — hence **stress** and **strain**.
 
-#### The three responses compared
+### The three responses compared
 
 | | **Elastic** | **Plastic** | **Fracture** |
 | --- | --- | --- | --- |
@@ -133,7 +131,7 @@ A useful way to remember the physics: **elasticity is a property of the bonds; p
 > - **loss of function by surface damage** — wear, corrosion, fretting.
 > Design therefore uses *stiffness* limits as often as *strength* limits.
 
-### 1.3 Types of loading
+## 1.3 Types of loading
 
 ![[MP - Types of Loading.excalidraw]]
 
@@ -148,7 +146,7 @@ Two kinds of strain follow from these loadings:
 1. **Change in dimension** — elongation, shortening (normal strain).
 2. **Angular distortion** — the change of angle between two initially perpendicular lines (shear strain).
 
-#### Each loading mode in mechanics terms
+### Each loading mode in mechanics terms
 
 | Mode | Stress produced | How it varies across the section | Typical failure mode |
 | --- | --- | --- | --- |
@@ -165,7 +163,7 @@ Two results worth carrying forward, because they explain why torsion and bending
   so a single torsion test gives the **shear modulus** $G$ and the **shear yield strength** $\tau_y$ directly — quantities that a tensile test only gives indirectly (through $G = E/2(1+\nu)$). Torsion also avoids the necking instability, so it can reach much larger strains than tension.
 - **Bending** is not a fundamental mode. The top fibres are in compression and the bottom fibres in tension, with a **neutral axis** in between that is stress-free. For an elastic beam, $\sigma = M y / I$ with $I = bd^3/12$ for a rectangle, so the maximum surface stress is $\sigma = 6M/(bd^2)$. This is exploited in §3.1 to test brittle materials, which are far stronger in compression than in tension.
 
-#### Hydrostatic stress — the loading that produces no yielding
+### Hydrostatic stress — the loading that produces no yielding
 
 If equal normal stresses act on all faces ($\sigma_{11}=\sigma_{22}=\sigma_{33}=-p$) with zero shear, the state is **hydrostatic compression**. Because plastic flow is driven by *shear*, and a hydrostatic state has no shear on any plane, it produces **no plastic deformation and no fracture** — it only changes volume elastically:
 
@@ -176,11 +174,11 @@ with $K$ the bulk modulus. This is why:
 - the **triaxial tension** that builds up inside a neck or ahead of a notch *does* promote fracture, because it adds hydrostatic tension that opens cracks (this is the physical content of the Bridgman correction in §2.18 and of notch brittleness in §2.7);
 - **superplastic forming** and **hydrostatic extrusion** can reach enormous strains — the superimposed pressure suppresses void growth and fracture.
 
-#### Combined loading is the normal case
+### Combined loading is the normal case
 
 Real components see several modes at once: a rotating shaft carries bending + torsion + axial load; a tooth of a gear carries contact pressure + bending + sliding shear. Because the equations of elasticity are linear, the stresses from each load case **superpose**: add the tensors component by component, then compare the resulting multiaxial state with a yield criterion (von Mises or Tresca, §1.4) rather than with the uniaxial yield strength.
 
-### 1.4 Concepts of stress and strain
+## 1.4 Concepts of stress and strain
 
 $$\text{Stress} = \frac{\text{Load }(P)}{\text{Area of cross-section }(A_0)} \qquad \text{Strain} = \frac{\text{Displacement }(\Delta L)}{\text{Gauge length }(L_0)}$$
 
@@ -204,7 +202,7 @@ $$ \sigma_{ij} = \begin{bmatrix} \sigma_{11} & \sigma_{12} & \sigma_{13} \\ \sig
 
 *Figure — the nine stress components acting on an elemental cube; the three visible faces carry one normal stress each and two shear stresses each.*
 
-#### Why nine components, and how they reduce
+### Why nine components, and how they reduce
 
 The stress at a point is a **second-rank tensor** because it is a linear map from a surface normal $\mathbf{n}$ to a traction vector $\mathbf{t}$: $t_i = \sigma_{ij}n_j$. It is a *tensor*, not a scalar, because a bar loaded in tension along $z$ also has shear stresses on planes inclined to $z$ — the number observed depends on the orientation of the plane you cut.
 
@@ -223,7 +221,7 @@ $$ \tau_{\max} = \frac{\sigma_1-\sigma_3}{2} = \frac{\sigma_y}{2} \quad\text{(Tr
 
 Both depend only on *differences* of principal stresses — confirming that a hydrostatic stress cannot cause yielding. They differ by at most 15.5 %, and they let a tensile-test yield strength be applied to any complex load case.
 
-#### Strain as a tensor, and the two strain measures
+### Strain as a tensor, and the two strain measures
 
 The **strain tensor** is the symmetric part of the displacement gradient:
 
@@ -231,7 +229,7 @@ $$ \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial x_j}+\frac{\part
 
 Its diagonal terms are **normal strains** ($\Delta L/L_0$); the off-diagonal terms are the *tensor* shear strains, which are **half** the engineering shear strain: $\gamma_{xy} = 2\varepsilon_{xy}$. The factor of 2 is a constant source of error — the physical distortion of a square element is $\gamma = \Delta x/y_0 = \tan\theta \approx \theta$, and it is $\gamma$ that appears in $G$ and in the strain-energy expressions.
 
-#### Counting the elastic constants
+### Counting the elastic constants
 
 The fourth-rank stiffness tensor $C_{ijkl}$ maps strain to stress, $\sigma_{ij}=C_{ijkl}\varepsilon_{kl}$. Because both stress and strain are symmetric, $C_{ijkl}=C_{jikl}=C_{ijlk}$, the $81$ components collapse as:
 
@@ -250,7 +248,7 @@ $$ A = \frac{2C_{44}}{C_{11}-C_{12}} \qquad (A=1\ \text{isotropic}) $$
 
 with $A_{\text{Al}}\approx1.2$, $A_{\text{Fe}}\approx2.5$, $A_{\text{Cu}}\approx3.2$, $A_{\text{W}}\approx1.0$. In aluminium the $\langle111\rangle$ direction is stiffer ($\sim76$ GPa) than $\langle100\rangle$ ($\sim63$ GPa); in a random polycrystal these average to $\sim70$ GPa.
 
-#### Units and magnitudes
+### Units and magnitudes
 
 $$ 1\ \text{MPa} = 10^6\ \text{Pa} = 10^6\ \text{N/m}^2, \quad 1\ \text{GPa} = 10^3\ \text{MPa}, \quad 1\ \text{ksi} = 6.895\ \text{MPa}, \quad 1\ \text{MPa} = 145\ \text{psi} $$
 
@@ -276,7 +274,7 @@ Strain is dimensionless (m/m or %). Typical room-temperature moduli, for order-o
 > [!note] Why $E$ is the least structure-sensitive property
 > $E$ depends almost entirely on **bonding** and only weakly on microstructure. Alloying, cold work, grain size, phase changes and heat treatment move the yield strength by factors of 2–5 but move $E$ by only a few percent. Only porosity and cracks (which reduce the load-bearing section) change $E$ appreciably. This is why "$E$ = property of the bond, $\sigma_y$ = property of the defects" is such a useful summary.
 
-### 1.5 Examples of mechanical tests
+## 1.5 Examples of mechanical tests
 
 | Test | What it measures | Typical use |
 | --- | --- | --- |
@@ -295,7 +293,7 @@ Notes on the less obvious ones (from the class notes):
 - **Impact:** a sudden blow is delivered (pendulum hammer). The **energy absorbed** in breaking the specimen is measured — the *notch toughness*. Standard geometries are the **Izod** and **Charpy** tests. A ductile material deforms and absorbs much energy; a brittle material absorbs little and snaps.
 - **Creep:** slow, continuous deformation under a **constant load** at high temperature — usually quoted as $T \gtrsim 0.4\,T_m$ (melting point in kelvin).
 
-#### What each test really delivers
+### What each test really delivers
 
 | Test | Standard | Raw output | Derived properties | Main limitation |
 | --- | --- | --- | --- | --- |
@@ -316,7 +314,7 @@ Notes on the less obvious ones (from the class notes):
 $$ \dot{\varepsilon}_s = A\sigma^n\exp\!\left(-\frac{Q}{RT}\right) $$
 with a stress exponent $n\approx3$–$5$ for dislocation creep and $Q$ the activation energy for self-diffusion; at low stress and fine grain size, diffusional creep takes over with $n\approx1$.
 
-### 1.6 Key mechanical design properties
+## 1.6 Key mechanical design properties
 
 | Property | Meaning | Measured by |
 | --- | --- | --- |
@@ -331,7 +329,7 @@ with a stress exponent $n\approx3$–$5$ for dislocation creep and $Q$ the activ
 > **Brittle** — the material fractures *suddenly, with little or no plastic deformation* (cast iron, glass, ceramics, and steels at low temperature). There is no warning.
 > The same material can be ductile or brittle depending on **temperature, strain rate and the presence of a notch** — see the Yoffee diagram in §2.7.
 
-#### The five properties, in engineering language
+### The five properties, in engineering language
 
 - **Stiffness** ($E$, or $G$) sets the *deflection* for a given load. It is a **design limit in its own right** — a bridge that sags 1 m has failed its serviceability requirement even if no metal has yielded. It cannot be changed by heat treatment; only by changing the material (or the section shape, which is a *geometry* fix, not a materials fix).
 - **Strength** sets the *load* a part can carry. Design is normally based on **yield**, not fracture, because yield is a well-defined, reproducible, structure-insensitive-in-the-small quantity, and because a part that yields visibly gives warning.
@@ -341,7 +339,7 @@ with a stress exponent $n\approx3$–$5$ for dislocation creep and $Q$ the activ
 
 $$\text{Strength} \neq \text{Toughness} \neq \text{Hardness}$$
 
-#### Typical values, for scale
+### Typical values, for scale
 
 | Material | $E$ (GPa) | Yield strength (MPa) | UTS (MPa) | Elongation (%) | Hardness |
 | --- | --- | --- | --- | --- | --- |
@@ -358,7 +356,7 @@ $$\text{Strength} \neq \text{Toughness} \neq \text{Hardness}$$
 | Nylon 6,6 | 3.0 | 80 | 85 | 60 | — |
 | Natural rubber | 0.005 | — | 20–30 | 500–800 | — |
 
-#### Factor of safety
+### Factor of safety
 
 Design does not use the measured strength directly:
 
@@ -366,7 +364,7 @@ $$ \sigma_{\text{allowable}} = \frac{\sigma_y}{n}, \qquad n = 1.5\text{–}2 \te
 
 The safety factor covers scatter in the material data, uncertainty in the load, stress concentrations not captured by the simple formula, and consequences of failure. It is a *legal and economic* choice as much as a technical one.
 
-#### Stiffness vs strength trade-off, and specific properties
+### Stiffness vs strength trade-off, and specific properties
 
 A material can be stiff but weak (glass), strong but compliant (some polymers), or both (steel). For **moving parts** the relevant quantities are the *specific* ones — property divided by density:
 
@@ -378,7 +376,7 @@ A material can be stiff but weak (glass), strong but compliant (some polymers), 
 
 This is the basis of **Ashby material-selection charts** (modulus–density, strength–density bubble charts): the material classes form clusters, and the selection lines are iso-performance lines of the form $E = C\rho$. Polymers lie bottom-left, metals in the middle, ceramics top-right (stiff, strong, but brittle), composites occupy the gap. The charts make the trade-offs in this table visible at a glance.
 
-### 1.7 Mechanical testing ↔ deformation mechanisms
+## 1.7 Mechanical testing ↔ deformation mechanisms
 
 Mechanical tests are only the *symptom*; the *cause* is what happens to atoms and dislocations. The lecture maps the bridge explicitly:
 
@@ -392,7 +390,7 @@ Mechanical tests are only the *symptom*; the *cause* is what happens to atoms an
 
 All of these are developed in §2.
 
-#### The length-scale ladder
+### The length-scale ladder
 
 | Scale | What exists there | What it controls |
 | --- | --- | --- |
@@ -405,7 +403,7 @@ All of these are developed in §2.
 
 Each row explains a distinct part of a mechanical test. The atomic scale fixes the *slope* of the curve, the dislocation scale fixes *where the curve bends*, and the specimen scale fixes *where it ends*.
 
-#### Mechanism → measurable signature
+### Mechanism → measurable signature
 
 | Observation in a test | Underlying mechanism |
 | --- | --- |
@@ -426,7 +424,7 @@ $$ \tau_y \approx \tau_0 + \alpha G b\sqrt{\rho} \quad\text{(forest hardening)},
 
 So a single tensile test is really a *probe of defect populations*: two specimens of the same composition and different grain size give different yield stresses, different work-hardening rates and different ductilities, all from the same atoms and bonds.
 
-### 1.8 Tensile test: first look
+## 1.8 Tensile test: first look
 
 The tensile test pulls a specimen along its axis at a constant rate and records **load** and **elongation**, which are converted to **stress** and **strain**.
 
@@ -456,9 +454,9 @@ The brittle curve, by contrast, has **no yielding at all**: fracture happens on 
 
 ---
 
-## 2. Mechanical Properties — II
+# 2. Mechanical Properties — II
 
-### 2.1 Atomic model of elastic behaviour
+## 2.1 Atomic model of elastic behaviour
 
 ![[MP2 - Interatomic force-distance curve.png|420]]
 
@@ -479,7 +477,7 @@ Hence a **deep, steep, narrow potential well → high modulus** (covalent cerami
 > [!note] Why Hooke's law works
 > Near $r_0$ the $F$–$r$ curve is essentially a straight line, so force $\propto$ displacement → **linear elasticity**. At large strains the curve bends and Hooke's law fails. Anelasticity and nonlinear elasticity are the corrections.
 
-#### Theoretical shear strength of a perfect crystal
+### Theoretical shear strength of a perfect crystal
 
 If a perfect crystal were sheared, the shear stress would vary roughly sinusoidally with displacement, giving
 
@@ -496,7 +494,7 @@ where $b$ is the Burgers vector, $d$ the interplanar spacing and $w$ the width o
 - **Wide core** (metals — metallic bonding, non-directional) → exponential term small → **low Peierls stress** → easy glide, ductile.
 - **Narrow core** (covalent/ionic ceramics) → **high Peierls stress** → hard, brittle.
 
-#### The potential well, quantitatively
+### The potential well, quantitatively
 
 The two standard model potentials are the **Morse** potential (bonding, three parameters) and the **Lennard-Jones** potential:
 
@@ -520,7 +518,7 @@ Three consequences, all directly examinable:
 2. **$E$ decreases with temperature**, roughly linearly, by typically **2–5 % per 100 K**, because thermal expansion increases $r_0$ and the potential well becomes effectively shallower (anharmonicity). This is why the "room-temperature modulus" must be quoted with a temperature for high-temperature design.
 3. **Elastic strain is small** because the parabola is only a good approximation for $|r-r_0| \ll r_0$. Real elastic strains are $\approx 0.1$–$1$ % — only a small fraction of an interatomic spacing. Beyond that, the higher-order (anharmonic) terms dominate and the stress–strain relation becomes **non-linear**; rubber is the extreme case, where the "bonds" are chain conformations and enormous non-linear recoverable strains are the norm.
 
-#### Theoretical cohesive (fracture) strength
+### Theoretical cohesive (fracture) strength
 
 The same force–displacement curve gives the *maximum tensile force a bond can sustain*, obtained by setting $dF/dr = 0$ on the tensile side. Equating the work done in separating two planes to the surface energy $2\gamma_s$ gives the **theoretical cohesive strength**:
 
@@ -544,7 +542,7 @@ So the two great weaknesses of real materials have separate explanations: **disl
 > 4. Taking $b \approx d$ (close-packed plane and direction) gives $\tau_{\max}\approx G/2\pi \approx G/6$.
 > The measured CRSS of a soft FCC metal is $\sim10^{-5}G$ — a factor of $10^4$ discrepancy. A dislocation does not shear the whole plane at once; it shears one line of bonds at a time, so the *applied* stress only has to supply the (small) Peierls friction.
 
-#### The Peierls–Nabarro stress in physical terms
+### The Peierls–Nabarro stress in physical terms
 
 $$ \tau_{PN} = \frac{2G}{1-\nu}\exp\!\left(-\frac{2\pi w}{b}\right), \qquad w = \frac{d}{1-\nu} $$
 
@@ -559,7 +557,7 @@ The exponential is the whole story: the resistance falls off **exponentially wit
 
 *Figure — a dislocation as the boundary between a slipped and an unslipped region of the crystal: the "interfacial region" is the dislocation core, of width $w$, and the lattice above and below it is perfect except for the elastic distortion around the core.*
 
-### 2.2 Deformation by slip and twinning
+## 2.2 Deformation by slip and twinning
 
 ![[MP - Slip and Twinning.excalidraw]]
 
@@ -577,14 +575,14 @@ Both are **shear** processes: the resolved shear stress on the plane, in the dir
 
 *Figure — (a) before deformation; (b) after slip, the upper block is displaced by a whole number of lattice spacings and the surface shows a step; (c) after twinning, each plane is displaced by a fraction of a spacing, producing a mirror-image (twinned) region.*
 
-#### Slip in more detail
+### Slip in more detail
 
 - Slip is **quantised**: the offset at the surface is a whole number of Burgers vectors, $n b$, because every dislocation that emerges leaves a step of height $b$. A visible **slip line** on an electropolished surface is not one dislocation but a **slip band** containing hundreds of dislocations.
 - Slip is *not* a simultaneous rigid sliding of two half-crystals. It proceeds by the nucleation, glide and escape of dislocations; the surfaces of the slipped region remain perfect, and the crystal orientation on both sides of the slip plane is unchanged.
 - Slip is **conservative** (no atoms added or removed) and **athermal in principle** for FCC metals — it needs only the Peierls stress to be exceeded, plus the stress to bypass obstacles. It is therefore possible at absolute zero (given enough stress).
 - Because slip repeats indefinitely on the same system, it can produce **arbitrarily large strains**; this is why metals can be rolled to 99 % reduction in thickness.
 
-#### Twinning in more detail
+### Twinning in more detail
 
 - In **deformation (mechanical) twinning** every successive plane is displaced by a *fraction* of a lattice vector, so the sheared volume is uniformly reoriented. For FCC the twin system is $\{111\}\langle112\rangle$ with a **twinning shear** of $1/\sqrt2 = 0.707$; for HCP it is $\{10\bar12\}\langle10\bar11\rangle$ (the common "tension twin") or $\{10\bar11\}\langle10\bar12\rangle$ (compression twin). BCC twins on $\{112\}\langle111\rangle$.
 - The twin is a **mirror image** of the parent lattice. It is *not* a phase; the crystal structure is identical, only its orientation differs.
@@ -601,7 +599,7 @@ Both are **shear** processes: the resolved shear stress on the plane, in the dir
 | Orientation change | None | Reorientation of the twinned volume |
 | Surface evidence | Slip steps/lines | Tilts/offsets, straight-sided lamellae |
 
-### 2.3 Slip systems
+## 2.3 Slip systems
 
 A **slip system** = one **slip plane** (the close-packed plane — highest atomic density, widest interplanar spacing, hence lowest shear resistance) + one **slip direction** (the close-packed direction within that plane) + the Burgers vector of the dislocation that glides.
 
@@ -618,7 +616,7 @@ The **number of independent slip systems** controls ductility (von Mises criteri
 
 *Figure — the lecture table of slip planes and directions for FCC, BCC, NaCl and HCP, with the "less common" alternatives marked.*
 
-#### Why the close-packed plane and the close-packed direction win
+### Why the close-packed plane and the close-packed direction win
 
 Slip requires the *smallest possible disturbance of the lattice*, and both choices reduce it:
 
@@ -626,7 +624,7 @@ Slip requires the *smallest possible disturbance of the lattice*, and both choic
 - **Close-packed plane**: the largest interplanar spacing $d$. The shear stress needed to slide the planes is roughly $\propto 1/d$ (fewer bonds per unit area to break), the Peierls stress falls exponentially with $d$ (through $w = d/(1-\nu)$), and the atomic "corrugation" felt by the moving dislocation is smallest.
 - A **slip system** must combine both: $\{111\}$ with $\langle110\rangle$ in FCC, for instance, because the $\langle110\rangle$ direction lies *in* the $\{111\}$ plane.
 
-#### Stacking faults, partials and the width of the core
+### Stacking faults, partials and the width of the core
 
 In FCC, the perfect dislocation $\tfrac{a}{2}\langle110\rangle$ can lower its energy by dissociating into two **Shockley partials** joined by a strip of **stacking fault**:
 
@@ -641,7 +639,7 @@ The balance between the repulsion of the partials and the fault energy $\gamma_{
 
 This is why **brass work-hardens so much faster than aluminium** even though both are FCC, and why austenitic stainless steels are both strong and highly ductile (they work-harden and twin). It also explains why cross-slip (needed for dislocations to bypass obstacles and for dynamic recovery) is temperature-dependent: at high temperature the partials recombine thermally and cross-slip becomes easy, which is the basis of Stage III hardening and of recovery.
 
-#### Special cases
+### Special cases
 
 - **BCC** slip is on $\{110\}$, $\{112\}$ and $\{123\}$ depending on temperature and stress state, always in $\langle111\rangle$. This "pencil glide" gives many *geometrically* possible systems, but the highly stressed non-planar screw core makes the CRSS strongly temperature-dependent. Result: BCC metals are strong but brittle at low $T$, ductile at high $T$.
 - **HCP** metals have only 3 basal systems (one plane $\times$ three directions), which by itself cannot satisfy von Mises. Ductility is rescued by (i) prismatic $\{10\bar10\}\langle11\bar20\rangle$ slip, (ii) pyramidal $\langle c+a\rangle$ slip with $b$ out of the basal plane (5 independent systems), and (iii) twinning, which reorients grains so that new systems become favourable. When these are all hard — as in Mg at room temperature, or Zn and Cd — the metal is brittle in polycrystalline form. Adding lithium to magnesium, or raising the temperature, activates $\langle c+a\rangle$ slip and restores ductility.
@@ -652,7 +650,7 @@ This is why **brass work-hardens so much faster than aluminium** even though bot
 > [!note] Von Mises criterion — why exactly five?
 > A general deformation of a polycrystal requires an arbitrary *shape change at constant volume*. The strain tensor has 6 independent components; the constant-volume constraint removes 1, leaving **5 independent strain components**. Each independent slip system can supply only one, so at least 5 are needed for the *grain* to conform to its neighbours. With fewer, grain boundaries must crack or slide → low ductility. (Grain-boundary sliding and diffusional flow can relax this requirement, which is why fine-grained HCP metals at high temperature are more ductile.)
 
-### 2.4 CRSS and the Schmid factor
+## 2.4 CRSS and the Schmid factor
 
 ![[MP - Schmid Factor Geometry.excalidraw]]
 
@@ -686,7 +684,7 @@ Because different systems in the same crystal have different $m$ for the same ap
 
 *Figure — the tensile axis at angles $\phi_1$ (to the slip-plane normal) and $\phi_2$ (to the slip direction); the resolved shear stress is $\tau = \sigma\cos\phi_1\cos\phi_2$.*
 
-#### The same result in tensor form
+### The same result in tensor form
 
 The resolved shear stress is the projection of the stress tensor onto the slip plane and the slip direction:
 
@@ -697,7 +695,7 @@ where $\mathbf{n}$ is the slip-plane normal and $\mathbf{b}$ the unit slip direc
 - The Schmid factor depends only on the **relative orientation** of the stress axis, plane normal and slip direction — not on the material.
 - For a *general* stress state, each of the 12 systems of an FCC crystal has its own $m$; the active one is whichever maximises $\tau_R$ for that stress state.
 
-#### Worked example (typical exam question)
+### Worked example (typical exam question)
 
 > A copper single crystal is loaded in tension along $[123]$. The primary slip system is $(111)[01\bar1]$. Find the Schmid factor and the yield stress if $\tau_{CRSS} = 0.8$ MPa.
 
@@ -711,14 +709,14 @@ where $\mathbf{n}$ is the slip-plane normal and $\mathbf{b}$ the unit slip direc
 
 Note how *small* the yield stress is: a nearly-perfect copper crystal yields at a few MPa, whereas polycrystalline copper yields at $\sim70$ MPa. That factor of $\sim15$ is the combined effect of orientation averaging (Taylor factor $\sim$3), grain boundaries, and the initial dislocation density.
 
-#### Orientation dependence: the "soft" and "hard" orientations
+### Orientation dependence: the "soft" and "hard" orientations
 
 Because $\sigma_y = \tau_{CRSS}/m$, a single crystal's yield stress varies with orientation by a factor of $\infty$ in principle and by roughly $2$–$3$ in practice over the orientations that can actually be tested. Two features of the classic single-crystal data:
 
 - **Multiple slip near $m=0.5$**: when the axis is at $45^\circ$ to both plane and direction, *several* systems simultaneously reach $m\approx0.5$ (there are 8 systems with $m=0.5$ for the $\langle100\rangle$ axis, 6 for $\langle110\rangle$, 6 for $\langle111\rangle$... in fact the number depends on the axis). The crystal then deforms by multiple slip, work-hardens very rapidly, and the load–extension curve shows a sharp "corner". This is why the Schmid law holds well in the "single-slip" orientations and breaks down near high-symmetry axes.
 - **Latent hardening**: slip on the primary system hardens the *latent* (inactive) systems even more than itself. This violates the assumption that CRSS is a constant, and it is the reason real crystals show a higher flow stress than the simple Schmid prediction after a few percent strain.
 
-#### From single crystal to polycrystal: the Taylor factor
+### From single crystal to polycrystal: the Taylor factor
 
 In a polycrystal, grains are randomly oriented and each must accommodate the shape change of its neighbours (von Mises: 5 systems). Averaging the Schmid factors over all orientations and all active systems gives the **Taylor factor**
 
@@ -728,7 +726,7 @@ $$ M = \frac{\sigma_y}{\tau_{CRSS}} \approx 3.06\ \text{(FCC, random texture)}, 
 - The same idea explains why **polycrystals are stronger than single crystals**: not only orientation averaging but also grain-boundary constraint (each grain is prevented from deforming freely by its neighbours), which adds the Hall–Petch term.
 - Conversely, a **single crystal of a superalloy** (turbine blade) is *weaker* per unit CRSS but has no grain boundaries to slide or crack, so it has far better creep and fatigue resistance — which is why blades are directionally solidified or single-crystal.
 
-### 2.5 Dislocation reactions and sessile (Lomer) locks
+## 2.5 Dislocation reactions and sessile (Lomer) locks
 
 ![[MP - Dislocation Reaction Sessile Lock.excalidraw]]
 
@@ -753,7 +751,7 @@ The strain energy therefore **decreases by 50 %**, so the reaction is energetica
 > [!warning] Correct indices for the classic example
 > b$_1 = \tfrac{a}{2}[011]$ glides on $(1\bar11)$ and b$_2=\tfrac{a}{2}[10\bar1]$ glides on $(11\bar1)$; the intersection line of those two planes is $[110]$, and the sum $[011]+[10\bar1]=[110]$. (Both Burgers vectors must lie **in** their own plane — check with a dot product against the plane normal.) The product $\tfrac{a}{2}[110]$ is a $\langle110\rangle$ dislocation whose line lies in a $\{001\}$ plane, which is not a glide plane of the FCC lattice.
 
-#### Frank's rule — the general criterion
+### Frank's rule — the general criterion
 
 A reaction $\mathbf{b}_1+\mathbf{b}_2 \to \mathbf{b}_3$ is energetically favourable if the elastic energy per unit length falls. Since $E_{el}\approx\alpha G b^2$ (with $\alpha\approx0.5$–$1$),
 
@@ -766,7 +764,7 @@ Two useful corollaries:
 - **Two dislocations with the same $\mathbf{b}$ repel** each other (a reaction to $2\mathbf{b}$ would quadruple the energy) — hence dislocations arrange themselves into low-energy arrays (tilt and twist boundaries, cells).
 - **A dislocation can dissociate** (as in the Shockley partial reaction of §2.3) if the partials' energy sum is lower than the perfect dislocation's — this is why stacking faults exist at all.
 
-#### Types of sessile obstacle
+### Types of sessile obstacle
 
 | Obstacle | What it is | How it is overcome |
 | --- | --- | --- |
@@ -777,7 +775,7 @@ Two useful corollaries:
 | **Jog / forest dislocation** | Dislocation threading the glide plane | Thermal activation; jog dragging (also generates point defects) |
 | **Surface oxide / coating** | Hard film | Cracking of the film; nucleation site for fatigue cracks |
 
-#### Pile-ups, stress concentration and the Hall–Petch relation
+### Pile-ups, stress concentration and the Hall–Petch relation
 
 A pile-up of $n$ dislocations blocked at an obstacle multiplies the applied stress at the head of the pile-up by roughly $n$:
 
@@ -794,7 +792,7 @@ which is precisely the **Hall–Petch equation**. The same pile-up stress concen
 > - **Stage II (linear hardening)** — multiple slip begins; Lomer locks and forest dislocations form; hardening rate is high and nearly constant ($\theta\approx G/200$).
 > - **Stage III (parabolic/dynamic recovery)** — cross-slip lets dislocations bypass obstacles, so the hardening rate falls; in polycrystals, Stage II–III behaviour is what appears as the "rising plastic branch" of the tensile curve.
 
-### 2.6 The tensile test: specimen, machine, curve
+## 2.6 The tensile test: specimen, machine, curve
 
 ![[MP - Engineering Stress Strain Curve.excalidraw]]
 
@@ -817,13 +815,13 @@ which is precisely the **Hall–Petch equation**. The same pile-up stress concen
 
 *Figure — the load train of a universal testing machine: fixed crosshead with load cell, specimen, extensometer clipped to the gauge, and the moving crosshead.*
 
-#### Specimen geometry and why it is standardised
+### Specimen geometry and why it is standardised
 
 - The standard round specimen has gauge diameter $d_0 = 12.8$ mm (0.505 in.) and gauge length $L_0 = 50$ mm (2 in.), i.e. $L_0 = 4d_0$; the **proportional** designation is $L_0 = 5.65\sqrt{S_0}$ (ISO), where $S_0$ is the original cross-sectional area. Flat specimens are used for sheet, with the same proportional relation.
 - The **reduced section** guarantees that the stress is highest in the gauge, so the specimen yields and breaks where the extensometer is attached, not in the grips. The **fillet radius** between gauge and grip reduces the stress concentration there; too small a fillet causes grip-end failures (a classic bad-data signature).
 - Because **% elongation depends on gauge length** (the neck contributes a fixed extra length, so a shorter gauge gives a larger %EL), $L_0$ must always be quoted with the ductility value. % reduction in area, measured at the neck, does not have this problem.
 
-#### The machine and the measurement chain
+### The machine and the measurement chain
 
 | Element | Function | Practical point |
 | --- | --- | --- |
@@ -833,7 +831,7 @@ which is precisely the **Hall–Petch equation**. The same pile-up stress concen
 | **Grips** | Transmit load without slipping or bending | Wedge, collet or shoulder grips; misalignment produces bending and premature failure |
 | **Data acquisition** | Records load–displacement pairs | The raw curve is corrected for machine compliance and for the extensometer's own stiffness before $E$ is computed |
 
-#### Lüders bands and the yield-point phenomenon
+### Lüders bands and the yield-point phenomenon
 
 The upper and lower yield points are not a curiosity — they are the visible signature of **solute pinning**:
 
@@ -847,7 +845,7 @@ Consequences: the sharp yield point causes **stretcher strains** (flamboyant mar
 > [!warning] Common exam trap
 > The slope of the *engineering* stress–strain curve in the elastic region equals $E$ only if the displacement used is the *specimen's* elongation. Many textbook problems give load–extension data from a machine; you must convert using the gauge length and area, not the full specimen length.
 
-### 2.7 Brittle and ductile behaviour: temperature, and the Yoffee diagram
+## 2.7 Brittle and ductile behaviour: temperature, and the Yoffee diagram
 
 The same material gives quite different curves at different temperatures. For **iron**:
 
@@ -887,7 +885,7 @@ The **notch toughness** measured in a Charpy/Izod test plotted against temperatu
 
 *Figure — service limits of engineering alloys at low temperature: BCC carbon and low-alloy steels stop at moderate $T$, nickel steels extend lower, and FCC aluminium, nickel, titanium and austenitic stainless alloys reach liquid-helium temperature.*
 
-#### The physics behind the two curves
+### The physics behind the two curves
 
 Why does the yield stress fall with temperature while the fracture stress does not?
 
@@ -895,7 +893,7 @@ Why does the yield stress fall with temperature while the fracture stress does n
 - **Cleavage fracture stress is essentially athermal.** Breaking bonds across a plane does not need diffusion or thermal activation; the stress at which a pre-existing microcrack propagates depends on the crack size and on the surface energy, both nearly independent of temperature. It is a *stress-controlled* event, so it plots as a nearly horizontal line.
 - **Where they cross** is the DBTT. Below it, the material reaches the cleavage stress *before* it can generate the plastic flow needed to blunt the crack → brittle. Above it, it yields first, the plastic zone blunts the crack tip, and the material is ductile.
 
-#### Why a notch and a high strain rate shift the transition up
+### Why a notch and a high strain rate shift the transition up
 
 - A **notch** creates a triaxial stress state: the axial stress is raised by a factor $\sim$2–3 relative to the von Mises equivalent stress, while the *shear* stress that drives slip is unchanged. So the local tensile stress reaches the cleavage stress while the shear stress is still below the CRSS — fracture wins. This is why brittle behaviour is always associated with **constraint** (thick sections, notches, welds, sharp corners).
 - A **high strain rate** (impact) leaves less time for thermal activation, so $\sigma_y$ rises, while the fracture stress does not — the yield curve is effectively shifted up, moving the intersection to a higher temperature.
@@ -903,7 +901,7 @@ Why does the yield stress fall with temperature while the fracture stress does n
 - **Chemistry**: C, P, S, Sn, Sb, As raise the DBTT (segregation to grain boundaries weakens them, and P/Sn cause **temper embrittlement**); Ni lowers it. **Hydrogen** causes severe embrittlement at room temperature; **neutron irradiation** raises the DBTT by producing hardening and Cu-rich precipitates (a life-limiting issue for reactor pressure vessels).
 - **Thickness**: a thick section cannot relax the through-thickness stress by yielding at the free surfaces, so constraint is high — large sections are more brittle than thin ones, an uncomfortable fact for scaling.
 
-#### The Charpy transition curve
+### The Charpy transition curve
 
 Plotting absorbed energy against test temperature gives an S-shaped curve with three regions: **lower shelf** (low energy, pure cleavage, brittle), **transition** (steeply rising, mixed cleavage + ductile tearing), and **upper shelf** (high energy, fully ductile, fibrous). The DBTT is conventionally defined by a fixed energy level (**27 J** for ship steels), a fixed lateral expansion, or 50 % shear appearance. Because the transition region is very steep, a small temperature error causes a large energy error — hence the emphasis on temperature control and on reporting the *criterion* alongside the number.
 
@@ -912,7 +910,7 @@ Historical note: the **Liberty ship** fractures occurred at hatch corners (stres
 > [!note] Practical consequence for design codes
 > Pressure-vessel and ship codes require the steel's DBTT (measured by Charpy) to lie below the minimum service temperature by a margin. Where that cannot be guaranteed — very low temperature, very thick section, or hydrogen service — the material is changed to an FCC alloy (austenitic stainless, aluminium, nickel alloy), which has no such transition.
 
-### 2.8 Properties obtained from the tensile test
+## 2.8 Properties obtained from the tensile test
 
 1. **Elastic modulus** and **resilience**
 2. **Yield stress** (YS)
@@ -935,7 +933,7 @@ Two practical remarks:
 - **$E$ is measured from the steepest part of the curve**, which is why an extensometer (not crosshead displacement) is required — the elastic strain is only a few thousandths and machine compliance would dominate.
 - **Resilience and toughness are energies per unit volume**, so they are *not* the same as the impact energy in joules measured in a Charpy test (which is energy for a whole specimen, and includes notch effects). Keep the units straight.
 
-### 2.9 Anelasticity and viscoelasticity
+## 2.9 Anelasticity and viscoelasticity
 
 - In real materials, part of the elastic strain is **time-dependent**: deformation continues slowly *after* the stress is applied, and on unloading some finite time is needed for complete recovery. This is **anelasticity**.
 - Its origin is time-dependent microscopic/atomistic processes accompanying the deformation (e.g. stress-induced ordering of solute atoms, grain-boundary relaxation).
@@ -946,7 +944,7 @@ Two practical remarks:
 
 *Figure — the standard four-panel comparison: load–time cycle (top) against strain–time response (bottom) for (a) elastic, (b) anelastic/viscoelastic, (c) viscous and (d) elastomeric behaviour.*
 
-#### Anelasticity in metals: small but not always negligible
+### Anelasticity in metals: small but not always negligible
 
 - The anelastic strain is typically $\sim0.1$ % of the elastic strain at room temperature, so it is ignored for stiffness calculations. But it is the basis of **internal-friction (damping) measurements**, which are exquisitely sensitive to point defects:
   - the **Snoek effect** — interstitial C/N pairs in BCC iron reorient under stress, giving a damping peak whose height measures the interstitial content (a non-destructive chemical analysis);
@@ -954,7 +952,7 @@ Two practical remarks:
   - **grain-boundary relaxation** — sliding of boundaries accommodated by diffusion, appearing at high temperature and low frequency.
 - Anelasticity is why a *precisely* sized part (a quartz oscillator, a tuning fork, a precision spring) is chosen for low damping, and why high-damping alloys (Mn-Cu, cast iron) are chosen to suppress vibration and noise.
 
-#### Viscoelasticity in polymers: the same physics writ large
+### Viscoelasticity in polymers: the same physics writ large
 
 Because polymer deformation involves the *uncoiling and sliding of long chains* rather than the stretching of strong bonds, the "elastic" response itself is time-dependent. Three consequences, all seen in service:
 
@@ -972,7 +970,7 @@ The simplest models:
 
 The characteristic time is the **relaxation time** $\tau = \eta/E$. The ratio of the test time to this relaxation time (the *Deborah number*) decides what you observe: fast loading → glassy, stiff, brittle response; slow loading → rubbery, compliant, flowing response. This is why a silicone rubber ball bounces (fast) but sags under its own weight overnight (slow), and why the same polymer can be a "plastic" in a car bumper and a "rubber" in a seal.
 
-### 2.10 Poisson's ratio
+## 2.10 Poisson's ratio
 
 When a tensile stress is applied along $z$, the specimen elongates in $z$ ($\varepsilon_z>0$) and **contracts laterally** in $x$ and $y$ ($\varepsilon_x,\varepsilon_y<0$):
 
@@ -991,7 +989,7 @@ so a high Poisson's ratio (or a low shear modulus) means a low modulus relative 
 
 *Figure — axial extension $\varepsilon_z$ accompanied by lateral contractions $\varepsilon_x=\varepsilon_y$; the ratio defines $\nu$.*
 
-#### Deriving the relations between the four elastic constants
+### Deriving the relations between the four elastic constants
 
 For an isotropic solid only **two** constants are independent; the other two follow from them. Starting from the definition of $\nu$ and requiring that a hydrostatic pressure produce only a volume change:
 
@@ -999,13 +997,13 @@ $$ G = \frac{E}{2(1+\nu)}, \qquad K = \frac{E}{3(1-2\nu)}, \qquad \lambda = \fra
 
 The bulk modulus expression shows the meaning of the $0.5$ limit: as $\nu\to0.5$, $K\to\infty$ — the material becomes **incompressible**, which is exactly what a rubber is (its bulk modulus is $\sim$2 GPa while its shear modulus is $\sim$1 MPa, a ratio of $10^3$).
 
-#### Volume change under uniaxial tension
+### Volume change under uniaxial tension
 
 $$ \frac{\Delta V}{V} = \varepsilon_z(1-2\nu) = \frac{\sigma}{E}(1-2\nu) $$
 
 So for $\nu = 0.3$ a tensile strain of 0.3 % produces a volume increase of only $0.12$ %, and for $\nu=0.5$ the volume is unchanged. This is the basis of the **constant-volume assumption** used in plasticity (§2.16): plastic deformation proceeds by shear, which does not change volume, so $A_0l_0=A_il_i$.
 
-#### Values, limits and the exotic cases
+### Values, limits and the exotic cases
 
 | Material | $\nu$ |
 | --- | --- |
@@ -1026,7 +1024,7 @@ So for $\nu = 0.3$ a tensile strain of 0.3 % produces a volume increase of only 
 > [!note] Why $\nu$ is a *bond* property, like $E$
 > $\nu$ is the ratio of lateral to axial strain, which for an isotropic solid is fixed by the geometry of bond stretching vs bond-angle bending. It is insensitive to microstructure, so alloying and cold work barely move it. It *does* vary with temperature and, in polymers, with time (viscoelastic Poisson effect) — a rubber's effective $\nu$ drifts towards 0.5 as the test becomes slower.
 
-### 2.11 Yield stress and tensile strength
+## 2.11 Yield stress and tensile strength
 
 - **Yield strength** is the stress at which plastic deformation begins. Because the elastic-to-plastic transition is gradual for most metals, it is defined by the **0.2 % offset** construction: draw a line parallel to the elastic portion, starting at $\varepsilon = 0.002$; its intersection with the curve is $\sigma_y$.
 - **Tensile strength (UTS)** is the maximum stress on the engineering curve; it marks the **onset of necking** and the end of uniform deformation.
@@ -1036,7 +1034,7 @@ So for $\nu = 0.3$ a tensile strain of 0.3 % produces a volume increase of only 
 
 *Figure — the 0.2 % offset construction (left) and the upper/lower yield points of a low-carbon steel with the 0.2 % offset yield strength marked on the same curve (right).*
 
-#### The offset construction, precisely
+### The offset construction, precisely
 
 1. Draw the elastic line through the origin with slope $E$.
 2. Draw a line parallel to it, offset by $\varepsilon = 0.002$ (0.2 %) on the strain axis.
@@ -1046,7 +1044,7 @@ The offset is 0.2 % because it is just at the resolution of a good extensometer 
 
 **Why an offset at all?** Most metals do not show a sharp break in slope: the transition from elastic to plastic is gradual as individual grains with favourable orientations yield one by one. A convention is therefore needed, and 0.2 % is internationally agreed.
 
-#### Factors that move the yield strength
+### Factors that move the yield strength
 
 | Factor | Effect on $\sigma_y$ | Reason |
 | --- | --- | --- |
@@ -1059,7 +1057,7 @@ The offset is 0.2 % because it is just at the resolution of a good extensometer 
 | Porosity, cracks | Decreases | Reduced load-bearing section, stress concentration |
 | Hydrostatic pressure | Slight increase in tension tests | Suppresses void growth |
 
-#### Tensile strength: what it does and does not mean
+### Tensile strength: what it does and does not mean
 
 - $\sigma_{UTS}$ is the **maximum engineering stress**, and its significance is *geometric*: it marks the point where the rate of work hardening exactly balances the rate of area reduction (Considère condition, §2.15). It is not a "breaking stress" — the stress at fracture is *lower* on the engineering curve.
 - It is nevertheless the most-quoted strength number because it is easy to measure, reproducible, and it correlates with hardness and with fatigue strength. It is used for **specifications and quality control** and for estimating working loads in forming operations.
@@ -1069,7 +1067,7 @@ The offset is 0.2 % because it is just at the resolution of a good extensometer 
 > [!note] Tension–compression asymmetry
 > Some materials yield at different stresses in tension and compression — cast iron, many polymers, glasses and geological materials. For polymers and foams this is a real effect (chain tension vs buckling of struts); for metals it is usually small. It matters because a "yield strength" measured in tension may not apply in a compressive design, and because bending, which has both, produces a shifted neutral axis.
 
-### 2.12 Resilience and toughness
+## 2.12 Resilience and toughness
 
 | | **Resilience** | **Toughness** |
 | --- | --- | --- |
@@ -1085,7 +1083,7 @@ A tough material needs both: a ceramic may have huge strength but negligible duc
 
 *Figure — the modulus of resilience is the small triangular area up to yield; the modulus of toughness is the whole area under the curve to fracture.*
 
-#### Resilience in detail
+### Resilience in detail
 
 The area of the elastic triangle is
 
@@ -1097,7 +1095,7 @@ This is the **modulus of resilience**; the *proof resilience* is the same quanti
 - Because $U_r\propto\sigma_y^2$, doubling the yield strength *quadruples* the energy stored — a far stronger lever than any change in modulus.
 - Resilience is the relevant property for anything that must "bounce back" without permanent set: leaf springs, snap-fits, diaphragms, buffer springs, and the elastic range of a golf ball.
 
-#### Toughness in detail — three different quantities share the name
+### Toughness in detail — three different quantities share the name
 
 | "Toughness" | Symbol / units | Definition | When used |
 | --- | --- | --- | --- |
@@ -1128,7 +1126,7 @@ Typical magnitudes:
 
 The genuine trade-off is between **strength and $K_{Ic}$**: within one alloy family, every increment of strength (by alloying, cold work or ageing) reduces the fracture toughness, because the plastic zone that blunts a crack shrinks. That is the central compromise of high-strength alloy design.
 
-### 2.13 Tensile curves for polymers
+## 2.13 Tensile curves for polymers
 
 Three characteristic shapes:
 
@@ -1144,13 +1142,13 @@ Three characteristic shapes:
 
 *Figure — the annotated plastic-type polymer curve: Young's modulus from the initial slope, the yield point (upper yield), the drop into cold drawing, the draw ratio, and the tensile strength at break.*
 
-#### What each shape means physically
+### What each shape means physically
 
 - **Brittle** (PMMA, PS, epoxy at room temperature) — below the glass transition temperature $T_g$ the chains are frozen; the material behaves like a stiff glass. Failure is by **crazing** (micro-cavitation ahead of the crack) followed by crack growth; the fracture surface is mirror-smooth near the origin with **hackle** markings further out. Strain to failure is a few percent.
 - **Plastic** (HDPE, PP, PET, nylon, PC) — above $T_g$ but below $T_m$ (or in a semicrystalline polymer), chains can slide past one another. The curve shows a **yield maximum**, then a drop (strain softening) as a neck forms, then a long **cold-drawing plateau** at nearly constant stress while the neck propagates, and finally **strain hardening** as the chains become aligned, followed by fracture.
 - **Elastomeric** (natural rubber, silicone, vulcanised EPDM) — lightly cross-linked chains above $T_g$. Deformation uncoils the chains, which is an **entropy** effect: the chain wants to return to a random coil, so the restoring force *increases* with extension (the curve rises steeply at high strain). Modulus is very low (1–10 MPa), failure strain huge (300–800 %), and recovery essentially complete. The energy lost per cycle (hysteresis) makes rubber a good damper.
 
-#### The strong dependence on temperature and rate
+### The strong dependence on temperature and rate
 
 For a polymer the same specimen can show all three types of curve:
 
@@ -1167,7 +1165,7 @@ Raising the test **rate** is equivalent to lowering the temperature (time–temp
 | PC | 2.4 | 65 | 100 |
 | Natural rubber | 0.005 | — | 500–800 |
 
-### 2.14 Measures of strength and ductility
+## 2.14 Measures of strength and ductility
 
 $$ \sigma = \frac{F}{A_0} \qquad\qquad \varepsilon = \frac{l_i - l_0}{l_0} $$
 
@@ -1177,7 +1175,7 @@ $$ \%EL = \frac{l_f - l_0}{l_0}\times 100 \qquad\qquad \%RA = \frac{A_0 - A_f}{A
 - **Fracture strength is not used as a design criterion** — it is highly scattered, depends on flaws, and a design that allows stresses to approach fracture is already unsafe. Design is based on yield (with a factor of safety).
 - **% elongation to failure** and **% reduction in area** are measures of **ductility**. Reduction in area is often the more sensitive indicator, because it is measured at the neck where deformation is concentrated.
 
-#### The gauge-length dependence of %EL
+### The gauge-length dependence of %EL
 
 The total elongation is the sum of a *uniform* strain over the gauge and a *localised* strain concentrated in the neck. The neck contributes an approximately fixed length ($\sim\beta\sqrt{A_0}$), so its *relative* contribution grows as the gauge length shrinks. Empirically (Barba's law):
 
@@ -1185,7 +1183,7 @@ $$ \Delta L = \beta\sqrt{A_0} + \varepsilon_u L_0 \qquad\Longrightarrow\qquad \%
 
 Hence a "20 % elongation" for a 25 mm gauge is not the same material property as "20 %" for a 50 mm gauge. The **Russell–Bailey** and **Oliver** relations are variants of the same idea. %RA has no such ambiguity, which is why it is preferred for comparing materials and why specifications quote both.
 
-#### Ductility in design
+### Ductility in design
 
 - **Ductility is the warning system.** A ductile material at a stress concentration yields locally, redistributes load, and deforms visibly before breaking. A brittle one cracks. Codes therefore specify minimum elongation (e.g. $\ge$ 20 % for structural steel, $\ge$ 5 % for many pressure-vessel alloys).
 - **Ductility is a processing requirement.** Rolling, forging, drawing and deep-drawing all need large uniform elongation; formability is a separate (but related) property, measured by the forming-limit diagram, and it is controlled by $n$ (§2.18) and by the strain-rate sensitivity $m$.
@@ -1206,7 +1204,7 @@ Hence a "20 % elongation" for a 25 mm gauge is not the same material property as
 > [!note] Why fracture strength is not used as a design criterion
 > The stress at fracture is (i) measured after the specimen has already failed to be useful, (ii) strongly dependent on the largest flaw, so it scatters by a factor of 2–10 between nominally identical brittle specimens, and (iii) reduced by any stress concentration or by the size of the component. Designing to fracture strength would mean designing to the point of no return. Design therefore uses **yield strength with a safety factor** (for ductile materials) or **fracture toughness with a flaw-size inspection limit** (for brittle/high-strength materials).
 
-### 2.15 Necking
+## 2.15 Necking
 
 After the UTS the cross-section decreases locally — a **neck** forms, and further deformation is confined to it. Because engineering stress uses $A_0$, the curve falls even though the *true* stress in the neck continues to rise. In **semicrystalline polymers** the neck is *stable*: it draws down and then propagates along the gauge length (cold drawing), giving a long plateau rather than a fall.
 
@@ -1218,7 +1216,7 @@ After the UTS the cross-section decreases locally — a **neck** forms, and furt
 
 *Figure — in a semicrystalline polymer the neck stabilises and propagates along the gauge length (cold drawing), producing a long plateau instead of a descending branch.*
 
-#### The Considère criterion — why necking starts exactly at the UTS
+### The Considère criterion — why necking starts exactly at the UTS
 
 Necking begins when the *load* stops increasing, i.e. $dP=0$. With $P = \sigma_T A_i$ and constant volume ($A_i l_i$ = const, so $dA/A = -d\varepsilon_T$):
 
@@ -1233,7 +1231,7 @@ $$ \boxed{\ \text{Necking begins when}\ \ \dfrac{d\sigma_T}{d\varepsilon_T} = \s
 $$ n = \varepsilon_{T,u} $$
 i.e. **the strain-hardening exponent equals the true uniform strain at the UTS.** This is one of the most examinable results in the whole topic, and it means that a tensile test gives $n$ directly as the true strain at maximum load.
 
-#### Strain-rate sensitivity and neck stability
+### Strain-rate sensitivity and neck stability
 
 A neck is stable if the material in the neck becomes *stronger in strain rate* as it thins — positive strain-rate sensitivity,
 
@@ -1245,7 +1243,7 @@ With $m>0$ the rapidly deforming neck region hardens and resists further localis
 - **cold-drawn polymers** show a stable neck, because drawing is a rate-sensitive orientation process;
 - raising the test temperature or slowing the rate (both raising the *effective* $m$) delays necking and increases elongation.
 
-#### The triaxial stress state in the neck
+### The triaxial stress state in the neck
 
 Once a neck forms, the necked region is constrained by the (still cylindrical) shoulders. This builds up **radial and hoop stresses** in addition to the axial one — a **triaxial tension** state. The axial stress computed as $F/A_{\text{neck}}$ therefore *overestimates* the true flow stress. Bridgman's correction is
 
@@ -1253,7 +1251,7 @@ $$ \sigma_{\text{corr}} = \frac{\sigma_T}{\left(1+\dfrac{2R}{a}\right)\ln\!\left
 
 where $a$ is the neck radius and $R$ the radius of curvature of the neck profile. The correction is small (a few %) at the start of necking and grows as the neck sharpens — this is exactly the gap between the "true" and "corrected" curves in §2.18. The same triaxiality is what makes notched bars brittle (§2.7): constraint raises the maximum principal stress without raising the shear stress that would relieve it by yielding.
 
-### 2.16 True stress and true strain
+## 2.16 True stress and true strain
 
 ![[MP - True vs Engineering Stress Strain.excalidraw]]
 
@@ -1274,7 +1272,7 @@ $$ \sigma_T = \sigma(1+\varepsilon) \qquad\qquad \varepsilon_T = \ln(1+\varepsil
 
 *Figure — engineering, true and corrected true stress–strain curves for a ductile metal: the engineering curve peaks and falls after the UTS, the true curve rises monotonically, and the corrected curve lies slightly below the true one in the necked region.*
 
-#### Where the conversions come from
+### Where the conversions come from
 
 Starting from constancy of volume during plastic flow, $A_0l_0=A_il_i \Rightarrow A_i = A_0l_0/l_i$:
 
@@ -1284,14 +1282,14 @@ $$ \varepsilon_T = \int_{l_0}^{l_i}\frac{dl}{l} = \ln\frac{l_i}{l_0} = \ln(1+\va
 
 Both follow from the same assumption and are therefore valid only while deformation is **uniform** (before necking).
 
-#### Why true strain is the "right" measure
+### Why true strain is the "right" measure
 
 - **Additivity**: strain increments multiply lengths, so logarithms add. Drawing a wire from $l_0\to l_1\to l_2$ gives $\varepsilon_T = \ln(l_1/l_0)+\ln(l_2/l_1)=\ln(l_2/l_0)$. Engineering strains do not add: the two steps $l_0\to1.5l_0\to2.25l_0$ are *each* an engineering strain of $0.5$, yet the total engineering strain is $1.25$, whereas the true strains add exactly, $\ln 1.5+\ln 1.5=\ln 2.25=0.811$.
 - **Symmetry in tension/compression**: reversing a true strain gives $-\varepsilon_T$ exactly; reversing an engineering strain of $+0.5$ gives $-0.33$, not $-0.5$. True strain treats the two directions consistently.
 - **Thickness reduction in rolling** is $\varepsilon_T = \ln(t_0/t_f)$, the standard formula in metal-forming analysis; a 50 % reduction in thickness is $\varepsilon_T = 0.693$, not 0.5.
 - **Large-strain equivalence**: for a general 3D deformation one uses the **effective (von Mises) strain** $\bar\varepsilon = \sqrt{\tfrac23(\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2)}$ in the same way as the von Mises stress, so that a multiaxial forming operation can be compared with a uniaxial flow curve.
 
-#### True fracture stress
+### True fracture stress
 
 At fracture, the true stress is
 
@@ -1306,7 +1304,7 @@ which is a gauge-length-independent measure of ductility — the natural compani
 > [!warning] Do not use these conversions after necking
 > Once the neck forms, the strain is no longer uniform across the gauge, so "the" true stress and "the" true strain of the specimen are ill-defined; $F/A_{\text{neck}}$ gives a *local* stress that overestimates the flow stress because of triaxiality. That is precisely why the "corrected" curve exists.
 
-### 2.17 Work hardening / strain hardening
+## 2.17 Work hardening / strain hardening
 
 In the plastic region the stress–strain curve has a **positive slope**: the stress required for further deformation increases with strain. This is **work hardening (strain hardening)**.
 
@@ -1327,7 +1325,7 @@ In the plastic region the stress–strain curve has a **positive slope**: the st
 
 Work hardening is exploited industrially (cold rolling, drawing, forging) and is removed by **annealing** (recovery + recrystallisation).
 
-#### The quantitative link to dislocation density
+### The quantitative link to dislocation density
 
 The flow stress is related to the *total* dislocation density by the Taylor relation
 
@@ -1343,7 +1341,7 @@ Since $\rho$ increases roughly linearly with plastic strain in Stage II, $\tau\p
 | Heavily deformed (90 %) | $10^{15}$–$10^{16}$ |
 | Theoretical maximum (cell walls) | $\sim10^{17}$ |
 
-#### Why dislocations obstruct each other
+### Why dislocations obstruct each other
 
 1. **Forest hardening** — a dislocation gliding on its plane must cut through the dislocations threading that plane ("forest"). Each intersection creates a jog, costing energy.
 2. **Junction formation** — two dislocations on intersecting planes can react to form a segment that is not glissile (**Lomer locks**, §2.5). Junctions are strong obstacles.
@@ -1351,7 +1349,7 @@ Since $\rho$ increases roughly linearly with plastic strain in Stage II, $\tau\p
 4. **Cell/subgrain structure** — at large strains dislocations arrange into dense walls surrounding nearly dislocation-free cells, and the cell size sets the mean free path.
 5. **Twin boundaries** — in low-SFE metals (brass, TWIP steels) deformation twins subdivide the grains and add barriers, giving exceptionally high hardening rates.
 
-#### Consequences and practical aspects
+### Consequences and practical aspects
 
 - **Uniform elongation is controlled by the hardening rate**: high hardening delays the Considère instability, so high-$n$ materials stretch further. This is why annealed copper and 304 stainless steel can be deep-drawn and why tempered 4340 cannot.
 - **The Bauschinger effect**: after tensile pre-strain, the compressive yield stress is *lower* than the tensile flow stress — the internal back stresses from pile-ups assist reverse flow. This matters in cyclic loading, in spring making, and in any forming operation with reversed strain.
@@ -1359,7 +1357,7 @@ Since $\rho$ increases roughly linearly with plastic strain in Stage II, $\tau\p
 - **Hot working vs cold working**: above the recrystallisation temperature, hardening is continuously removed by dynamic recovery/recrystallisation, so enormous strains are possible with low forces (rolling, forging, extrusion). Below it, the work hardening accumulates (cold rolling, wire drawing) and is used deliberately to strengthen the product.
 - **Work hardening is limited**: it cannot exceed the fracture strength, so a heavily drawn wire eventually fails; and it consumes all the ductility, so a cold-rolled sheet may be too brittle to bend.
 
-### 2.18 The plastic flow curve and the Hollomon equation
+## 2.18 The plastic flow curve and the Hollomon equation
 
 $$ \sigma_T = K\,\varepsilon_T^{\,n} $$
 
@@ -1386,7 +1384,7 @@ A **high $n$** (0.44, annealed Cu and 304 SS) means a material that work-hardens
 
 *Figure — the table of $n$ and $K$ values for various alloys (Callister, Table 7.4); note that $n$ varies by almost a factor of four between annealed copper and tempered 4340 steel.*
 
-#### Why the log–log plot is a straight line
+### Why the log–log plot is a straight line
 
 Taking logarithms of $\sigma_T=K\varepsilon_T^{\,n}$:
 
@@ -1394,7 +1392,7 @@ $$ \log\sigma_T = \log K + n\log\varepsilon_T $$
 
 so a plot of $\log\sigma_T$ vs $\log\varepsilon_T$ has slope $n$ and intercept $\log K$ at $\varepsilon_T=1$ — which is why $K$ is called the *strength coefficient* and is quoted in MPa (or psi). $K$ is *not* a strength in the design sense; it is the extrapolated stress at unit true strain, and it is usually much larger than the UTS.
 
-#### The link to the UTS and to Considère
+### The link to the UTS and to Considère
 
 Combining the Hollomon law with the Considère condition (§2.15) gives three useful results:
 
@@ -1406,7 +1404,7 @@ $$ \sigma_{T,u} = K n^{n} $$
 
 The first is the most useful in practice: **read $n$ straight off the tensile curve** as the true strain at maximum load. The second lets a specification be checked from $K$ and $n$ without a full curve, and it shows why a high-$n$ material has a UTS that is a large fraction of $K$, while a low-$n$ material's UTS is much lower than $K$.
 
-#### Worked example
+### Worked example
 
 > A steel has $K=600$ MPa and $n=0.21$. Estimate the UTS, the true stress at the UTS, and the flow stress at a true strain of 0.10.
 
@@ -1417,7 +1415,7 @@ The first is the most useful in practice: **read $n$ straight off the tensile cu
 
 Note how flat the flow curve is: ten-fold strain increases the flow stress by only a factor of $\sim$1.6. That is what $n\approx0.2$ means.
 
-#### Where Hollomon fails, and what is used instead
+### Where Hollomon fails, and what is used instead
 
 - **Below the yield point** the equation is not valid (it predicts zero stress at zero strain); it applies only from the onset of plastic flow.
 - **Double-$n$ behaviour**: many metals (particularly austenitic stainless and some aluminium alloys) show two slopes on the log–log plot — a low $n$ at small strains (easy glide, planar slip) and a higher $n$ at large strains (twinning, multiple slip). A single $n$ then underestimates large-strain formability.
@@ -1426,11 +1424,11 @@ Note how flat the flow curve is: ten-fold strain increases the flow stress by on
   The Voce form describes **saturation** of work hardening (dynamic recovery), which Hollomon never does.
 - **Strain-rate sensitivity** is added as $\sigma_T = K\varepsilon_T^{\,n}\dot{\varepsilon}^{\,m}$, with $m\approx0.01$–0.05 for metals at room temperature and $m\approx0.3$–0.5 for superplastic alloys.
 
-#### Why $n$ matters commercially
+### Why $n$ matters commercially
 
 $n$ is the single best predictor of **stretch formability**: a high-$n$ sheet resists local thinning (the Considère criterion is pushed to larger strain), so it can be deep-drawn and stretch-formed without splitting. That is why automotive sheet is specified by $n$ (and by the normal plastic-strain ratio $r$, the Lankford coefficient, which measures resistance to through-thickness thinning). It also explains why **annealed** sheet is used for forming and then **painted/baked or work-hardened** in service.
 
-### 2.19 Elastic recovery after plastic deformation
+## 2.19 Elastic recovery after plastic deformation
 
 - When the load is released during a test, the specimen unloads **parallel to the elastic line**; the recovered strain is $\sigma/E$.
 - This **elastic strain recovery** is why a formed sheet springs back after the tool is removed — the practical reason for over-bending in press forming.
@@ -1441,7 +1439,7 @@ $n$ is the single best predictor of **stretch formability**: a high-$n$ sheet re
 
 *Figure — unloading from a point on the plastic branch runs parallel to the elastic line; the horizontal distance between the loading and unloading curves is the elastic strain recovery. Reapplying load retraces the same line and yields again near the previous maximum stress.*
 
-#### Springback, quantitatively
+### Springback, quantitatively
 
 If a sheet is bent to a radius $R_0$ and the load is released, the elastic recovery is
 
@@ -1454,7 +1452,7 @@ so the final radius is larger than the tool radius and the part "opens up". Prac
 - **Stretch forming** — deforming in tension so that the whole section is yielded in one direction; the residual stress gradient is smaller.
 - **Compensation in high-strength steels and aluminium** — springback scales as $\sigma_y/E$, so it is far worse for high-strength steel ($\sigma_y/E\approx0.008$) than for mild steel ($\approx0.0012$). This is a real manufacturing problem for automotive AHSS and a reason hydroforming and hot forming are used.
 
-#### Residual stresses
+### Residual stresses
 
 Because unloading is elastic and non-uniform (the outer fibres of a bent sheet have yielded more than the neutral axis), the final part retains a **residual stress** pattern: tension on one surface, compression on the other. Consequences — both useful and dangerous:
 
@@ -1470,9 +1468,9 @@ Because unloading is elastic and non-uniform (the outer fibres of a bent sheet h
 
 ---
 
-## 3. Mechanical Properties — III
+# 3. Mechanical Properties — III
 
-### 3.1 Testing brittle materials: the three-point bend test
+## 3.1 Testing brittle materials: the three-point bend test
 
 ![[MP - Three Point Bending.excalidraw]]
 
@@ -1496,7 +1494,7 @@ where $F_f$ is the fracture load.
 
 *Figure — the three-point bend arrangement: a bar on two support pins, loaded at mid-span, with the top surface in compression and the bottom surface in tension; the two standard cross-sections (rectangular and circular) are also shown.*
 
-#### Where the formula comes from
+### Where the formula comes from
 
 For a beam of rectangular section, width $b$ and depth $d$, the second moment of area about the neutral axis is
 
@@ -1512,7 +1510,7 @@ $$ \sigma = \frac{(FL/4)r}{\pi r^4/4} = \frac{FL}{\pi r^3} $$
 
 Both assume: (i) the beam is elastic, (ii) deflections are small, (iii) shear stresses are negligible (span-to-depth ratio $L/d\ge8$–$10$; for ceramics $L/d\approx4$–$8$ is usual, and a shear correction can be applied), and (iv) the material is homogeneous and isotropic.
 
-#### Why bending instead of tension for ceramics
+### Why bending instead of tension for ceramics
 
 1. **Specimen preparation** — a simple rectangular bar can be cut and ground; a waisted tensile specimen of a hard, brittle ceramic is difficult and expensive to machine without introducing flaws.
 2. **Gripping** — a tensile specimen must be gripped, and every grip contact introduces a stress concentration that will fracture a brittle material at the grip rather than in the gauge. Bending needs only support pins.
@@ -1521,7 +1519,7 @@ Both assume: (i) the beam is elastic, (ii) deflections are small, (iii) shear st
 
 **The cost**: only a small volume of the specimen is at the maximum stress, so the test samples a small population of flaws. Because ceramic strength is **flaw-controlled and highly scattered** (a Weibull distribution, §3.2), the flexural strength of a small bend bar is systematically *higher* than the tensile strength of a large component. This is a size effect, not a materials effect, and it must be allowed for in design.
 
-#### Four-point bending
+### Four-point bending
 
 In four-point bending the load is applied through two inner rollers, so the central span experiences a **constant bending moment** and a uniform maximum stress over a region of length $L-2a$. Advantages over three-point bending:
 
@@ -1534,7 +1532,7 @@ The trade-off is a more complex rig and a larger specimen.
 > [!note] What "flexural strength" is not
 > It is not the true uniaxial tensile strength. It is the *modulus of rupture* — the stress computed from the elastic beam formula at the fracture load. If the material yields (metals) or has a non-linear stress–strain response (some ceramics, all polymers), this computed stress differs from the true surface stress. It is nonetheless the standard engineering number, and it is comparable between materials only when measured with the same specimen geometry and loading rate.
 
-### 3.2 Stress–strain behaviour of ceramics and the influence of porosity
+## 3.2 Stress–strain behaviour of ceramics and the influence of porosity
 
 - The stress–strain curve of a ceramic is **linear elastic up to fracture** — there is essentially **no plastic deformation**. The fracture strain is tiny ($\sim10^{-4}$–$10^{-3}$), so $E$ is large and the area under the curve (toughness) is small.
 - **Porosity** degrades both stiffness and strength, because pores act as stress concentrators and reduce the load-bearing cross-section:
@@ -1555,14 +1553,14 @@ where $P$ is the **volume fraction porosity** and $E_0,\sigma_0$ are the values 
 
 *Figure — flexural strength against porosity: a much steeper, exponential fall, $\sigma_{fs}=\sigma_0e^{-nP}$ with $n\approx4$–$7$.*
 
-#### Interpreting the two porosity equations
+### Interpreting the two porosity equations
 
 - **The modulus equation** $E=E_0(1-1.9P+0.9P^2)$ is essentially a *rule of mixtures* correction: a pore carries no load, so the load-bearing area is reduced, and the pore also perturbs the local stress field. The effect is gentle and *reversible* — a porous ceramic is still stiff, just less so, and the relation is nearly the same whether the pores are spherical or irregular.
 - **The strength equation** $\sigma_{fs}=\sigma_0e^{-nP}$ is far more severe because a pore is a **stress concentrator**, not merely missing area. A spherical pore of radius $r$ in a field $\sigma$ raises the local stress at its equator to $\sim3\sigma$ (for a spherical cavity, $K_t=3$ in the elastic solution; sharper pores and pore clusters give much higher values). A pore that touches a grain boundary or a surface flaw can *be* the critical crack. Since brittle fracture is governed by the *largest* flaw, the strength is exponentially sensitive to the *number* of pores — hence the exponential law and the $n\approx4$–$7$ values.
 - **Practical numbers**: a 10 % porosity alumina retains about 82 % of its modulus but only 50–60 % of its strength; a 99.5 % dense alumina and a 96 % dense one can differ by a factor of 2 in strength while both look "solid".
 - **Processing implications**: **sintering** (diffusional densification at $T\approx0.7T_m$) removes porosity; **hot pressing / HIPing** (pressure-assisted sintering) removes the last few percent, which is where most of the strength is; **additives** (MgO in alumina) inhibit grain growth so that pores are not trapped inside grains. Porosity also degrades **optical transparency** (pores scatter light), **thermal conductivity** and **dielectric breakdown strength**, so the same processing discipline is needed for functional ceramics.
 
-#### The statistics of brittle strength: Weibull
+### The statistics of brittle strength: Weibull
 
 Because failure initiates at the *weakest* flaw, the strength of nominally identical ceramic specimens scatters widely (coefficient of variation 10–30 %, versus 1–3 % for metals). The standard description is the **Weibull distribution**:
 
@@ -1584,7 +1582,7 @@ Two consequences that follow directly:
 | Zirconia (TZP) | 200 | 900–1200 | $5\times10^{-3}$ |
 | Concrete | 30 | 3–5 (tension) | $10^{-4}$ |
 
-### 3.3 Hardness: definition and advantages
+## 3.3 Hardness: definition and advantages
 
 ![[MP - Hardness Indenters.excalidraw]]
 
@@ -1608,7 +1606,7 @@ This empirical relation (and its counterparts for other alloys) is used for rapi
 
 *Figure — tensile strength plotted against Brinell hardness for steels, brass and nodular cast iron: each class follows its own approximately straight line, with steels offset from the non-ferrous metals.*
 
-#### Why hardness correlates with strength at all
+### Why hardness correlates with strength at all
 
 Both quantities measure the **same physical event**: the onset of plastic flow. Under a spherical or pyramidal indenter the material beneath the tip is in a complex, constrained, triaxial compression state, and it yields when the local shear stress reaches the shear yield strength. The mean pressure under the indenter (the hardness) is therefore a fixed multiple of the uniaxial flow stress — **Tabor's relation**:
 
@@ -1620,14 +1618,14 @@ $$ \sigma_{UTS}\approx 3.45\,HB \quad\Longleftrightarrow\quad HB \approx \frac{\
 
 so a structural steel of 400 MPa UTS reads about 116 HB — which is consistent with the Tabor factor, because 116 kgf/mm² $\approx 1140$ MPa of indentation pressure, and the *flow stress at the large strain under the indenter* is much higher than the yield strength. The numerical coefficient 3.45 is therefore not a fundamental constant: it folds together the constraint factor (≈3), the work hardening under the indenter, and the ratio $\sigma_{UTS}/\sigma_y$ for steels. This is exactly why the correlation is material-specific.
 
-#### What hardness is *not*
+### What hardness is *not*
 
 - **Not a fundamental property.** It has no unique definition independent of the test: it depends on indenter shape, load, loading rate, dwell time, and the material's work-hardening behaviour. A Brinell number and a Vickers number for the same steel are numerically similar but conceptually different measurements.
 - **Not a strength for design.** It cannot be inserted into a stress calculation; it is a *ranking* and *QC* parameter, and only through an empirical correlation does it estimate a strength.
 - **Not toughness.** See the warning callout above: a hard surface resists penetration but a crack can run through it with little energy. Hardness and fracture toughness are often inversely related, which is why tool steels are hard but brittle, and why tough grades are softer.
 - **Not uniform.** Surface hardness after machining, grinding, decarburisation, shot peening, nitriding or induction hardening differs from the core. Hardness *gradients* are used deliberately (case-hardened gears: hard case for wear, tough core for shock) and are measured by traverses across a section.
 
-#### Advantages, in design and production terms
+### Advantages, in design and production terms
 
 | Advantage | Consequence |
 | --- | --- |
@@ -1640,7 +1638,7 @@ so a structural steel of 400 MPa UTS reads about 116 HB — which is consistent 
 
 Typical industrial uses: incoming inspection of bar stock; verification of heat treatment (a quench-and-temper cycle is checked by HRC); case-depth measurement; weld qualification; monitoring of cold-work level; sorting mixed materials (a hardness traverse distinguishes a 1045 from a 4140).
 
-### 3.4 Hardness-testing techniques — summary
+## 3.4 Hardness-testing techniques — summary
 
 | Test | Indenter | Load | Hardness number |
 | --- | --- | --- | --- |
@@ -1655,7 +1653,7 @@ Typical industrial uses: incoming inspection of bar stock; verification of heat 
 
 *Figure — the lecture table (Callister, Table 7.5) of hardness-testing techniques with indenter shapes, side/top views, formulas and the standard designation of each number.*
 
-#### Choosing between them
+### Choosing between them
 
 | | **Brinell** | **Vickers** | **Knoop** | **Rockwell** |
 | --- | --- | --- | --- | --- |
@@ -1671,7 +1669,7 @@ Two practical distinctions matter:
 - **Macro vs micro indentation**: Brinell and Rockwell are macro tests where the indent samples many grains, so they give a *bulk average*. Vickers and Knoop are micro tests where the indent can be placed inside a single grain or a thin coating, so they give a *local* value. The same material often shows different numbers at the two scales (the **indentation size effect**, §3.9).
 - **Strength-based vs depth-based**: Brinell and Vickers report a *stress-like* quantity (load divided by indent area), so HB and HV are close to each other and roughly proportional to strength. Rockwell reports a *depth*, and its number is arbitrary and scale-dependent — hence the many letter scales and the restricted ranges.
 
-### 3.5 The Rockwell test
+## 3.5 The Rockwell test
 
 - The hardness number is determined by the **difference in depth of penetration** produced by an **initial minor load** (10 kg — improves accuracy by seating the indenter and removing surface roughness effects) followed by a **larger major load**.
 - The depth is read directly on a dial/gauge; no microscope measurement is needed — hence the speed and popularity of the test.
@@ -1712,7 +1710,7 @@ Each $0.002$ mm of depth equals one hardness point. For each scale, values are m
 
 *Figure — the Rockwell scale-selection table with typical applications for each scale.*
 
-#### The test sequence, step by step
+### The test sequence, step by step
 
 1. The specimen is placed on a flat, rigid anvil and the indenter is brought into contact.
 2. The **minor load** (10 kg) is applied. This seats the indenter, breaks through surface contamination and eliminates the effect of surface roughness — the depth reached under the minor load becomes the *reference zero*.
@@ -1726,14 +1724,14 @@ $$ HR = 100 - \frac{h}{0.002}\ \text{(diamond spheroconical)} \qquad\qquad HR = 
 
 **Why the minor load improves accuracy.** Without it, the measured depth would include the elastic/plastic seating of a rough surface — typically tens of micrometres, i.e. tens of hardness points. The minor load removes this by making the reference a *loaded* state. The major load's depth is then purely the response of the material.
 
-#### Scale selection
+### Scale selection
 
 - Use the **hardest scale whose reading stays in the valid range**. Valid readings are roughly 20–100 (or up to 130 on some scales): below 20 the divisions are compressed and resolution is poor, above 100 the indenter may be penetrating the anvil or the material may be at the limit of the indenter.
 - **A**: cemented carbides, thin hardened steel, shallow case. **B**: soft steels, copper and aluminium alloys. **C**: steels, hard cast irons, titanium (the workhorse scale). **D**: thin steel, medium case. **E/F/G/H/K**: progressively softer non-ferrous metals and bearing metals.
 - For **thin** specimens or thin cases, use a **superficial** scale (15N/30N/45N, 15T/30T/45T) with low load so the indent depth stays under 1/10 of the thickness.
 - A useful rule: if the reading is above HRB 100, switch to HRC (the ball is flattening and the reading is no longer reliable); if below HRC 20, switch to HRB or a lower-load scale.
 
-#### Typical values worth remembering
+### Typical values worth remembering
 
 | Condition of steel | HRC |
 | --- | --- |
@@ -1746,7 +1744,7 @@ $$ HR = 100 - \frac{h}{0.002}\ \text{(diamond spheroconical)} \qquad\qquad HR = 
 
 **Corrections for cylindrical specimens.** On a curved surface the indent is shallower than on a flat, so the reading is high; tables give corrections for each diameter and scale. This is a standard source of error when testing shafts and pins.
 
-### 3.6 The Brinell test
+## 3.6 The Brinell test
 
 - A hardened steel or **tungsten carbide ball of 10 mm diameter** is pressed into the surface.
 - Standard loads: **500–3000 kg in 500 kg increments**; harder materials need larger loads (to keep the indent size in the measurable range).
@@ -1759,7 +1757,7 @@ $$ HB = \frac{2P}{\pi D\left[D - \sqrt{D^2 - d^2}\right]} $$
 - There is **only one Brinell scale** (in contrast to Rockwell's many letter scales).
 - Specimen thickness, edge distance, spacing and surface-finish requirements are the same as for Rockwell. The indentation is large, so Brinell averages over a coarse microstructure (useful for cast irons and inhomogeneous alloys) but is unsuitable for thin specimens.
 
-#### Deriving the Brinell formula
+### Deriving the Brinell formula
 
 Brinell hardness is the **load divided by the curved surface area of the spherical cap** — not by the projected circular area. From the geometry of a sphere of diameter $D$ indented to a chordal diameter $d$:
 
@@ -1769,7 +1767,7 @@ $$ HB = \frac{P}{A_{\text{cap}}} = \frac{2P}{\pi D\left[D-\sqrt{D^2-d^2}\right]}
 
 This is the origin of the formula — and it explains why $HB$ is a *stress* (kgf/mm²) with a genuine physical meaning, unlike the Rockwell number.
 
-#### Load selection and the "constant $P/D^2$" rule
+### Load selection and the "constant $P/D^2$" rule
 
 Two specimens of the same material tested with different loads must give the same $HB$ — otherwise the test would be useless. Empirically, the indent geometry scales with $D$ only if the ratio $P/D^2$ is held constant. The standard values are:
 
@@ -1782,7 +1780,7 @@ Two specimens of the same material tested with different loads must give the sam
 
 Keeping $P/D^2$ constant keeps the *strain* under the ball constant; too low a load gives a shallow indent with large measurement error, too high a load may deform the anvil or over-strain the material. This is the **Meyer law**: $P = kd^n$, with $n\approx2.0$–2.5.
 
-#### Practical points
+### Practical points
 
 - **The ball material**: hardened steel for $HB<350$; **tungsten carbide** for harder materials, to avoid ball flattening that would corrupt the result. Above $\sim$600 HB the method is not reliable.
 - **Dwell time 10–30 s** allows plastic flow to complete; for soft metals a longer dwell increases the indent, so the time must be standardised (15 s is common).
@@ -1790,7 +1788,7 @@ Keeping $P/D^2$ constant keeps the *strain* under the ball constant; too low a l
 - **The large indent** ($\sim$2–5 mm) is both an advantage (averages inhomogeneity — good for cast iron, coarse forgings) and a limitation (damages finished surfaces, unusable on thin or small parts, and the minimum thickness is $\sim8$–10 × indent depth).
 - Because the indent is large, the result includes grain boundaries, porosity and inclusions — it reports the *engineering* hardness of the material rather than that of a single phase.
 
-### 3.7 The Knoop and Vickers microindentation tests
+## 3.7 The Knoop and Vickers microindentation tests
 
 - A **very small diamond indenter of pyramidal geometry** is forced into the surface. **Vickers**: a square-based pyramid with a **136°** included angle. **Knoop**: an elongated pyramid with diagonal ratio $l/b = 7.11$ and face angles chosen so that the long diagonal is about seven times the short one.
 - Applied loads are much smaller than for Rockwell/Brinell — **1 to 1000 g** (hence *microindentation*).
@@ -1801,7 +1799,7 @@ $$ HV = 1.854\,\frac{P}{d^2} \qquad\qquad HK = 14.2\,\frac{P}{l^2} $$
 
 where $d$ is the mean Vickers diagonal and $l$ the long Knoop diagonal.
 
-#### Where the constants come from
+### Where the constants come from
 
 **Vickers.** The indenter is a square-based pyramid with a **face angle of 136°** (chosen so that the ratio of indent area to depth matches that of an ideal conical indenter producing the same strain as a Brinell ball — the 136° is not arbitrary). Hardness is load divided by the *contact surface area* of the four faces:
 
@@ -1813,14 +1811,14 @@ The constant $1.854 = 2\sin 68^\circ$. Because the indent is *self-similar* (a p
 
 **Knoop.** The indenter is a rhombic-based pyramid with diagonal ratio $l/b = 7.11$ and face angles of 172.5° and 130°, giving $HK = 14.2\,P/l^2$. The elongated shape produces a shallow indent (depth $\approx l/30$), which is why Knoop is preferred for **thin coatings, brittle ceramics and case-depth traverses**: the plastic zone is shallow and does not extend through the layer being measured.
 
-#### Why microindentation matters
+### Why microindentation matters
 
 - **Individual phases**: an indent of 10–50 µm can be placed inside a single grain, so the hardness of ferrite, pearlite, cementite, austenite, a precipitate or a weld-zone constituent can be measured separately. This is the basis of microstructural QC.
 - **Case depth and coatings**: a traverse of indentations from surface to core gives the hardness profile — the definition of effective case depth (typically the depth where hardness falls to a specified value, e.g. 550 HV for carburised steel).
 - **Thin foils and small features**: MEMS, thin films, additively manufactured lattices.
 - **Brittle materials**: Vickers is the workhorse; Knoop is used where cracking must be minimised (§3.9).
 
-#### Limitations and refinements
+### Limitations and refinements
 
 - **Surface preparation is critical**: the diagonal is measured optically, and a poorly polished surface gives a ragged indent and a large error. Grinding and polishing (down to 1 µm diamond) is mandatory, and care must be taken not to introduce a deformed layer.
 - **Indentation size effect (ISE)**: at small loads the measured hardness is higher — the plastic zone is small, geometrically necessary dislocations are dense, and surface effects dominate. The value falls to a load-independent plateau at larger loads. This is why a hardness value must be quoted with its load.
@@ -1829,7 +1827,7 @@ The constant $1.854 = 2\sin 68^\circ$. Because the indent is *self-similar* (a p
   with $c$ the crack length and $\xi\approx0.016$ — a way to measure toughness from a single indent.
 - **Instrumented (nano)indentation**: modern instruments record load vs depth continuously (Oliver–Pharr analysis) and give hardness *and* modulus from the unloading slope, at scales of nanometres — used for thin films and individual phases. This is a direct descendant of the Vickers/Knoop idea.
 
-### 3.8 Hardness conversion
+## 3.8 Hardness conversion
 
 - **Hardness is not a well-defined physical property** — it is a response to a particular indenter geometry, load and material behaviour. Because the experimental conditions differ so much between techniques, **no comprehensive conversion scheme exists**.
 - Conversion tables/charts have been determined **empirically** and depend on the **material type and characteristics**.
@@ -1840,7 +1838,7 @@ The constant $1.854 = 2\sin 68^\circ$. Because the indent is *self-similar* (a p
 
 *Figure — the standard conversion chart relating Brinell, Vickers, Rockwell and Mohs hardness to tensile strength, with the material classes (tool steels, alloy steels, brasses, plastics) marked on the same axes.*
 
-#### Why conversion is possible at all — and why it is not exact
+### Why conversion is possible at all — and why it is not exact
 
 Hardness numbers from different tests are different *functions* of the same underlying plastic response, so they are monotonically related. But the relationship is not unique because each test probes a different combination of:
 
@@ -1863,7 +1861,7 @@ Hence conversion tables are **empirical**, are material-specific, and are only r
 
 The spread in such tables is typically ±3–5 % of the hardness value, and much larger for cast irons, duplex stainless steels and cold-worked non-ferrous alloys.
 
-#### The Mohs scale — a different kind of hardness
+### The Mohs scale — a different kind of hardness
 
 Mohs hardness is **ordinal and qualitative**: it ranks minerals by whether one scratches another (talc 1, gypsum 2, calcite 3, fluorite 4, apatite 5, orthoclase 6, quartz 7, topaz 8, corundum 9, diamond 10). Its steps are wildly non-uniform — the jump from 9 to 10 is a factor of about 4 in indentation hardness, while 1 to 2 is a small increment. It measures *scratch resistance* (a form of wear), not indentation resistance, so:
 
@@ -1874,20 +1872,20 @@ Mohs hardness is **ordinal and qualitative**: it ranks minerals by whether one s
 > [!warning] Don't mix scales in a specification
 > A drawing that specifies "hardness 45" is meaningless. Always quote the scale, the load and the indenter: "45 HRC", "600 HV1" (Vickers, 1 kg), "200 HBW 10/3000" (tungsten ball, 10 mm, 3000 kg). Conversion between scales should be treated as an estimate, not a measurement.
 
-### 3.9 Hardness of ceramics
+## 3.9 Hardness of ceramics
 
 - **Spherical indenters** (Rockwell, Brinell) are **not used** for ceramics — the concentrated load produces severe **cracking** around the indent instead of a clean impression.
 - **Vickers** is the workhorse for ceramics; for **very brittle** ceramics the **Knoop** test is often preferred because the elongated indent is less prone to cracking.
 - For both, the measured hardness **decreases with increasing load (indentation size effect)** and then reaches a **constant plateau** that is independent of load. The plateau value varies from ceramic to ceramic.
 - An **ideal** test uses a load large enough to be on the plateau, but not so large as to introduce excessive cracking.
 
-#### Why spherical indenters fail on ceramics
+### Why spherical indenters fail on ceramics
 
 A sphere produces a **Hertzian** stress field: high shear stresses at a depth of about half the contact radius, beneath a region of high hydrostatic compression. In a ductile metal that shear zone yields and forms a normal indent. In a ceramic there is no plastic flow to relieve it, so the tensile hoop stress at the contact periphery exceeds the (very low) tensile strength and a **ring/cone crack** forms — often before any measurable indent. The result is a damaged surface, not a hardness number.
 
 Pyramidal (Vickers) and rhombic (Knoop) indenters are used instead because they produce **localised shear** rather than a large tensile field; a small plastic zone does form under a sharp indenter even in a hard ceramic (the high hydrostatic pressure suppresses cracking), and the hardness is obtained from the indent size.
 
-#### The indentation size effect (ISE) in ceramics
+### The indentation size effect (ISE) in ceramics
 
 Plotted against load, hardness typically **decreases** with increasing load and then flattens:
 
@@ -1896,7 +1894,7 @@ Plotted against load, hardness typically **decreases** with increasing load and 
 
 The standard practice is therefore to report a **plateau value** measured with a load chosen so that the indent is large enough to be measured accurately (diagonal $\gtrsim$ 20 µm) but small enough that cracking is limited. Reporting "hardness" without the load is meaningless for ceramics.
 
-#### Typical values (Vickers, plateau)
+### Typical values (Vickers, plateau)
 
 | Ceramic | HV (GPa) | Comment |
 | --- | --- | --- |
@@ -1913,12 +1911,12 @@ The standard practice is therefore to report a **plateau value** measured with a
 
 Note the pattern: **hardness and toughness are usually inversely related** — zirconia is comparatively soft but the toughest engineering ceramic, while diamond and B4C are the hardest and among the most brittle. This is the same trade-off as in hardened tool steels (§3.3), and it is why "hard coating on a tough substrate" is the standard design for cutting tools and wear parts.
 
-### 3.10 Tear strength and hardness of polymers
+## 3.10 Tear strength and hardness of polymers
 
 - **Tear strength** — the ability to resist tearing — is important for **thin films** (packaging). It is defined as the **energy required to tear apart a cut specimen of standard geometry**; the crack must be propagated through the specimen, so tear strength depends on both the **tensile strength** and the **thickness** of the film. Magnitudes of tensile and tear strength are related (both reflect chain alignment and intermolecular bonding).
 - Polymers are much softer than metals and ceramics, so **Rockwell** tests (with ball indenters and low loads) are frequently used; other techniques are the **Durometer** and **Barcol** tests, both designed for soft materials.
 
-#### Tear strength in more detail
+### Tear strength in more detail
 
 - **What it measures.** The energy (or force) needed to propagate a tear through a standard notched specimen. It is a *fracture* property, not a strength: it depends on the energy dissipated in the plastic/viscoelastic zone ahead of the tear tip.
 - **Standard tests.** The **Elmendorf** (pendulum) test for films and the **trouser-tear** and **Graves** tests for sheet; units are N/mm (force per thickness) or g/µm for thin films, sometimes mJ/mm² for energy per area.
@@ -1926,7 +1924,7 @@ Note the pattern: **hardness and toughness are usually inversely related** — z
 - **Relation to tensile strength.** Both reflect the same underlying chain alignment and intermolecular bonding, so a tougher, more oriented film tears less easily. Biaxially oriented films (BOPP, PET) have high tear resistance *along* the machine direction and low *across* it — a serious issue for packaging where the tear must run predictably.
 - **Why it matters.** A packaging film that tears at 1 N is a convenience; a cable insulation that tears is a failure; a balloon that tears is burst. Tear strength is also a routine QC measure for polymer processing consistency.
 
-#### Hardness of polymers
+### Hardness of polymers
 
 Because polymers are soft and viscoelastic, the standard metals tests are unsuitable (a diamond cone would simply disappear into the material). The dedicated tests are:
 
@@ -1950,7 +1948,7 @@ Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles 
 
 ---
 
-## Formula Summary
+## Formula Summary — Mechanical Properties (Parts I–III)
 
 | Quantity | Expression | Notes |
 | --- | --- | --- |

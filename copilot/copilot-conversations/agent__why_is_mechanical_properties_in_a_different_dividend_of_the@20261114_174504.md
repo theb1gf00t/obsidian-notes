@@ -6,7 +6,7 @@ sessionId: "ses_e26383015ffe3a5rqRIgCWmfMR"
 tags:
   - copilot-conversation
 agentLabel: "Mechanical properties placement in notes"
-usage: '{"usedTokens":42265,"contextWindow":200000,"updatedAt":1794658657702}'
+usage: '{"usedTokens":61069,"contextWindow":200000,"updatedAt":1794658826210}'
 ---
 
 **user**: why is mechanical properties in a different dividend of the noteS?
@@ -66,3 +66,30 @@ Say which one you want and I'll do it as targeted edits.
 
 Which one? Say `1` or `2` and I'll run it in a single pass and verify the headings and the `[[notes#…]]` anchors afterwards. (It's a git repo, so either is one command to undo.)
 [Timestamp: 2026/11/14 17:46:09]
+
+**user**: 1
+[Timestamp: 2026/11/14 17:48:04]
+
+**ai**: Done — Mechanical Properties is now three flat top-level blocks, no wrapper. What changed in [[notes]]:
+
+| Line | H1 block | Contents |
+| --- | --- | --- |
+| 8 | `# Syllabus Map` | untouched |
+| 31 | `# 1. Mechanical Properties — I` | family intro paragraph (old line 33) now sits under this heading; `## 1.1`–`## 1.8` |
+| 457 | `# 2. Mechanical Properties — II` | `## 2.1`–`## 2.19` |
+| 1471 | `# 3. Mechanical Properties — III` | `## 3.1`–`## 3.10` + `## Formula Summary — Mechanical Properties (Parts I–III)` |
+| 1997 | `# Composites` | unchanged |
+
+The mechanical shift itself:
+
+- `# Mechanical Properties` wrapper deleted; its orientation paragraph merged into `# 1.`
+- `## 1./2./3.` → `# 1./2./3.` — the three topics are now peers of `# Composites`, `# Electrical & Electronic Properties`, `# Magnetic Properties`, `# Dielectric …`
+- `### N.x` → `## N.x` (37 sections) and `####` → `###` (all H4 enrichment subsections)
+- the shared formula table became `## Formula Summary — Mechanical Properties (Parts I–III)`, following the `— <block>` naming the other four summaries already use
+
+Verification: 137 heading lines rewritten, **zero** content lines touched (every changed line in the diff is a `#` heading), no `####` left in the block, all `---` separators and the 91 callout lines intact. The `[[notes#1. Mechanical Properties — I]]` and `[[notes#1.1 …]]` anchors in [[syllabus]] resolve unchanged, since heading text was not altered.
+
+I also corrected [[context]] §4.2, whose H1 example named `# Mechanical Properties` (no longer a heading) and now records the one-H1-per-topic convention for the 1–3 family.
+
+One asymmetry remains: the other four blocks still carry their wrapper (`# Composites` → `## 5. Composites` → `### 5.1`), so their sections sit one level deeper than the mechanical ones. Say the word and I'll flatten those four identically — same one-pass transform, same verification. Undo at any point with `git checkout -- "Material Science/notes/notes.md" "Material Science/notes/context.md"`.
+[Timestamp: 2026/11/14 17:48:04]
