@@ -7,7 +7,7 @@ tags:
 
 # Syllabus Map
 
-Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]], [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Composites_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]], [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131 and 132–152). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
 
 ## Post-Midsem Topics (from [[syllabus]])
 
@@ -17,7 +17,7 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 | 2 | Mechanical Properties — II | ✅ noted below |
 | 3 | Mechanical Properties — III | ✅ noted below |
 | 4 | Shockley and Frankel Partial Dislocations | — |
-| 5 | Composites | — |
+| 5 | Composites | ✅ noted below |
 | 6 | Electrical and Electronic Properties — Part 1 | ✅ noted below |
 | 7 | Electrical and Electronic Properties — Part 2 | ✅ noted below |
 | 8 | Magnetic Properties | ✅ noted below |
@@ -1992,7 +1992,923 @@ Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles 
 | Toughness from indent | $K_{Ic}=\xi(E/H)^{1/2}P/c^{3/2}$ | Anstis relation |
 
 > [!note] Source images
-> All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/attachments/` with the `MP`/`MP2`/`MP3` prefix.
+> All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/images/` with the `MP`/`MP2`/`MP3` prefix.
+
+---
+
+# Composites
+
+A composite is what you get when two materials that would not naturally form one phase are forced to work together: one continuous **matrix** holds and protects a **dispersed** phase that carries load, adds stiffness, or supplies some other function. The engineering interest is not the average of the two properties but the *combination* — stiffness without density, strength without brittleness, toughness without weight. This block builds that idea from the definition (§5.1) through the classification (§5.4), the two strengthening strategies for particles (§5.6–§5.8), the shear-lag and rule-of-mixtures mechanics of fibres (§5.9–§5.11), the three matrix families (§5.13–§5.15), processing (§5.17), structural laminates and sandwich panels (§5.18), and nanocomposites (§5.19). It closes with the applications that make the subject recognisable — skis, the Boeing 787, and automotive body panels (§5.20).
+
+Compiled from the lecture slides ([[Composites_Odd_2026-27.pdf]], 66 slides) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 132–152). The slides follow **Callister, *Fundamentals of Materials Science and Engineering*** (Ch. 16).
+
+> [!info] How the block fits together
+> **§5.1–§5.5** establish the vocabulary — what a composite is, the matrix/dispersed-phase pair, and the five geometric variables (size, shape, concentration, orientation, distribution) that decide the properties. **§5.6–§5.8** treat particle-reinforced systems: large-particle (continuum load sharing, rule of mixtures, cermets, concrete) and dispersion-strengthened (dislocation pinning that survives high temperature). **§5.9–§5.12** treat fibre-reinforced systems: critical fibre length, load transfer, the isostrain/isostress extremes, and what the fibre and matrix must each do. **§5.13–§5.16** compare polymer-, metal- and ceramic-matrix composites and hybrids. **§5.17–§5.19** cover processing, structural laminates/sandwich panels and nanocomposites. **§5.20** puts the whole block into service.
+
+---
+
+## 5. Composites
+
+### 5.1 What is a composite?
+
+The lecture opens with the definition that carries the whole topic: a composite is not a new compound but a *mixture of phases*, deliberately arranged so that the strengths of each constituent cover the weaknesses of the other. The constituents come from the three familiar families — metals, ceramics and polymers — and they remain distinguishable in the finished material.
+
+> [!important] Definitions
+> **Composite** — a material composed of two (or more) individual materials that come from the well-known categories of materials — metals, ceramics and polymers — combined to achieve a combination of properties not displayed by any single material.
+> **Matrix** — the continuous phase. It surrounds the dispersed phase, binds the reinforcement together, protects it, and transmits the applied stress to it.
+> **Dispersed phase (reinforcement)** — the discontinuous phase. It may be particulate, fibrous or lamellar; it is the phase that usually carries the load, raises the stiffness, or resists deformation.
+> **Interface** — the boundary between matrix and dispersed phase. It is not a passive surface: stress transfer, debonding, crack deflection and fibre pullout all happen there.
+
+The objective is stated as two clauses, and both matter:
+
+1. **Achieve a combination of properties that is not displayed by any single material.** A single material cannot be simultaneously stiff, strong, tough and light; a composite can be *tailored* towards that combination.
+2. **Incorporate the best characteristics of each component.** The matrix contributes toughness, ductility, processing ease and environmental protection; the reinforcement contributes stiffness and strength.
+
+Nature got there first. Two examples are worth remembering because they show the two archetypal geometries — fibre in a matrix, and brittle particles in a soft matrix:
+
+| Natural composite | Matrix | Dispersed phase | What the combination achieves |
+| --- | --- | --- | --- |
+| **Wood** | Lignin | Cellulose fibres | Stiff, strong cellulose fibres held in a softer lignin matrix; the fibre direction gives wood its grain and anisotropy |
+| **Bone** | Collagen (a protein) | Hydroxyapatite (predominantly calcium phosphate) | A hard but brittle mineral supplies stiffness and compressive strength; the soft, flexible collagen supplies toughness |
+
+The first engineered example in the lecture is the one everybody knows:
+
+- **Fibreglass** — small glass fibres embedded in a polymeric material (epoxy or polyester).
+- Glass fibres are relatively **strong and stiff**, but also **brittle**.
+- The polymer matrix is **more flexible** and binds the fibres together.
+- The result is relatively **stiff, strong and flexible**, and it has a **low density** — a combination that neither bulk glass nor bulk polymer offers.
+
+#### Why not just an alloy?
+
+*Added depth beyond the slides.* An alloy is a single-phase solid solution (or a set of phases grown from the melt) in which the atoms are mixed on the atomic scale; there is no deliberate, separately shaped second component. A composite keeps its constituents as distinct phases with a *designed* interface between them. That interface is the extra degree of freedom: it can be made strong enough to transfer stress, weak enough to debond and absorb energy, or chemically chosen to protect the reinforcement. The price is that the interface is also the weak link — the place where water, oxygen or a crack first attacks.
+
+### 5.2 A catalogue of engineering composites
+
+The lecture then walks through four composites that between them cover the design space: a high-performance polymer-matrix composite, a metal-matrix composite, a dispersion-strengthened metal, and a large-particle ceramic composite.
+
+- **Carbon-fibre-reinforced polymer (CFRP).** Carbon fibres replace glass fibres in a polymer matrix. CFRP is **stiffer and stronger than glass-fibre-reinforced materials but more expensive**. It is used in aircraft and aerospace structures, high-tech sporting equipment (bicycles, golf clubs, tennis rackets, skis and snowboards) and, more recently, automobile bumpers.
+- **Aluminium–boron (Al–B) composite.** Boron has **low density and a high elastic modulus ($E = 440\ \text{GN m}^{-2}$)**, but it is **brittle**. Boron is therefore used as a reinforcing fibre in a **ductile aluminium matrix**. The elastic modulus of the composite is increased by the boron fibres, and — the key point — **the ductile matrix stops a propagating crack if a fibre embedded in it breaks accidentally**. If the entire material were boron only, a propagating crack would run through the whole cross-section and cause catastrophic fracture.
+- **Thoria-dispersed nickel.** The high-temperature strength of nickel alloys is enhanced significantly by adding about **3 vol.% thoria ($\text{ThO}_2$)** as finely dispersed particles.
+- **Concrete.** A common **large-particle composite**: an aggregate of sand/gravel particles bound together in a solid body by a binding medium, cement.
+
+The boron example is the cleanest statement of the matrix's fracture-mechanical job. The fibre is the stiff, strong phase; the matrix is the tough, ductile phase that *blunts* a crack when a fibre breaks, so failure of one fibre does not become failure of the component.
+
+The lecture also notes that composites are not confined to structural materials. **Semiconductor-based composites** exist too, and their nomenclature is fixed: the composite is designated by the **matrix first, followed by the dispersed semiconductor phase** — for example Ni/TiO$_2$, Ni/CdS, Pt/TiO$_2$, Zn/TiO$_2$, polypyrrole/TiO$_2$, phthalocyanine/ZnO and Nafion/CdS (K. Rajeshwar *et al.*, *Chem. Mater.* **2001**, *13*, 2765–2782). The same matrix-first convention is used throughout this block.
+
+| Composite | Matrix | Dispersed phase | Property combination sought |
+| --- | --- | --- | --- |
+| **CFRP** | Polymer (epoxy) | Carbon fibres | High specific stiffness and strength; fatigue resistance; low density |
+| **GFRP (fibreglass)** | Polyester/epoxy | Glass fibres | Stiffness and strength at low cost; electrical insulation; corrosion resistance |
+| **Al–B** | Aluminium | Boron fibres | High modulus with a ductile, crack-arresting matrix |
+| **TD nickel** | Nickel alloy | 3 vol.% $\text{ThO}_2$ particles | High-temperature strength retained by inert particles |
+| **Cermet** | Cobalt or nickel | WC or TiC particles | Hardness plus toughness; cutting-tool life |
+| **Concrete** | Cement paste | Sand and gravel aggregate | Compressive strength and rigidity at low cost |
+
+#### The interface is the third phase
+
+*Added depth beyond the slides.* It is tempting to treat a composite as "fibre plus matrix", but every property that makes the composite useful is transmitted through the interface. A strong bond transfers stress efficiently and lets the fibre reach its strength; a weak bond debonds early, which lowers strength but can raise toughness by allowing pullout and crack bridging. The interface also decides environmental durability: water ingress along a fibre–matrix interface is the classic failure path in marine GFRP. This is why the later sections keep returning to **bond strength** and **fibre pullout** rather than treating adhesion as a detail.
+
+### 5.3 Where composites stand among materials
+
+The lecture places composites on the same room-temperature property charts used for metals, ceramics and polymers. The point is not that composites beat every material on every axis — they do not — but that they occupy a *region* of the chart that no single family reaches.
+
+![[COMP - Room temperature density of material families.png|440]]
+*Figure — room-temperature density on a logarithmic scale: the composite band (CFRC, GFRC) lies at the low-density end, alongside polymers and wood and well below steels and most ceramics.*
+
+![[COMP - Room temperature stiffness of material families.png|440]]
+*Figure — room-temperature elastic (Young's) modulus: composites span a wide range because the fibre type and volume fraction can be changed; CFRC reaches the high-stiffness region, while GFRC sits at intermediate stiffness.*
+
+![[COMP - Room temperature tensile strength of material families.png|440]]
+*Figure — room-temperature tensile strength: the composite band overlaps the upper end of the light alloys and reaches towards the high-strength steels, but the important quantity for design is strength per unit density (see below).*
+
+![[COMP - Room temperature fracture toughness of material families.png|440]]
+*Figure — room-temperature fracture toughness: composites lie between the low-toughness ceramics and the tough metals; the matrix and the fibre–matrix interface control how much energy is absorbed.*
+
+![[COMP - Room temperature electrical conductivity of material families.png|440]]
+*Figure — room-temperature electrical conductivity, spanning many orders of magnitude: carbon fibres are conductive, glass fibres and polymers are insulating, so a composite's conductivity can be tailored from the fibre type and content.*
+
+| Property | Where composites sit | Consequence for design |
+| --- | --- | --- |
+| **Density** | Low, comparable with polymers and light alloys | Specific properties are high even when absolute values are not |
+| **Stiffness** | Wide range, from GFRP to CFRP | Fibre type and volume fraction are the design knobs |
+| **Tensile strength** | Moderate to high; not automatically above steels | Strength-to-weight, not strength alone, is the selection criterion |
+| **Fracture toughness** | Intermediate; below tough metals, above ceramics | Damage tolerance depends on matrix plasticity and interface debonding |
+| **Electrical conductivity** | Tailorable from insulating to conductive | Carbon-filled polymers can dissipate static; glass-filled polymers remain insulators |
+
+#### Specific strength and specific modulus
+
+*Added depth beyond the slides.* The charts explain why aerospace, sports equipment and transport use composites: the selection indices are not $E$ and $\sigma$ but $E/\rho$ and $\sigma/\rho$.
+
+$$ \text{specific strength}=\frac{\sigma}{\rho}, \qquad \text{specific modulus}=\frac{E}{\rho} $$
+
+A steel may have a higher absolute modulus than a GFRP, but its density is roughly four times larger, so the *specific* modulus can favour the composite. This is the same logic that makes a hollow tube better in bending than a solid rod: what matters is how much stiffness or strength each kilogram buys.
+
+### 5.4 Classification of composites
+
+Composites are classified first by the **geometry of the dispersed phase**, and then by the **strengthening mechanism** inside each class.
+
+![[COMP - Classification of Composites.excalidraw]]
+
+> [!important] The four classes
+> **Particle-reinforced** — the dispersed phase is **equiaxed**, i.e. its dimensions are approximately the same in all directions. Subdivided into **large-particle** and **dispersion-strengthened** composites according to the size of the particles and the mechanism.
+> **Fibre-reinforced** — the dispersed phase has the geometry of a **fibre**, i.e. a large length-to-diameter ratio. Subdivided by fibre length and orientation: continuous and aligned, discontinuous and aligned, discontinuous and random.
+> **Structural** — **multi-layered** composites designed to have low densities and high degrees of structural integrity; the common forms are laminates and sandwich panels.
+> **Nanocomposites** — the dimensions of the dispersed-phase particles are on the order of **nanometres**.
+
+| Class | Dispersed-phase geometry | Dominant strengthening mechanism | Examples |
+| --- | --- | --- | --- |
+| **Large-particle** | Equiaxed, particle size above the atomic scale | Continuum load sharing: particles restrain matrix flow | Cermets, concrete, filled polymers |
+| **Dispersion-strengthened** | Equiaxed, 10–100 nm | Dislocation pinning by fine inert particles | TD nickel, SAP (Al–Al$_2$O$_3$) |
+| **Fibre-reinforced** | Large $l/d$ | Load transfer from matrix to fibre along the interface | CFRP, GFRP, aramid composites |
+| **Structural** | Layered or sandwich | Geometry of the layers carries bending and shear | Laminates, honeycomb panels |
+| **Nanocomposite** | Nanometre-scale | Surface/quantum effects; huge interfacial area | Nanoclay–polymer, CNT–epoxy |
+
+The broad differences stated in the lecture are worth keeping as a checklist:
+
+- **Particle-reinforced:** equiaxed particles; the matrix transfers some of the applied stress to the particles, which bear a fraction of the load.
+- **Fibre-reinforced:** the dispersed phase is a fibre with a large length-to-diameter ratio; the fibre carries load along its axis.
+- **Structural:** multi-layered, low density, high structural integrity; the *geometric design* of the layers is as important as the constituent materials.
+- **Nanocomposites:** dispersed-phase dimensions on the order of nanometres; the surface-to-volume ratio and quantum effects become important.
+
+#### Length scale decides the mechanism
+
+*Added depth beyond the slides.* Two composites with the same volume fraction of the same second phase can behave completely differently if the phase is a 50 nm particle, a 50 µm particle, or a 5 mm fibre. The nanoparticle pins dislocations; the large particle forces the matrix to flow around it; the fibre carries load along its length. This is why the classification is by *geometry* first and *chemistry* second — the mechanism, and therefore the design equation, follows the geometry.
+
+### 5.5 The matrix and the dispersed phase
+
+Many composites contain just two phases. One is the **matrix**, which is continuous and surrounds the other; the other is the **dispersed phase**, which is often called the reinforcement.
+
+> [!important] What controls the properties
+> The properties of a composite are a function of three things:
+> 1. the properties of the constituent phases;
+> 2. their **relative amounts** (volume fractions);
+> 3. the **geometry** of the dispersed phase — its size, shape, concentration, orientation and distribution.
+
+The geometry is not a single number. The lecture lists five descriptors, and each one changes a different part of the behaviour:
+
+| Geometric variable | What it controls | Example of the effect |
+| --- | --- | --- |
+| **Size** | Whether the mechanism is continuum or atomic; the critical length for fibres | 10–100 nm particles pin dislocations; coarse particles share load by continuum mechanics |
+| **Shape** | Stress concentration and load path | Equiaxed particle → isotropic reinforcement; fibre → directional reinforcement |
+| **Concentration** | The magnitude of the rule-of-mixtures contribution | More fibre → higher modulus, until processing or bonding limits intervene |
+| **Orientation** | Anisotropy | Aligned fibres give high axial stiffness and low transverse stiffness; random fibres give more isotropy |
+| **Distribution** | Uniformity of stress transfer | Uniform dispersion gives uniform properties; agglomerates create stress concentrations and weak paths |
+
+This is exactly why the same fibre and the same resin can produce a stiff unidirectional laminate or a more isotropic chopped-fibre panel: the chemistry is unchanged, the geometry is not.
+
+#### Volume fraction versus weight fraction
+
+*Added depth beyond the slides.* The rule-of-mixtures equations are written in **volume fractions** because stress is carried by area, and area fractions equal volume fractions when the phases run the same length. Manufacturers often quote **weight fractions**, so the conversion is worth having. For a two-phase composite with weight fractions $w_f$ and $w_m$ and densities $\rho_f$ and $\rho_m$:
+
+$$ V_f=\frac{w_f/\rho_f}{w_f/\rho_f+w_m/\rho_m}, \qquad V_m=1-V_f $$
+
+A 50 wt.% carbon-fibre composite is therefore *more* than 50 vol.% fibre, because carbon is lighter than the resin. Mixing the two conventions is one of the commonest numerical errors in composite problems.
+
+#### Why uniform distribution matters
+
+*Added depth beyond the slides.* A composite with the correct average volume fraction can still be poor if the reinforcement is clumped. An agglomerate behaves like one large particle with a weak interface; the surrounding matrix is unreinforced, so the applied strain concentrates in the matrix and the composite fails before the fibres reach their strength. The lecture's statement that "better overall composite properties are realized when the fibre distribution is uniform" is therefore a processing requirement, not an aesthetic one.
+
+### 5.6 Particle-reinforced composites
+
+Particle-reinforced composites are divided into two classes by the **size of the particles** and the **strengthening mechanism** that operates.
+
+> [!important] Two particle mechanisms
+> **Large-particle composite** — the particles are large enough that particle–matrix interactions cannot be treated on the atomic or molecular level; **continuum mechanics** is used. The particles are harder and stiffer than the matrix, restrain the matrix in their vicinity, and bear a fraction of the load. The degree of reinforcement depends on **strong bonding at the matrix–particle interface**.
+> **Dispersion-strengthened composite** — the particles are much smaller, with diameters between **0.01 and 0.1 µm (10 and 100 nm)**. Particle–matrix interactions occur on the atomic or molecular level; the matrix bears the major portion of the load, while the small particles **hinder or impede the motion of dislocations**. Plastic deformation is restricted, so yield strength, tensile strength and hardness all increase.
+
+The distinction is mechanical, not semantic. In a large-particle composite the particle is a *phase* that the matrix must flow around; in a dispersion-strengthened composite the particle is an *obstacle* to dislocation motion.
+
+#### The rule of mixtures for a two-phase composite
+
+For a two-phase composite loaded in parallel (both phases experience the same strain — the **isostrain** or **Voigt** bound), the stiffness is the volume-fraction-weighted arithmetic mean:
+
+$$ \boxed{\ E_{c(u)}=E_mV_m+E_pV_p\ } $$
+
+For loading in series (both phases experience the same stress — the **isostress** or **Reuss** bound), the compliance is the weighted mean and the modulus is the harmonic mean:
+
+$$ \boxed{\ E_{c(l)}=\frac{E_mE_p}{V_mE_p+V_pE_m}\ } $$
+
+Here $E$ and $V$ denote elastic modulus and volume fraction; the subscripts $c$, $m$ and $p$ represent composite, matrix and particulate phases. The upper bound is the **stiffest possible** two-phase arrangement; the lower bound is the **most compliant**.
+
+![[COMP - Rule of mixtures copper tungsten.png|380]]
+*Figure — upper and lower bounds for a copper–tungsten composite with tungsten as the particle phase. Experimental points lie between the bounds and closer to the lower bound at intermediate compositions, because an equiaxed particulate composite is neither a perfect parallel nor a perfect series arrangement.*
+
+> [!note] Why the bounds bracket the data
+> The upper bound assumes the two phases strain together, so the stiff phase is fully mobilised. The lower bound assumes they carry the same stress, so the soft phase is fully compliant. A real equiaxed particle composite lies in between: the stress state around each particle is neither uniform strain nor uniform stress. Elongated or interconnected particles push the response towards the upper bound; isolated equiaxed particles sit closer to the lower bound.
+
+#### Cermets
+
+**Cermets** are ceramic–metal composites and the classic example of a large-particle composite used with all three material classes. The most common cermet is **cemented carbide**: extremely hard particles of a refractory carbide ceramic such as **tungsten carbide (WC)** or **titanium carbide (TiC)** embedded in a matrix of a metal such as **cobalt or nickel**.
+
+- Used extensively as **cutting tools for hardened steels**.
+- **Toughness is enhanced** by the ductile metal matrix, which isolates the carbide particles from one another and prevents particle-to-particle crack propagation.
+- Both matrix and particulate phases are **refractory** to the high temperatures generated by the cutting action on extremely hard materials.
+- No single material could provide the combination of properties of a cermet; relatively large volume fractions of the particulate phase may be used, often **exceeding 90 vol.%**.
+
+#### Carbon black–reinforced rubber
+
+Both elastomers and plastics are frequently reinforced with particulate materials. Many modern rubbers would be severely restricted without **carbon black** — very small, essentially spherical carbon particles produced by the combustion of natural gas or oil in an atmosphere with a limited air supply.
+
+- Added to vulcanised rubber, this extremely inexpensive material enhances **tensile strength, toughness, and tear and abrasion resistance**.
+- Automobile tyres contain on the order of **15 to 30 vol.% carbon black**.
+- For significant reinforcement the particle size must be extremely small, with diameters between **20 and 50 nm**; the particles must be **evenly distributed** through the rubber and must form a **strong adhesive bond** with the rubber matrix.
+- Particle reinforcement with other materials (e.g. silica) is much less effective because the special interaction between the rubber molecules and the particle surfaces does not exist.
+
+### 5.7 Concrete — a large-particle ceramic composite
+
+Concrete is the most widely used composite in the world, and it is unusual because **both** the matrix and the dispersed phase are ceramics. The distinction between **cement** and **concrete** is worth stating explicitly: cement is the binding medium (a powder that reacts with water), while concrete is the composite of cement paste plus aggregate.
+
+- The two most familiar concretes are made with **Portland** and **asphaltic** cements, in which the aggregate is gravel and sand.
+- **Asphaltic concrete** is used primarily as a paving material; **Portland cement concrete** is used extensively as a structural building material.
+- Portland cement concrete is a major construction material primarily because it can be **poured in place** and **hardens at room temperature**, even when submerged in water.
+
+Portland cement concrete also has limitations as a structural material:
+
+- Like most ceramics, it is **relatively weak and extremely brittle**; its **tensile strength is approximately 1/15 to 1/10 of its compressive strength**.
+- Large concrete structures experience considerable **thermal expansion and contraction** with temperature fluctuations.
+- **Water penetrates external pores**, which can cause severe cracking in cold weather as a consequence of **freeze–thaw cycles**.
+
+#### The ingredients and the mixing problem
+
+The ingredients of Portland cement concrete are Portland cement, a **fine aggregate (sand)**, a **coarse aggregate (gravel)**, and water.
+
+- The aggregate particles act as a **filler** to reduce the overall cost, because aggregate is cheap while cement is relatively expensive.
+- To achieve optimum strength and workability, the ingredients must be added in the correct proportions.
+- **Dense packing** and good interfacial contact are achieved by having particles of two different sizes: fine sand particles fill the void spaces between the gravel particles.
+- Typically, the aggregates constitute between **60% and 80% of the total volume**.
+
+The cement–water paste must be sufficient to coat all the sand and gravel particles; otherwise the cementitious bond is incomplete. All constituents must be thoroughly mixed, and the water quantity is critical:
+
+- **Too little water** → incomplete bonding.
+- **Too much water** → excessive porosity.
+- In either case the final strength is less than the optimum.
+- The **size distribution** of the aggregate influences the amount of cement–water paste required.
+- Surfaces must be **clean and free from clay and silt**, which prevent a sound bond at the particle surface.
+
+#### Reinforced concrete
+
+The strength of Portland cement concrete can be increased by additional reinforcement — usually **steel rods, wires, bars (rebar) or mesh** embedded into the fresh, uncured concrete.
+
+Steel is a suitable reinforcement because:
+
+1. its **coefficient of thermal expansion is nearly the same as that of concrete**;
+2. steel is **not rapidly corroded** in the cement environment;
+3. a relatively **strong adhesive bond** forms between steel and cured concrete.
+
+Concrete can also be reinforced by mixing **fibres** of a high-modulus material such as glass, steel, nylon or polyethylene into the fresh concrete. Care is needed because some fibre materials deteriorate rapidly in the cement environment.
+
+#### Prestressed concrete
+
+Another technique introduces **residual compressive stresses** into the structural member; the result is **prestressed concrete**.
+
+- High-strength steel wires are positioned inside empty moulds and stretched with a high tensile force, which is maintained constant.
+- After the concrete is placed and allowed to harden, the tension is released.
+- As the wires contract, they put the structure into **compression** because the stress is transmitted to the concrete through the concrete–wire bond.
+- A variant in which the stress is applied **after** the concrete hardens is called **posttensioning**.
+
+#### Why concrete is strong in compression and weak in tension
+
+*Added depth beyond the slides.* Concrete is a particulate composite held together by a cementitious matrix. Under compression, the aggregate particles are pushed together and the matrix is confined; under tension, the matrix cracks open, the crack runs around the aggregate, and there is little resistance once the cementitious bridges fail. Prestressing works by pre-loading the concrete in compression so that the tensile stress from service loads must first cancel that compression before any crack can open. This is the same principle as a pre-tensioned bolt in a joint, applied at the scale of a beam.
+
+### 5.8 Dispersion-strengthened composites
+
+Dispersion-strengthened composites contain a **uniform dispersion of several volume per cent of fine particles of a very hard and inert material**. The particles may be metallic or non-metallic; oxide materials are often used.
+
+The strengthening mechanism is the same one that operates in precipitation hardening: the particles interact with **dislocations** in the matrix and make it harder for them to move. The difference is the *stability* of the particles:
+
+- In a **dispersion-strengthened** composite the particles are chosen to be **unreactive with the matrix**, so the strengthening is **retained at elevated temperatures and for extended time periods**.
+- In a **precipitation-hardened** alloy the increase in strength may **disappear on heat treatment** because the precipitates grow (coarsen) or dissolve.
+
+That single distinction is the whole reason dispersion strengthening exists: it is a way to keep a fine obstacle population at a temperature where normal precipitates would coarsen away.
+
+| Feature | Precipitation hardening | Dispersion strengthening |
+| --- | --- | --- |
+| Particle source | Nucleated from the matrix by heat treatment | Added as a separate powder/phase |
+| Particle size | Typically nanometres, but coarsens with time | 10–100 nm, stable |
+| Matrix–particle reaction | The particle is a phase in local equilibrium | Particle chosen to be inert |
+| High-temperature stability | Strength falls on over-ageing or solution treatment | Strength retained to high temperature |
+| Typical example | Al–Cu alloys (GP zones, $\theta''$) | TD nickel, SAP (Al–Al$_2$O$_3$) |
+
+Examples named in the lecture:
+
+- **Thoria-dispersed nickel (TD nickel)** — fine $\text{ThO}_2$ particles in a nickel matrix; the high-temperature strength is retained because the oxide does not react with the matrix.
+- **Aluminium–aluminium oxide (SAP, sintered aluminium powder)** — a thin, adherent alumina coating on the surface of extremely small aluminium flakes (**0.1 to 0.2 µm thick**), dispersed within an aluminium metal matrix.
+
+> [!note] Why the particles must be inert
+> A dispersion-strengthened composite is designed for the temperature range where the matrix would normally soften. If the particle dissolved or coarsened, the obstacle spacing would increase and the strengthening would vanish — exactly what happens when a precipitation-hardened alloy is over-aged. The oxide particles work because they are thermodynamically stable and essentially insoluble in the matrix.
+
+### 5.9 Fibre-reinforced composites
+
+Fibre-reinforced composites contain the dispersed phase in the form of a **fibre**. The design goals are stated in terms of weight:
+
+- **High strength and/or stiffness on a weight basis**, i.e. high **specific strength** and **specific modulus**.
+- **Low-density fibre and matrix materials** are used to reach very high specific strength and specific modulus.
+- Further classification is based on **fibre length**: continuous (long) or discontinuous (short), and on orientation: aligned or randomly oriented.
+
+![[COMP - Fiber orientation and concentration.png|420]]
+*Figure — the three fibre architectures: continuous and aligned, discontinuous and aligned, and discontinuous and randomly oriented. Better overall composite properties are realized when the fibre distribution is uniform.*
+
+#### Fibre length and load transfer
+
+The mechanical characteristics of a fibre-reinforced composite depend on two things:
+
+1. **the properties of the fibre**, and
+2. **the degree of transmittance of the applied load from the matrix to the fibres**.
+
+The extent of load transmittance depends on the magnitude of the **interfacial bond** between fibre and matrix. At each fibre extremity there is no load transmittance from the matrix, so the tensile stress in the fibre must build up from zero at the end to its maximum somewhere along the length.
+
+![[COMP - Matrix deformation around fiber ends.png|380]]
+*Figure — matrix deformation around a fibre: the matrix shears near the fibre ends, and there is no load transfer at the very extremities. The fibre stress therefore rises from zero at each end towards the centre.*
+
+The **critical fibre length** $l_c$ is the shortest length for which the fibre can be loaded to its ultimate tensile strength by the matrix:
+
+$$ \boxed{\ l_c=\frac{\sigma_f^*d}{2\tau_c}\ } $$
+
+where $d$ is the fibre diameter, $\sigma_f^*$ is the ultimate tensile strength of the fibre, and $\tau_c$ is the **fibre–matrix bond strength** or the **shear yield strength of the matrix**, whichever is smaller. For a number of glass- and carbon-fibre–matrix combinations this critical length is on the order of **1 mm**, which is between **20 and 150 times the fibre diameter**.
+
+![[COMP - Fiber stress profiles at critical length.png|430]]
+*Figure — stress–position profiles for a fibre-reinforced composite loaded to the fibre tensile strength $\sigma_f^*$: (a) $l=l_c$, where the maximum fibre stress is reached only at the axial centre; (b) $l>l_c$, where the fibre is more effectively loaded; (c) $l<l_c$, where the fibre never reaches its strength and pulls out instead of fracturing.*
+
+Fibres for which $l\gg l_c$ — usually $l>15l_c$ — are termed **continuous**; **discontinuous** or **short** fibres have lengths shorter than this.
+
+#### Derivation of the critical length
+
+> [!important] The critical-length derivation, step by step
+> 1. Consider a fibre of diameter $d$ carrying a tensile stress $\sigma_f$. The tensile force on a cross-section is
+>    $$F_f=\sigma_f\frac{\pi d^2}{4}$$
+> 2. The matrix feeds load into the fibre by **shear along the interface**. Over the half-length $l/2$ from one end to the centre, the interfacial area is $\pi d(l/2)$, so the maximum shear force the interface can supply is
+>    $$F_\tau=\tau_c\,\pi d\,\frac{l}{2}$$
+> 3. At the critical length the fibre just reaches its strength at the centre, so the two forces balance:
+>    $$\sigma_f^*\frac{\pi d^2}{4}=\tau_c\,\pi d\,\frac{l_c}{2}$$
+> 4. Cancelling $\pi d$ and solving for $l_c$:
+>    $$l_c=\frac{\sigma_f^*d}{2\tau_c}$$
+> 5. The correct $\tau_c$ is the **smaller** of the interfacial bond strength and the matrix shear yield strength, because the weaker of the two mechanisms limits load transfer.
+
+#### Why $l>15l_c$ is called "continuous"
+
+*Added depth beyond the slides.* The average stress carried by a fibre of length $l$ is reduced from the peak by the unloaded regions at its two ends. The factor is approximately $(1-l_c/2l)$: at $l=l_c$ the average is only half the fibre strength, at $l=5l_c$ it is 90%, and at $l=15l_c$ it is about 97%. Beyond that point, making the fibre longer buys almost nothing, so $l>15l_c$ is treated as "continuous" for design purposes.
+
+### 5.10 Continuous and aligned fibre composites
+
+When the fibres are continuous and aligned, the mechanical response depends on:
+
+- the **stress–strain behaviour of the fibre and matrix phases**,
+- the **volume fractions** of the two phases, and
+- the **direction in which the stress or load is applied**.
+
+Because the fibres are aligned, the properties are **highly anisotropic**: they depend on the direction in which they are measured. The composite is stiff and strong along the fibre direction and much more compliant and weaker across it.
+
+![[COMP - Stress strain stages of aligned composite.png|460]]
+*Figure — tensile loading along the fibre direction. Stage I: both fibres and matrix deform elastically. Stage II: the matrix yields and deforms plastically at $\varepsilon_{ym}$ while the fibres continue to stretch elastically. The onset of composite failure begins as the fibres start to fracture, at a strain of approximately $\varepsilon_f^*$.*
+
+The two stages are the key to reading the curve:
+
+- **Stage I** — the fibre–matrix bond is intact and both phases strain together; the slope is the composite modulus $E_{cl}$.
+- **Stage II** — the matrix has yielded, so it contributes little additional stiffness; the fibres continue to carry the increasing load elastically.
+- **Failure** — the fibres begin to fracture at about $\varepsilon_f^*$. Because the fibres are brittle, this strain is usually much smaller than the matrix failure strain $\varepsilon_m^*$.
+
+#### Why composite failure is not catastrophic
+
+Composite failure is not catastrophic for two reasons:
+
+1. **Not all fibres fracture at the same time** — there is always considerable variation in the fracture strength of brittle fibre materials.
+2. **Even after fibre failure the matrix is still intact**, because $\varepsilon_f^*<\varepsilon_m^*$.
+
+The fractured fibres, now shorter than the original ones, are still embedded in the intact matrix and can sustain a diminished load as the matrix continues to deform plastically. The composite therefore retains load-carrying capacity after the first fibre breaks; it does not separate instantly.
+
+#### Elastic behaviour in longitudinal loading — the isostrain state
+
+The assumption is that the fibre–matrix interfacial bond is very good, so the matrix and fibres deform by the same amount. This is the **isostrain** state.
+
+> [!important] Longitudinal modulus, step by step
+> 1. The total load on the composite is the sum of the loads on the two phases:
+>    $$F_c=F_m+F_f$$
+> 2. Using $F=\sigma A$:
+>    $$\sigma_cA_c=\sigma_mA_m+\sigma_fA_f$$
+> 3. Divide by $A_c$:
+>    $$\sigma_c=\sigma_m\frac{A_m}{A_c}+\sigma_f\frac{A_f}{A_c}$$
+> 4. If the matrix and fibre run the same length, the area fractions equal the volume fractions, so
+>    $$\sigma_c=\sigma_mV_m+\sigma_fV_f$$
+> 5. The isostrain condition is $\varepsilon_c=\varepsilon_m=\varepsilon_f$. Substituting $\sigma=E\varepsilon$ and cancelling the common strain:
+>    $$E_{cl}=E_mV_m+E_fV_f$$
+> 6. Since $V_m+V_f=1$, this is equivalently
+>    $$E_{cl}=E_m(1-V_f)+E_fV_f$$
+
+![[COMP - Isostrain vs Isostress.excalidraw]]
+
+$$ \boxed{\ E_{cl}=E_mV_m+E_fV_f=E_m(1-V_f)+E_fV_f\ } $$
+
+The same volume-fraction rule applies to **density**:
+
+$$ \rho_c=\rho_mV_m+\rho_fV_f $$
+
+and the ratio of the load carried by the fibres to the load carried by the matrix is
+
+$$ \boxed{\ \frac{F_f}{F_m}=\frac{E_fV_f}{E_mV_m}\ } $$
+
+#### Elastic behaviour in transverse loading — the isostress state
+
+When the load is applied perpendicular to the fibres, the two phases are in series: they carry the **same stress**, and the total strain is the volume-fraction-weighted sum of the phase strains. This is the **isostress** state.
+
+> [!important] Transverse modulus, step by step
+> 1. Isostress: $\sigma_c=\sigma_m=\sigma_f=\sigma$.
+> 2. The composite strain is the weighted sum:
+>    $$\varepsilon_c=\varepsilon_mV_m+\varepsilon_fV_f$$
+> 3. Substitute $\varepsilon=\sigma/E$ and cancel the common stress:
+>    $$\frac{1}{E_{ct}}=\frac{V_m}{E_m}+\frac{V_f}{E_f}$$
+> 4. Invert:
+>    $$E_{ct}=\frac{E_mE_f}{V_mE_f+V_fE_m}$$
+
+$$ \boxed{\ E_{ct}=\frac{E_mE_f}{V_mE_f+V_fE_m}\ } $$
+
+This is analogous to the **lower bound** for a particle-reinforced composite, while the longitudinal case is analogous to the **upper bound**.
+
+#### Tensile strength
+
+The **longitudinal tensile strength** is dominated by the fibre strength:
+
+$$ \boxed{\ \sigma_{cl}^*=\sigma_m'(1-V_f)+\sigma_f^*V_f\ } $$
+
+where $\sigma_f^*$ is the fibre fracture strength and $\sigma_m'$ is the **stress in the matrix when the composite fails** — i.e. the matrix stress at the fibre failure strain $\varepsilon_f^*$, not the matrix tensile strength.
+
+The **transverse tensile strength** is a different problem. Whereas longitudinal strength is dominated by fibre strength, a variety of factors significantly influence the transverse strength:
+
+- the properties of **both** the fibre and the matrix,
+- the **fibre–matrix bond strength**,
+- the presence of **voids**.
+
+Measures used to improve transverse strength usually involve **modifying the properties of the matrix**, because in transverse loading the matrix is the continuous load path.
+
+#### Why the longitudinal modulus is an arithmetic mean
+
+*Added depth beyond the slides.* In isostrain loading the stiff phase is forced to strain by the same amount as the soft phase, so its stress is proportional to its modulus and it dominates the load. The composite modulus is therefore a **stiffness-weighted average**. In isostress loading the soft phase is free to strain more, so it dominates the *compliance*; the modulus is a **compliance-weighted average**, which is always lower than the arithmetic mean. This is the same parallel/series distinction as resistors or springs, and it explains why $E_{cl}>E_{ct}$ for every real composite.
+
+#### Load sharing in a real composite
+
+*Added depth beyond the slides.* The ratio $F_f/F_m=E_fV_f/E_mV_m$ is the reason a small volume fraction of carbon fibre can transform a polymer. For a typical carbon–epoxy system $E_f/E_m$ is of order 50–100; at $V_f=0.6$ the fibres carry the great majority of the axial load. The matrix's job is not to carry load but to **transfer** it and to protect the fibres. This is also why matrix-dominated properties (transverse strength, shear, compression) are the weak directions of a unidirectional laminate.
+
+#### Anisotropy is the design variable
+
+*Added depth beyond the slides.* A unidirectional composite has $E_{cl}$ along the fibres and $E_{ct}$ across them, with $E_{cl}\gg E_{ct}$. That is not a defect; it is a licence to put stiffness only where the load path needs it. A beam that is bent in one plane can be made with fibres along its length; a pressure vessel needs fibres in more than one direction; a laminate can be built from plies at 0°, ±45° and 90° to approximate an isotropic in-plane response (§5.18).
+
+### 5.11 Discontinuous and randomly oriented fibre composites
+
+Discontinuous fibres are shorter than the continuous case, so the reinforcement efficiency is lower — but they are increasingly important commercially because they can be processed by ordinary polymer methods. **Chopped-glass fibres** are used most extensively; carbon and aramid discontinuous fibres are also used. These short-fibre composites can be produced with moduli of elasticity and tensile strengths that approach **90% and 50%**, respectively, of their continuous-fibre counterparts.
+
+#### Discontinuous and aligned fibres
+
+For a discontinuous and aligned-fibre composite with a uniform fibre distribution and $l>l_c$, the longitudinal strength is
+
+$$ \boxed{\ \sigma_{cd}^*=\sigma_f^*V_f\left(1-\frac{l_c}{2l}\right)+\sigma_m'(1-V_f)\ } $$
+
+where $\sigma_f^*$ and $\sigma_m'$ are the fibre fracture strength and the matrix stress at composite failure, respectively. The factor $(1-l_c/2l)$ is the same end-effect correction that appeared in §5.9: the shorter the fibre relative to $l_c$, the smaller the average stress it carries.
+
+If the fibre length is **less than critical** ($l<l_c$), the fibre never reaches its fracture strength; it pulls out or yields at the interface instead. The longitudinal strength is then controlled by the interfacial shear strength:
+
+$$ \boxed{\ \sigma_{cd}^*=\frac{\tau_cl}{d}V_f+\sigma_m'(1-V_f)\ } $$
+
+where $d$ is the fibre diameter and $\tau_c$ is the smaller of the fibre–matrix bond strength and the matrix shear yield strength.
+
+#### Discontinuous and randomly oriented fibres
+
+When the fibre orientation is random, short and discontinuous fibres are normally used. A similar rule-of-mixtures equation gives the elastic modulus:
+
+$$ \boxed{\ E_{cd}=KE_fV_f+E_mV_m\ } $$
+
+Here $K$ is a **fibre efficiency parameter** that depends on $V_f$ and the $E_f/E_m$ ratio. Its magnitude is less than unity, usually in the range **0.1 to 0.6**. For random-fibre reinforcement, as for oriented-fibre reinforcement, the modulus increases with increasing volume fraction of fibre.
+
+The price of randomness is anisotropy's opposite: the composite is more isotropic in-plane, but it is much less stiff than an aligned composite at the same $V_f$. The following table from the lecture makes the point with polycarbonate reinforced by randomly oriented glass fibres.
+
+| Property | Unreinforced | 20 vol% glass | 30 vol% glass | 40 vol% glass |
+| --- | --- | --- | --- | --- |
+| **Specific gravity** | 1.19–1.22 | 1.35 | 1.43 | 1.52 |
+| **Tensile strength**, MPa (ksi) | 59–62 (8.5–9.0) | 110 (16) | 131 (19) | 159 (23) |
+| **Modulus of elasticity**, GPa ($10^6$ psi) | 2.24–2.345 (0.325–0.340) | 5.93 (0.86) | 8.62 (1.25) | 11.6 (1.68) |
+| **Elongation**, % | 90–115 | 4–6 | 3–5 | 3–5 |
+| **Impact strength, notched Izod**, ft·lb/in | 12–16 | 2.0 | 2.0 | 2.5 |
+
+The table is a compact lesson in composite trade-offs: stiffness and strength rise steeply with fibre content, while **ductility collapses** — elongation falls from 90–115% to a few per cent — and impact strength drops by an order of magnitude. A composite is not a free lunch; it is a different balance.
+
+#### Fibre orientation and reinforcement efficiency
+
+The efficiency of reinforcement depends on the angle between the fibre axis and the stress axis:
+
+| Fibre orientation | Stress direction | Reinforcement efficiency |
+| --- | --- | --- |
+| **All fibres parallel** | Parallel to fibres | 1 |
+| **All fibres parallel** | Perpendicular to fibres | 0 |
+| **Random, uniform in a plane** | Any direction in that plane | $3/8$ |
+| **Random, uniform in three dimensions** | Any direction in space | $1/5$ |
+
+> [!warning] Efficiency is not a property of the fibre
+> The efficiency factor is a *geometric* multiplier, not a materials constant. The same fibre can be fully effective (parallel), useless (perpendicular), or intermediate (random) depending only on how it is laid down relative to the load. This is why the laminate stacking sequence in §5.18 is a design decision, not a manufacturing afterthought.
+
+#### Why $K$ is smaller than one
+
+*Added depth beyond the slides.* In a random short-fibre composite, only the component of fibre length along the load axis contributes stiffness, and the end regions of every fibre are poorly loaded. $K$ lumps both losses together: the orientation average and the finite-length end effect. It rises towards the upper end of the 0.1–0.6 range when the fibres are longer, better bonded, and more nearly aligned with the load.
+
+### 5.12 Fibres and the matrix — what each must do
+
+Fibres are grouped into three classifications on the basis of **diameter and character**: whiskers, fibres and wires.
+
+| Type | Diameter / character | Strengths and limitations | Typical materials |
+| --- | --- | --- | --- |
+| **Whiskers** | Very thin single crystals; extremely large length-to-diameter ratio | High crystalline perfection and virtually flaw-free → exceptionally high strength; among the strongest known materials. Extremely expensive and difficult to incorporate into a matrix | Graphite, SiC, $\text{Si}_3\text{N}_4$, $\text{Al}_2\text{O}_3$ |
+| **Fibres** | Polycrystalline or amorphous; small diameters | Good strength and stiffness; available in continuous or chopped form; the workhorse reinforcement | Aramid polymers, glass, carbon, boron, $\text{Al}_2\text{O}_3$, SiC |
+| **Wires** | Relatively large diameters | High strength and stiffness; used where a robust, large-diameter reinforcement is acceptable | Steel, molybdenum, tungsten; radial tyre reinforcement, filament-wound rocket casings, wire-wound high-pressure hoses |
+
+The matrix has several distinct functions in a fibre-reinforced composite:
+
+1. **Bind the fibres together** and act as the medium by which an externally applied stress is transmitted and distributed to the fibres.
+2. **Protect the individual fibres from surface damage** caused by mechanical abrasion or chemical reactions with the environment. Such interactions may introduce surface flaws capable of forming cracks, which can lead to failure at low tensile stress levels.
+3. **Separate the fibres** and, by virtue of its relative softness and plasticity, **prevent the propagation of brittle cracks from fibre to fibre**, which could otherwise cause catastrophic failure.
+
+In addition, it is essential that **adhesive bonding forces between fibre and matrix be high** to minimise fibre pullout, and that bonding be adequate to maximise stress transmittance from the weak matrix to the strong fibres.
+
+> [!important] The matrix's job in one sentence
+> The matrix is not the strong phase; it is the **load-transfer medium, the protector and the crack stopper**. A composite with strong fibres and a poor matrix fails by debonding or by fibre-to-fibre crack propagation before the fibres reach their strength.
+
+#### Fibre pullout versus fibre fracture
+
+*Added depth beyond the slides.* A fibre that is shorter than $l_c$ cannot be loaded to its fracture strength, so it pulls out; a fibre longer than $l_c$ fractures. Both behaviours can be useful. Fracture gives high strength; pullout absorbs energy and raises toughness, because friction along the debonded interface does work. This is the same trade-off that appears in ceramic-matrix composites (§5.15), where whisker pullout is deliberately encouraged.
+
+### 5.13 Polymer-matrix composites
+
+**Polymer-matrix composites (PMCs)** consist of a polymer resin as the matrix and fibres as the reinforcement medium. They are used in the greatest diversity of composite applications, and in the largest quantities, because of their room-temperature properties, ease of fabrication and cost. In this context the term **resin** denotes a high-molecular-weight reinforcing plastic.
+
+PMCs are classified according to the reinforcement type: **glass**, **carbon** and **aramid**.
+
+#### Glass fibre-reinforced polymer composites
+
+**Fibreglass** is a composite consisting of glass fibres, either continuous or discontinuous, contained within a polymer matrix. It is produced in the largest quantities. The glass most commonly drawn into fibres is **E-glass**; fibre diameters normally range between **3 and 20 µm**.
+
+Advantages of glass as a fibre reinforcement:
+
+1. Easily drawn into high-strength fibres from the molten state.
+2. Readily available and may be fabricated into a glass-reinforced plastic economically.
+3. Relatively strong fibre that can produce very high specific strength composites.
+4. Chemical inertness, making the composite useful in corrosive environments.
+
+Limitations:
+
+1. **Not very stiff** — it does not display the rigidity necessary for some applications (e.g. structural members for airplanes and bridges).
+2. Limited to service temperatures **below 200°C**; at higher temperatures most polymers begin to flow or deteriorate. High-purity fused silica fibres and high-temperature polymers such as polyimide resins extend the range to about **300°C**.
+
+Applications: automotive and marine bodies, plastic pipes, storage containers and industrial floorings. The transportation industry is using increasing amounts of glass-fibre-reinforced plastics to decrease vehicle weight and boost fuel efficiency.
+
+#### Carbon fibre-reinforced polymer composites
+
+Carbon is a high-performance fibre material and the most commonly used reinforcement in advanced (non-fibreglass) polymer-matrix composites.
+
+Advantages of carbon as a reinforcement:
+
+1. High **specific moduli and specific strengths**.
+2. Retains high tensile modulus and high strength at elevated temperatures; high-temperature **oxidation** can be a problem.
+3. At room temperature, not affected by moisture or a wide variety of solvents, acids and bases.
+4. Exhibits a diversity of physical and mechanical characteristics, allowing composites to be engineered for specific properties.
+5. Relatively inexpensive and cost-effective fibre- and composite-manufacturing processes.
+
+Carbon fibres are classified by tensile modulus as **standard, intermediate, high and ultrahigh modulus**. Fibre diameters normally range between **4 and 10 µm**; both continuous and chopped forms are available. They are normally coated with a protective **epoxy size** that also improves adhesion to the polymer matrix.
+
+Applications: sports and recreational equipment (fishing rods, golf clubs), filament-wound rocket motor cases, pressure vessels, and aircraft structural components — military and commercial, fixed-wing and helicopters (wing, body, stabilizer and rudder components).
+
+#### Aramid fibre-reinforced polymer composites
+
+Aramid fibres are high-strength, high-modulus materials introduced in the early 1970s. They have outstanding strength-to-weight ratios, superior to metals. Chemically the group is **poly(paraphenylene terephthalamide)**; the common trade names are **Kevlar** and **Nomex**, with several grades (Kevlar 29, 49 and 149) having different mechanical behaviour.
+
+During synthesis the rigid molecules are aligned along the fibre axis as **liquid-crystal domains**; the repeat unit and chain alignment are shown in the lecture. Mechanically, aramid fibres have longitudinal tensile strengths and moduli higher than other polymeric fibres, but they are **relatively weak in compression**. They are known for **toughness, impact resistance, and resistance to creep and fatigue**. Despite being thermoplastics, they are resistant to combustion and stable over a wide temperature range, retaining high mechanical properties between **−200°C and 200°C**. Chemically they are susceptible to degradation by strong acids and bases, but relatively inert in other solvents and chemicals.
+
+Aramid fibres are most often used in polymer matrices, commonly epoxies and polyesters. Applications: ballistic products (bulletproof vests and armour), sporting goods, tyres, ropes, missile cases, pressure vessels, and as a replacement for asbestos in automotive brake and clutch linings and gaskets.
+
+| Fibre | Absolute stiffness | Absolute strength | Weakness | Best-fit applications |
+| --- | --- | --- | --- | --- |
+| **E-glass** | Moderate | Moderate | Not stiff; service limit $\sim$200°C | Marine, automotive, pipes, tanks, insulation |
+| **Carbon** | High | High | Cost; oxidation at high temperature | Aerospace, pressure vessels, sports equipment |
+| **Aramid** | High along fibre | High along fibre | Weak in compression; acid/base attack | Ballistics, ropes, tyres, impact-resistant panels |
+
+> [!note] Why aramid is strong in tension but weak in compression
+> *Added depth beyond the slides.* Aramid fibres are built from rigid rod-like chains aligned along the fibre axis, held by strong inter-chain hydrogen bonds. That structure is excellent in tension, because the load is carried along the aligned chains. In compression the same fibrillar structure buckles and splits, so the compressive strength is much lower. Design with aramid where the load is tensile or impact-driven, not where the component is compression-critical.
+
+### 5.14 Metal-matrix composites
+
+**Metal-matrix composites (MMCs)** have a ductile metal matrix. The reinforcement is added to allow the composite to be used at **higher service temperatures** than the base metal, or to improve specific stiffness, specific strength, abrasion resistance, creep resistance, thermal conductivity and dimensional stability.
+
+The advantages of MMCs over polymer-matrix composites are:
+
+- **higher operating temperatures**,
+- **nonflammability**,
+- **greater resistance to degradation by organic fluids**.
+
+The disadvantage is that **MMCs are more expensive than PMCs**.
+
+| Feature | Polymer-matrix composite (PMC) | Metal-matrix composite (MMC) |
+| --- | --- | --- |
+| Matrix | Epoxy, polyester, thermoplastic | Al, Mg, Ti, Cu alloys; superalloys |
+| Service temperature | Room temperature to $\sim$200–300°C | Higher; limited by matrix |
+| Flammability | Polymer-dependent | Nonflammable |
+| Organic-fluid resistance | Degrades in some solvents | Generally good |
+| Cost | Lower | Higher |
+| Typical reinforcement | Glass, carbon, aramid fibres | SiC particles/whiskers, Al$_2$O$_3$, carbon, boron, refractory metals |
+
+Usual matrix materials are alloys of **Al, Mg, Ti, Cu** or superalloys. Reinforcement may be in the form of **particulates, continuous and discontinuous fibres, and whiskers**, with concentrations normally between **10 and 60 vol%**. Continuous-fibre reinforcements include carbon, silicon carbide, boron, aluminium oxide and refractory metals. Discontinuous reinforcements consist primarily of **SiC whiskers**, chopped fibres of **Al$_2$O$_3$ and carbon**, and particulates of **SiC and Al$_2$O$_3$**.
+
+Sometimes a **protective surface coating** on the reinforcement, or tuning of the matrix alloy composition, is necessary to prevent high-temperature degradation.
+
+Processing of MMCs has two steps:
+
+1. **Consolidation/synthesis** — introduction of the reinforcement into the matrix.
+2. **Shaping operation** — for discontinuous-fibre MMCs this can be done by standard metal-forming operations such as rolling, forging or extrusion.
+
+Applications named in the lecture:
+
+- Automobile engine components made of Al-alloy matrix reinforced with Al-oxide and carbon fibres (light weight, wear resistance and thermal-distortion resistance).
+- Driveshafts, extruded stabilizer bars, forged suspension and transmission components.
+- Advanced Al-alloy MMCs in aerospace, because of low density and control over thermal and mechanical properties.
+- Continuous graphite fibres as reinforcement for an antenna boom on the **Hubble Space Telescope**.
+- **GPS satellites** use SiC–Al and graphite–Al MMCs for electronic packaging and thermal-management systems.
+- The high-temperature creep and rupture properties of some Ni- and Co-based superalloys are enhanced by fibre reinforcement with refractory metals such as tungsten (turbine-engine applications).
+
+> [!note] Why MMCs exist at all
+> *Added depth beyond the slides.* A polymer matrix is limited by the softening or decomposition of the polymer, and a ceramic matrix is limited by brittleness. A metal matrix occupies the middle ground: it keeps a useful fraction of its strength at temperatures where polymers are unusable, it conducts heat, and it can be shaped by metalworking. The reinforcement then adds the stiffness or wear resistance that the monolithic alloy lacks. The price is density and cost — which is why MMCs are used in aerospace, automotive and satellite hardware rather than in disposable consumer goods.
+
+### 5.15 Ceramic-matrix composites
+
+The fracture toughness of ceramics can be improved significantly by **ceramic-matrix composites (CMCs)**, which consist of particles, fibres or whiskers of one ceramic material embedded in a matrix of another ceramic. The improvement comes from **interactions between an advancing crack and the dispersed phase**: cracks initiate in the matrix, but crack propagation is hindered by the particles, fibres or whiskers.
+
+Crack propagation may be retarded by several toughening mechanisms:
+
+- **Transformation toughening** (described in detail below).
+- **Ceramic whiskers** (e.g. SiC/Si$_3$N$_4$), which may inhibit crack propagation by:
+  1. **deflecting crack tips**,
+  2. **forming bridges across crack faces**,
+  3. **absorbing energy during pullout** as the whiskers debond from the matrix, and/or
+  4. **causing a redistribution of stresses** in regions adjacent to the crack tips.
+
+In general, increasing fibre content improves strength and fracture toughness. CMCs also exhibit improved **high-temperature creep behaviour** and **resistance to thermal shock**. They may be fabricated by **hot pressing, hot isostatic pressing, and liquid-phase sintering**.
+
+Applications: **SiC whisker-reinforced alumina** is used as cutting-tool inserts for machining hard metal alloys; tool lives for these materials are greater than for cemented carbides.
+
+#### Transformation toughening
+
+Transformation toughening uses a **phase transformation** to arrest the propagation of cracks.
+
+- Small particles of **partially stabilised zirconia** are dispersed within a matrix material, often $\text{Al}_2\text{O}_3$ or $\text{ZrO}_2$ itself.
+- Typically **CaO, MgO, Y$_2$O$_3$ and CeO$_2$** are used as stabilisers.
+- Partial stabilisation leaves the zirconia in a **metastable tetragonal phase** rather than the stable monoclinic phase.
+- The stress field in front of a propagating crack causes these metastably retained tetragonal particles to transform to the stable **monoclinic** phase.
+- Accompanying the transformation is a slight **particle volume increase**. The net result is that **compressive stresses are established on the crack surfaces near the crack tip**, which tend to pinch the crack shut and arrest its growth.
+
+![[COMP - Transformation toughening in zirconia.png|440]]
+*Figure — the transformation-toughening mechanism: (a) a crack approaching tetragonal $\text{ZrO}_2$ particles; (b) crack arrestment after the stress-induced tetragonal-to-monoclinic transformation has generated compressive stresses on the crack faces.*
+
+> [!important] Transformation toughening, step by step
+> 1. Stabilisers (CaO, MgO, Y$_2$O$_3$, CeO$_2$) are added so that $\text{ZrO}_2$ retains the **tetragonal** phase at room temperature instead of transforming to monoclinic.
+> 2. A crack tip generates a **stress concentration** in the surrounding matrix.
+> 3. The tetragonal particles inside that stress field transform to **monoclinic**.
+> 4. The transformation involves a **volume increase**, so the surrounding matrix is put into compression.
+> 5. The compressive stress acts on the crack faces near the tip, **pinching the crack shut** and reducing the driving force for further growth.
+
+#### Carbon–carbon composites
+
+**Carbon–carbon composites** are carbon-fibre-reinforced carbon-matrix composites. They are relatively new and expensive because of the complex processing.
+
+- High tensile moduli and tensile strengths, retained to **$T>2000$°C**.
+- Creep resistance and relatively large fracture-toughness values.
+- Low coefficients of thermal expansion and relatively high thermal conductivities → relatively low susceptibility to **thermal shock**.
+- The major drawback is a **propensity to high-temperature oxidation**.
+
+Applications: rocket motors, friction materials in aircraft and high-performance automobiles, hot-pressing moulds, components for advanced turbine engines, and ablative shields for re-entry vehicles.
+
+| CMC | Matrix | Reinforcement | Attraction |
+| --- | --- | --- | --- |
+| **SiC whisker-reinforced alumina** | $\text{Al}_2\text{O}_3$ | SiC whiskers | Cutting-tool inserts; longer tool life than cemented carbides |
+| **Transformation-toughened zirconia** | $\text{Al}_2\text{O}_3$ or $\text{ZrO}_2$ | Metastable tetragonal $\text{ZrO}_2$ | Crack arrest by stress-induced transformation |
+| **Carbon–carbon** | Carbon | Carbon fibres | Strength and creep resistance above 2000°C; thermal shock resistance |
+
+### 5.16 Hybrid composites
+
+A **hybrid composite** contains two or more different kinds of fibres in a single matrix, giving a better all-round combination of properties than a composite with only one fibre type.
+
+The most common system incorporates both **carbon and glass fibres** into a polymeric resin:
+
+- **Carbon fibres** are strong and relatively stiff, and provide low-density reinforcement, but they are expensive.
+- **Glass fibres** are inexpensive but lack the stiffness of carbon.
+- The **glass–carbon hybrid** is stronger and tougher, has higher impact resistance, and may be produced at a lower cost than either the comparable all-carbon or all-glass reinforced plastic.
+
+The two fibre types may be combined in several ways, and the arrangement affects the overall properties: the fibres may all be aligned and intimately mixed, or laminations may be constructed with layers of a single fibre type alternating with one another. In virtually all hybrids the properties are **anisotropic**.
+
+When hybrid composites are stressed in tension, failure is usually **non-catastrophic**:
+
+1. The **carbon fibres fail first**, and the load is transferred to the glass fibres.
+2. On failure of the glass fibres, the **matrix** must sustain the applied load.
+3. Eventual composite failure coincides with failure of the matrix phase.
+
+Principal applications are lightweight land, water and air transport structural components, sporting goods, and lightweight orthopaedic components.
+
+> [!tip] The hybrid design idea
+> A hybrid is the composite equivalent of alloying: instead of accepting one fibre's property profile, you mix two profiles to buy toughness from one and stiffness from the other. The failure sequence above is the mechanical signature — the brittle, stiff carbon fails first, the ductile glass and matrix pick up the load, and the component gives warning instead of separating.
+
+### 5.17 Processing of fibre-reinforced composites
+
+The three processes described in the lecture are all ways of putting continuous fibres into a resin and then shaping and curing the result.
+
+#### Pultrusion
+
+**Pultrusion** is used for components with **continuous lengths and a constant cross-sectional shape** — rods, tubes, beams and similar profiles.
+
+1. Continuous-fibre **rovings or tows** are impregnated with a thermosetting resin.
+2. The wet stock is pulled through a **steel die** that preforms it to the desired shape and establishes the resin/fibre ratio.
+3. The stock then passes through a **curing die**, precision-machined to the final shape and heated to initiate curing of the resin matrix.
+4. A **pulling device** draws the stock through the dies and determines the production speed.
+5. Tubes and hollow sections are made by using **centre mandrels or inserted hollow cores**.
+
+Typical reinforcement content is **40–70 vol%** glass, carbon or aramid fibres; matrices are polyesters, vinyl esters or epoxy resins.
+
+#### Prepreg
+
+**Prepreg** is the composite industry's term for continuous-fibre reinforcement preimpregnated with a polymer resin that is only **partially cured**.
+
+1. A series of spool-wound continuous-fibre tows is collimated.
+2. The tows are sandwiched and pressed between sheets of **release and carrier paper** using heated rollers — a process called **calendering**.
+3. The release paper has been coated with a thin film of heated resin solution of relatively low viscosity, so that the resin thoroughly impregnates the fibres.
+4. A **doctor blade** spreads the resin into a film of uniform thickness and width.
+5. The final prepreg — a thin tape of continuous, aligned fibres in partially cured resin — is wound onto a cardboard core for packaging.
+
+Typical tape thickness is **0.08–0.25 mm**; tape width is **25–1525 mm** (1–60 in.); resin content is **35–45 vol%**. Both thermoplastic and thermosetting resins are used, with carbon, glass and aramid fibres as the common reinforcements.
+
+#### Filament winding
+
+**Filament winding** positions continuous reinforcing fibres accurately in a predetermined pattern to form a hollow, usually cylindrical, shape.
+
+1. The fibres, as individual strands or tows, are fed through a **resin bath**.
+2. They are continuously wound onto a **mandrel**, usually with automated winding equipment.
+3. After the appropriate number of layers, curing is carried out in an oven or at room temperature.
+4. The mandrel is then removed.
+
+Various winding patterns are possible — **circumferential, helical and polar** — to give the desired mechanical characteristics. Filament-wound parts have very high strength-to-weight ratios, a high degree of control over winding uniformity and orientation, and are most economically attractive when automated. Common structures include rocket motor casings, storage tanks and pipes, and pressure vessels.
+
+| Process | Product shape | Key feature | Typical reinforcement |
+| --- | --- | --- | --- |
+| **Pultrusion** | Continuous constant cross-section (rods, tubes, beams) | Fibres pulled through impregnation, preforming and curing dies | Glass, carbon, aramid (40–70 vol%) |
+| **Prepreg** | Thin tape or sheet for subsequent lay-up | Fibres preimpregnated with partially cured resin | Carbon, glass, aramid |
+| **Filament winding** | Hollow cylinders, pressure vessels, rocket cases | Resin-wet tow wound on a mandrel in a controlled pattern | Continuous carbon, glass, aramid |
+
+> [!note] Why prepreg is kept cold
+> *Added depth beyond the slides.* Prepreg is only *partially* cured so that it remains drapeable and can be laid up into a laminate. The curing reaction is deliberately slowed by storage at low temperature; at room temperature the resin gradually advances and the prepreg loses its tack and formability. This is why prepreg has a shelf life and why lay-up shops store it in a freezer.
+
+### 5.18 Structural composites
+
+A **structural composite** is a multi-layered, normally low-density composite used in applications requiring structural integrity — ordinarily high tensile, compressive and torsional strengths and stiffnesses. Its properties depend not only on the constituent materials but also on the **geometrical design** of the structural elements. The two most common structural composites are **laminar composites** and **sandwich panels**.
+
+#### Laminates
+
+A **laminar composite** is composed of two-dimensional sheets or panels (**plies** or **laminae**) bonded to one another. Each ply has a preferred high-strength direction, as found in continuous and aligned fibre-reinforced polymers. A multi-layered structure of this kind is a **laminate**.
+
+Laminate properties depend on how the high-strength direction varies from layer to layer. There are four classes:
+
+| Class | Stacking pattern | Consequence |
+| --- | --- | --- |
+| **Unidirectional** | High-strength direction the same in every ply | Maximum axial stiffness and strength; highly anisotropic |
+| **Cross-ply** | Alternating 0° and 90° layers | Stiffness in two perpendicular directions; more balanced |
+| **Angle-ply** | Alternating $+\theta$ and $-\theta$ (e.g. $\pm45^\circ$) | Good shear/torsion resistance; tailored off-axis properties |
+| **Multidirectional** | Several high-strength orientations | Most isotropic in-plane response of the four |
+
+![[COMP - Classes of laminar composites.png|360]]
+*Figure — the four classes of laminar composites: (a) unidirectional, (b) cross-ply, (c) angle-ply and (d) multidirectional. The arrows show the high-strength direction of each ply.*
+
+For virtually all laminates the layers are stacked so that fibre orientations are **symmetric relative to the laminate midplane**; this arrangement prevents out-of-plane twisting or bending. In-plane properties of unidirectional laminates are highly anisotropic. Cross-, angle- and multidirectional laminates are designed to increase the degree of in-plane isotropy: multidirectional can be made most isotropic, and the degree of isotropy decreases through angle-ply and cross-ply.
+
+Applications are primarily in aircraft, automotive, marine and building/civil-infrastructure sectors:
+
+- **Aircraft** — fuselage, vertical and horizontal stabilizers, landing-gear hatch, floors, fairings, helicopter rotor blades.
+- **Automotive** — automobile panels, sports-car bodies, drive shafts.
+- **Marine** — ship hulls, hatch covers, deckhouses, bulkheads, propellers.
+- **Building/civil** — bridge components, long-span roof structures, beams, structural panels, roof panels, tanks.
+- **Sports and recreation** — the modern ski.
+
+#### Sandwich panels
+
+A **sandwich panel** is a lightweight beam or panel with relatively high stiffness and strength. It consists of two outer sheets (**faces** or **skins**) separated by, and adhesively bonded to, a thicker **core**.
+
+- The **faces** are made of a relatively stiff and strong material — typically aluminium alloys, steel and stainless steel, fibre-reinforced plastics, or plywood. They carry the bending loads. When the panel bends, one face is in compression and the other in tension.
+- The **core** is lightweight and normally has a low modulus of elasticity. It provides continuous support for the faces and holds them together. It must have sufficient **shear strength** to withstand transverse shear stresses and be thick enough to provide high **shear stiffness** (to resist buckling of the panel).
+- Tensile and compressive stresses in the core are much lower than in the faces. Panel stiffness depends primarily on the **core material and core thickness**; bending stiffness increases significantly with increasing core thickness. Strong bonding between faces and core is essential.
+- A sandwich panel is cost-effective because core materials are less expensive than face materials.
+- Core materials typically fall into three categories: **rigid polymeric foams, wood, and honeycombs**.
+
+![[COMP - Sandwich panel cross section.png|380]]
+*Figure — cross-section of a sandwich panel: two stiff, strong faces separated by a thick, lightweight core. The faces carry bending stress; the core carries transverse shear and keeps the faces apart.*
+
+![[COMP - Honeycomb core sandwich panel.png|460]]
+*Figure — construction of a honeycomb-core sandwich panel: face sheets are adhesively bonded to a honeycomb core, giving high bending stiffness at low weight.*
+
+> [!note] Why a sandwich panel is so stiff
+> *Added depth beyond the slides.* Bending stiffness depends on how far the load-bearing material sits from the neutral axis. Separating two thin faces by a thick, light core moves the faces far from the neutral plane, so their contribution to the second moment of area rises approximately with the **square of the separation**. The core itself carries very little bending stress; its job is to keep the faces apart and to carry shear. This is the same principle as an I-beam, with the core acting as the web and the faces as the flanges.
+
+### 5.19 Nanocomposites
+
+**Nanocomposites** are composed of nanosized particles embedded in a matrix material. Their physical and chemical properties change dramatically as the particle size decreases, and the degree of change depends on the particle size (i.e. the number of atoms).
+
+Two factors account for the size-induced properties:
+
+1. The increase in the ratio of **particle surface area to volume**.
+2. The **particle size** itself.
+
+Surface atoms behave differently from atoms in the interior. As the particle size decreases, the relative ratio of surface atoms to bulk atoms increases, so **surface phenomena begin to dominate**. For extremely small particles, **quantum effects** begin to appear.
+
+- Matrix materials may be metals or ceramics, but the most common matrices are **polymers**.
+- The properties of a nanocomposite depend not only on the matrix and nanoparticle properties but also on **nanoparticle shape and content** and on **matrix–nanoparticle interfacial characteristics**.
+- Most commercial nanocomposites use three general nanoparticle types: **nanocarbons, nanoclays and particulate nanocrystals**.
+
+Nanoparticle loadings vary with the application:
+
+- Carbon-nanotube concentrations on the order of **5 wt.%** can lead to significant increases in strength and stiffness.
+- Between **15 and 20 wt.%** of carbon nanotubes are required to produce the electrical conductivity needed for some applications, such as protecting a structure from electrostatic discharge.
+
+One of the main challenges in nanocomposite production is **processing**: for most applications the nanosize particles must be dispersed uniformly and homogeneously within the matrix.
+
+| Application | Nanocomposite | Function |
+| --- | --- | --- |
+| Food/beverage packaging | Nanocomposite thin-film bags/containers | Barrier and mechanical improvement |
+| Automobile tyres | Nanocomposite coatings | Increased air-pressure retention |
+| Lithium-ion batteries | Graphene nanocomposite anodes | Charge storage |
+| Flame barriers | Multi-walled carbon nanotubes in silicone | Flame retardancy |
+| Dental restoration | Polymer nanocomposite filling materials | Wear and aesthetics |
+| Wind-turbine blades / sports equipment | Multi-walled carbon nanotubes in epoxy | Stiffness and fatigue resistance |
+| Automotive/aircraft fuel lines | Multi-walled carbon nanotubes in polymer | Electrostatic dissipation |
+
+> [!note] Why a few per cent of nanotubes can matter
+> *Added depth beyond the slides.* Nanotubes have an enormous aspect ratio, so they percolate — form a connected network — at a much lower volume fraction than spherical particles. The same network that raises stiffness can also conduct electricity, which is why the loading for mechanical reinforcement (about 5 wt.%) is lower than the loading for electrical conductivity (15–20 wt.%). The property you want determines the loading you need.
+
+### 5.20 Composites in service — skis, aircraft and cars
+
+The final slides are a reminder that the design equations in this block end up in objects people use.
+
+#### The modern ski
+
+A ski is a layered structural composite. The lecture's cut-away shows a **top sheet** (a polyamide polymer with a relatively low glass-transition temperature that resists chipping), a **torsion-box wrap** of fibre-reinforced composite using glass, aramid or carbon fibres in a variety of weaves and weights to tune the flexural characteristics, and a **core** of foam, vertical wood laminates, wood–foam laminates, honeycomb or other materials (commonly poplar and other woods). The ski is a laminate in which each layer is chosen for a different function — abrasion resistance on top, torsional stiffness in the wrap, low weight and damping in the core.
+
+![[COMP - Composite construction of a modern ski.png|420]]
+*Figure — cut-away of a modern composite ski: top sheet, fibre-reinforced torsion-box wrap and a lightweight core. Each layer is a different composite with a different job.*
+
+#### The Boeing 787 Dreamliner
+
+The 787 is the aircraft that made composites a mainstream airframe material:
+
+- **Carbon laminates** in the wing and tail structures.
+- **Continuous carbon-fibre–epoxy laminates** in the fuselage.
+- **Glass-fibre-reinforced epoxy and hybrid composites** (glass + carbon fibres) in the tail and trailing wing structures.
+- **Sandwich panels** in the nacelles (the housings around the engines) and trailing tail components; the faces are carbon-fibre–epoxy laminates and the cores are honeycomb structures of aluminium-alloy sheet.
+
+![[COMP - Materials used in the Boeing 787.png|480]]
+*Figure — materials used in the Boeing 787 body by weight: composites dominate at about 50%, compared with about 12% in the 777; aluminium falls from about 50% in the 777 to about 20% in the 787, with titanium, steel and other materials making up the balance.*
+
+The comparison with the 777 is the point: the 787 uses roughly **50% composites by weight** against **12%** for the 777, while aluminium drops from about **50% to 20%**. That shift is what makes the weight saving — and the corresponding fuel efficiency — possible.
+
+#### Automotive applications
+
+The lecture closes with a map of composite parts in modern cars: CFRP engine covers, doors, cockpits, steering wheels/roofs, lift gates, bodies, wheels, fenders, seats, brake discs and transmission shafts, together with glass-fibre/polyamide bumper beams and polypropylene-honeycomb floor panels. The reasons are the same as in aerospace — mass reduction, stiffness, and the ability to mould a complex shape in one piece — but the cost constraint is much tighter, so automotive composites tend to use faster processes (SMC, RTM, short-fibre moulding) and cheaper fibres.
+
+![[COMP - Composite parts in automobiles.png|480]]
+*Figure — composite parts in modern automobiles, with the material identified for each part: CFRP for body, door, roof and transmission components; GF/PA6 for bumper beams; PP-honeycomb for floor panels.*
+
+| Application | Composite | Why it is used |
+| --- | --- | --- |
+| Aircraft fuselage/wing | Carbon-fibre–epoxy laminate | High specific stiffness and strength; fatigue resistance |
+| Engine nacelle | Carbon-face / Al-honeycomb sandwich | Stiff, light, damage-tolerant shell |
+| Ski | Glass/aramid/carbon laminate + wood/foam core | Tunable flex, damping, low weight |
+| Car body panel | CFRP or GFRP | Mass reduction and complex shape |
+| Bumper beam | Glass-fibre/polyamide | Impact energy absorption at lower cost |
+| Floor panel | PP–honeycomb | Bending stiffness with low mass |
+| Cutting tool | Cemented carbide (WC–Co) | Hardness plus toughness at temperature |
+
+> [!tip] Exam pointer — Composites
+> Expect: the definition and objective of a composite; the matrix/dispersed-phase definitions; the five geometric variables; the classification tree and the difference between large-particle and dispersion-strengthened; the rule-of-mixtures upper and lower bounds and why experimental data lie between them; cermets, carbon-black rubber and concrete; the critical fibre length $l_c=\sigma_f^*d/2\tau_c$ and its derivation; the isostrain and isostress derivations, $E_{cl}$ and $E_{ct}$; longitudinal and transverse tensile strength; the discontinuous aligned formulae for $l>l_c$ and $l<l_c$; the random-fibre $K$ factor; whiskers/fibres/wires and the functions of the matrix; glass, carbon and aramid PMCs; MMC advantages and applications; CMC toughening and transformation toughening; pultrusion, prepreg and filament winding; laminate classes and sandwich panels; and the size effects in nanocomposites. The added depth to be ready with: the load-ratio $F_f/F_m$, the weight-to-volume fraction conversion, why $K<1$, why aramid is weak in compression, the step-by-step transformation-toughening sequence, and why sandwich stiffness scales with the square of the core separation.
+
+---
+
+## Formula Summary — Composites
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Specific strength | $\sigma/\rho$ | Selection index for weight-limited strength |
+| Specific modulus | $E/\rho$ | Selection index for weight-limited stiffness |
+| Volume fraction from weight fraction | $V_f=\dfrac{w_f/\rho_f}{w_f/\rho_f+w_m/\rho_m}$ | Two-phase composite; $V_m=1-V_f$ |
+| Rule of mixtures — upper bound | $E_{c(u)}=E_mV_m+E_pV_p$ | Isostrain (Voigt); stiffest arrangement |
+| Rule of mixtures — lower bound | $E_{c(l)}=\dfrac{E_mE_p}{V_mE_p+V_pE_m}$ | Isostress (Reuss); most compliant arrangement |
+| Density of a composite | $\rho_c=\rho_mV_m+\rho_fV_f$ | Volume-fraction weighted |
+| Critical fibre length | $l_c=\dfrac{\sigma_f^*d}{2\tau_c}$ | $\tau_c$ = smaller of bond strength and matrix shear yield strength |
+| Longitudinal modulus | $E_{cl}=E_mV_m+E_fV_f=E_m(1-V_f)+E_fV_f$ | Continuous aligned fibres; isostrain |
+| Transverse modulus | $E_{ct}=\dfrac{E_mE_f}{V_mE_f+V_fE_m}$ | Continuous aligned fibres; isostress |
+| Fibre-to-matrix load ratio | $\dfrac{F_f}{F_m}=\dfrac{E_fV_f}{E_mV_m}$ | Longitudinal loading |
+| Longitudinal tensile strength | $\sigma_{cl}^*=\sigma_m'(1-V_f)+\sigma_f^*V_f$ | $\sigma_m'$ = matrix stress at fibre failure strain |
+| Discontinuous aligned strength, $l>l_c$ | $\sigma_{cd}^*=\sigma_f^*V_f\left(1-\dfrac{l_c}{2l}\right)+\sigma_m'(1-V_f)$ | End-effect correction |
+| Discontinuous aligned strength, $l<l_c$ | $\sigma_{cd}^*=\dfrac{\tau_cl}{d}V_f+\sigma_m'(1-V_f)$ | Fibre pulls out rather than fracturing |
+| Random-fibre modulus | $E_{cd}=KE_fV_f+E_mV_m$ | $K=0.1$–$0.6$; fibre efficiency parameter |
+| Reinforcement efficiency | Parallel 1; perpendicular 0; random in plane $3/8$; random in 3D $1/5$ | Geometric multiplier on fibre contribution |
+
+> [!note] Source images
+> All Excalidraw figures in this block are original reconstructions of the classification tree and the isostrain/isostress loading states; the vault copies live in the `Excalidraw/` folder with the `COMP - ` prefix. The photographs, property charts, schematics and application figures embedded above are the original figures extracted from [[Composites_Odd_2026-27.pdf]] and stored in `Material Science/images/` with the `COMP - ` prefix.
 
 ---
 
@@ -2558,7 +3474,7 @@ which gives $I \to -I_0$ for large negative $V_i$ (the barrier-independent rever
 | Diode equation | $I = I_0\left[\exp(eV_i/kT)-1\right]$ | *Added depth*; $I_0$ = equilibrium exchange current |
 
 > [!note] Source images
-> The diagrams and plots embedded in this block — the resistivity-range chart (Part 1, slide 2), the parabolic $E$–$k$ (Fig. 1), the de Broglie wavelengths (Fig. 2), the Fermi–Dirac curves (Fig. 3), the field-biased distribution (Fig. 4), the collision sawtooth (Fig. 5), the Ag/Sn resistivity (Fig. 6), $H_c$ versus $T$ (Fig. 7), the Meissner effect (Fig. 8), type I/II magnetization (Fig. 9), the standing waves (Fig. 10), the $E$–$k$ break (Fig. 11) and the forbidden gap (Fig. 12); and in Part 2, the overlapping bands (Fig. 13), the insulator/semiconductor gap (Fig. 14), the midgap Fermi level (Fig. 15), the P-doped and Al-doped cells (Figs. 16–17), the $\log\sigma$ versus $1/T$ plot (Fig. 18) and the three junction band diagrams (Fig. 19) — are the original figures extracted from [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `EP1`/`EP2` prefix. The band-structure classification flowchart in §7.6 is an original reconstruction of the decision sequence in the slides and lives in the vault as `Excalidraw/EP - Band structure classification.excalidraw.md`.
+> The diagrams and plots embedded in this block — the resistivity-range chart (Part 1, slide 2), the parabolic $E$–$k$ (Fig. 1), the de Broglie wavelengths (Fig. 2), the Fermi–Dirac curves (Fig. 3), the field-biased distribution (Fig. 4), the collision sawtooth (Fig. 5), the Ag/Sn resistivity (Fig. 6), $H_c$ versus $T$ (Fig. 7), the Meissner effect (Fig. 8), type I/II magnetization (Fig. 9), the standing waves (Fig. 10), the $E$–$k$ break (Fig. 11) and the forbidden gap (Fig. 12); and in Part 2, the overlapping bands (Fig. 13), the insulator/semiconductor gap (Fig. 14), the midgap Fermi level (Fig. 15), the P-doped and Al-doped cells (Figs. 16–17), the $\log\sigma$ versus $1/T$ plot (Fig. 18) and the three junction band diagrams (Fig. 19) — are the original figures extracted from [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] and stored in `Material Science/images/` with the `EP1`/`EP2` prefix. The band-structure classification flowchart in §7.6 is an original reconstruction of the decision sequence in the slides and lives in the vault as `Excalidraw/EP - Band structure classification.excalidraw.md`.
 
 ---
 
@@ -2591,7 +3507,7 @@ where $\mu$ is the permeability of the solid material through which the magnetic
 
 $$ \mu_r = \frac{\mu}{\mu_0} $$
 
-The magnetic induction in a solid is also defined in a second way, which separates the applied field from the material's own contribution:
+	The magnetic induction in a solid is also defined in a second way, which separates the applied field from the material's own contribution:
 
 $$ \boxed{\ B = \mu_0 (H + M)\ } $$
 
@@ -2916,7 +3832,7 @@ The demagnetizing energy of a permanent magnet is the area of the second-quadran
 | Energy product | $(BH)_{\max}\approx B_rH_c$ | Figure of merit for a permanent magnet |
 
 > [!note] Source images
-> All Excalidraw figures in this block are original reconstructions; the comparison of soft and hard hysteresis loops lives in the vault as `Excalidraw/MAG - Soft vs Hard Hysteresis.excalidraw.md`. The plots and schematics embedded above — the three magnetic responses (Fig. 1), the ferro/antiferro/ferrimagnetic coupling (Fig. 2), the domain flux closure (Fig. 3) and the hysteresis loop (Fig. 4) — are the original figures extracted from [[Magnetic Properties_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `MAG` prefix.
+> All Excalidraw figures in this block are original reconstructions; the comparison of soft and hard hysteresis loops lives in the vault as `Excalidraw/MAG - Soft vs Hard Hysteresis.excalidraw.md`. The plots and schematics embedded above — the three magnetic responses (Fig. 1), the ferro/antiferro/ferrimagnetic coupling (Fig. 2), the domain flux closure (Fig. 3) and the hysteresis loop (Fig. 4) — are the original figures extracted from [[Magnetic Properties_Odd_2026-27.pdf]] and stored in `Material Science/images/` with the `MAG` prefix.
 
 ---
 
@@ -3168,4 +4084,4 @@ Every nonmetallic material becomes opaque at some wavelength, which depends on t
 | Tetragonal distortion | $c/a = 4.03/3.98 = 1.012$ | Origin of the spontaneous dipole |
 
 > [!note] Source images
-> The schematic figures embedded in this block — the four polarization mechanisms (Fig. 1), the BaTiO₃ cubic and tetragonal cells (Fig. 2), the band structures of Cu and Mg and the photon absorption/re-emission mechanism (Figs. 3–4), the band-gap absorption event (Fig. 5) and the reflection/absorption/transmission schematic (Fig. 6) — are the original figures extracted from [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `DIE` prefix. The frequency ordering of the four mechanisms is discussed in §9.7 rather than drawn, because the slides give only the relative speeds.
+> The schematic figures embedded in this block — the four polarization mechanisms (Fig. 1), the BaTiO₃ cubic and tetragonal cells (Fig. 2), the band structures of Cu and Mg and the photon absorption/re-emission mechanism (Figs. 3–4), the band-gap absorption event (Fig. 5) and the reflection/absorption/transmission schematic (Fig. 6) — are the original figures extracted from [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]] and stored in `Material Science/images/` with the `DIE` prefix. The frequency ordering of the four mechanisms is discussed in §9.7 rather than drawn, because the slides give only the relative speeds.

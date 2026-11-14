@@ -22,7 +22,7 @@ Act as an expert materials-science tutor and technical writer for an engineering
 | Lecture PDFs in this folder (e.g. [[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Phase_Diagrams.pdf]], [[Crystal Defects.pdf]]) | Primary content: theory, figures, tables, worked examples, exam emphasis. |
 | [[MO NOTES (1).pdf]] | Handwritten class notes — used for the lecturer's own emphasis, extra derivations and "as taught" points. Always cite the page range. |
 | Textbooks — **Raghavan, *Materials Science and Engineering***; **Callister, *Fundamentals of Materials Science and Engineering*** | Used to complete and cross-check the slides; cite by author/table number in prose (e.g. "Callister, Table 7.5"). |
-| `attachments/` | Figures extracted from the lecture PDFs. |
+| `images/` | Figures extracted from the lecture PDFs. |
 | `Excalidraw/` (vault root) | Original schematic reconstructions drawn as Excalidraw files. |
 
 The compilation line at the top of a block states which sources it was built from, with wikilinks and page ranges, e.g.:
@@ -34,11 +34,13 @@ The compilation line at the top of a block states which sources it was built fro
 ## 3. File & Folder Map
 
 - **One note file, not one per topic** — everything accumulates in `notes.md`, in syllabus order.
-- `notes.md` — the single growing note.
-- `syllabus.md` — the topic list.
-- `attachments/` — PNGs extracted from the lecture PDFs (prefix-named, see §7).
+- `notes/` — the Markdown files: `notes.md` (the single growing note), `syllabus.md` (the topic list), `context.md` (this rulebook).
+- `images/` — PNG/JPG figures extracted from the lecture PDFs (prefix-named, see §7).
+- `pdfs/` — the original source PDFs: lecture slides, tutorials, textbooks, papers, handwritten notes.
+- `media/` — the odd non-PDF source files (`.mp4` visualization, `.xlsx` tutorial data).
 - `../Excalidraw/` — `.excalidraw.md` drawings, prefix-named `MP - `, referenced from the note by embed.
-- Lecture `.pdf`s and the odd `.mp4`/`.xlsx` stay in this folder and are linked/embedded by filename.
+
+All files are linked/embedded **by bare filename** (`![[MP1 - Stress tensor at a point.png|420]]`), never by path, so the folder layout above can change without breaking a single embed.
 
 ---
 
@@ -135,10 +137,10 @@ Style of prose:
 
 | Kind | Where it lives | Naming | Embed |
 | --- | --- | --- | --- |
-| **Extracted figure** — a photograph, plot, micrograph or table lifted from the lecture PDF | `attachments/` (PNG) | `PREFIX - Descriptive Title.png` | with a width parameter |
+| **Extracted figure** — a photograph, plot, micrograph or table lifted from the lecture PDF | `images/` (PNG) | `PREFIX - Descriptive Title.png` | with a width parameter |
 | **Reconstructed schematic** — redrawn by me as an Obsidian Excalidraw drawing | `../Excalidraw/` (`.excalidraw.md`) | `MP - Descriptive Title.excalidraw.md` | no width parameter |
 
-Rules: **any diagram, flowchart or schematic is an Excalidraw drawing** (never Mermaid, never a hand-drawn ASCII figure); **any figure that already exists in the PDF is extracted to `attachments/`** rather than redrawn.
+Rules: **any diagram, flowchart or schematic is an Excalidraw drawing** (never Mermaid, never a hand-drawn ASCII figure); **any figure that already exists in the PDF is extracted to `images/`** rather than redrawn.
 
 ### 7.2 Embed syntax
 
@@ -168,7 +170,7 @@ Excalidraw reconstructions do not need a caption (they are self-labelled).
 
 Each course block ends with the `[!note] Source images` callout stating that the Excalidraw figures are original reconstructions and where the extracted figures came from, e.g.:
 
-> All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/attachments/` with the `MP`/`MP2`/`MP3` prefix.
+> All Excalidraw figures in this note are original reconstructions of the diagrams in the three lecture PDFs and the handwritten notes; the vault copies live in the `Excalidraw/` folder with the `MP - ` prefix. The photographs, plots and tables embedded above are the original figures extracted from the three lecture PDFs and stored in `Material Science/images/` with the `MP`/`MP2`/`MP3` prefix.
 
 ### 7.5 Prefix convention
 
@@ -250,7 +252,7 @@ The Notes column carries the validity limit, the assumption, or the definition o
 
 1. **Read the syllabus row.** Take the topic's exact title and number from [[syllabus]]; confirm the row exists in the Syllabus Map table.
 2. **Mine the source PDF.** Work through the lecture slides in order, plus the relevant page range of [[MO NOTES (1).pdf]]; note the lecturer's worked examples and emphasis.
-3. **Extract figures.** Pull the photographs, plots and tables out of the PDF into `attachments/` using the correct prefix from §7.5 and a Title Case descriptive name.
+3. **Extract figures.** Pull the photographs, plots and tables out of the PDF into `images/` using the correct prefix from §7.5 and a Title Case descriptive name.
 4. **Reconstruct schematics.** Draw the diagram-only figures as Excalidraw files in `Excalidraw/` with the block's Excalidraw prefix, then verify each one renders (`excalidraw_render`) before citing it.
 5. **Write the H2 topic** with numbered H3 sections in the lecture's own sequence, adding H4 enrichment subsections where the source invites them.
 6. **Integrate pasted NotebookLM text** verbatim in detail: format it into the same structure (prose paragraphs, tables, callouts, display math) and place it under the correct H3/H4 header — do not summarise, condense or drop lines.
