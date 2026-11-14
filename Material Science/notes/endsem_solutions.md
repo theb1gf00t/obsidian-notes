@@ -1,14 +1,16 @@
 ---
-title: Material Science — MO-201 End-Sem Solutions (Odd Sem 2025–26)
+title: Material Science — MO-201 End-Sem Solutions (Endsem-1 and Endsem 2)
 tags:
   - materials-science
   - MO-201
   - end-sem
+  - endsem-1
+  - endsem-2
 ---
 
-# End-Sem Solutions — MO 201 Materials Science
+# Endsem-1 Solutions — MO 201 Materials Science
 
-Worked solutions to the End-Sem paper [[endsem1.pdf]] (IIT (BHU) Varanasi, Odd Sem 2025–26, 3 hours, 50 marks; attempt any 10 of 12 questions, all of equal marks). Every answer is built from [[notes]] (cited by section, e.g. §4.3) and the lecture PDFs behind it — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Composites_Odd_2026-27.pdf]], [[Phase_Diagrams.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]] and [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]] — following the conventions of [[context]]. Where a point goes beyond the slides it is marked *added depth*.
+Worked solutions to the first End-Sem paper, [[endsem1.pdf]] (IIT (BHU) Varanasi, Odd Sem 2025–26, 3 hours, 50 marks; attempt any 10 of 12 questions, all of equal marks). Every answer is built from [[notes]] (cited by section, e.g. §4.3) and the lecture PDFs behind it — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Composites_Odd_2026-27.pdf]], [[Phase_Diagrams.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]] and [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]] — following the conventions of [[context]]. Where a point goes beyond the slides it is marked *added depth*.
 
 > [!info] How to use this note
 > Each question is a card; click **Solution** to expand it. The marks split printed in the paper is kept in each card header, and each answer is sized to that split. Questions are in paper order; the table below maps each one to its syllabus topic so that a missed question can be traced back to [[notes]].
@@ -735,7 +737,7 @@ Worked solutions to the End-Sem paper [[endsem1.pdf]] (IIT (BHU) Varanasi, Odd S
 
 ---
 
-## Formula Summary
+## Formula Summary — Endsem-1
 
 | Quantity | Expression | Notes |
 | --- | --- | --- |
@@ -767,3 +769,621 @@ Worked solutions to the End-Sem paper [[endsem1.pdf]] (IIT (BHU) Varanasi, Odd S
 
 > [!note] Source images
 > The Excalidraw figures in this note (`SD - `, `MP - `) are the original reconstructions already stored in the vault `Excalidraw/` folder. The extracted figures come from the lecture PDFs and are stored in `Material Science/images/` with their topic prefix (`MP2`, `MP3`, `SD`, `COMP`, `EP1`, `EP2`, `MAG`, `DIE`); the four phase-diagram figures (Pb–Sn, Ag–Pt, Fe–C and the lever-rule example) were extracted from [[Phase_Diagrams.pdf]] and are stored with the new `PD - ` prefix.
+
+
+---
+
+# Endsem 2 Solutions
+
+Worked solutions to the End-Sem paper [[emdsem2.pdf]] (Even Sem 2025–26, MO-201 Materials Science and Engineering, 3 hours, 60 marks, 32 short questions). The answers follow the same method as the Endsem-1 section above: each question is a card with a collapsible solution, built from [[notes]] (cited by section) and the lecture PDFs, with *added depth* marked wherever an answer goes beyond the slides. The questions are grouped by topic in paper order.
+
+> [!info] Map of the paper
+> Questions **1–9** are mechanical behaviour, **10–18** are free electrons, conduction, semiconductors and optical response, **19–22** are dielectrics, **23–30** are magnetic materials, and **31–32** return to semiconductors. Several of the numerical questions (3, 11, 16, 18, 22, 25, 26) are worked in full with units; the key results are collected in the Formula Summary at the end of this section.
+
+| Q | Topic | Marks | Where it lives in [[notes]] |
+| --- | --- | --- | --- |
+| **1** | Strain–time response: elastomer, viscoelastic, viscous | 2 | §2.9 |
+| **2** | Engineering stress–strain curve with labels | 2 | §2.8, §2.11 |
+| **3** | Elastic strain of Al at 30,000 psi | 2 | §1.4 / Hooke's law |
+| **4** | Failures: Titanic, Liberty, Challenger, Columbia | 2 | §1.1, §2.7 |
+| **5** | Poisson's ratio: elastic vs plastic | 2 | §2.10 |
+| **6** | Slip and slip system | 2 | §2.2–§2.3 |
+| **7** | Shear stress parallel to tensile stress and yielding | 2 | §2.4 |
+| **8** | Slip vs twinning | 2 | §2.2 |
+| **9** | Grain-boundary strengthening | 4 | §2.5 |
+| **10** | Fermi–Dirac occupancy limits | 2 | §6.5 |
+| **11** | Fermi velocity of potassium | 2 | §6.3–§6.4 |
+| **12** | Nichrome vs copper heating element | 1 | §6.6 |
+| **13** | Aluminium transmission lines and solid solution | 1 | §6.6 |
+| **14** | Pb and Zn as conductors | 2 | §7.1, §7.4–§7.5 |
+| **15** | Conductivity vs impurity: semiconductor vs metal | 2 | §6.6, §7.9–§7.10 |
+| **16** | Energy gap of Ge from resistance data | 2 | §7.8 |
+| **17** | CdTe photoconductor and a cigarette | 1 | §9.12 |
+| **18** | Wavelength of a GaAs laser | 2 | §9.12 |
+| **19** | Polyethylene vs PVC dielectric constant | 2 | §9.5 |
+| **20** | Ice/water vs HCl dielectric constant on melting | 1 | §9.5 |
+| **21** | Loss factor: Na⁺ replaced by Rb⁺ in glass | 2 | §9.6–§9.7 |
+| **22** | Polarization of BaTiO₃ | 2 | §9.9 |
+| **23** | Large moment vs high Curie temperature | 1 | §8.9–§8.10 |
+| **24** | Fe–Ni permeability and hysteresis area | 2 | §8.15–§8.17 |
+| **25** | Eddy-current and hysteresis loss at 50 Hz | 2 | §8.16 |
+| **26** | Eddy loss in Fe–4%Si | 2 | §8.17 |
+| **27** | Fe, Co, Ni ferromagnetic: exchange energy | 2 | §8.9 |
+| **28** | Heusler alloys | 1 | §8.11 |
+| **29** | Zn in nickel ferrite | 2 | §8.12–§8.13 |
+| **30** | Fe–4%Si vs ferrites: energy loss | 2 | §8.17 |
+| **31** | Conductivity vs temperature, extrinsic semiconductor | 2 | §7.11 |
+| **32** | GaAs vs Si in optoelectronic communication | 1 | §9.12 |
+
+---
+
+## E2-A. Mechanical behaviour (Q1–Q9)
+
+> [!question] Q1: Draw strain–time response for the given stress cycle for elastomer, viscoelastic material, and viscous materials. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The stress cycle in the paper is a **rectangular pulse**: stress is switched **on** at $t_1$, held constant, and switched **off** at $t_2$. The strain–time response of a material to this pulse depends on how much of its deformation is instantaneous, retarded or permanent (§2.9).
+> >
+> > ![[MP2 - Anelasticity elastic viscous viscoelastic.png|420]]
+> >
+> > *Figure — the standard four-panel comparison: load–time cycle (top) against strain–time response (bottom) for (a) elastic, (b) anelastic/viscoelastic, (c) viscous and (d) elastomeric behaviour.*
+> >
+> > | Material | On loading ($t_1$ to $t_2$) | On unloading (after $t_2$) | Net result |
+> > | --- | --- | --- | --- |
+> > | **Elastomer** | Large strain builds up, with a rapid initial rise followed by a slower approach to a plateau | Strain falls, quickly at first and then slowly | Fully **recovered** — no permanent set |
+> > | **Viscoelastic** | Instantaneous elastic jump, then a **time-dependent (retarded) rise**, with some steady flow under constant load | Instantaneous elastic recovery, then **gradual** recovery of the retarded strain | A residual (permanent) strain may remain |
+> > | **Viscous** | No instantaneous jump; strain grows **linearly with time** at constant stress | Strain stays **constant** at the value reached | **All** strain is permanent |
+> >
+> > The ordering of the elastic content is therefore: elastic (all instantaneous, all recovered) $\to$ elastomer/viscoelastic (partly delayed) $\to$ viscous (none recovered). *Check the labels (b) and (d) against your slide, which names the retarded-recovery curve; the shapes above are the ones in the four-panel figure.*
+
+> [!question] Q2: Draw the engineering stress and engineering strain curve for metals, and label the elastic limit, offset yield strength, tensile strength, breaking strength, and strain to failure. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > ![[MP - Engineering Stress Strain Curve.excalidraw]]
+> >
+> > | Label | Where it is on the curve |
+> > | --- | --- |
+> > | **Elastic limit** | End of the linear/elastic region (the largest stress after which the specimen still returns to zero strain on unloading); in practice close to the proportional limit |
+> > | **Offset yield strength** $\sigma_y$ | Intersection of the curve with a line **parallel to the elastic slope, starting at $\varepsilon = 0.002$** (the 0.2 % offset) |
+> > | **Tensile strength** $\sigma_{UTS}$ | The **maximum** of the curve; onset of necking |
+> > | **Breaking strength** | The stress at the end of the curve (fracture) — **lower** than $\sigma_{UTS}$ on the engineering curve, because necking reduces the load while $A_0$ is still used |
+> > | **Strain to failure** $\varepsilon_f$ | Strain at the fracture point; the elongation measured after fracture is smaller by the recovered elastic part |
+> >
+> > ![[MP2 - 0.2 percent offset yield strength.png|440]]
+> >
+> > *Figure — the 0.2 % offset construction (left) and the upper/lower yield points of a low-carbon steel with the 0.2 % offset yield strength marked on the same curve (right).*
+> >
+> > $$ \boxed{\ \sigma_y:\ \text{curve} \cap \text{line of slope } E \text{ through } \varepsilon = 0.002 \qquad \sigma_{UTS} = \sigma_{\max}\ } $$
+
+> [!question] Q3: Steel and aluminium have Young's moduli of 210 GPa and 70 GPa, respectively. Tensile samples of steel and aluminium are made with identical geometry. In both samples, the yield stress occurs above 40,000 psi. At an engineering stress of 30,000 psi, the steel sample shows an elastic strain of 0.001. Find the elastic strain of the aluminium sample at an engineering stress of 30,000 psi. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > Both samples yield above 40,000 psi, so at 30,000 psi both are still in the **elastic** region and Hooke's law $\sigma = E\varepsilon$ applies. The same stress acts on both (identical geometry, same load), so
+> >
+> > $$ \sigma = E_{\text{steel}}\,\varepsilon_{\text{steel}} = E_{\text{Al}}\,\varepsilon_{\text{Al}} \quad\Longrightarrow\quad \varepsilon_{\text{Al}} = \varepsilon_{\text{steel}}\,\frac{E_{\text{steel}}}{E_{\text{Al}}} $$
+> >
+> > $$ \varepsilon_{\text{Al}} = 0.001 \times \frac{210\ \text{GPa}}{70\ \text{GPa}} = 0.003 $$
+> >
+> > **Check in psi.** $1\ \text{GPa} = 1.450\times10^{5}\ \text{psi}$, so $E_{\text{steel}} = 30.5\times10^{6}\ \text{psi}$ and $E_{\text{Al}} = 10.15\times10^{6}\ \text{psi}$. Then $\sigma_{\text{steel}} = 30.5\times10^{6}\times0.001 = 30{,}500\ \text{psi}\approx 30{,}000\ \text{psi}$ ✓, and
+> >
+> > $$ \varepsilon_{\text{Al}} = \frac{30{,}000}{10.15\times10^{6}} = 2.96\times10^{-3} \approx 0.003 $$
+> >
+> > $$ \boxed{\ \varepsilon_{\text{Al}} \approx 0.003\ } $$
+> >
+> > The aluminium strains three times as much as steel under the same stress because its modulus is one-third as large.
+
+> [!question] Q4: Materials response to external force changes depending on temperature, loading, and strain rate. Name the material behavior phenomenon that led to the failure of a) Titanic in 1912, b) World War II Liberty ship, c) Space Shuttle Challenger in 1986, and d) Space Shuttle Columbia in 2003. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > | Failure | Phenomenon | Explanation |
+> > | --- | --- | --- |
+> > | **a) Titanic, 1912** | **Ductile-to-brittle transition** (brittle fracture) | Hull steel with a high DBTT, in ice-cold water, under impact loading — service temperature fell *below* the DBTT, so the plate fractured before it yielded (§2.7) |
+> > | **b) Liberty ships, 1942–45** | **Ductile-to-brittle transition** (brittle fracture at notches) | All-welded hulls of steel with inadequate notch toughness; low temperature, stress concentration at hatch corners and no crack-arresting seams (§1.1, §2.7) |
+> > | **c) Challenger, 1986** | **Loss of elasticity of the elastomer O-ring at low temperature** (rubber → glassy, below its glass transition) | A cold launch stiffened the rubber seals, which could no longer recover and seal the joint |
+> > | **d) Columbia, 2003** | **Brittle fracture under high-strain-rate impact** | Impact of a foam fragment on the brittle reinforced carbon–carbon leading edge cracked it, letting hot gas in |
+> >
+> > The common thread is that the same material behaves very differently when temperature falls or loading rate rises — the Yoffee-diagram argument of Endsem-1 Q2(a). *Added depth beyond the slides:* parts (c) and (d) are not worked in [[notes]], which treats the Titanic and Liberty cases (§1.1, §2.7); the Challenger and Columbia explanations are the standard accounts.
+
+> [!question] Q5: What is Poisson's ratio, and comment on its value for metals in the elastic region and the plastic region. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > Under a tensile stress along $z$ the specimen elongates ($\varepsilon_z > 0$) and **contracts laterally** ($\varepsilon_x = \varepsilon_y < 0$). **Poisson's ratio** is the negative ratio of lateral to axial strain:
+> >
+> > $$ \boxed{\ \nu = -\frac{\varepsilon_x}{\varepsilon_z} = -\frac{\varepsilon_y}{\varepsilon_z}\ } $$
+> >
+> > - **Elastic region** — for metals and alloys $\nu \approx 0.25$–$0.35$ (steels 0.27–0.30, aluminium about 0.33, copper 0.33–0.35). The volume *increases* slightly: $\Delta V/V = \varepsilon_z(1-2\nu)$, so for $\nu = 0.3$ a strain of 0.3 % gives a volume increase of only 0.12 %.
+> > - **Plastic region** — plastic deformation proceeds by **slip (shear)**, which does not change volume, so volume is conserved. Setting $\Delta V = 0$ gives $1 - 2\nu = 0$, i.e.
+> >
+> > $$ \nu_{\text{plastic}} = 0.5 $$
+> >
+> > So $\nu$ **rises from about 0.3 in the elastic range towards 0.5 in the plastic range**, the value of a perfectly incompressible material (the same value as rubber). This is the constant-volume assumption, $A_0l_0 = A_il_i$, behind the true-stress and true-strain conversions.
+
+> [!question] Q6: What is slip and slip system? [2]
+>
+> > [!success]- Solution (Click to expand)
+> > **Slip** is plastic deformation by the shear of one part of a crystal over another along a crystallographic plane, in a crystallographic direction, by a discrete, whole number of lattice spacings. It proceeds by the nucleation, glide and escape of **dislocations**, not by rigid sliding of two half-crystals, so the lattice orientation on both sides of the slip plane is **unchanged** and a **slip step** of height $nb$ appears at the surface.
+> >
+> > A **slip system** is one **slip plane** together with one **slip direction** in it (and the Burgers vector of the dislocation that glides). The plane is the **close-packed plane** (highest atomic density, widest spacing, lowest shear resistance) and the direction is the **close-packed direction** in that plane (shortest Burgers vector, lowest dislocation energy).
+> >
+> > | Crystal | Slip plane | Slip direction | Number of systems |
+> > | --- | --- | --- | --- |
+> > | **FCC** | $\{111\}$ | $\langle110\rangle$ | $4\times3 = 12$ |
+> > | **BCC** | $\{110\}$ (also $\{112\}$, $\{123\}$) | $\langle111\rangle$ | $6\times2 = 12$ |
+> > | **HCP** | Basal $(0001)$ | $\langle11\bar{2}0\rangle$ | $1\times3 = 3$ |
+> >
+> > The number of independent slip systems controls ductility: at least **five** are needed for an arbitrary shape change (von Mises), which is why FCC metals are ductile and HCP metals are not.
+
+> [!question] Q7: Can shear stress parallel to tensile stress result in the yielding of a single crystal? Give justification. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > Yes — but only through the component of the stress that is **resolved onto the slip system**. A tensile stress $\sigma$ along an arbitrary axis is not itself a shear stress on the slip plane; slip is driven by the **resolved shear stress** in the slip direction on the slip plane. With $\phi_1$ the angle between the stress axis and the slip-plane normal and $\phi_2$ the angle between the stress axis and the slip direction:
+> >
+> > $$ \tau_R = \sigma\cos\phi_1\cos\phi_2 = \sigma\,m, \qquad m_{\max} = 0.5\ \ (\phi_1 = \phi_2 = 45^\circ) $$
+> >
+> > Slip starts when $\tau_R$ reaches the **critical resolved shear stress** $\tau_{CRSS}$, a material property:
+> >
+> > $$ \boxed{\ \tau_R = \tau_{CRSS} \quad\Longrightarrow\quad \sigma_y = \frac{\tau_{CRSS}}{m}\ } $$
+> >
+> > - A stress acting **along the tensile axis** produces a non-zero resolved shear stress on every plane that is inclined to the axis, so a single crystal **can yield**, at the stress $\tau_{CRSS}/m$ — lowest when $m = 0.5$.
+> > - It **cannot yield on a given system** if $m = 0$: when the stress axis lies *in* the slip plane ($\phi_1 = 90^\circ$), or when the slip direction is perpendicular to the axis ($\phi_2 = 90^\circ$, which includes the case of a slip plane perpendicular to the axis, since the direction then lies in the plane). Then $\tau_R = 0$ however large $\sigma$ is.
+> >
+> > So the answer is conditional: shear stress on the slip system must be **resolved** and must reach $\tau_{CRSS}$; orientation alone decides whether this occurs (§2.4). *The question's wording is ambiguous; this answer treats it as "does a tensile stress, through its shear component, cause yielding".*
+
+> [!question] Q8: Name two modes through which plastic deformation can take place in metallic samples. Give at least two key differences between the two modes. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The two modes are **slip** and **twinning**.
+> >
+> > | | **Slip** | **Twinning** |
+> > | --- | --- | --- |
+> > | Displacement | Block above the plane shifts by a **whole number of lattice spacings** | Each successive plane shifts by a **fraction** of a spacing, growing with distance from the twin plane |
+> > | Lattice orientation | **Unchanged** | **Changed** — the twinned region is a mirror image of the parent |
+> > | Surface evidence | A visible **step** (slip line) | A reoriented, tilted region |
+> > | Strain produced | Large (repeats indefinitely) | Small and bounded (a few per cent) |
+> > | When it dominates | Normal case (FCC, BCC) | When slip is hard: HCP metals, low $T$, high strain rate, low-SFE FCC (brass, TWIP steel) |
+> > | Stress needed | Low (reaches CRSS first) | High (often 2–3 times CRSS) |
+> >
+> > ![[MP2 - Slip and twinning sequence.png|420]]
+> >
+> > *Figure — (a) before deformation; (b) after slip, the upper block is displaced by a whole number of lattice spacings and the surface shows a step; (c) after twinning, each plane is displaced by a fraction of a spacing, producing a mirror-image (twinned) region.*
+
+> [!question] Q9: Explain the grain boundary strengthening mechanism and the associated relation with neat schematics. [4]
+>
+> > [!success]- Solution (Click to expand)
+> > **Mechanism.** Neighbouring grains have different crystallographic orientations, so a slip plane in one grain does not continue into the next. A moving dislocation therefore **cannot cross the grain boundary**; it **piles up** against it. The more grain boundaries per unit volume (the finer the grain), the more frequently dislocations are stopped, so more stress is needed to keep the metal deforming.
+> >
+> > ![[MP - Grain Boundary Pile-up.excalidraw]]
+> >
+> > **Quantitative relation.** A pile-up of $n$ dislocations multiplies the applied stress at its head by about $n$:
+> >
+> > $$ \tau_{\text{head}} \approx n\,\tau_{\text{applied}}, \qquad n \approx \frac{\pi\,\tau_{\text{applied}}\,L}{Gb} $$
+> >
+> > where $L$ is the pile-up length ($\approx$ the grain radius, $L = d/2$), $G$ the shear modulus and $b$ the Burgers vector. Yielding of the *next* grain begins when $\tau_{\text{head}}$ reaches that grain's critical value $\tau^{*}$. Setting $\tau_{\text{head}} = \tau^{*}$:
+> >
+> > $$ \tau_{\text{applied}} \approx \sqrt{\frac{2Gb\,\tau^{*}}{\pi d}} $$
+> >
+> > so the yield stress varies as the inverse square root of the grain diameter — the **Hall–Petch relation**:
+> >
+> > $$ \boxed{\ \sigma_y = \sigma_0 + k_y\,d^{-1/2}\ } $$
+> >
+> > where $\sigma_0$ is the friction stress opposing dislocation motion in the single crystal and $k_y$ is a constant measuring the resistance of the boundary. A **plot of $\sigma_y$ against $d^{-1/2}$ is a straight line** of slope $k_y$ and intercept $\sigma_0$.
+> >
+> > **Consequences.**
+> >
+> > - **Finer grains → higher yield strength.** Grain refinement is the only common strengthening mechanism that also *improves* toughness: it lowers the DBTT because it shortens the pile-ups that nucleate cleavage cracks (§2.7).
+> > - The same pile-up stress concentration, applied to a crack instead of a boundary, is how a slip band nucleates a cleavage crack.
+> >
+> > | Grain size | Pile-up length | Stress at head | Yield strength |
+> > | --- | --- | --- | --- |
+> > | Coarse (large $d$) | Long | Large — next grain yields easily | Low |
+> > | Fine (small $d$) | Short | Small — higher applied stress needed | High |
+
+> [!tip] Exam pointer — Endsem 2, mechanical (Q1–Q9)
+> Have ready: the four strain–time shapes (elastic, viscoelastic, viscous, elastomer); the labelled stress–strain curve with the 0.2 % offset line; $\varepsilon = \sigma/E$ in the elastic range; the four failures and their phenomena (DBTT for Titanic/Liberty); $\nu \approx 0.3$ (elastic) $\to 0.5$ (plastic); slip system = close-packed plane + direction; $\tau_R = \sigma\cos\phi_1\cos\phi_2$; the slip/twinning table; and Hall–Petch with the pile-up argument (§2.2–§2.5, §2.9–§2.10).
+
+---
+
+## E2-B. Free electrons, conduction, semiconductors and optical response (Q10–Q18)
+
+> [!question] Q10: Show that the probability of occupancy of energy level $E$ by an electron is (i) negligible for $E \gg E_F$, (ii) 0.5 for $E = E_F$, (iii) $\sim 1$ for $E \ll E_F$. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The probability of occupation of an energy level $E$ is given by the Fermi–Dirac distribution
+> >
+> > $$ P(E) = \frac{1}{1 + \exp\!\left(\dfrac{E - E_F}{kT}\right)} $$
+> >
+> > where $k$ is Boltzmann's constant and $T$ the absolute temperature. Define $x = (E - E_F)/kT$, so $P = 1/(1 + e^{x})$.
+> >
+> > - **(i) $E \gg E_F$.** Then $x \gg 1$, $e^{x} \gg 1$, and the "1" in the denominator can be dropped:
+> >
+> > $$ P(E) \approx \exp\!\left(-\frac{E - E_F}{kT}\right) \longrightarrow 0 $$
+> >
+> > The level is **almost always empty** (negligible occupancy).
+> >
+> > - **(ii) $E = E_F$.** Then $x = 0$, $e^{0} = 1$:
+> >
+> > $$ P(E_F) = \frac{1}{1 + 1} = 0.5 $$
+> >
+> > This holds at **every** temperature — this is the definition of the Fermi level.
+> >
+> > - **(iii) $E \ll E_F$.** Then $x \ll -1$, $e^{x} \to 0$:
+> >
+> > $$ P(E) = \frac{1}{1 + e^{x}} \longrightarrow 1 $$
+> >
+> > The level is **almost certainly filled**.
+> >
+> > $$ \boxed{\ P \to 0\ (E \gg E_F) \qquad P = 0.5\ (E = E_F) \qquad P \to 1\ (E \ll E_F)\ } $$
+> >
+> > At $0\ \text{K}$ the limits become exact: $P = 1$ below $E_F$ and $P = 0$ above it.
+
+> [!question] Q11: The Fermi level for potassium is 2.1 eV. Calculate the velocity of the electrons at the Fermi level. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The energy of free electrons is purely kinetic, $E = \tfrac12 mv^2$, so at the Fermi level
+> >
+> > $$ E_F = \tfrac12 m v_F^2 \quad\Longrightarrow\quad v_F = \sqrt{\frac{2E_F}{m}} $$
+> >
+> > Convert the energy: $E_F = 2.1\ \text{eV} \times 1.602\times10^{-19}\ \text{J/eV} = 3.364\times10^{-19}\ \text{J}$, and $m = 9.109\times10^{-31}\ \text{kg}$:
+> >
+> > $$ v_F = \sqrt{\frac{2\,(3.364\times10^{-19})}{9.109\times10^{-31}}} = \sqrt{7.39\times10^{11}}\ \text{m/s} $$
+> >
+> > $$ \boxed{\ v_F \approx 8.6\times10^{5}\ \text{m/s}\ } $$
+> >
+> > This is about $0.3\,\%$ of the speed of light, which justifies the classical (non-relativistic) kinetic energy used in the free electron model. Note that $v_F$ is large even at $0\ \text{K}$: the Pauli exclusion principle forces electrons into high-energy states.
+
+> [!question] Q12: Explain why nichrome and not copper is used as a heating element. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > A heating element converts electrical energy into heat by Joule heating, $P = V^2/R$, so it needs a **high resistivity** (a high resistance in a compact wire) and must survive **high temperature in air**.
+> >
+> > - **Resistivity.** In $\sigma = ne^2\tau/m$, solute atoms are the most effective electron scatterers: they shorten the mean free path and lower $\sigma$. **Nichrome** (Ni–Cr alloy) is a concentrated solid solution, so its resistivity ($\sim10^{-6}\ \Omega\,\text{m}$) is about 60 times that of pure copper ($\sim1.7\times10^{-8}\ \Omega\,\text{m}$).
+> > - **Copper** conducts so well that a very long, thin wire would be needed for the same resistance, and it would oxidise and weaken at red heat. *Added depth beyond the slides:* nichrome forms a protective, adherent $\text{Cr}_2\text{O}_3$ film and keeps its strength at high temperature, so it does not burn out.
+
+> [!question] Q13: Explain why aluminium used in long distance transmission lines cannot be strengthened by solid solution. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > Solid-solution strengthening works by adding solute atoms that obstruct dislocations — but those same solute atoms are the **most effective scattering centres for conduction electrons** (§6.6). They shorten the mean free path $l$ and the collision time $\tau = l/v$, so the conductivity $\sigma = ne^2\tau/m$ **falls sharply**. A transmission line must have the highest possible conductivity to minimise $I^2R$ loss over long distances, so aluminium used there is left essentially pure; the strength is supplied instead by a **steel core** (an *added-depth* design remark beyond the slides).
+
+> [!question] Q14: Explain why lead and zinc with an even number of electrons in the outer shell and a full valence band are conductors. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > An even number of valence electrons (Zn: 2, Pb: 4) *would* fill the valence band completely if the bands were separated by a gap, and the material would then be an insulator or semiconductor — no empty states immediately above the top filled level, so no net drift is possible under a field (§6.6).
+> >
+> > These metals conduct because the **bands overlap**:
+> >
+> > - **Zinc**, like Mg and Be, has a full valence band that **overlaps in energy with the next (conduction) band**. Electrons spill over from the top of the valence band into the bottom of the next band, leaving *both* bands partially filled, with empty states immediately above the occupied ones.
+> > - **Lead** is in the fourth column, but down the series C → Si → Ge → Sn → Pb the gap shrinks ($5.4 \to 1.1 \to 0.7 \to 0.08 \to 0\ \text{eV}$) and disappears at Pb, so the valence and conduction bands meet or overlap.
+> >
+> > Overlap removes the forbidden gap, so empty states are available just above the Fermi level, the electron distribution can be shifted by a field, and the materials are **metallic conductors**. The criterion is band overlap, not the number of electrons.
+> >
+> > ![[EP2 - Metals partially filled and overlapping bands.png|440]]
+> >
+> > *Figure — the two metallic band structures: a partially filled band (left) and overlapping bands (right); both leave empty states directly above the occupied levels.*
+
+> [!question] Q15: Why does the conductivity of a semiconductor change with impurity content? Compare this with the behaviour of metallic conductors. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > **Semiconductor.** The conductivity is $\sigma = e(n_e\mu_e + n_h\mu_h)$, and in a pure semiconductor the carrier concentration is tiny, $n_e = n_h = N\exp(-E_g/2kT)$. Impurities change $n_e$ or $n_h$ dramatically:
+> >
+> > - **Donors** (fifth-column P, As, Sb) put a loosely bound electron at a level just below the conduction band; **acceptors** (third-column Al, Ga, In) create holes just above the valence band. The ionization energy is far smaller than $E_g$, so at room temperature almost every impurity atom supplies a carrier.
+> > - Doping by even a few parts per million raises the carrier concentration by orders of magnitude, so $\sigma$ **increases strongly** with impurity content (and by mass action the opposite carrier is suppressed, $n_en_h = n_i^2$).
+> >
+> > **Metal.** The carrier concentration $n$ is already very large (about one free electron per atom) and **does not change** on alloying. Impurities act only as **scattering centres** that shorten the mean free path:
+> >
+> > $$ \sigma = \frac{ne^2\tau}{m}, \qquad \tau = \frac{l}{v}\ \downarrow \ \Rightarrow\ \sigma\ \downarrow $$
+> >
+> > | | **Semiconductor** | **Metal** |
+> > | --- | --- | --- |
+> > | Effect of impurity on carriers | Adds many carriers | Adds none |
+> > | Effect on mobility / mean free path | Minor | Decreases (scattering) |
+> > | Net effect on $\sigma$ | **Increases** (large) | **Decreases** |
+
+> [!question] Q16: The resistance of a sample of pure germanium has the following temperature dependence: Temperature, K 312 354 385 420; Resistance, ohm 11.8 2.33 0.90 0.35. Determine the energy gap in germanium. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > For an intrinsic semiconductor the carrier number is $n = N\exp(-E_g/2kT)$ and the small temperature dependence of mobility is negligible, so
+> >
+> > $$ \sigma = \sigma_0\exp\!\left(-\frac{E_g}{2kT}\right) \quad\Longrightarrow\quad R \propto \frac{1}{\sigma} \propto \exp\!\left(\frac{E_g}{2kT}\right) $$
+> >
+> > $$ \ln R = \text{const} + \frac{E_g}{2k}\cdot\frac{1}{T} \qquad\Longrightarrow\qquad \text{slope of } \ln R \text{ vs } 1/T = \frac{E_g}{2k} $$
+> >
+> > | $T$ (K) | $1/T$ ($10^{-3}\ \text{K}^{-1}$) | $R$ ($\Omega$) | $\ln R$ |
+> > | --- | --- | --- | --- |
+> > | 312 | 3.205 | 11.8 | 2.468 |
+> > | 354 | 2.825 | 2.33 | 0.846 |
+> > | 385 | 2.597 | 0.90 | $-0.105$ |
+> > | 420 | 2.381 | 0.35 | $-1.050$ |
+> >
+> > Slope between the end points:
+> >
+> > $$ \frac{E_g}{2k} = \frac{2.468 - (-1.050)}{(3.205 - 2.381)\times10^{-3}\ \text{K}^{-1}} = \frac{3.518}{0.824\times10^{-3}} = 4.27\times10^{3}\ \text{K} $$
+> >
+> > (The three successive intervals give $4.27$, $4.18$ and $4.36\times10^{3}\ \text{K}$ — consistent, confirming the straight line.) With $k = 8.617\times10^{-5}\ \text{eV/K}$:
+> >
+> > $$ E_g = 2k \times 4.27\times10^{3}\ \text{K} = 2\,(8.617\times10^{-5})(4.27\times10^{3}) $$
+> >
+> > $$ \boxed{\ E_g \approx 0.74\ \text{eV}\ } $$
+> >
+> > This is close to the accepted value for germanium ($\approx 0.7\ \text{eV}$, as in the gap sequence 5.4 → 1.1 → 0.7 eV for C → Si → Ge).
+
+> [!question] Q17: A CdTe photoconductor responds to a glowing cigarette. Explain why this is so. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > A photon is absorbed in a semiconductor only if $h\nu \ge E_g$, i.e. $\lambda \le hc/E_g$, and it then lifts an electron across the gap, creating an electron–hole pair that **raises the conductivity** (photoconduction). CdTe has a band gap of about $1.5\ \text{eV}$ (*added depth*), so it responds to radiation with $\lambda \lesssim 0.83\ \mu\text{m}$ — the red and near-infrared end of the spectrum. The glowing tip of a cigarette is hot enough ($\sim$1000 K) to emit **red/near-infrared photons** in this range, so they excite electrons across the gap, and the photoconductor's conductivity changes: it "sees" the cigarette.
+
+> [!question] Q18: Determine the wavelength of the light from a GaAs laser, assuming that the radiative transition occurs between the bottom of the conduction band and the top of the valence band. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > A radiative transition between the conduction-band edge and the valence-band edge emits a photon of energy $h\nu = E_g$, so
+> >
+> > $$ \lambda = \frac{hc}{E_g} $$
+> >
+> > For GaAs $E_g = 1.43\ \text{eV}$ (*value from standard tables; the slides give only the method*). Using $hc = 1.240\ \text{eV}\,\mu\text{m}$:
+> >
+> > $$ \lambda = \frac{1.240\ \text{eV}\,\mu\text{m}}{1.43\ \text{eV}} = 0.867\ \mu\text{m} $$
+> >
+> > Check in SI units: $\lambda = \dfrac{(6.626\times10^{-34})(3.00\times10^{8})}{1.43\times1.602\times10^{-19}} = 8.68\times10^{-7}\ \text{m}$ ✓.
+> >
+> > $$ \boxed{\ \lambda \approx 0.87\ \mu\text{m} = 870\ \text{nm}\ } $$
+> >
+> > This lies in the **near-infrared**, just beyond the red edge of the visible spectrum ($\sim0.70\ \mu\text{m}$), consistent with a band gap below the $1.8\ \text{eV}$ visible limit.
+
+> [!tip] Exam pointer — Endsem 2, electronic (Q10–Q18)
+> Have ready: the three limits of $P(E)$; $v_F = \sqrt{2E_F/m}$ (convert eV → J first); the rule "solutes scatter electrons so $\sigma$ falls" for Q12, Q13 and Q15; band overlap as the reason for Zn and Pb; the linear fit $\ln R$ vs $1/T$ with slope $E_g/2k$; and $\lambda = hc/E_g = 1.24/E_g(\text{eV})\ \mu\text{m}$ (§6.5, §6.6, §7.4–§7.8, §9.12).
+
+---
+
+## E2-C. Dielectrics (Q19–Q22)
+
+> [!question] Q19: The dielectric constant of polyethylene is independent of temperature, while that of polyvinylchloride is not. Explain this difference in behaviour on the basis of their monomer structures. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The temperature dependence of a dielectric constant comes only from **orientation polarization**, since electronic and ionic polarization are independent of temperature. Orientation polarization needs **permanent dipoles**, which align with the field while thermal energy tends to randomise them.
+> >
+> > - **Polyethylene** — monomer $\text{CH}_2{=}\text{CH}_2$ (repeat unit $-\text{CH}_2\text{CH}_2-$). The C–H bonds are practically non-polar and the symmetrical monomer has **no permanent dipole moment**, like $\text{CH}_4$ (the centres of positive and negative charge coincide). Only electronic polarization acts, so $\varepsilon_r$ is **independent of temperature**.
+> > - **Polyvinylchloride** — monomer $\text{CH}_2{=}\text{CHCl}$. The C–Cl bond is polar, because Cl has a higher electronegativity than H and pulls the bonding electrons towards itself; the asymmetrical monomer therefore carries a **permanent dipole moment**, like $\text{CH}_3\text{Cl}$. The dipoles align in the field (orientation polarization), but thermal agitation randomises them as $T$ rises, so $\varepsilon_r$ **depends on temperature**.
+> >
+> > | | **Polyethylene** | **PVC** |
+> > | --- | --- | --- |
+> > | Monomer | $\text{CH}_2{=}\text{CH}_2$ | $\text{CH}_2{=}\text{CHCl}$ |
+> > | Permanent dipole | No (symmetric) | Yes (C–Cl) |
+> > | Polarization present | Electronic | Electronic + orientation |
+> > | $\varepsilon_r$ vs $T$ | Independent | Temperature dependent |
+
+> [!question] Q20: When ice melts into water, the dielectric constant increases, in contrast to the decrease observed during the melting of HCl. Explain why this is so. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > Both $\text{H}_2\text{O}$ and $\text{HCl}$ are polar molecules, so their dielectric constants are governed by **orientation polarization** — whether the permanent dipoles are free to align with the field.
+> >
+> > - **Ice → water (increase).** In ice the water molecules are locked into the lattice by hydrogen bonds and **cannot rotate** into the field, so orientation polarization is largely frozen out. On melting, the molecules are free to rotate and the permanent dipoles can align, so $\varepsilon_r$ **rises** (to about 80 for water).
+> > - **Solid HCl → liquid HCl (decrease).** The HCl dipoles can already orient in the solid, so orientation polarization is present before melting. On melting, the greater thermal agitation of the liquid **randomises** the alignment, as the temperature dependence of orientation polarization requires, so $\varepsilon_r$ **falls**.
+> >
+> > *Added depth beyond the slides:* the slides treat orientation polarization and its temperature dependence (§9.5); the specific ice and HCl cases follow from that argument.
+
+> [!question] Q21: What is the variation expected in the loss factor in a sodium silicate glass, when some of the Na⁺ ions are replaced by Rb⁺ ions? Explain. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > In a sodium silicate glass the dielectric loss at low frequencies arises from the **jumping of mobile Na⁺ ions** between sites in the open silicate network in the alternating field — a form of ionic and space-charge relaxation (§9.6–§9.7), in which part of the field energy is dissipated as heat.
+> >
+> > Replacing some Na⁺ by the **larger Rb⁺** ion makes the ions **less mobile**: Rb⁺ is much bigger than Na⁺ and the sites and channels left by Na⁺ are too small for it to jump readily, and the mixture of two kinds of mobile ion blocks each other's pathways (the mixed-alkali effect). Fewer and slower ion jumps mean less dissipation, so:
+> >
+> > $$ \boxed{\ \text{loss factor decreases on replacing Na}^+\text{ by Rb}^+\ } $$
+> >
+> > The loss peak also moves to lower frequencies and the d.c. conductivity of the glass falls. *Added depth beyond the slides:* the slides define the relaxation frequency and loss factor only in the optical context (§9.12); the mechanism above is the standard glass-dielectric explanation.
+
+> [!question] Q22: Calculate the polarization of a BaTiO₃ crystal. The shift of the titanium ion from the body centre is 0.06 Å. The oxygen anions of the side faces shift by 0.06 Å, while the oxygen anions of the top and bottom faces shift by 0.08 Å, all in a direction opposite to that of the titanium ion. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > **Polarization** is the dipole moment per unit volume, $P = \sum q_i d_i / V_{\text{cell}}$. Below the Curie temperature BaTiO₃ is tetragonal with $a = 3.98\ \text{\AA}$ and $c = 4.03\ \text{\AA}$ (§9.9); the $\text{Ba}^{2+}$ ions at the corners are taken as undisplaced.
+> >
+> > ![[DIE - BaTiO3 cubic and tetragonal cells.png|400]]
+> >
+> > *Figure — the BaTiO₃ unit cell above and below the Curie temperature: the dashed circle in the front view marks the Ti ion, which shifts off the body centre on cooling, dragging the neighbouring oxygens with it.*
+> >
+> > **Ions in one cell.** One $\text{Ti}^{4+}$ at the body centre; oxygens ($\text{O}^{2-}$) at the face centres, each shared by two cells: the **4 side faces** contribute $4 \times \tfrac12 = 2$ oxygens, the **top and bottom faces** contribute $2 \times \tfrac12 = 1$ oxygen. Taking the Ti shift as the positive direction:
+> >
+> > | Ion | Number | Charge | Shift (Å) | Dipole moment ($e\,\text{\AA}$) |
+> > | --- | --- | --- | --- | --- |
+> > | $\text{Ti}^{4+}$ | 1 | $+4e$ | $+0.06$ | $4(0.06) = +0.24$ |
+> > | $\text{O}^{2-}$ (side faces) | 2 | $-2e$ | $-0.06$ | $2(-2)(-0.06) = +0.24$ |
+> > | $\text{O}^{2-}$ (top/bottom) | 1 | $-2e$ | $-0.08$ | $1(-2)(-0.08) = +0.16$ |
+> > | **Total** | | | | $+0.64$ |
+> >
+> > The oxygens move opposite to Ti and carry the opposite charge, so all three contributions **add**.
+> >
+> > $$ p = 0.64\ e\,\text{\AA} = 0.64\,(1.602\times10^{-19}\ \text{C})(10^{-10}\ \text{m}) = 1.03\times10^{-29}\ \text{C\,m} $$
+> >
+> > Cell volume: $V = a^2c = (3.98)^2(4.03)\ \text{\AA}^3 = 63.8\ \text{\AA}^3 = 6.38\times10^{-29}\ \text{m}^3$.
+> >
+> > $$ P = \frac{p}{V} = \frac{1.03\times10^{-29}}{6.38\times10^{-29}} $$
+> >
+> > $$ \boxed{\ P \approx 0.16\ \text{C m}^{-2}\ } $$
+> >
+> > This large spontaneous polarization, present even without a field, is the signature of a ferroelectric.
+
+> [!tip] Exam pointer — Endsem 2, dielectrics (Q19–Q22)
+> Orientation polarization (permanent dipoles, temperature dependent) explains Q19 and Q20; for Q22 list each ion's $q\,d$ with sign and divide by the cell volume $a^2c$ (§9.3–§9.9).
+
+---
+
+## E2-D. Magnetic materials (Q23–Q30)
+
+> [!question] Q23: Does a large magnetic moment per atom mean a high Curie temperature? Explain. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > **No.** The Curie temperature measures the **strength of the exchange coupling** that holds the spins aligned against thermal randomization — the stronger the exchange energy, the higher $T_C$. It is not set by the size of the atomic moment.
+> >
+> > | Material | Moment per atom ($\mu_B$) | Exchange energy | Curie temperature |
+> > | --- | --- | --- | --- |
+> > | **Co** | 1.7 | Highest | **1400 K** |
+> > | **Fe** | 2.2 | Large | 1041 K |
+> > | **Gd** | 7 | Small | **Below room temperature** |
+> >
+> > Gd has the largest moment but the lowest $T_C$, and Co has a smaller moment than Fe yet a higher $T_C$ (§8.9–§8.10).
+
+> [!question] Q24: Explain how a high initial permeability in Fe–Ni alloys helps to reduce the area under the hysteresis loop. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The permeability is $\mu = B/H$. A **high initial permeability** means the induction $B$ rises steeply for a very small applied field $H$ — the $B$–$H$ curve is steep near the origin.
+> >
+> > - This happens when the **domain walls move very easily**: the favourably oriented domains grow at the expense of the others with almost no resistance, so only a small field is needed for magnetization (§8.16). In Fe–Ni alloys the walls are not pinned by strain or inclusions.
+> > - A material that magnetizes and demagnetizes with a small field has a **small coercive field $H_c$**, so the loop is **narrow and steep**.
+> > - The energy dissipated as heat each cycle equals the **area of the hysteresis loop**, so a narrow loop means a small hysteresis loss.
+> >
+> > ![[MAG - Soft vs Hard Hysteresis.excalidraw]]
+> >
+> > $$ \boxed{\ \text{high } \mu_{\text{initial}} \Rightarrow \text{easy wall motion} \Rightarrow \text{small } H_c \Rightarrow \text{narrow loop} \Rightarrow \text{low loss per cycle}\ } $$
+> >
+> > This is the design rule of a **soft magnetic material** for transformers and other devices with frequent reversals of magnetization.
+
+> [!question] Q25: The total iron loss in a transformer core at normal flux density was measured at 25 Hz and at 50 Hz and was found to be 250 W and 800 W respectively. Calculate (i) the eddy current loss and (ii) the hysteresis loss at 50 Hz. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > Hysteresis loss per cycle is constant (the loop area), so $W_h \propto f$; eddy-current loss $W_e \propto f^2$. At fixed flux density:
+> >
+> > $$ W = W_h + W_e = A f + B f^2 $$
+> >
+> > $$ 250 = 25A + 625B \qquad (25\ \text{Hz}) $$
+> >
+> > $$ 800 = 50A + 2500B \qquad (50\ \text{Hz}) $$
+> >
+> > Multiply the first equation by 2: $500 = 50A + 1250B$. Subtract it from the second:
+> >
+> > $$ 300 = 1250B \quad\Longrightarrow\quad B = 0.24\ \text{W/Hz}^2 $$
+> >
+> > $$ 250 = 25A + 625(0.24) = 25A + 150 \quad\Longrightarrow\quad A = 4\ \text{W/Hz} $$
+> >
+> > At 50 Hz:
+> >
+> > $$ \boxed{\ W_e = Bf^2 = 0.24\,(50)^2 = 600\ \text{W} \qquad W_h = Af = 4\,(50) = 200\ \text{W}\ } $$
+> >
+> > Check: $600 + 200 = 800\ \text{W}$ ✓ — the eddy-current loss dominates at 50 Hz (75 % of the total).
+
+> [!question] Q26: The electrical resistivity of iron increases by a factor of 6, on alloying with 4% silicon. Estimate the decrease in eddy current losses for this change in composition. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > Eddy currents are induced in the core by the changing flux; the larger the resistivity $\rho$, the smaller the current for a given induced emf and the lower the power dissipated:
+> >
+> > $$ W_e \propto \frac{f^2B^2t^2}{\rho} \quad\Longrightarrow\quad W_e \propto \frac{1}{\rho}\ \ \text{(same } f,\ B,\ \text{sheet thickness } t) $$
+> >
+> > With $\rho_{\text{Fe-Si}} = 6\rho_{\text{Fe}}$:
+> >
+> > $$ \frac{W_e(\text{Fe–4\%Si})}{W_e(\text{Fe})} = \frac{\rho_{\text{Fe}}}{\rho_{\text{Fe-Si}}} = \frac{1}{6} = 0.167 $$
+> >
+> > $$ \boxed{\ \text{eddy loss falls to } 1/6 \text{ of its value} \ \ (\text{a decrease of } \approx 83\,\%)\ } $$
+> >
+> > This is why silicon is added to iron for transformer cores. *Added depth beyond the slides:* the $1/\rho$ dependence of eddy loss is the standard result; the slides state the benefit only qualitatively (§8.17).
+
+> [!question] Q27: In the 1st transition metal element series only Fe, Co, Ni are ferromagnetic. Explain this observation from exchange energy viewpoint. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > In Fe, Co and Ni the unpaired $3d$ electrons on neighbouring atoms align their spins **parallel**, which lowers their spin-dependent electrostatic energy. This gain is partly offset by a rise in the Fermi level and in the average kinetic energy of the electrons. The net gain is the **exchange interaction energy**:
+> >
+> > $$ E_{\text{exchange}} = E_{\text{unmagnetized}} - E_{\text{magnetized}} $$
+> >
+> > It is a sensitive function of the ratio of the atomic diameter to the $3d$ orbital diameter, and is **positive** — parallel spins favoured, spontaneous magnetization — only when
+> >
+> > $$ \boxed{\ 1.5 < \frac{d_{\text{atom}}}{d_{3d}} < 2.0\ } $$
+> >
+> > Among the first-series metals only **Fe, Co and Ni** have a ratio inside this window. The rest are outside it: the elements at the left of the series have a ratio below the window (strong overlap, antiferromagnetic coupling), and for the others the $3d$ orbitals overlap too strongly or too weakly for parallel alignment to be favoured. In the higher transition series there is no overlap of the $d$ orbitals at all, because the $d$ electrons are strongly attracted to nuclei of larger charge; the only other elemental ferromagnets are the rare earths Gd, Tb and Dy, where the $4f$ electrons align.
+> >
+> > | Element | $d_{\text{atom}}/d_{3d}$ | $E_{\text{exchange}}$ | Behaviour |
+> > | --- | --- | --- | --- |
+> > | Fe, Co, Ni | Within 1.5–2.0 | Positive | **Ferromagnetic** |
+> > | Mn (and others in the series) | Outside the window | Not positive | Not ferromagnetic |
+
+> [!question] Q28: None of the constituent elements in Heusler alloys such as Cu₂MnSn and Cu₂MnAl are ferromagnetic yet they show ferromagnetic behaviour. Give reason for this observation. [1]
+>
+> > [!success]- Solution (Click to expand)
+> > Ferromagnetism depends on the **ratio** $d_{\text{atom}}/d_{3d}$ lying between 1.5 and 2.0 (Q27), not on the element itself. In elemental Mn the ratio is outside this window, so the exchange energy is not positive and Mn is not ferromagnetic. **Alloying changes the interatomic distance**: in $\text{Cu}_2\text{MnSn}$ and $\text{Cu}_2\text{MnAl}$ the Mn atoms are separated by Cu and Sn (or Al), which increases the Mn–Mn distance by the right amount, so the ratio falls in the 1.5–2.0 range, the exchange energy becomes positive, and the Mn spins on neighbouring atoms align parallel. The alloy is therefore ferromagnetic although Cu is diamagnetic and Mn and Sn are not ferromagnetic as elements (§8.11).
+
+> [!question] Q29: In nickel ferrite, NiFe₂O₄, the ferric ions are antiferromagnetically coupled. The magnetization is due to the nickel ions. When zinc is added to nickel ferrite, the magnetization of the crystal increases, even though the zinc ions are not ferromagnetic. Explain how this could happen. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > NiFe₂O₄ is an **inverse spinel**: the $\text{Ni}^{2+}$ ions and half of the $\text{Fe}^{3+}$ ions occupy the octahedral (B) sites, and the other half of the $\text{Fe}^{3+}$ ions occupy the tetrahedral (A) sites. The $\text{Fe}^{3+}$ ions on the two sites ($5\,\mu_B$ each) are coupled **antiparallel** and cancel, so the net moment is from $\text{Ni}^{2+}$ alone ($\approx 2\,\mu_B$ per formula unit).
+> >
+> > $\text{Zn}^{2+}$ ($3d^{10}$) has **no magnetic moment** and strongly prefers **tetrahedral** sites. Added Zn therefore **displaces $\text{Fe}^{3+}$ from the A sites to the B sites**. For $\text{Ni}_{1-x}\text{Zn}_x\text{Fe}_2\text{O}_4$:
+> >
+> > $$ \text{A}:\ \text{Zn}_x\text{Fe}_{1-x} \qquad \text{B}:\ \text{Ni}_{1-x}\text{Fe}_{1+x} $$
+> >
+> > $$ M = M_B - M_A = \left[2(1-x) + 5(1+x)\right] - 5(1-x) = 2 + 8x\ \ \mu_B $$
+> >
+> > Each Zn removes one $5\,\mu_B$ moment from the antiparallel A sublattice and adds one to the B sublattice, so the **cancellation is reduced and the net magnetization rises** — even though Zn itself is non-magnetic. *Added depth beyond the slides:* at high $x$ the A–B coupling weakens so much that $M$ falls again; the linear rise holds for small $x$ (same argument as Endsem-1 Q11(b)).
+
+> [!question] Q30: Fe–4% Si is a preferred material for transformer core whereas Ni–Zn ferrites or other oxide magnetic materials are used for high frequency applications like microwave isolators. Explain the reason behind this choice from energy loss aspect for soft magnetic materials. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > The energy loss in a soft magnetic material has two parts:
+> >
+> > - **Hysteresis loss** — the loop area per cycle, so $W_h \propto f$. It is kept low by easy domain-wall motion (narrow loop).
+> > - **Eddy-current loss** — $W_e \propto f^2B^2t^2/\rho$, growing as the *square* of frequency and falling with the resistivity $\rho$.
+> >
+> > **Fe–4% Si (power transformers, 50–60 Hz).** Silicon raises the resistivity (Q26) and so cuts the eddy loss; at power frequency the hysteresis loss is low (narrow loop) and, with laminated sheets, the total loss is small. It also keeps the **high saturation induction** of iron, giving a compact core.
+> >
+> > **Ni–Zn ferrites and other oxides (high frequency, microwave).** At high frequency $f^2$ makes the eddy loss in any metal enormous, because metals have low $\rho$ even when alloyed and laminated. Ferrites are **ceramic oxides with very high electrical resistivity** (they are insulators or poor semiconductors), so eddy currents are essentially suppressed and the total loss stays small up to high frequency. The price is a lower saturation magnetization than iron.
+> >
+> > | | **Fe–4% Si** | **Ni–Zn ferrite** |
+> > | --- | --- | --- |
+> > | Resistivity | Low (raised by Si) | Very high (oxide) |
+> > | Eddy loss at high $f$ | Large ($\propto f^2$) | Negligible |
+> > | Saturation induction | High | Lower |
+> > | Use | Power frequency (50 Hz) | High frequency, microwave |
+> >
+> > The choice is made on the **dominant loss term at the operating frequency**. *Added depth beyond the slides:* the slides describe soft magnets through hysteresis loss only (§8.17); the eddy-current argument is the standard completion.
+
+> [!tip] Exam pointer — Endsem 2, magnetic (Q23–Q30)
+> Have ready: Curie temperature set by exchange energy, not moment (Co > Fe, Gd low); loop area = loss per cycle; $W_h \propto f$ and $W_e \propto f^2/\rho$ with the two-equation solve for Q25; the $1.5 < d_{\text{atom}}/d_{3d} < 2.0$ window for Q27 and Q28; and the A/B sublattice count $M = 2 + 8x$ for Q29 (§8.9–§8.17).
+
+---
+
+## E2-E. Semiconductors again (Q31–Q32)
+
+> [!question] Q31: Draw and explain conductivity vs temperature plot for an extrinsic semiconductor. [2]
+>
+> > [!success]- Solution (Click to expand)
+> > ![[EP2 - log conductivity versus reciprocal temperature.png|450]]
+> >
+> > *Figure — $\log\sigma$ against $1/T$: a steep extrinsic (ionization) branch at low temperature, a flat exhaustion plateau near room temperature, and a steeper intrinsic branch above it.*
+> >
+> > The plot of $\log\sigma$ against $1/T$ for an extrinsic semiconductor has **three regions** (low $T$ on the right):
+> >
+> > 1. **Extrinsic (ionization) region — low $T$.** Carriers are excited from the donor level (or into the acceptor level) and their number grows exponentially with $T$, so $\log\sigma$ is linear in $1/T$. The slope gives the **impurity ionization energy**.
+> > 2. **Exhaustion region — intermediate $T$.** The impurities are all ionized, so the carrier number is constant and the curve is **flat**; the slope may even turn positive because the mobility falls as $T$ rises (shorter mean free path).
+> > 3. **Intrinsic region — high $T$.** Electrons are excited across the gap from the valence band, so $\log\sigma$ is linear again with a **steep negative slope** $-E_g/2k$.
+> >
+> > $$ \boxed{\ \text{slope}_{\text{extrinsic}} \sim -\frac{E_{\text{ionization}}}{k} \ \ll\ \text{slope}_{\text{intrinsic}} = -\frac{E_g}{2k}\ } $$
+> >
+> > The flat region is where a device is stable against temperature changes. This is the same answer as Endsem-1 Q10(a).
+
+> [!question] Q32: Why GaAs is preferred over Si in optoelectronic communication? [1]
+>
+> > [!success]- Solution (Click to expand)
+> > GaAs has a **direct band gap**: the conduction-band minimum and valence-band maximum occur at the same wave vector, so an electron falling across the gap can emit a photon directly ($h\nu = E_g$, $\lambda \approx 0.87\ \mu\text{m}$, Q18). Silicon has an **indirect gap**, in which recombination also needs a phonon, and so is mostly non-radiative — it gives off heat, not light, and cannot make efficient LEDs or lasers. GaAs also has a higher electron mobility, so it is suitable for fast devices. *Added depth beyond the slides:* the direct/indirect-gap argument is standard semiconductor physics, not worked in [[notes]]; the slides give only the band-gap absorption and emission relation $h\nu \ge E_g$ (§9.12).
+
+> [!tip] Exam pointer — Endsem 2, semiconductors (Q31–Q32)
+> For Q31 draw the three-region plot and say what each slope measures; for Q32 say *direct band gap → efficient radiative recombination* (§7.11, §9.12).
+
+---
+
+## Formula Summary — Endsem 2
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Hooke's law (elastic strain) | $\varepsilon = \sigma/E$ | Valid below yield; same $\sigma$ for equal geometry and load |
+| Poisson's ratio | $\nu = -\varepsilon_x/\varepsilon_z$; $\nu_{\text{plastic}} = 0.5$ | $\nu \approx 0.25$–$0.35$ elastic for metals; plastic flow conserves volume |
+| Volume strain (tension) | $\Delta V/V = \varepsilon_z(1-2\nu)$ | Zero at $\nu = 0.5$ |
+| Resolved shear stress | $\tau_R = \sigma\cos\phi_1\cos\phi_2$, $\sigma_y = \tau_{CRSS}/m$ | $m_{\max} = 0.5$; $m = 0$ if either angle is $90^\circ$ |
+| Hall–Petch | $\sigma_y = \sigma_0 + k_yd^{-1/2}$ | $d$ = grain diameter; from the pile-up argument |
+| Fermi–Dirac | $P(E) = \left[1+\exp\!\left(\tfrac{E-E_F}{kT}\right)\right]^{-1}$ | $P \to 0,\ 0.5,\ 1$ for $E \gg, =, \ll E_F$ |
+| Fermi velocity | $v_F = \sqrt{2E_F/m}$ | $E_F$ in J; K: $8.6\times10^5\ \text{m/s}$ |
+| Metallic conductivity | $\sigma = ne^2\tau/m$ | Solutes lower $\tau$ and hence $\sigma$ |
+| Intrinsic resistance | $\ln R = \text{const} + \dfrac{E_g}{2k}\dfrac{1}{T}$ | Ge: $E_g \approx 0.74\ \text{eV}$ |
+| Photon wavelength at the gap | $\lambda = hc/E_g = 1.24/E_g(\text{eV})\ \mu\text{m}$ | GaAs: $0.87\ \mu\text{m}$ |
+| Polarization | $P = \sum q_id_i/V$ | BaTiO₃ (Q22): $0.16\ \text{C m}^{-2}$ |
+| Total core loss | $W = Af + Bf^2$ | $W_h = Af$, $W_e = Bf^2$; Q25: $A = 4$, $B = 0.24$ |
+| Eddy loss | $W_e \propto f^2B^2t^2/\rho$ | Added depth; $\rho \times 6 \Rightarrow W_e/6$ |
+| Exchange criterion | $1.5 < d_{\text{atom}}/d_{3d} < 2.0$ | $E_{\text{exchange}} > 0$ only inside this window |
+| Zn-substituted NiFe₂O₄ | $M = 2 + 8x\ \mu_B$ | Added depth; small $x$ |
+
+> [!note] Source images
+> The Excalidraw figure `MP - Grain Boundary Pile-up.excalidraw` in Q9 is a new original reconstruction (the vault copy lives in the `Excalidraw/` folder with the `MP - ` prefix); the other Excalidraw figures are the existing `MP - ` and `MAG - ` drawings. The extracted figures are the original lecture figures stored in `Material Science/images/` with their topic prefix (`MP2`, `EP2`, `DIE`).
