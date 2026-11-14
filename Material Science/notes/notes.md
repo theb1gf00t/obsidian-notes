@@ -3727,7 +3727,7 @@ The surviving moment is therefore $4\,\mu_B$ per formula unit, on the octahedral
 
 Iron has a high Curie temperature of 1041 K ($768\,^\circ$C) and, consequently, almost all the spins remain aligned at room temperature. Yet at room temperature an ordinary piece of iron is *not* magnetic in the absence of an applied field. To explain this discrepancy Weiss conceived the idea of **magnetic domains**.
 
-The unmagnetized iron crystal consists of a number of domains; within each domain the spins of all the atoms are aligned, but the spins of adjacent domains are not parallel. Because the domains are randomly oriented with respect to one another, their magnetic moments cancel out and the crystal as a whole is not magnetic. In the presence of an external field the domains tend to align with the field, resulting in a large net magnetization of the solid.
+	The unmagnetized iron crystal consists of a number of domains; within each domain the spins of all the atoms are aligned, but the spins of adjacent domains are not parallel. Because the domains are randomly oriented with respect to one another, their magnetic moments cancel out and the crystal as a whole is not magnetic. In the presence of an external field the domains tend to align with the field, resulting in a large net magnetization of the solid.
 
 > [!important] Definition
 > **Magnetic domain** — a region of a ferromagnetic crystal within which the electron spins of all atoms are aligned parallel; the crystal is the assembly of such regions, whose orientations differ.
