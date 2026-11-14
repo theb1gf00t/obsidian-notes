@@ -53,9 +53,9 @@ WHERE file.path = this.file.path
 - [x] **1 · Mechanical Properties — I** — [[Mechanical Properties part 1_Odd_2026-27.pdf|PDF]] · [[notes#1. Mechanical Properties — I|Notes → §1]] (8 sections)
 - [x] **2 · Mechanical Properties — II** — [[Mechanical Properties part 2_Odd_2026-27.pdf|PDF]] · [[notes#2. Mechanical Properties — II|Notes → §2]] (19 sections)
 - [x] **3 · Mechanical Properties — III** — [[Mechanical Properties part 3_Odd_2026-27.pdf|PDF]] · [[notes#3. Mechanical Properties — III|Notes → §3]] (10 sections)
-- [ ] **4 · Shockley and Frankel Partial Dislocations** — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf|PDF]] · *notes not yet written* — see [[#Open gaps]]
+- [ ] **4 · Shockley and Frankel Partial Dislocations** — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf|PDF]] · [[notes#4. Shockley and Frankel Partial Dislocations|Notes → §4]] (9 sections)
 - [ ] **5 · Composites** — [[Composites_Odd_2026-27.pdf|PDF]] · [[notes#5. Composites|Notes → §5]] (20 sections)
-- [ ] **6 · Electrical and Electronic Properties — Part 1** — [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf|PDF]] · [[notes#6. Electrical and Electronic Properties — Part 1|Notes → §6]] (12 sections)
+- [x] **6 · Electrical and Electronic Properties — Part 1** — [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf|PDF]] · [[notes#6. Electrical and Electronic Properties — Part 1|Notes → §6]] (12 sections)
 - [ ] **7 · Electrical and Electronic Properties — Part 2** — [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf|PDF]] · [[notes#7. Electrical and Electronic Properties — Part 2|Notes → §7]] (14 sections)
 - [x] **8 · Magnetic Properties** — [[Magnetic Properties_Odd_2026-27.pdf|PDF]] · [[notes#8. Magnetic Properties|Notes → §8]] (17 sections)
 - [ ] **9 · Dielectric Materials, Polarization, Optical Properties** — [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf|PDF]] · [[notes#9. Dielectric Materials, Polarization, Optical Properties|Notes → §9]] (12 sections)
@@ -123,6 +123,20 @@ Every written section of [[notes]], grouped by topic, so a topic can be opened a
 | 3.8 | [[notes#3.8 Hardness conversion\|Hardness conversion]] |
 | 3.9 | [[notes#3.9 Hardness of ceramics\|Hardness of ceramics]] |
 | 3.10 | [[notes#3.10 Tear strength and hardness of polymers\|Tear strength and hardness of polymers]] |
+
+### §4 · Shockley and Frankel Partial Dislocations
+
+| § | Section |
+| --- | --- |
+| 4.1 | [[notes#4.1 Why a perfect dislocation dissociates\|Why a perfect dislocation dissociates]] |
+| 4.2 | [[notes#4.2 The close-packed stacking of $\{111\}$ and the stacking fault\|The close-packed stacking of {111} and the stacking fault]] |
+| 4.3 | [[notes#4.3 The Shockley partial: $\mathbf{b} = \tfrac{a}{6}\langle112\rangle$\|The Shockley partial]] |
+| 4.4 | [[notes#4.4 The extended dislocation: width of the fault ribbon\|The extended dislocation: width of the fault ribbon]] |
+| 4.5 | [[notes#4.5 Thompson's tetrahedron: the vector bookkeeping\|Thompson's tetrahedron: the vector bookkeeping]] |
+| 4.6 | [[notes#4.6 Frank partials: $\mathbf{b} = \tfrac{a}{3}\langle111\rangle$\|Frank partials]] |
+| 4.7 | [[notes#4.7 How Frank partials are made — and how they are removed\|How Frank partials are made — and how they are removed]] |
+| 4.8 | [[notes#4.8 Shockley versus Frank — the comparison to write out\|Shockley versus Frank — the comparison to write out]] |
+| 4.9 | [[notes#4.9 What the stacking-fault energy controls\|What the stacking-fault energy controls]] |
 
 ### §5 · Composites
 
@@ -243,7 +257,6 @@ Every written section of [[notes]], grouped by topic, so a topic can be opened a
 ## Open gaps
 
 > [!warning] What is still missing
-> - **Post-midsem topic 4 — Shockley and Frankel partial dislocations** has a PDF ([[Shockley and Frank partial dislocations_Odd_2026-27.pdf]]) but **no written section** in [[notes]]; the topics jump §3 → §5 on purpose, so the numbering stays aligned with the syllabus when it is written.
 > - **All eight pre-midsem topics** have slides but no written notes yet.
 > - Pre-midsem topic 7 (phase diagrams) already has a separate, much deeper treatment in the [[Phase Diagrams/Syllabus|Phase Diagrams]] folder — use [[Post Midsem Notes]] there rather than duplicating it here.
 

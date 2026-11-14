@@ -16,7 +16,7 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 | 1 | Mechanical Properties — I | ✅ noted below |
 | 2 | Mechanical Properties — II | ✅ noted below |
 | 3 | Mechanical Properties — III | ✅ noted below |
-| 4 | Shockley and Frankel Partial Dislocations | — |
+| 4 | Shockley and Frankel Partial Dislocations | ✅ noted below |
 | 5 | Composites | ✅ noted below |
 | 6 | Electrical and Electronic Properties — Part 1 | ✅ noted below |
 | 7 | Electrical and Electronic Properties — Part 2 | ✅ noted below |
