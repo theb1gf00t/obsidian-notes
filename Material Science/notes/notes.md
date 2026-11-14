@@ -2073,10 +2073,10 @@ The lecture also notes that composites are not confined to structural materials.
 The lecture places composites on the same room-temperature property charts used for metals, ceramics and polymers. The point is not that composites beat every material on every axis — they do not — but that they occupy a *region* of the chart that no single family reaches.
 
 ![[COMP - Room temperature density of material families.png|440]]
-*Figure — room-temperature density on a logarithmic scale: the composite band (CFRC, GFRC) lies at the low-density end, alongside polymers and wood and well below steels and most ceramics.*
+*Figure — room-temperature density on a logarithmic scale: the composite band (carbon-fibre and glass-fibre reinforced polymers, CFRP/GFRP) lies at the low-density end, alongside polymers and wood and well below steels and most ceramics.*
 
 ![[COMP - Room temperature stiffness of material families.png|440]]
-*Figure — room-temperature elastic (Young's) modulus: composites span a wide range because the fibre type and volume fraction can be changed; CFRC reaches the high-stiffness region, while GFRC sits at intermediate stiffness.*
+*Figure — room-temperature elastic (Young's) modulus: composites span a wide range because the fibre type and volume fraction can be changed; CFRP reaches the high-stiffness region, while GFRP sits at intermediate stiffness.*
 
 ![[COMP - Room temperature tensile strength of material families.png|440]]
 *Figure — room-temperature tensile strength: the composite band overlaps the upper end of the light alloys and reaches towards the high-strength steels, but the important quantity for design is strength per unit density (see below).*
@@ -2499,6 +2499,9 @@ The efficiency of reinforcement depends on the angle between the fibre axis and 
 | **All fibres parallel** | Perpendicular to fibres | 0 |
 | **Random, uniform in a plane** | Any direction in that plane | $3/8$ |
 | **Random, uniform in three dimensions** | Any direction in space | $1/5$ |
+
+![[COMP - Reinforcement efficiency of fiber orientations.png|420]]
+*Figure — the four fibre-orientation cases and their reinforcement efficiency: aligned fibres loaded along their axis ($1$), aligned fibres loaded across their axis ($0$), random in-plane ($3/8$) and random in three dimensions ($1/5$).*
 
 > [!warning] Efficiency is not a property of the fibre
 > The efficiency factor is a *geometric* multiplier, not a materials constant. The same fibre can be fully effective (parallel), useless (perpendicular), or intermediate (random) depending only on how it is laid down relative to the load. This is why the laminate stacking sequence in §5.18 is a design decision, not a manufacturing afterthought.
