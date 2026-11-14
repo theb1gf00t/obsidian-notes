@@ -10,5 +10,5 @@ tags:
 **user**: makes notes for electric and electronic properties from [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and for Dielectric materials and polarization optical properties. from [[MP - Yoffee Diagram DBTT.excalidraw]] according to [[context]] .
 [Timestamp: 2026/11/14 13:05:50]
 
-**ai**: I'll start by reading the context file and the existing notes structure, then the PDFs.
+**ai**: I'll start by reading the context file and the existing notes structure, then the PDFs.Now I'll write the electrical block into [[Material Science/notes.md]], inserting it in syllabus order before the magnetic block.Now the dielectric and optical block, appended after the magnetic block:
 [Timestamp: 2026/11/14 13:05:50]

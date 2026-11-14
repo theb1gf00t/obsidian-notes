@@ -7,7 +7,7 @@ tags:
 
 # Syllabus Map
 
-Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]], [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
 
 ## Post-Midsem Topics (from [[syllabus]])
 
@@ -18,10 +18,10 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 | 3 | Mechanical Properties — III | ✅ noted below |
 | 4 | Shockley and Frankel Partial Dislocations | — |
 | 5 | Composites | — |
-| 6 | Electrical and Electronic Properties — Part 1 | — |
-| 7 | Electrical and Electronic Properties — Part 2 | — |
+| 6 | Electrical and Electronic Properties — Part 1 | ✅ noted below |
+| 7 | Electrical and Electronic Properties — Part 2 | ✅ noted below |
 | 8 | Magnetic Properties | ✅ noted below |
-| 9 | Dielectric Materials, Polarization, Optical Properties | — |
+| 9 | Dielectric Materials, Polarization, Optical Properties | ✅ noted below |
 
 > [!info] How the three parts fit together
 > **Part I** builds the vocabulary — deformation, stress, strain, types of loading, the catalogue of mechanical tests, and the five design properties. **Part II** explains *why* materials respond that way — the atomic model of elasticity, slip/twinning, CRSS and the Schmid factor, dislocation reactions — and then dissects the tensile test in full detail. **Part III** deals with materials that cannot be tested in simple tension (ceramics → three-point bending) and with the cheapest, most widely used test of all (hardness).
@@ -1996,6 +1996,568 @@ Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles 
 
 ---
 
+# Electrical & Electronic Properties
+
+The electrical response of a solid spans a wider range than any other property in this course — twenty-five orders of magnitude in resistivity, from a superconductor below $10^{-20}\ \Omega\,\text{m}$ to polyethylene beyond $10^{17}\ \Omega\,\text{m}$. Two models carry the whole block. The **free electron gas** explains why a metal conducts at all, and how impurities, other electrons and lattice vibrations limit it. The **band model** then explains why a solid built from the same outermost electrons can instead be a semiconductor or an insulator. The same band picture reappears at the end of the course, where it decides whether a material is transparent, coloured or opaque.
+
+Compiled from the lecture slides ([[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]]. Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+
+> [!info] How the two parts fit together
+> **Part 1** builds the free electron gas from the de Broglie relation upwards: the parabolic $E$–$k$ curve (§6.3), its quantization into states up to the Fermi level (§6.4), the Fermi–Dirac occupation of those states (§6.5), and conduction as a field-induced bias of the velocity distribution (§6.6). It then breaks the model twice: once to describe the two kinds of superconductor (§6.7–§6.10), and once to derive the **energy gap** from Bragg reflection and standing waves (§6.11–§6.12). **Part 2** starts from that gap, classifies solids by their band structure (§7.1–§7.6), then works through intrinsic and extrinsic conduction (§7.7–§7.11), doping practice (§7.12) and the p-n junction (§7.13–§7.14).
+
+---
+
+## 6. Electrical and Electronic Properties — Part 1
+
+### 6.1 The resistivity range: twenty-five orders of magnitude
+
+The electrons in the outermost orbitals of the atoms of a solid determine its electrical properties. What makes the topic remarkable is not that statement but its consequence: because those electrons can be bound, shared, donated or completely free, the electrical resistivity $\rho$ (or its reciprocal, the conductivity $\sigma$) varies over **25 orders of magnitude** across materials that are otherwise ordinary solids.
+
+| Class | Resistivity $\rho$ ($\Omega\,\text{m}$) | Conductivity $\sigma$ ($\Omega^{-1}\text{m}^{-1}$) | Examples |
+| --- | --- | --- | --- |
+| **Conductors** (metals and alloys) | $10^{-9}$–$10^{-3}$ | $10^{9}$–$10^{3}$ | Au, Ag, Cu (the best three), then Al |
+| **Semiconductors** | $10^{-3}$–$10^{3}$ | $10^{3}$–$10^{-3}$ | Si, Ge, doped Ge |
+| **Insulators** | $10^{4}$ to beyond $10^{17}$ | below $10^{-4}$ | Polyethylene, bakelite, lucite, mica, PVC, rubber, porcelain |
+
+![[EP1 - Resistivity ranges of materials.png|460]]
+
+*Figure — the resistivity spectrum: the same plot that spans conductors, semiconductors and insulators is the reason the free electron model has to be repaired rather than replaced.*
+
+The semiconductor row is the one that behaves unlike a metal. A metal's resistivity is fixed by composition and microstructure; a semiconductor's resistivity is a **strong function of small concentrations of impurities**. Doped Ge with an impurity content of only a few tens per million can have a resistivity about two orders of magnitude lower than that of pure Ge. That sensitivity is the whole basis of solid-state electronics, and it is why §7.9–§7.12 are about doping rather than about the host crystal.
+
+> [!warning] Resistivity is a range, not a fingerprint
+> Do not quote a single resistivity for a semiconductor. The same crystal can be $10^{3}\ \Omega\,\text{m}$ undoped and two orders of magnitude lower when doped at the tens-of-ppm level; the number is meaningless without the doping level and the temperature.
+
+### 6.2 The free electron model
+
+The conducting properties of a solid are **not** a function of the total number of electrons in the solid, because only the outermost electrons of the atoms can take part in conduction. In the free electron model those outermost electrons are not bound to any particular atom but are free to move through the whole solid. They have been variously called the **free electron cloud**, the **free electron gas** or the **Fermi gas**.
+
+The basic assumption of the theory is that the potential field due to the ion cores is **uniform** throughout the solid — the free electrons have the same potential energy everywhere in the solid. That potential energy is a finite, negative value, because of the electrostatic attraction between a free electron and the ion cores. Since only energy *differences* matter, the constant can be set to zero, and the only energy left to consider is the kinetic energy.
+
+$$ E_{\text{kin}} = \tfrac12 mv^2 $$
+
+That kinetic energy is **substantially lower** than the kinetic energy of a bound electron in an isolated atom. The reason is geometric: the field of motion for the free electron is considerably enlarged in the solid compared with the field around an isolated atom, and a larger box means longer permitted wavelengths and hence lower kinetic energies (§6.3).
+
+> [!important] Definitions
+> **Free electron model** — the outermost electrons of the atoms of a solid are treated as unbound particles moving in a constant (zero) potential, subject only to the Pauli exclusion principle.
+> **Free electron gas / Fermi gas** — the collection of these electrons, named by analogy with a gas of classical particles.
+> **Fermi energy $E_F$** — the energy of the highest filled level at $0\ \text{K}$ (§6.4).
+
+### 6.3 The electron as a wave: de Broglie, wave number and the $E$–$k$ parabola
+
+Electrons have both particle-like and wave-like characteristics. The de Broglie wavelength $\lambda$ of an electron is related to its momentum $mv$ by
+
+$$ \lambda = \frac{h}{mv} \tag{1} $$
+
+where $h$ is Planck's constant, $m$ the mass of the free electron and $v$ its velocity. The wavelength is inversely related to the magnitude of the wave number vector $k$:
+
+$$ k = \frac{2\pi}{\lambda} \tag{2} $$
+
+As the velocity of free electrons is much smaller than that of light, relativistic effects can be ignored and the classical kinetic energy used:
+
+$$ E = \tfrac12 mv^2 \tag{3} $$
+
+Substituting the first two relations into the third gives the free electron dispersion relation
+
+$$ \boxed{\ E = \frac{h^2k^2}{2m}\ } \tag{4} $$
+
+The kinetic energy therefore increases as the **square** of the wave number — a parabolic relation. Since $\lambda$ is inversely related to $k$, the electron with the largest de Broglie wavelength has the lowest kinetic energy, and with the enlarged field of motion in the solid, the electrons can have larger wavelengths and hence lower kinetic energies than in an isolated atom.
+
+![[EP1 - Parabolic E-k free electron.png|380]]
+
+*Figure — the parabolic $E$–$k$ relation of a free electron: energy rises as the square of the wave number, so long waves (small $k$) sit at the bottom of the curve.*
+
+#### Why the parabola is the whole free electron model
+
+The entire content of the free electron gas is in that one curve: the density of available states, the Fermi energy, the response to a field and the heat capacity all follow from the fact that $E \propto k^2$ and that states are filled from the bottom up. The model's failure later in the topic is equally visible on it — the parabola is *smooth everywhere*, and the next thing the slides do is show that a periodic lattice puts a **break** in it at particular values of $k$ (§6.12).
+
+### 6.4 Quantization: states in a box and the Fermi energy
+
+Although the variation of $E$ with $k$ in the figure is drawn as continuous, the levels are in fact very closely spaced **discrete** levels, because the quantum restrictions arising from the Pauli exclusion principle apply to the free electrons as well.
+
+Consider a solid in which electron motion is unidirectional, along an axis of length $L$. The longest wavelength permissible for the free electron is twice this length, because the amplitude of the wave must be zero at both ends. The next smaller permissible wavelength is $L$, the third is $\tfrac23 L$, and so on. The corresponding wave numbers are $\pi/L$, $2\pi/L$, … from Eq. (2).
+
+In an electrically neutral solid, a free electron having a certain speed in one direction is always associated with another electron having the same speed but moving in the opposite direction; that is, $k$ takes both positive and negative values. For the first two states $k = \pm\pi/L$ and $\pm 2\pi/L$, and in general
+
+$$ k = \pm\frac{n\pi}{L} $$
+
+where the quantum number $n$ takes successively increasing integer values. Substituting into Eq. (4):
+
+$$ E = \frac{n^2h^2}{8mL^2} \tag{5} $$
+
+For three-dimensional motion, with box dimensions $L_x$, $L_y$, $L_z$ and quantum numbers $n_x$, $n_y$, $n_z$:
+
+$$ \boxed{\ E = \frac{h^2}{8m}\left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} + \frac{n_z^2}{L_z^2}\right)\ } \tag{6} $$
+
+Each distinct combination of $n_x$, $n_y$, $n_z$ corresponds to a **quantum state**, in which two electrons of opposite spin can reside. Several combinations can give the same value of $E$; quantum states with the same energy are said to be **degenerate**. The successive levels are so close that $E$ can be treated as continuous, and the levels fill from the bottom.
+
+![[EP1 - de Broglie wavelengths along x.png|440]]
+
+*Figure — the first few permissible de Broglie wavelengths for unidirectional motion: the fundamental $\lambda = 2L$ has nodes at both ends of the solid, and each higher state fits one more half-wavelength.*
+
+The waveforms of Fig. 2 raise a difficulty. The probability of finding an electron at any point is proportional to the square of the amplitude of the wave at that point, so for the state $\lambda = 2L$ the probability would be a maximum at the midpoint and would *not* be uniform — an unacceptable result, since the probability of finding a free electron must be the same anywhere in the solid. The difficulty is removed by treating the waves as **travelling waves with constant velocity**, so that the time-averaged probability is constant throughout the solid.
+
+In keeping with the minimum-energy criterion and the Pauli exclusion principle, the free electrons occupy successive quantum states of increasing kinetic energy. The energy corresponding to the highest filled level at $0\ \text{K}$ is the **Fermi energy $E_F$**: at $0\ \text{K}$ the electrons occupy all levels up to the Fermi level and leave all those above it empty. At $T > 0\ \text{K}$, thermal excitation gives a finite probability that some electrons from below $E_F$ move to levels above it.
+
+> [!important] Definitions
+> **Fermi energy $E_F$** — the energy of the highest occupied level at absolute zero.
+> **Fermi level** — that level which has a **50 % probability of occupation by an electron at any temperature**.
+> **Degenerate states** — distinct quantum states having the same energy.
+
+### 6.5 Fermi–Dirac statistics
+
+The probability of occupation $P(E)$ of an energy level $E$ by an electron is given by the **Fermi–Dirac distribution**, which takes into account the quantum restrictions due to the Pauli exclusion principle:
+
+$$ \boxed{\ P(E) = \frac{1}{1 + \exp\!\left(\dfrac{E - E_F}{kT}\right)}\ } $$
+
+where $k$ is Boltzmann's constant and $T$ the absolute temperature.
+
+At $0\ \text{K}$, $P(E)$ is constant at unity up to $E_F$, where it falls abruptly to zero. At $T_1 > 0\ \text{K}$, some electrons just below $E_F$ are thermally excited to levels just above $E_F$; at a still higher temperature, more electrons leave the lower levels and occupy higher ones. The cross-over point, where $P(E) = 0.5$, occurs at *the same* value of energy for every temperature — and that energy is $E_F$.
+
+![[EP1 - Fermi-Dirac distribution at three temperatures.png|440]]
+
+*Figure — the Fermi–Dirac distribution at three temperatures: the step at $0\ \text{K}$ broadens with temperature but every curve pivots about $P = 0.5$ at $E = E_F$.*
+
+> [!note] Why the Fermi level is the 50 % level
+> The distribution is symmetric about $E = E_F$: an electron promoted from a level $E_F - \delta$ to a level $E_F + \delta$ leaves one empty state below and fills one above, so the two levels must have equal and opposite occupation probabilities. That is exactly $P(E_F - \delta) + P(E_F + \delta) = 1$, which at $\delta = 0$ forces $P(E_F) = \tfrac12$.
+
+### 6.6 Conduction by free electrons: drift velocity and conductivity
+
+In an electrically neutral solid, for every electron moving with a certain speed in a given direction there is another moving with the same speed in the opposite direction. This equal and opposite velocity distribution can be **biased** by an externally applied electric field to yield a net velocity in one direction — and with that biasing, the solid conducts electricity. Under an applied field the $E$–$k$ relationship of §6.3 is modified into the distribution shown below: electrons moving towards the positive end of the field acquire extra velocity, while those moving in the opposite direction lose some.
+
+![[EP1 - Electron redistribution under field.png|360]]
+
+*Figure — the field-induced shift of the occupied states: the whole Fermi sphere is displaced in $k$-space, so the electron gas acquires a net drift velocity.*
+
+Such redistribution is possible **only when empty electron states are available immediately above $E_F$**. That availability is the basic characteristic of conductors, as opposed to semiconductors and insulators — it is the single structural difference that §7.3 will formalise.
+
+The electrons accelerated towards the positive end do not continue to increase their velocity indefinitely. They collide with obstacles on the way, and depending on the time interval between two successive collisions they acquire an average increment of velocity called the **drift velocity**, all of which they lose during a collision.
+
+![[EP1 - Extra velocity lost on collision.png|440]]
+
+*Figure — the drift velocity: each electron accelerates between collisions and loses the whole increment at the next one, so the steady state is a sawtooth in velocity.*
+
+With $n$ the number of free electrons per unit volume, $e$ the electronic charge, $\tau$ the average collision time and $m$ the electron mass, the conductivity is
+
+$$ \boxed{\ \sigma = \frac{ne^2\tau}{m}\ } $$
+
+> [!important] Definitions
+> **Drift velocity** — the average extra velocity an electron acquires between two collisions under an applied field; it is lost at each collision.
+> **Mean free path $l$** — the mean distance an electron travels between successive collisions.
+> **Collision time $\tau$** — the mean time between successive collisions; $\tau = l/v$.
+
+#### The mean free path and the scattering hierarchy
+
+For an ideal crystal with no impurities and no imperfections, the mean free path at $0\ \text{K}$ is **infinite** — there are no collisions and the electrical conductivity is ideally infinite. Every real crystal falls short of that limit, and the slides rank the culprits:
+
+| Scattering centre | Effect on $l$ | Effect on $\sigma$ | Note |
+| --- | --- | --- | --- |
+| **Solute atoms** (dissolved in the lattice) | Decrease | Decrease | The *most effective* of all the centres listed |
+| Other point imperfections (vacancies, interstitials) | Decrease | Decrease | — |
+| Dislocations | Decrease | Decrease | — |
+| Grain boundaries | Decrease | Decrease | Inversely proportional to grain size |
+
+Solute atoms provide effective scattering centres because their introduction into the crystal results in collisions, decreasing the mean free path and the conductivity; among all these centres, impurities dissolved in the crystal lattice as solutes are **more effective than the others**. This is the physical basis of the alloying rule that pure annealed copper conducts better than brass, and it is the same hierarchy that later explains why a superconducting wire is deliberately made *dirty* in a controlled way (§6.10), where the same defects become useful.
+
+### 6.7 Superconductors: the abrupt disappearance of resistance
+
+The resistivity of pure Ag decreases gradually to a low but measurable value of about $10^{-11}\ \Omega\,\text{m}$ at $0\ \text{K}$: silver is a very good conductor but **not** a superconductor. The resistivity of Sn, by contrast, falls *abruptly* at about $4\ \text{K}$ to a value below the measurable limit of $10^{-20}\ \Omega\,\text{m}$. The temperature at which this abrupt fall occurs is the **superconducting transition temperature $T_c$**.
+
+![[EP1 - Resistivity of silver and tin near 0 K.png|470]]
+
+*Figure — resistivity near $0\ \text{K}$: silver approaches a residual value, tin drops discontinuously to immeasurably small resistance at $T_c$.*
+
+> [!important] Definition
+> **Superconductor** — a material whose electrical resistivity falls abruptly to below the measurable limit ($\sim10^{-20}\ \Omega\,\text{m}$) at a critical temperature $T_c$, and which expels magnetic flux from its interior.
+
+The first application conceived for the effect was to produce a large permanent magnetic field by inducing a **perpetual current** in a superconductor. That idea runs into a limit: at temperatures below $T_c$, as the magnetic field strength reaches a critical value $H_c$, superconductivity disappears. At $T = T_c$, $H_c = 0$; $H_c$ increases as the temperature decreases below $T_c$. The critical current density $J_c$ increases in the same way. In other words, the maximum current a superconductor carries at a given temperature below $T_c$ is limited by the magnetic field that current produces at the surface of the superconductor.
+
+![[EP1 - Critical field versus temperature.png|420]]
+
+*Figure — the critical field as a function of temperature: the superconducting state survives only below the curve, and the curve closes at $H_c = 0$ for $T = T_c$.*
+
+### 6.8 The Meissner effect
+
+In the superconducting state the flux lines of a magnetic field are **ejected** from the superconductor. This is the **Meissner effect**, and it makes the superconductor a **perfect diamagnet**, with magnetic susceptibility $\chi = -1$ — the value already quoted in §8.2 for the ideal diamagnetic limit.
+
+![[EP1 - Meissner effect flux expulsion.png|440]]
+
+*Figure — the Meissner effect: on crossing into the superconducting state the flux lines are pushed out of the solid rather than merely excluded from a surface layer.*
+
+> [!note] Why $\chi = -1$ is not merely "very diamagnetic"
+> From $B = \mu_0(H + M)$ (§8.1), a susceptibility of exactly $-1$ means $M = -H$, hence $B = 0$ *everywhere inside*. A normal diamagnet only reduces $B$; a superconductor annihilates it. This is why the Meissner effect is a thermodynamic state property and not a consequence of zero resistance: a hypothetical perfect conductor would trap whatever flux it had at the transition.
+
+### 6.9 Type I and Type II superconductors
+
+**Type I** (the ideal superconductor), placed in a magnetic field, repels the flux lines totally until the field attains the critical value $H_c$; the magnetization is $M = -H$ up to $H_c$, where it drops to zero. **Type II** (hard) superconductors show the ideal behaviour only up to a *lower* critical field $H_{c1}$; beyond it the magnetization changes gradually and attains zero at an *upper* critical field $H_{c2}$. The Meissner effect is incomplete between $H_{c1}$ and $H_{c2}$ — that region is the **vortex region**.
+
+![[EP1 - Magnetization of type I and type II superconductors.png|470]]
+
+*Figure — magnetization against applied field for (a) type I and (b) type II: the type I curve is a single vertical drop at $H_c$, the type II curve has a gradual tail between $H_{c1}$ and $H_{c2}$.*
+
+| Feature | Type I (ideal) | Type II (hard) |
+| --- | --- | --- |
+| Flux expulsion | Complete up to $H_c$ | Complete only up to $H_{c1}$ |
+| Magnetization | $M = -H$ up to $H_c$, then zero | Gradual fall from $H_{c1}$ to zero at $H_{c2}$ |
+| Meissner effect | Complete | Incomplete between $H_{c1}$ and $H_{c2}$ (vortex region) |
+| Critical current density | Low | High — hence of practical importance |
+
+Type II superconductors can carry high current densities and are therefore the ones of practical importance. Their current-carrying capacity is limited by how well the flux lines in the vortex region can be **pinned**, and the slides give the microstructural recipe for pinning:
+
+- **Heavily cold-worked and recovery-annealed material** has cell walls of high dislocation density; this microstructure effectively pins the magnetic flux lines and makes their penetration difficult.
+- **Grain boundaries** also exert a pinning action; an extremely fine grain size is effective in increasing $H_{c2}$.
+- **Very fine precipitates** dispersed in the matrix, with an interparticle spacing of about $300\ \text{\AA}$, give optimum flux pinning.
+
+The critical current density $J_c$ also increases as $H_{c2}$ increases.
+
+> [!warning] The slide's "up to $T_c$" is a typo
+> The type I magnetization is $M = -H$ up to $H_c$ (the critical *field*), not up to $T_c$. The transition at $T_c$ happens in zero applied field, where $H_c = 0$; the whole $M$–$H$ curve of the figure exists *below* $T_c$ and is traversed by changing the field.
+
+### 6.10 Why the free electron model must fail
+
+Everything so far has assumed that the potential in which the electrons move inside the crystal is **constant**. In reality this is a gross approximation. The potential energy of an electron is undoubtedly a function of its position with respect to the ion cores and the other electrons: it will be **less** when the electron is close to a (positive) ion core, and **more than the average** when it is farthest away from neighbouring ion cores.
+
+This fact, combined with the **diffracting properties of electrons**, has an important effect on the electron energy calculations — especially at certain critical values of the de Broglie wavelength of the electrons. The failure is therefore not a small correction: it is a *periodicity* effect that appears only at particular wavelengths, and it is the origin of the energy gap that makes semiconductors and insulators possible.
+
+### 6.11 The energy gap: Bragg reflection and standing waves
+
+Consider motion of electrons along one axis, as before. Electrons moving to the right or to the left are scattered by the atoms in their path. This scattering is largely **coherent** and is reinforced in the direction of motion of the electrons. If, however, the spacing $d$ between neighbouring atoms along the axis is such that the **Bragg equation** is exactly satisfied, the electrons are **totally reflected**.
+
+For unidirectional motion the atoms along the axis can be visualised as successive "planes" perpendicular to the direction of electron motion, so that $\sin\theta = 1$. The Bragg equation then gives critical wavelengths
+
+$$ \lambda = 2d,\ d,\ \tfrac{2d}{3},\ \dots $$
+
+for successively increasing order of reflection $n$. Expressed as wave numbers, the critical conditions are
+
+$$ k = \pm\frac{\pi}{d},\ \pm\frac{2\pi}{d},\ \pm\frac{3\pi}{d},\ \dots $$
+
+At these values the electrons are reflected back and forth repeatedly, so that the **net velocity of the electrons in the given direction is zero**.
+
+The waveform of the electrons under such critical conditions comes out as **two standing waves** rather than the travelling wave used for the free electron. The travelling wave gives a constant, time-averaged density of electrons throughout the solid; the standing wave gives a **periodic variation** in amplitude and in electron probability density. The two possible combinations — the sum and the difference of the travelling waves — are respectively a **cosine wave** and a **sine wave**, each with maximum amplitude at fixed points in space.
+
+![[EP1 - Standing waves at Bragg condition.png|470]]
+
+*Figure — at the Bragg condition the electron is described by two standing waves; their probability densities $\rho$ peak either on the ion cores or between them, and the potential-energy variation along the row is sketched underneath.*
+
+Since the probability of finding an electron at a point is proportional to the square of the amplitude, the electron is most likely to be found at the crest of the probability-density curve — it is **localised**, in contrast to the free electron, which can be found anywhere in the crystal.
+
+Once the electrons are localised, the potential-energy variation due to location must be included:
+
+- When there is **no** critical condition and the electrons are not reflected, they have the average potential energy, taken as zero.
+- At a critical condition the electron is a standing wave and is localised. As a **cosine** wave it sits close to an ion core and has a potential energy **lower** than the average. As a **sine** wave it sits farthest from the ion cores and has a potential energy **higher** than the average.
+
+These deviations from the average potential energy appear as a **break in the $E$–$k$ curve**. The break at a critical value of $k$ gives rise to an **energy gap**: two groups of very closely spaced levels — **energy bands** — separated by a gap at the critical value of $k$. The magnitude of the gap is the difference in potential energy of the two electron locations.
+
+![[EP1 - E-k break at critical wave number.png|380]]
+
+*Figure — the $E$–$k$ curve broken at the critical wave number: the two branches that meet there are separated by the gap whose width is the potential-energy difference between the cosine and sine standing waves.*
+
+$$ \boxed{\ \Delta E_{\text{gap}} = E_{\text{sine}} - E_{\text{cosine}}\ } $$
+
+#### The derivation in one line
+
+The gap is not imposed on the model; it is the *difference between two expectation values of the same periodic potential*, evaluated for the two standing waves that the Bragg condition forces. The cosine wave piles probability density on the cores (favourable, lower energy), the sine wave piles it in the interstitial regions (unfavourable, higher energy), and the splitting between the two is the forbidden band. This is why the gap opens exactly at $k = \pm n\pi/d$ and nowhere else, and why its size measures how strongly the potential varies with position — the point that §7.5 uses to explain the diamond → Si → Ge → Sn → Pb trend.
+
+### 6.12 The forbidden gap in three dimensions
+
+In a 3-D crystal the electrons can move in any direction, not necessarily normal to the reflecting planes, so the Bragg angle $\theta$ can take any value from $0$ to $90^\circ$. The critical values of $k$ then correspond to
+
+$$ k = \pm\frac{n\pi}{d\sin\theta} $$
+
+rather than the $\pm n\pi/d$ used for the 1-D case. Depending on the value of $\theta$, reflection occurs at different values of $k$, even for the same set of reflecting planes: the $E$–$k$ curves for motion along $[100]$ and $[110]$ are different, and for first-order reflection from $(100)$ planes the gap occurs at $k = \pi/d$ for $[100]$ motion and at $k = \sqrt{2}\pi/d$ for $[110]$ motion.
+
+The **effective gap** is the interval between the *bottom* line of the gap in the $[110]$ direction and the *top* line of the gap in the $[100]$ direction. This effective gap is the **forbidden gap**, because electrons cannot take those values of energy that lie in it, whatever their direction of motion.
+
+![[EP1 - Forbidden gap and Brillouin zones.png|470]]
+
+*Figure — the effective forbidden gap: the two directional $E$–$k$ curves have their breaks at different $k$, and the overlap of the two gap intervals defines the range of energies no electron can occupy in any direction.*
+
+> [!note] Why a "forbidden" gap needs all directions
+> A single direction only forbids a *line* of energies at one $k$. A solid is isotropic in the sense that electrons move in all directions at once, so an energy is truly forbidden only if it falls inside the gap for *every* direction. That is why the three-dimensional argument is an *overlap* argument, and why the gap can close altogether when the directional intervals stop overlapping (§7.1).
+
+> [!tip] Exam pointer — Part 1
+> Expect: the resistivity ranges and the definition of the three classes; the free electron assumptions (constant potential, only KE, enlarged box lowers $E$); Eqs. (1)–(4) and the parabolic $E$–$k$; the box quantisation with $\lambda = 2L$ and $E = n^2h^2/8mL^2$, extended to Eq. (6) in 3-D; degeneracy and the two-spins-per-state rule; the Fermi–Dirac form and the 50 % definition of $E_F$; conduction as a biased velocity distribution requiring empty states just above $E_F$; $\sigma = ne^2\tau/m$ and the mean free path, with solutes the most effective scatterers; the $T_c$, $H_c$ and $J_c$ definitions and their interrelation; the Meissner effect and $\chi = -1$; type I versus type II with $H_{c1}$, $H_{c2}$ and the vortex region; the pinning recipe (cold work cell walls, fine grains, $\sim300\ \text{\AA}$ precipitate spacing); the Bragg condition at $\sin\theta = 1$ giving $k = \pm n\pi/d$; the two standing waves, their localisation and the potential-energy difference that *is* the gap; and $k = \pm n\pi/(d\sin\theta)$ with the effective forbidden gap. The added depth to be ready with: why the 50 % level is $E_F$ by symmetry, and why the forbidden gap requires an overlap over all directions.
+
+---
+
+## 7. Electrical and Electronic Properties — Part 2
+
+### 7.1 Overlapping bands and the disappearance of the gap
+
+The forbidden gap **disappears** if the bottom line of the gap for the $[110]$ direction lies *above* the top line of the gap in the $[100]$ direction. Such a situation arises when the potential energy of an electron is **not a strong function of location** in the crystal. The energy bands on either side of a critical value of $k$ are then said to **overlap**, and there is no forbidden energy at all.
+
+This is the single criterion that decides whether a solid is a metal: not the number of valence electrons, but whether the periodic potential is strong enough to open a gap that survives in all directions.
+
+### 7.2 Brillouin zones
+
+The $E$–$k$ plot used so far is for unidirectional motion of the electrons. When all directions of electron motion and all possible reflections are considered together, the ranges of $k$ that lie between the forbidden gaps are called **Brillouin zones**. The first Brillouin zone contains all the energy levels up to the first $E$–$k$ discontinuity; the second zone contains all levels between the first and second discontinuities, and so on.
+
+For example, the first zone for an FCC crystal is a polyhedron bounded by planar surfaces of the $\{111\}$ and $\{200\}$ types, these two corresponding to the first and the second allowed reflections for the FCC lattice.
+
+> [!important] Definition
+> **Brillouin zone** — a range of wave numbers (and hence of energies) lying between two successive $E$–$k$ discontinuities, for electron motion in all directions and all possible reflections.
+
+### 7.3 The valence band, the conduction band, and the classification of solids
+
+The outermost energy band that is full or partially filled is the **valence band**. The band above the valence band, empty at $0\ \text{K}$, is the **conduction band**. Solids are classified on the basis of their band structure as metals, semiconductors and insulators.
+
+> [!important] Definitions
+> **Valence band** — the outermost band that is full or partially filled at $0\ \text{K}$.
+> **Conduction band** — the band above the valence band, empty at $0\ \text{K}$.
+> **Band gap $E_g$** — the forbidden energy interval separating them.
+
+### 7.4 Metals: two ways to be a conductor
+
+Metals are those solids that have **vacant electron energy states immediately above the highest filled level of the valence band**. This can happen in two ways: either the valence band is only **half-filled**, or a **full valence band overlaps the conduction band** so that there is no forbidden gap.
+
+![[EP2 - Metals partially filled and overlapping bands.png|460]]
+
+*Figure — the two metallic band structures: a partially filled band (left) and a full valence band overlapping an empty conduction band (right); both leave empty states immediately above the occupied levels.*
+
+The periodic table follows the rule closely:
+
+| Element group | Outermost electrons | Band situation | Consequence |
+| --- | --- | --- | --- |
+| **Monovalent** — Cu, Ag, Au | One | Outermost band only **half full** | Conduct |
+| **Divalent** — Mg, Be | Two (even) | Valence band full but **overlaps** the conduction band | Conduct |
+| **Trivalent** — Al | Three | Outermost band **half full** | Conducts, band structure similar to the monovalent metals |
+| **Fourth column** — C, Si, Ge, Sn, Pb | Four (even) | Valence band full, **no overlap** | Do *not* conduct as metals — the band gap decides (§7.5) |
+
+### 7.5 The fourth column: from diamond to lead
+
+In elements of the fourth column the electrons in the outermost orbital are even in number, as in the divalent metals: the valence band is full, but here there is **no overlap** of the valence band with the conduction band. Whether the solid is an insulator or a semiconductor is then fixed by the *size* of the resulting gap.
+
+Taking covalent diamond, the potential energy of the electrons is a strong function of their location in the crystal; correspondingly a forbidden gap exists, and it is relatively large — $5.4\ \text{eV}$.
+
+As we move down the fourth column to the elements below diamond, the electrons of the outermost orbital are farther away from the nucleus. The effect of this increasing separation is **dominant over** the effect of the increasing charge on the nucleus, so the electrons are less tightly bound to the nucleus as we go down the column. The potential energy of the electron is no longer a strong function of its location, and this reduces the gap:
+
+| Element | $E_g$ (eV) | Character |
+| --- | --- | --- |
+| **Diamond (C)** | 5.4 | Insulator |
+| **Si** | 1.1 | Semiconductor |
+| **Ge** | 0.7 | Semiconductor |
+| **Gray Sn** | 0.08 | Semiconductor, nearly metallic |
+| **Pb** | 0 | Metal — the forbidden gap has closed |
+
+> [!note] Why the trend is monotonic down a column
+> Two competing effects act on the outermost electron: it moves farther from the nucleus (which *weakens* binding) and the nuclear charge rises (which *strengthens* binding). The slides state explicitly that the separation effect dominates, so binding weakens downwards, the potential becomes flatter, and the gap shrinks from 5.4 eV to zero. The same logic explains why the gap of a *compound* semiconductor can be tuned by changing the average atomic size rather than the electron count.
+
+### 7.6 The semiconductor–insulator divide
+
+Those materials with an energy gap of about $2$–$3\ \text{eV}$ or less are called **semiconductors**, and those with a gap of more than $3\ \text{eV}$ are **insulators**. In contrast to metals, both have a finite forbidden gap; the only difference between them is the **magnitude** of that gap.
+
+![[EP2 - Insulator versus semiconductor energy gap.png|450]]
+
+*Figure — the only difference between an insulator and a semiconductor: the same band diagram with a wide gap ($>3\ \text{eV}$) and a narrow one ($\lesssim3\ \text{eV}$).*
+
+> [!warning] The dividing line is a convention, not a physical boundary
+> The $3\ \text{eV}$ cut is a rule of thumb. Diamond ($5.4\ \text{eV}$) and Si ($1.1\ \text{eV}$) behave very differently at room temperature only because the *fraction* of electrons thermally excited across the gap is exponential in $E_g/kT$ — not because the two materials differ in kind. A "semiconductor" at $4\ \text{K}$ is an insulator.
+
+### 7.7 Intrinsic semiconductors: carrier statistics
+
+In **intrinsic** semiconductors the conduction is due to the intrinsic processes characteristic of the crystal in question, without the influence of impurities. A pure Si or Ge crystal is an intrinsic semiconductor: the electrons excited from the top of the valence band to the bottom of the conduction band by thermal energy are responsible for conduction.
+
+The number of electrons excited across the gap is calculated from the Fermi–Dirac probability distribution. For an intrinsic semiconductor the Fermi level lies in the **middle of the energy gap**, so that $E - E_F = E_g/2$. For Si this is $0.55\ \text{eV}$, which is more than twenty times larger than the thermal energy $kT$ at room temperature ($0.026\ \text{eV}$).
+
+![[EP2 - Fermi level midgap in intrinsic semiconductor.png|380]]
+
+*Figure — the Fermi level of an intrinsic semiconductor sits midgap, so that the energy measured from $E_F$ to either band edge is exactly $E_g/2$.*
+
+Because $E - E_F \gg kT$, the factor of unity in the denominator of the Fermi–Dirac expression can be ignored in comparison with the exponential term, and the occupation probability becomes
+
+$$ P(E) \approx \exp\!\left(-\frac{E - E_F}{kT}\right) $$
+
+The fraction of electrons at energy $E$ equals this probability, so the number $n$ of electrons promoted across the gap is
+
+$$ \boxed{\ n = N\exp\!\left(-\frac{E_g}{2kT}\right)\ } $$
+
+where $N$ is the number of electrons available for excitation from the top of the valence band.
+
+> [!warning] The Boltzmann approximation is the whole point
+> Dropping the "1" is not a mathematical convenience — it is the statement that the electron gas is **non-degenerate**, i.e. the states above $E_F$ are almost empty. The approximation is valid precisely because $E_g/2 \gg kT$; it would fail for a zero-gap or heavily doped semiconductor, and it is why the intrinsic carrier concentration is so violently temperature-dependent.
+
+The promotion of some electrons across the gap leaves vacant electron sites in the valence band — **holes**. As each excited electron leaves back one hole, an intrinsic semiconductor contains an equal number of holes in the valence band and electrons in the conduction band:
+
+$$ n_e = n_h = N\exp\!\left(-\frac{E_g}{2kT}\right) $$
+
+### 7.8 Conductivity of an intrinsic semiconductor
+
+Under an externally applied field, the electrons excited into the conduction band by thermal means accelerate using the vacant states available in the conduction band. At the same time the holes in the valence band also move, but in a direction **opposite** to that of the electrons.
+
+The conductivity depends on the concentration of these charge carriers, $n_e$ and $n_h$. In the case of metals we referred to the drift velocity acquired by the free electrons in an applied field; similarly, the **mobility** of conduction electrons and holes, $\mu_e$ and $\mu_h$, is defined as the drift velocity acquired under unit field gradient. The conductivity of a semiconductor is then
+
+$$ \boxed{\ \sigma = e\left(n_e\mu_e + n_h\mu_h\right)\ } $$
+
+where $e$ is the electronic charge and $n_e$, $n_h$ are concentrations per unit volume. For Si the mobilities are $\mu_e = 0.14$ and $\mu_h = 0.05\ \text{m}^2\text{V}^{-1}\text{s}^{-1}$; for Ge, $0.39$ and $0.19$.
+
+> [!important] Definition
+> **Mobility $\mu$** — the drift velocity acquired by a charge carrier under unit field gradient, in $\text{m}^2\text{V}^{-1}\text{s}^{-1}$.
+
+For an intrinsic semiconductor the number of charge carriers is dependent on temperature **exponentially**, and therefore increases very rapidly with increasing temperature; the conductivity increases in the same fashion. The small temperature dependence of the mobilities can be neglected compared with the effect of temperature on the number of carriers. Consequently a plot of $\log\sigma$ against $1/T$ (in kelvin) is a straight line, and the energy gap is computed from its slope.
+
+$$ \ln\sigma = \ln\sigma_0 - \frac{E_g}{2k}\cdot\frac{1}{T} \qquad\Longrightarrow\qquad \text{slope} = -\frac{E_g}{2k} $$
+
+### 7.9 Extrinsic semiconductors: donors and n-type conduction
+
+In **extrinsic** semiconductors the conduction is due to the presence of extraneous impurities. The process of deliberate addition of controlled quantities of impurities to a pure semiconductor is called **doping**, and doping markedly increases the conductivity.
+
+Consider a Si crystal doped with a fifth-column element such as P, As or Sb. The fifth-column element substitutes for a Si atom in the diamond cubic structure. Four of the five electrons in the outermost orbital of the phosphorus atom take part in the tetrahedral bonding with the four Si neighbours.
+
+![[EP2 - Silicon doped with phosphorus n-type.png|450]]
+
+*Figure — silicon doped with phosphorus: four of the five outer electrons enter the tetrahedral bonds, and the fifth occupies a shallow donor level just below the conduction band.*
+
+The fifth electron cannot take part in the discrete covalent bonding — it is **loosely bound** to the parent atom. It is possible to calculate an orbit for the fifth electron by assuming that it revolves around the positively charged phosphorus ion in the same way as the $1s$ electron revolves around the hydrogen nucleus. There is, however, one important difference: the electron of the phosphorus atom is moving in the **electric field of the silicon crystal** and not in free space, as in the hydrogen atom. This brings the **dielectric constant of the crystal** into the orbital calculation, and the radius of the electron orbit turns out to be very large — about $80\ \text{\AA}$ against $0.5\ \text{\AA}$ for the hydrogen orbit.
+
+Such a large orbit evidently means that the fifth electron is almost free and is at an energy level close to the conduction band. Excitation of the fifth electron into the conduction band therefore takes place much more readily than excitation from the valence band of the silicon crystal. The phosphorus atom is said to **donate** its electron to the semiconductor; the energy level of the fifth electron is the **donor level**; and the energy required to excite it into the conduction band is the **ionization energy**.
+
+As the elements to the right of the fourth column donate negative charges (electrons), semiconductors doped with them are called **n-type**.
+
+> [!important] Definitions
+> **Doping** — deliberate addition of controlled quantities of impurity to a pure semiconductor.
+> **Donor level** — the shallow energy level just below the conduction band at which the loosely bound fifth electron sits.
+> **Ionization energy** — the energy required to excite a donor electron into the conduction band; small compared with $E_g$.
+> **n-type semiconductor** — one in which electrons donated by a fifth-column impurity are the majority carriers.
+
+As compared to the energy gap, the ionization energy of an impurity atom is very small; at room temperature, therefore, a large fraction of the donor-level electrons are excited into the conduction band, much larger than the fraction excited by the intrinsic process from the valence band. According to the **law of mass action**, the product of the number of electrons in the conduction band and the number of holes in the valence band must be constant:
+
+$$ n_e\,n_h = \text{constant} = n_i^2 $$
+
+This condition drastically reduces the number of holes in the n-type semiconductor, and the electrons in the conduction band become the **majority charge carriers**.
+
+### 7.10 Acceptors and p-type conduction
+
+Consider the alternative process of doping a Si crystal with a third-column element such as Al, Ga or In. Al has three electrons in the outer orbital; substituting for Si in the crystal, it needs an **extra electron** to complete the tetrahedral arrangement of bonds around it.
+
+The extra electron can come only from one of the neighbouring Si atoms, thereby creating a vacant electron site (**hole**) on that Si. The Al atom with the extra electron becomes a negative charge, and the hole with a positive charge can be considered to revolve around the Al atom, leading to the same orbital calculations as before.
+
+![[EP2 - Silicon doped with aluminium p-type.png|470]]
+
+*Figure — silicon doped with aluminium: the trivalent atom completes its four bonds by taking an electron from a neighbour, leaving a mobile hole bound to a shallow acceptor level.*
+
+At $0\ \text{K}$ the holes remain bound to the impurity atoms; as the temperature is raised, the holes break away from the impurity atoms by thermal excitation and become available for conduction. The ionization energy to free a hole bound to the impurity is approximately the same as the ionization energy of donor electrons in the same crystal. The bound-hole levels are called **acceptor levels** (Al accepts an electron) and lie just **above the valence band**.
+
+The fraction of holes created by thermal excitation in doped Si is much larger than the fraction of electrons created by excitation into the conduction band. The law of mass action holds here as well, and the positive holes become the **majority charge carriers**. Such an extrinsic semiconductor is a **p-type** semiconductor.
+
+> [!note] The symmetry is exact
+> Donor electron and acceptor hole are the same problem viewed from opposite bands: a hydrogen-like centre in a dielectric medium, with a large Bohr radius and a correspondingly small binding energy. That is why the ionization energies are nearly equal, and why the same orbital calculation serves both.
+
+The conductivity equation of §7.8 describes extrinsic semiconductors as well. The only difference is that the number of electrons in the conduction band and the number of holes in the valence band are **not equal** in an extrinsic semiconductor; one of the two dominates, depending on the type of the extrinsic process.
+
+| | **n-type** | **p-type** |
+| --- | --- | --- |
+| Dopant | Fifth column — P, As, Sb | Third column — Al, Ga, In |
+| Mechanism | Donates a loosely bound electron | Accepts an electron, leaving a hole |
+| Impurity level | Donor, just below conduction band | Acceptor, just above valence band |
+| Majority carrier | Electrons | Holes |
+| Minority carrier | Holes (suppressed by mass action) | Electrons (suppressed by mass action) |
+
+### 7.11 The three regions of the conductivity–temperature plot
+
+A typical plot of the logarithm of conductivity against temperature for an extrinsic semiconductor divides into **three distinct regions**.
+
+![[EP2 - log conductivity versus reciprocal temperature.png|450]]
+
+*Figure — $\log\sigma$ against $1/T$: a steep extrinsic (ionization) branch at low temperature, a flat exhaustion plateau near room temperature, and a steeper intrinsic branch above it.*
+
+1. **Extrinsic (ionization) region — low temperature, large $1/T$.** The conductivity is an exponential function of temperature, because electrons excited from the donor level to the conduction band (or holes created by excitation to the acceptor level) become available in increasing numbers as temperature rises. From the slope of the straight line in this region, the **ionization energy of the impurity** can be calculated.
+2. **Exhaustion region — higher temperature.** Excitation of charge carriers from the impurities is nearing completion, because the unexcited impurities are exhausted. The region is flat, with almost zero slope. The slope can even become **positive**, because of the dominance of the temperature-dependent mobility term: increasing $T$ decreases the mean free path of the conduction electrons/holes, so the mobility falls as $T$ rises.
+3. **Intrinsic region — above room temperature.** Another linear region, with a negative slope of large magnitude, corresponding to intrinsic conduction. The difference in slope between the extrinsic and intrinsic regions reflects the difference in magnitude between the impurity ionization energy and the energy gap $E_g$.
+
+> [!tip] Design consequence of the plateau
+> For **stability** of operation of a semiconductor device, a relatively flat region — where conductivity does not vary appreciably with ambient temperature — is often desirable. For a **thermistor**, on the other hand, maximum sensitivity to temperature is desirable, so the device is deliberately operated on the steep extrinsic or intrinsic branch. The same curve is therefore either a nuisance or the product, depending on which region the device is biased into.
+
+### 7.12 Doping in practice: diffusion, predeposition and drive-in
+
+Impurity doping can be carried out by solid-state diffusion under two conditions:
+
+- **Constant surface concentration.** A constant surface concentration of the dopant is maintained at a high enough temperature for the dopant to diffuse in and create a characteristic concentration profile.
+- **Constant total quantity (predeposition + drive-in).** A constant total quantity of the dopant is first deposited on the surface by **predeposition** — either by short-time annealing or by another technique such as **ion implantation** at low temperature. The concentration profile is then altered by a high-temperature anneal in a non-doping atmosphere, the **drive-in**.
+
+A **p-n junction** is created by diffusing an impurity, say a p-type one, into the bulk semiconductor through a **window in the oxide layer**, where the bulk crystal has already been doped to be n-type.
+
+> [!note] The oxide is the mask
+> The window-in-oxide method is the reason doping can be *patterned*: SiO₂ is impermeable to the common dopants, so the junction is defined lithographically rather than by a mechanical mask. Everything that follows about the diode assumes this geometry.
+
+### 7.13 The p-n junction at equilibrium
+
+When a pure semiconductor is doped to become n-type, the **Fermi level shifts up** from the middle of the energy gap towards the donor level. This happens because the position corresponding to 50 % probability of occupation moves up, owing to the relatively high concentration of donor electrons in the conduction band. If the crystal is p-type, the Fermi level shifts **down** towards the acceptor level.
+
+When the same crystal is doped to become n-type on one side and p-type on the other, the Fermi level must be **constant throughout the crystal in thermal equilibrium**. This forces the electron energy levels at the bottom of the conduction band in the n-part to be **lower** than those in the p-part by an amount equal to the contact potential $eV_0$.
+
+![[EP2 - p-n junction band diagram at equilibrium.png|450]]
+
+*Figure — the p-n junction at equilibrium: a single Fermi level runs across both sides, the bands are offset by $eV_0$, and the junction region contains the resulting barrier.*
+
+At equilibrium there is no net current across the junction:
+
+- The concentration of electrons in the conduction band on the p-side is small; these electrons can accelerate **down the potential hill** across the junction to the n-side, giving a current $I_0$ proportional to their number.
+- The concentration on the n-side is large, because of the donor contribution; but only a small number of these electrons can flow to the p-side, because they face the **potential barrier**. That small number is computed with the Boltzmann probability equation.
+- At equilibrium the current from n-side to p-side and the current in the opposite direction are the same, both equal to $I_0$. An equal additional contribution to $I_0$ comes from the flow of holes across the junction — the hole concentration is large in the p-region compared with the n-region.
+
+### 7.14 Forward and reverse bias
+
+If an external voltage $V_i$ is applied such that the **p-side becomes positive** with respect to the n-side, the electron energy levels change. Note that the potential for electrons is **opposite in sense** to the conventional method of representing the sign of an electric potential. The barrier at the junction is now **lowered by $eV_i$**, resulting in a greatly enhanced current flow in the forward direction, from n-side to p-side.
+
+![[EP2 - Forward bias lowered barrier.png|440]]
+
+*Figure — forward bias: the barrier is lowered by $eV_i$, so the majority electrons can cross in large numbers and the current rises steeply.*
+
+This change in barrier does **not** affect the flow of electrons in the reverse direction, from p-side to n-side, because that flow is still down the potential hill. The applied voltage therefore causes a large **net** current in the forward direction.
+
+If the voltage is applied in the **reverse** direction, the potential barrier for electrons at the junction is **increased by $eV_i$**. This drastically reduces the current flow from the n-side to the p-side; in the reverse direction, the flow remains unchanged at $I_0$.
+
+![[EP2 - Reverse bias raised barrier.png|440]]
+
+*Figure — reverse bias: the barrier is raised by $eV_i$, the n → p current is choked off, and only the small, barrier-independent $I_0$ survives.*
+
+> [!note] The asymmetry in one sentence
+> Forward bias lowers a barrier that was *already* being crossed by the majority carriers, so the current grows exponentially; reverse bias raises the same barrier, but the reverse current never had to climb it, so it stays at $I_0$. That is the rectifying action of the diode, and it follows from the band diagram alone.
+
+#### The diode equation behind the curve
+
+*Added depth beyond the slides.* The qualitative picture above is summarised by the Shockley diode equation
+
+$$ I = I_0\left[\exp\!\left(\frac{eV_i}{kT}\right) - 1\right] $$
+
+which gives $I \to -I_0$ for large negative $V_i$ (the barrier-independent reverse current) and exponential growth for positive $V_i$. The prefactor $I_0$ is exactly the equilibrium exchange current of §7.13, which is why the two bias cases are mirror images of the same number.
+
+> [!tip] Exam pointer — Part 2
+> Expect: the overlap criterion for the disappearance of the gap; the definition of a Brillouin zone and the FCC first zone bounded by $\{111\}$/$\{200\}$; valence band versus conduction band; the two metallic band structures (half-filled, overlapping) and the group-by-group table (Cu/Ag/Au half full, Mg/Be overlapping, Al half full, column IV full with no overlap); the gap sequence 5.4 → 1.1 → 0.7 → 0.08 → 0 eV with the separation-dominates-over-charge argument; the 3 eV semiconductor/insulator convention; $E_F$ midgap, $E - E_F = E_g/2$, and $n = N\exp(-E_g/2kT)$ with the Boltzmann approximation justified by $E_g/2 \gg kT$; $n_e = n_h$ intrinsic and $\sigma = e(n_e\mu_e + n_h\mu_h)$ with the Si and Ge mobilities; the donor/acceptor mechanisms, the $80\ \text{\AA}$ versus $0.5\ \text{\AA}$ orbit and the role of the dielectric constant; mass action $n_en_h$ = constant and majority/minority carriers; the three regions of $\log\sigma$ versus $1/T$ and what each slope measures; the two diffusion conditions (constant surface concentration; predeposition + drive-in) and the oxide-window junction; the constant-$E_F$ construction with the $eV_0$ offset; and the forward/reverse barrier argument. The added depth to be ready with: why the slope of the exhaustion region can turn positive, and why the reverse current is independent of the barrier.
+
+---
+
+## Formula Summary — Electrical & Electronic Properties
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Resistivity and conductivity | $\rho = 1/\sigma$ | Ranges: conductor $10^{-9}$–$10^{-3}$, semiconductor $10^{-3}$–$10^{3}$, insulator $>10^{4}\ \Omega\,\text{m}$ |
+| de Broglie wavelength | $\lambda = h/mv$ | Electron as a wave |
+| Wave number | $k = 2\pi/\lambda$ | Inversely related to $\lambda$ |
+| Free electron energy | $E = \dfrac{h^2k^2}{2m}$ | Parabolic $E$–$k$; non-relativistic |
+| 1-D box quantisation | $E = \dfrac{n^2h^2}{8mL^2}$ | $\lambda_{\max} = 2L$ |
+| 3-D box quantisation | $E = \dfrac{h^2}{8m}\left(\dfrac{n_x^2}{L_x^2}+\dfrac{n_y^2}{L_y^2}+\dfrac{n_z^2}{L_z^2}\right)$ | Two electrons (opposite spin) per state |
+| Fermi–Dirac occupation | $P(E) = \dfrac{1}{1+\exp[(E-E_F)/kT]}$ | $P(E_F) = 0.5$ at every $T$ |
+| Conductivity of a metal | $\sigma = \dfrac{ne^2\tau}{m}$ | $\tau$ = mean collision time; $l = v\tau$ |
+| Critical field | $H_c = 0$ at $T = T_c$ | $H_c$ and $J_c$ rise as $T$ falls below $T_c$ |
+| Superconductor susceptibility | $\chi = -1$, $M = -H$, $B = 0$ | Perfect diamagnetism (Meissner) |
+| Type II critical fields | $H_{c1} < H < H_{c2}$ | Vortex region; Meissner incomplete |
+| Bragg condition (1-D motion) | $k = \pm n\pi/d$ | $\sin\theta = 1$; electrons totally reflected |
+| Bragg condition (3-D) | $k = \pm n\pi/(d\sin\theta)$ | $\theta$ between 0 and 90° |
+| Energy gap | $\Delta E_{\text{gap}} = E_{\text{sine}} - E_{\text{cosine}}$ | Potential-energy difference of the two standing waves |
+| Intrinsic carrier concentration | $n = N\exp\!\left(-\dfrac{E_g}{2kT}\right)$ | Valid for $E_g/2 \gg kT$ |
+| Intrinsic equality | $n_e = n_h$ | Every excited electron leaves one hole |
+| Semiconductor conductivity | $\sigma = e\left(n_e\mu_e + n_h\mu_h\right)$ | $\mu_e,\mu_h$: Si 0.14/0.05, Ge 0.39/0.19 $\text{m}^2\text{V}^{-1}\text{s}^{-1}$ |
+| Slope of $\ln\sigma$ vs $1/T$ | $-E_g/2k$ (intrinsic); $-E_i/2k$ (extrinsic) | $E_i$ = impurity ionization energy |
+| Mass action | $n_e n_h = n_i^2$ | Constant at a given $T$; holds for extrinsic too |
+| Contact potential | $eV_0$ | Band offset across the junction at equilibrium |
+| Diode equation | $I = I_0\left[\exp(eV_i/kT)-1\right]$ | *Added depth*; $I_0$ = equilibrium exchange current |
+
+> [!note] Source images
+> The diagrams and plots embedded in this block — the resistivity ranges (Fig. 1 of Part 1), the parabolic $E$–$k$ (Fig. 1), the de Broglie wavelengths (Fig. 2), the Fermi–Dirac curves (Fig. 3), the field-biased distribution (Fig. 4), the collision sawtooth (Fig. 5), the Ag/Sn resistivity (Fig. 6), $H_c$ versus $T$ (Fig. 7), the Meissner effect (Fig. 8), type I/II magnetization (Fig. 9), the standing waves (Fig. 10), the $E$–$k$ break (Fig. 11) and the forbidden gap (Fig. 12); and in Part 2, the overlapping bands (Fig. 13), the insulator/semiconductor gap (Fig. 14), the midgap Fermi level (Fig. 15), the P-doped and Al-doped cells (Figs. 16–17), the $\log\sigma$ versus $1/T$ plot (Fig. 18) and the three junction band diagrams (Fig. 19) — are the original figures extracted from [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `EP1`/`EP2` prefix.
+
+---
+
 # Magnetic Properties
 
 Every material is magnetic to some degree, but the *strength* of the response spans more than ten orders of magnitude — a diamagnetic solid barely pushes the lines of force out of its interior, a soft ferromagnet multiplies them thousands of times for the same applied field. This block builds that response from one microscopic quantity, the **Bohr magneton**, then shows how exchange coupling between neighbouring spins turns a collection of tiny atomic moments into domains, and how the domain behaviour turns into the hysteresis loop, the transformer core and the permanent magnet.
@@ -2351,3 +2913,255 @@ The demagnetizing energy of a permanent magnet is the area of the second-quadran
 
 > [!note] Source images
 > All Excalidraw figures in this block are original reconstructions; the comparison of soft and hard hysteresis loops lives in the vault as `Excalidraw/MAG - Soft vs Hard Hysteresis.excalidraw.md`. The plots and schematics embedded above — the three magnetic responses (Fig. 1), the ferro/antiferro/ferrimagnetic coupling (Fig. 2), the domain flux closure (Fig. 3) and the hysteresis loop (Fig. 4) — are the original figures extracted from [[Magnetic Properties_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `MAG` prefix.
+
+---
+
+# Dielectric Materials, Polarization & Optical Properties
+
+The previous block ended by deriving a forbidden energy gap and then using it to build a diode. This block takes the same gap and asks two different questions of it. First: if the gap is so large that no electron can cross it, what *does* an applied electric field do to an insulator? The answer is that it displaces charge without freeing it — the material **polarizes**, and that polarization is the entire basis of the capacitor, the piezoelectric transducer and the ferroelectric memory. Second: what does the gap do to light? The answer decides whether a solid is transparent, coloured or opaque, and the same band diagram that made a diode also explains why diamond is clear and copper is not.
+
+Compiled from the lecture slides ([[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]]. Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
+
+> [!info] How the block fits together
+> §9.1–§9.7 build **polarization**: why an insulator is a dielectric, what a dipole moment per unit volume means, the four mechanisms and the ranking of their speeds. §9.8–§9.9 carry one of those mechanisms to its collective limit in the **ferroelectric**, where BaTiO₃ supplies both the largest dielectric constant in the syllabus and a piezoelectric response. §9.10–§9.12 turn to **light**: metals absorb because empty states are continuous; nonmetals refract because of electronic polarization, and absorb only when a photon can bridge the gap — which is what puts the colour of a material in the window between $1.8$ and $3.1\ \text{eV}$.
+
+---
+
+## 9. Dielectric Materials, Polarization, Optical Properties
+
+### 9.1 Why an insulator is a dielectric
+
+The large magnitude of the energy gap in an ideal insulator precludes the possibility of electrons being excited from the valence band to the conduction band by thermal means — much less by an externally applied electric field. Insulators are therefore very poor conductors of electricity, and are known as **dielectrics**. They find extensive use in the electrical industry for insulation and as **capacitors**.
+
+The charge stored in a capacitor **increases** if a dielectric material is inserted between the plates, and this is due to the **polarization** in the dielectric.
+
+> [!important] Definition
+> **Dielectric** — an insulating material in which an applied electric field produces a displacement of bound charge (polarization) rather than a flow of free charge.
+
+When an electric field is applied to a solid containing positive and negative charges, the positive charges are displaced in the direction of the field, towards the negative end, while the negative charges are displaced in the opposite direction. This displacement produces local **dipoles** throughout the solid. The dipole moment per unit volume of the solid — the sum of all the individual dipole moments within that volume — is the **polarization $P$** of the solid.
+
+### 9.2 Polarization and capacitance
+
+When a voltage $V$ is applied to a capacitor whose plates are separated by vacuum, a charge develops on the plates; the capacitance $C$ is a measure of that charge and is defined by
+
+$$ C = \frac{\varepsilon_0 A}{d} $$
+
+where $\varepsilon_0$ is the dielectric constant (permittivity) of free space (vacuum), $A$ the area of the parallel plates and $d$ the distance of separation between them.
+
+If a dielectric material is inserted between the plates, the charge on the plates increases because of the polarization in the material, and the capacitance becomes
+
+$$ \boxed{\ C = \frac{\varepsilon_r \varepsilon_0 A}{d}\ } $$
+
+where $\varepsilon_r$ is the **relative dielectric constant** (relative permittivity) of the material. $\varepsilon_r$, and hence $P$, is determined by measuring the capacitance with and without the dielectric.
+
+> [!important] Definitions
+> **Permittivity of free space $\varepsilon_0$** — $8.85\times10^{-12}\ \text{F m}^{-1}$.
+> **Relative permittivity $\varepsilon_r$** — the factor by which a dielectric multiplies the capacitance of a vacuum capacitor of the same geometry; dimensionless, and equal to at least 1.
+> **Polarization $P$** — the dipole moment per unit volume, in $\text{C m}^{-2}$.
+
+> [!note] Where the extra charge comes from
+> The dielectric does not create charge; it *binds* charge at its surfaces. The field displaces positive charge towards the negative plate and negative charge towards the positive one, and the bound surface charge partially cancels the field inside — so the same applied voltage holds more charge on the plates. The measured capacitance therefore rises by exactly $\varepsilon_r$, which is why the effect is a direct, quantitative probe of $P$.
+
+### 9.3 Electronic polarization
+
+**Electronic polarization** is the result of the displacement of the positively charged nucleus and the negative electrons of an atom in opposite directions on application of an electric field.
+
+![[DIE - Four polarization mechanisms.png|430]]
+
+*Figure — the four polarization processes in one figure: (a) electronic, (b) ionic, (c) orientation and (d) space charge; each panel shows the charge configuration before and after the field is applied.*
+
+It is the fastest of the mechanisms, because only the electron cloud has to move, and it is **independent of temperature**: the stiffness of the electron cloud against displacement is an electronic property, not a thermal one.
+
+### 9.4 Ionic polarization
+
+When an electric field is applied to an ionic solid, cations and anions get displaced in opposite directions. The **ionic polarizability** is due to this shift of the ions relative to other oppositely charged neighbours. It must be distinguished from electronic polarization, where the electron cloud of *an atom* shifts with reference to its own nucleus.
+
+Both are independent of $T$; however, ionic polarization is **slower** than electronic polarization, because the displacement of a much heavier ion takes place compared with the electron cloud in the latter.
+
+> [!warning] The two "displacements" are not the same
+> Electronic polarization moves an electron cloud *within* an atom (its nucleus stays put); ionic polarization moves whole ions *relative to each other*. A single ionic crystal shows both at once, and they add — which is why the total polarization of an ionic solid is larger than that of a covalent solid of similar size, and why the two mechanisms are often resolved only by their different relaxation frequencies.
+
+### 9.5 Orientation polarization
+
+In the CH₄ molecule the centres of the negative and positive charges coincide, so there is **no permanent dipole moment**. In CH₃Cl, on the other hand, the positive and negative charges do not coincide: since the electronegativity of Cl is greater than that of H, the Cl atom pulls the bonding electrons to itself more strongly than H, so the molecule carries a dipole moment **even without an electric field**.
+
+If an electric field is applied to such molecules, they tend to **align themselves** in the applied field — just like atoms with permanent magnetic moments tend to align with an applied magnetic field, causing paramagnetism. The polarization due to this alignment is **orientation polarization**, and it is **temperature dependent**: with increasing temperature, the thermal energy tends to randomize the alignment.
+
+> [!note] The direct magnetic analogy
+> Orientation polarization is to a polar dielectric what paramagnetism is to a collection of permanent moments (§8.3), and it fails for the same reason at the same place: thermal energy. This is why the dielectric constant of a polar liquid falls as it is heated, whereas that of a purely electronic or ionic dielectric barely moves.
+
+### 9.6 Space charge polarization
+
+**Space charge polarization** occurs because of the accumulation of charges at the electrodes or at the interfaces in a multiphase material. The ions diffuse over appreciable distances in response to the applied field, giving rise to a redistribution of charges in the dielectric medium.
+
+The total polarization of a material is the sum of the contributions from the various sources:
+
+$$ \boxed{\ P = P_e + P_i + P_o + P_s\ } $$
+
+> [!important] Definition
+> **Space charge polarization** — polarization produced by the drift and accumulation of mobile ionic charge over macroscopic distances, at electrodes or internal interfaces.
+
+### 9.7 The ranking of the mechanisms
+
+The four mechanisms differ not only in origin but in **speed**, and the ranking is strict:
+
+| Mechanism | What moves | $T$ dependence | Relative speed |
+| --- | --- | --- | --- |
+| **Electronic** | Electron cloud relative to its own nucleus | Independent of $T$ | Fastest |
+| **Ionic** | Cations and anions relative to each other | Independent of $T$ | Slower than electronic (heavier ions) |
+| **Orientation** | Alignment of permanent molecular dipoles | **Dependent** — thermal randomization | Slower than ionic |
+| **Space charge** | Diffusion of ions over several interatomic distances | Dependent (diffusion) | Slowest |
+
+Orientation polarization is even slower than ionic polarization, and space charge polarization is the slowest process of all, because it involves the diffusion of ions over several interatomic distances.
+
+> [!tip] Why the ranking matters for a capacitor
+> Each mechanism can only follow a field that alternates slowly enough for it to keep up; above its relaxation frequency it drops out and stops contributing to $\varepsilon_r$. So $\varepsilon_r$ is not a constant of the material but a function of frequency, and a dielectric chosen for a 50 Hz capacitor may be useless at microwave frequency even though nothing about its chemistry changed.
+
+#### Why "slowest" means "first to drop out"
+
+A polarization mechanism is a mass on a spring: the field applies a force, the charge takes a finite time to reach its displaced position. If the field reverses before the displacement completes, the mechanism contributes nothing to the stored charge and instead dissipates energy as heat. Ordering electronic < ionic < orientation < space-charge by response time is therefore identical to ordering them by the frequency at which each stops working — the highest-frequency mechanism survives to the highest frequency, which is why the optical (visible-light) dielectric constant of a transparent solid contains only the electronic contribution.
+
+### 9.8 Ferroelectric materials
+
+In ferroelectrics the dielectric constants are some **two orders of magnitude larger** than those of ordinary dielectrics. Barium titanate is a ferroelectric with a relative dielectric constant of over **2000**, compared with less than 10 for ordinary dielectrics. The difference in magnetic susceptibility between ferromagnetic and paramagnetic materials bears a direct analogy to this difference in the values of the dielectric constants.
+
+As in the ferromagnetic phenomenon, the electric dipoles in a ferroelectric solid are all **aligned in the same direction, even in the absence of an electric field**.
+
+Ferroelectric crystals always exhibit the **piezoelectric** property, which is the mechanical response of a crystal to an electric field, or the electrical response to a mechanical stress.
+
+> [!important] Definitions
+> **Ferroelectric** — a material with a spontaneous electric polarization that can be reversed by an applied field; characterized by a very large $\varepsilon_r$.
+> **Piezoelectric** — a crystal that develops a charge when stressed, and changes shape when a field is applied; always true of ferroelectrics.
+
+The most important use of BaTiO₃ is as a piezoelectric crystal, in applications such as microphones, phonograph pickups, strain gauges and sonar devices. The high dielectric constant of ferroelectric crystals is also useful for storing energy in small-sized capacitors in electrical circuits.
+
+### 9.9 BaTiO₃ and the ferroelectric Curie temperature
+
+Above $120\,^\circ\text{C}$, barium titanate is a **cubic** crystal in which the centres of the negative and positive charges coincide and there is no spontaneous dipole moment. If the crystal is cooled below the (ferroelectric) **Curie temperature** of $120\,^\circ\text{C}$, the Ti ion shifts to one side of the body centre, and there is also a displacement of the neighbouring oxygen anions. The crystal transforms from cubic to **tetragonal** on cooling through $120\,^\circ\text{C}$; the $c/a$ ratio of the tetragonal cell is
+
+$$ \frac{c}{a} = \frac{4.03\ \text{\AA}}{3.98\ \text{\AA}} = 1.012 $$
+
+![[DIE - BaTiO3 cubic and tetragonal cells.png|400]]
+
+*Figure — the BaTiO₃ unit cell above and below the Curie temperature: the dashed circle in the front view marks the Ti ion, which shifts off the body centre on cooling, dragging the neighbouring oxygens with it.*
+
+The centres of the positive and negative charges no longer coincide, and local dipoles are created throughout the crystal; the aligned dipoles of neighbouring unit cells result in a large polarization in the solid.
+
+> [!note] A 1.2 % distortion doing all the work
+> The $c/a$ ratio is only $1.012$ — a distortion of about one part in eighty — yet it is the whole origin of a dielectric constant above 2000 and of the piezoelectric response. The lesson is the same one the magnetic block taught with the $1.5$–$2.0$ exchange criterion: in a cooperative phenomenon, a tiny local distortion is amplified by the alignment of every neighbouring cell, so the macroscopic property is not proportional to the microscopic cause.
+
+> [!warning] Ferroelectric is not ferromagnetic
+> The name is borrowed, not shared. "Ferro" in both cases refers to a spontaneous, switchable, aligned state below a Curie temperature — but the order parameter is electric dipole in one case and magnetic spin in the other, and the two materials are otherwise unrelated. A ferroelectric need not be magnetic, and BaTiO₃ is not.
+
+### 9.10 Optical properties of metals
+
+In both cases of metals shown in the figure — Cu and Mg — a high-energy band is only **partially filled** with electrons. Metals are opaque because incident radiation with frequencies in the visible range excites electrons into unoccupied energy states above the Fermi energy; as a consequence, the incident radiation is absorbed.
+
+![[DIE - Band structure of copper and magnesium.png|420]]
+
+*Figure — the band structures of (a) Cu and (b) Mg: both have a partially filled high-energy band, so empty states are continuously available immediately above the occupied levels.*
+
+Total absorption occurs within a very thin outer layer, usually **less than $0.1\ \mu\text{m}$**; thus only metallic films thinner than $0.1\ \mu\text{m}$ are capable of transmitting visible light. All frequencies of visible light are absorbed by metals, because of the continuously available empty electron states that permit the transitions.
+
+![[DIE - Photon absorption and reemission in metals.png|450]]
+
+*Figure — (a) a photon excites an electron above $E_F$ and is absorbed; (b) the electron drops back and re-emits a photon of the same wavelength, which is the reflected beam.*
+
+Metals are in fact opaque to all electromagnetic radiation on the low end of the frequency spectrum — from radio waves, through infrared and the visible, and into about the middle of the ultraviolet. Metals are **transparent to high-frequency (X- and $\gamma$-ray) radiation**.
+
+Most of the absorbed radiation is re-emitted from the surface as visible light of the same wavelength, which appears as **reflected** light; the reflectivity for most metals is between $0.90$ and $0.95$. Some small fraction of the energy from electron-decay processes is dissipated as heat. Because metals are opaque and highly reflective, the perceived **colour** is determined by the wavelength distribution of the radiation that is reflected and *not* absorbed:
+
+- A bright silvery appearance under white light indicates that the metal is highly reflective over the entire visible spectrum — the frequency and number of re-emitted photons in the reflected beam are approximately the same as in the incident beam, as for **Al** and **Ag**.
+- **Cu** and **Au** appear red-orange and yellow respectively, because some of the energy associated with light photons having short wavelengths is not re-emitted as visible light.
+
+> [!note] Why a metal cannot be coloured by transmission
+> The empty states above $E_F$ form a continuum, so there is no threshold to select wavelengths: every visible photon is absorbed and most are re-emitted. A metal's colour is therefore a *deficit* in the reflected spectrum, never a transmitted one — which is exactly why thin films below $0.1\ \mu\text{m}$ are the only metallic objects that transmit at all.
+
+### 9.11 Optical properties of nonmetals: refraction
+
+By virtue of their electron energy band structures, nonmetallic materials may be **transparent** to visible light. Therefore, in addition to reflection and absorption, **refraction** and **transmission** must also be considered.
+
+Light transmitted into the interior of a transparent material experiences a **decrease in velocity** and, as a result, is bent at the interface; this is **refraction**. The phenomenon is related to **electronic polarization** at the relatively high frequencies of visible light. Because the retardation of electromagnetic radiation in a medium results from electronic polarization, the size of the constituent atoms or ions has considerable influence on the magnitude of the effect: generally, the larger an atom or ion, the greater the electronic polarization, the slower the velocity, and the greater the index of refraction.
+
+$$ n = \frac{c}{v} $$
+
+where $c$ is the velocity in vacuum and $v$ the velocity in the medium.
+
+| Glass | Index of refraction $n$ | Reason |
+| --- | --- | --- |
+| **Soda–lime glass** | $\approx 1.5$ | Typical silicate network |
+| **Highly leaded glass** (90 wt.% PbO) | $\approx 2.1$ | Large Ba and Pb ions raise the electronic polarization |
+
+Additions of large Ba and Pb ions (as BaO and PbO) to a glass increase $n$ significantly — the highly leaded glass containing 90 wt.% PbO reaches approximately $2.1$.
+
+For crystalline ceramics with **cubic** crystal structures, and for glasses, the index of refraction is independent of crystallographic direction, i.e. it is **isotropic**. **Noncubic** crystals have an **anisotropic** $n$: the refractive index is greatest along the directions that have the highest density of ions.
+
+### 9.12 Reflection, absorption and the band gap
+
+Higher index of refraction means greater **reflectivity**; for typical silicate glasses the reflectivity is approximately $0.05$. Just as $n$ depends on the wavelength of the incident light, so the reflectivity varies with wavelength. Reflection losses for lenses and other optical instruments are minimized significantly by coating the reflecting surface with very thin layers of dielectric materials such as **magnesium fluoride (MgF₂)**.
+
+![[DIE - Transmission reflection and absorption.png|460]]
+
+*Figure — transmission through a plate: part of the beam is reflected at the front face, part at the back face, and the remainder is attenuated by absorption over the thickness $l$.*
+
+For an incident beam of intensity $I_0$ impinging on the front surface of a specimen of thickness $l$ and absorption coefficient $\beta$, the transmitted intensity at the back face is
+
+$$ \boxed{\ I_T = I_0(1-R)^2\exp(-\beta l)\ } $$
+
+where $R$ is the reflectance; the expression assumes the same medium exists outside both front and back faces.
+
+Nonmetallic materials may be opaque or transparent to visible light; if transparent, they often appear **coloured**. In principle, light radiation is absorbed in this group of materials by **two basic mechanisms**, which also influence their transmission characteristics:
+
+1. **Electronic polarization** — important only at light frequencies in the vicinity of the **relaxation frequency** of the constituent atoms, that is, the frequency at which the dielectric loss factor $\varepsilon''$ reaches a maximum, for a dielectric material that has no static (d.c.) conductivity and is subjected to an alternating electromagnetic field.
+2. **Valence band → conduction band electron transitions** — dependent on the electron energy band structure of the material. Absorption of a photon may occur by the promotion of an electron from the nearly filled valence band, across the band gap, into an empty state within the conduction band.
+
+![[DIE - Photon absorption across the band gap.png|400]]
+
+*Figure — band-gap absorption: a photon of energy at least $E_g$ promotes an electron across the gap and leaves a hole behind; a lower-energy photon passes through.*
+
+These excitations with the accompanying absorption can take place only if the photon energy is greater than that of the band gap, $E_g$:
+
+$$ h\nu \ge E_g \qquad\Longleftrightarrow\qquad \lambda \le \frac{hc}{E_g} $$
+
+In other words, **no visible light is absorbed** by nonmetallic materials having band gap energies greater than about $3.1\ \text{eV}$; these materials, if of high purity, appear **transparent and colourless**. Conversely, **all visible light is absorbed** by valence-band-to-conduction-band transitions for semiconducting materials with band gap energies less than about $1.8\ \text{eV}$; these materials are **opaque**. Only a **portion** of the visible spectrum is absorbed by materials with band gaps between $1.8$ and $3.1\ \text{eV}$; consequently, these materials appear **coloured**.
+
+Every nonmetallic material becomes opaque at some wavelength, which depends on the magnitude of its $E_g$: diamond, with a band gap of $5.6\ \text{eV}$, is opaque to radiation having wavelengths less than about $0.22\ \mu\text{m}$.
+
+| Band gap $E_g$ | Visible light absorbed | Appearance | Example |
+| --- | --- | --- | --- |
+| $> 3.1\ \text{eV}$ | None | Transparent, colourless (if pure) | Diamond ($5.6\ \text{eV}$) |
+| $1.8$–$3.1\ \text{eV}$ | Part of the spectrum | Coloured | — |
+| $< 1.8\ \text{eV}$ | All of it | Opaque | Narrow-gap semiconductors |
+
+> [!warning] The $3.1\ \text{eV}$ and $1.8\ \text{eV}$ thresholds are the visible-spectrum edges
+> Both numbers come from the same equation, $\lambda = hc/E_g$, evaluated at the ends of the visible range: $3.1\ \text{eV}$ corresponds to about $0.40\ \mu\text{m}$ (violet) and $1.8\ \text{eV}$ to about $0.70\ \mu\text{m}$ (red). A material with $E_g$ just inside the window absorbs the violet end and transmits the rest, which is why it looks yellow or red — the *complement* of what it absorbs. Colour in a transparent dielectric is therefore an absorption-edge position, not a pigment.
+
+> [!note] The transmission budget
+> The fraction of incident light transmitted through a transparent material depends on the losses incurred by **absorption and reflection**, and the respective fractions depend on wavelength. For example, at $0.4\ \mu\text{m}$ a specimen may show $0.90T + 0.05A + 0.05R$, while at $0.55\ \mu\text{m}$ the same specimen shows $0.50T + 0.48A + 0.02R$. The reflected share is fixed by $n$ through $(1-R)^2$, the absorbed share by $\beta l$; only the second is a strong function of wavelength, so a colour change with thickness is an absorption effect.
+
+> [!tip] Exam pointer — Dielectrics & Optical Properties
+> Expect: why an insulator is a dielectric and the definition of $P$ as dipole moment per unit volume; $C = \varepsilon_0A/d$ and $C = \varepsilon_r\varepsilon_0A/d$ with the capacitance-measurement method for $\varepsilon_r$; the four mechanisms (electronic, ionic, orientation, space charge) with their origins, $T$ dependence and the strict speed ranking — electronic fastest, then ionic (heavier ions), then orientation (thermal randomization), then space charge (diffusion over interatomic distances) — and $P = P_e + P_i + P_o + P_s$; the CH₄/CH₃Cl comparison as the definition of a permanent dipole; ferroelectrics with BaTiO₃ above 2000 versus $<10$ for ordinary dielectrics, the ferro/paramagnetic analogy, spontaneous alignment and the mandatory piezoelectricity with its applications; the $120\,^\circ\text{C}$ Curie temperature, cubic → tetragonal, Ti off-centre with oxygen displacement, $c/a = 4.03/3.98 = 1.012$; metals opaque because of continuous empty states above $E_F$, absorption within $0.1\ \mu\text{m}$, opaqueness from radio to mid-UV, transparency to X- and $\gamma$-rays, reflectivity $0.90$–$0.95$, and colour as a reflected-spectrum deficit (Al/Ag silvery, Cu red-orange, Au yellow); refraction from electronic polarization with $n = c/v$, larger ions → larger $n$ → slower light (soda–lime 1.5, 90 wt.% PbO 2.1), isotropic for cubic/glass and anisotropic otherwise; the two absorption mechanisms, $h\nu \ge E_g$ and $\lambda \le hc/E_g$; the $3.1 / 1.8\ \text{eV}$ window and the transparent/coloured/opaque classification with diamond opaque below $0.22\ \mu\text{m}$; and $I_T = I_0(1-R)^2e^{-\beta l}$ with the $0.4\ \mu\text{m}$ and $0.55\ \mu\text{m}$ transmission budgets. The added depth to be ready with: why $\varepsilon_r$ is a function of frequency (relaxation of each mechanism), why colour is the complement of the absorbed band, and why the $c/a$ distortion of $1.012$ can control a dielectric constant of 2000.
+
+---
+
+## Formula Summary — Dielectrics & Optical Properties
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Capacitance, vacuum | $C = \varepsilon_0 A/d$ | $\varepsilon_0 = 8.85\times10^{-12}\ \text{F m}^{-1}$ |
+| Capacitance, with dielectric | $C = \varepsilon_r \varepsilon_0 A/d$ | $\varepsilon_r \ge 1$; measured by comparing the two |
+| Total polarization | $P = P_e + P_i + P_o + P_s$ | Sum of the four mechanisms |
+| Electronic / ionic polarization | $P_e$, $P_i$ | Independent of $T$; ionic slower |
+| Orientation polarization | $P_o$ | Falls as $T$ rises (thermal randomization) |
+| Space charge polarization | $P_s$ | Slowest; interfacial/electrode charge |
+| Index of refraction | $n = c/v$ | Larger ions → larger $n$ |
+| Reflectance (normal incidence) | $R = \left(\dfrac{n-1}{n+1}\right)^2$ | Silicate glass $\approx 0.05$ |
+| Photon energy condition | $h\nu \ge E_g$ | Otherwise the photon passes |
+| Absorption edge wavelength | $\lambda \le hc/E_g$ | $hc = 1.24\ \mu\text{m eV}$ |
+| Visible window | $1.8\ \text{eV} < E_g < 3.1\ \text{eV}$ | Below → opaque; above → colourless |
+| Transmitted intensity | $I_T = I_0(1-R)^2e^{-\beta l}$ | Same medium outside both faces |
+| Ferroelectric Curie temperature | $T_C = 120\,^\circ\text{C}$ (BaTiO₃) | Cubic above, tetragonal below |
+| Tetragonal distortion | $c/a = 4.03/3.98 = 1.012$ | Origin of the spontaneous dipole |
+
+> [!note] Source images
+> The schematic figures embedded in this block — the four polarization mechanisms (Fig. 1), the BaTiO₃ cubic and tetragonal cells (Fig. 2), the band structures of Cu and Mg and the photon absorption/re-emission mechanism (Figs. 3–4), the band-gap absorption event (Fig. 5) and the reflection/absorption/transmission schematic (Fig. 6) — are the original figures extracted from [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `DIE` prefix. The frequency ordering of the four mechanisms is discussed in §9.7 rather than drawn, because the slides give only the relative speeds.
