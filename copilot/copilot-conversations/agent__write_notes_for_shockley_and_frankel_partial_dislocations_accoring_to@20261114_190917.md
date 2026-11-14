@@ -11,4 +11,6 @@ tags:
 [Timestamp: 2026/11/14 19:09:17]
 
 **ai**: I'll start by reading the context and syllabus files to understand the required structure.Now let me locate the source PDF and the notes file.Now let me extract the source PDF content.Now I'll extract the two lecture figures with the `SD - ` prefix.Now the schematics — four Excalidraw drawings.Now I'll write the topic block into the notes, inserted in syllabus order between §3 and §5.
+
+**Error:** Internal error: Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go
 [Timestamp: 2026/11/14 19:09:17]

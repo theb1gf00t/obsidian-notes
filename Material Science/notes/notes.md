@@ -1994,6 +1994,325 @@ Typical values: Shore A 30–60 for soft rubber, Shore A 70–90 for shoe soles 
 
 ---
 
+# Shockley and Frankel Partial Dislocations
+
+A perfect dislocation is *not* the lowest-energy line defect a crystal can build. In the close-packed metals the lattice pays itself to **split** the perfect dislocation into two **partial** dislocations separated by a narrow strip of **stacking fault** — an **extended dislocation**. This short block works through the two families of partial that exist in the face-centred cubic lattice: the **Shockley** partials, which are *glissile* and whose glide creates and destroys the fault, and the **Frank** partials, which are *sessile* edge dislocations bounding a single fault plane and can move only by climb. Nearly everything that later looks like a materials property — the ease of cross-slip, the rate of work hardening, the tendency to deform by twinning, the hardening left behind by a quench or by neutron irradiation — is decided by which of these two is present and how wide the fault ribbon is.
+
+Compiled from the lecture slides ([[Shockley and Frank partial dislocations_Odd_2026-27.pdf]] — a three-slide deck: a title slide and one figure slide per partial type) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 132–152). The slides are completed against **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering*** (ch. 7, *Dislocations and strengthening mechanisms*); the force expressions of §4.4 follow *Hull & Bacon, Introduction to Dislocations*.
+
+> [!info] How the two halves fit together
+> **§4.1–§4.5** are the Shockley half: why the perfect dislocation dissociates at all (§4.1), what the stacking fault it leaves behind actually is (§4.2), the geometry of the $\mathbf{b} = \tfrac{a}{6}\langle112\rangle$ partials (§4.3), the force balance that fixes the **width** of the ribbon (§4.4), and Thompson's tetrahedron — the bookkeeping device that makes every vector in the block readable at a glance (§4.5). **§4.6–§4.7** are the Frank half: the sessile $\mathbf{b} = \tfrac{a}{3}\langle111\rangle$ partial (§4.6), how it is created by the collapse of a vacancy disc and removed again by unfaulting (§4.7). **§4.8** is the comparison table examiners ask for; **§4.9** is the payoff — what the stacking-fault energy controls.
+
+> [!warning] "Frankel" or "Frank"?
+> The syllabus writes *Shockley and **Frankel** partial dislocations*; the lecture slide and every textbook write **Frank** — after **F. C. Frank**, who introduced the sessile partial bounding a fault. There is no separate "Frankel" dislocation here: *Frankel* (Frenkel) belongs to the **Frenkel pair** of point defects, an unrelated idea. Write **Frank partial** in the exam.
+
+---
+
+## 4. Shockley and Frankel Partial Dislocations
+
+### 4.1 Why a perfect dislocation dissociates
+
+![[SD - Dissociation into Shockley partials.excalidraw]]
+
+A dislocation line stores elastic energy in proportion to the square of its Burgers vector, $E_{el} \approx \alpha G b^2$ per unit length. That quadratic dependence is what makes dissociation possible: replacing one long vector by two short ones whose vector sum is unchanged lowers the energy, exactly as in the dislocation reactions of §2.5. In the fcc lattice the saving is large — $a^2/2$ becomes $a^2/3$, a **33 % reduction** — and it is available on every $\{111\}$ plane at once, which is why dissociation is the *normal* state of a dislocation in a close-packed metal rather than an exotic exception.
+
+$$ \boxed{\ \frac{a}{2}[1\bar{1}0] \;\longrightarrow\; \frac{a}{6}[2\bar{1}1] + \frac{a}{6}[1\bar{2}\bar{1}], \qquad b^2:\ \frac{a^2}{2} \;\to\; \frac{a^2}{3}\ } $$
+
+The price of the split is the strip of **stacking fault** between the two partials: it costs $\gamma_{SF}$ per unit area, so the partials do not fly apart to infinity — they settle at the separation where elastic repulsion just balances fault energy (§4.4). The object that results — two partials joined by a fault ribbon, gliding as one unit — is an **extended dislocation**.
+
+> [!important] Definitions
+> **Perfect (unit) dislocation** — a dislocation whose Burgers vector is a *lattice translation vector*, so that its passage takes every atom to an equivalent lattice site and leaves a perfect crystal behind it. In fcc, $\mathbf{b} = \tfrac{a}{2}\langle110\rangle$.
+> **Partial dislocation** — a dislocation whose Burgers vector is *not* a lattice translation; its passage leaves a planar defect — a stacking fault — in its wake. In fcc, $\mathbf{b} = \tfrac{a}{6}\langle112\rangle$ (Shockley) or $\tfrac{a}{3}\langle111\rangle$ (Frank).
+> **Stacking fault** — a planar defect on a close-packed plane in which the layer sequence $\ldots ABCABC\ldots$ is interrupted. No bonds are broken and no atoms are added; only the *stacking* is wrong, which is why the energy is small (tens of mJ/m², not J/m²).
+> **Stacking-fault energy $\gamma_{SF}$** — the excess energy per unit area of the fault plane. It is the single number that decides how wide the partials separate and therefore how the metal deforms.
+> **Extended dislocation** — the composite object: leading partial + fault ribbon + trailing partial, moving together as one dislocation of total Burgers vector $\tfrac{a}{2}\langle110\rangle$.
+> **Glissile / sessile** — a dislocation is *glissile* if it can glide conservatively on a slip plane (its $\mathbf{b}$ lies in that plane); *sessile* if it cannot, and must move by climb or not at all.
+
+| Feature | Perfect dislocation | Shockley partial | Frank partial |
+| --- | --- | --- | --- |
+| Burgers vector (fcc) | $\tfrac{a}{2}\langle110\rangle$ | $\tfrac{a}{6}\langle112\rangle$ | $\tfrac{a}{3}\langle111\rangle$ |
+| $b^2$ | $a^2/2 = 0.50\,a^2$ | $a^2/6 = 0.17\,a^2$ | $a^2/3 = 0.33\,a^2$ |
+| $\mathbf{b}$ relative to the fault plane | lies in the glide plane | lies **in** the fault plane | **normal** to the fault plane |
+| Passage leaves behind | perfect crystal | a stacking fault | the fault it bounds (no new fault created) |
+| Mobility | glissile | **glissile** (moves with its fault) | **sessile** (climb only) |
+| Character | edge, screw or mixed | mixed, $30^\circ$ to the parent $\mathbf{b}$ | pure edge |
+
+> [!note] Why the splitting stops at two partials
+> There is nothing shorter to split into. The $\tfrac{a}{6}\langle112\rangle$ vector is the shortest *lattice-irrational* vector of the fcc lattice that lies in a $\{111\}$ plane; a further split would demand a vector of the $\tfrac{a}{12}\langle110\rangle$ type, which is not a lattice vector combination at all, and would leave a second, higher-energy fault type behind. The two partials also repel each other (same sign), so the pair is stable against collapse; the fault tension makes it stable against infinite separation. A minimum energy therefore exists at a finite width.
+
+### 4.2 The close-packed stacking of $\{111\}$ and the stacking fault
+
+![[SD - Stacking sequence and stacking fault.excalidraw]]
+
+Along the $\langle111\rangle$ direction the fcc lattice stacks *close-packed planes* in the sequence $\ldots ABCABC\ldots$; the hcp lattice stacks the same planes as $\ldots ABAB\ldots$. There is no difference in the *number* of nearest neighbours (12 in both) — the difference lies entirely in the **third** neighbour shell. That is the whole reason a stacking fault is cheap: a fault converts a slab of the crystal into hcp-like stacking, breaking no bonds and changing no coordination number, and costing only the small third-neighbour misfit.
+
+![[SD - Shockley partials slide.png|500]]
+
+*Figure — the lecture slide on Shockley partials: the close-packed stacking of the $\{111\}$ planes together with the $\tfrac{a}{6}\langle112\rangle$ partial vectors by which one perfect dislocation splits, and the stacking-fault ribbon lying between the two partials.*
+
+A shear of one layer of the stack by one Shockley vector $\tfrac{a}{6}\langle112\rangle$ — one-third of a close-packed translation — moves the layer above from a $B$ site onto a $C$ site, so
+
+$$ \ldots A\,B\,C\,A\,B\,C\,A\,B\,C \ldots \;\xrightarrow{\ \text{one Shockley partial}\ }\; \ldots A\,B\,C\,A\,|\,C\,A\,B\,C \ldots $$
+
+which is a single "wrong" pair — an **intrinsic** stacking fault. The faulted plane is sandwiched by a thin layer of hcp-like $\ldots C\,A\,C\ldots$ stacking, two atomic planes thick. Two varieties exist:
+
+> [!important] Definitions
+> **Intrinsic stacking fault** — one violation of the $\ldots ABC\ldots$ sequence, produced by the glide of a *single* Shockley partial over one plane, or by the removal of one close-packed plane (a collapsed disc of vacancies). The standard fault of §4.3–§4.4.
+> **Extrinsic stacking fault** — *two* violations, produced by inserting an extra plane (a collapsed disc of interstitials) or by the passage of two Shockley partials on *adjacent* planes. Higher energy, and it must be bounded by a Frank partial.
+> **Coherent twin boundary** — the limiting case of a stack of intrinsic faults on every successive plane; it is a mirror plane, not a single fault, and its energy is roughly half the intrinsic fault energy per plane.
+
+| Metal (annealed, room temperature) | $\gamma_{SF}$ (mJ/m²) | Ribbon width (edge, computed) | Behaviour |
+| --- | --- | --- | --- |
+| **Ag** | $\sim$22 | $\sim$5.8 nm | wide ribbon, planar glide, heavy twinning |
+| **Cu** | $\sim$45 | $\sim$3.3 nm | wide enough to hinder cross-slip |
+| **Ni** | $\sim$125 | $\sim$1.7 nm | narrow, cross-slip fairly easy |
+| **Al** | $\sim$166 | $\sim$0.6 nm | effectively constricted, wavy glide |
+| **Cu–30Zn (brass)** | $\sim$20 | wide | planar glide, very high work hardening |
+| **304 stainless steel** | $\sim$18 | wide | planar glide, twinning (TWIP), $\varepsilon$-martensite |
+| **Co (fcc)** | $\sim$15 | wide | fcc Co transforms/twins readily |
+
+The absolute values vary between sources by tens of per cent and depend on temperature, alloying and solute segregation to the fault (Suzuki segregation); the **ranking** is what matters, and it is the ranking that propagates into every property listed in §4.9.
+
+> [!warning] The fault is not a second phase
+> A stacking fault is a *planar defect inside one phase*: same composition, same coordination, same lattice parameter, no interface in the thermodynamic sense. It therefore has no thickness, no separate diffraction pattern and no equilibrium tie-line — it appears in TEM only as a fringe pattern, in the diffraction pattern as streaks, and in the energy balance as a surface tension $\gamma_{SF}$ acting on the partials that bound it.
+
+### 4.3 The Shockley partial: $\mathbf{b} = \tfrac{a}{6}\langle112\rangle$
+
+The **Shockley partial** is the glissile half of a dissociated dislocation. Its Burgers vector is one-third of a close-packed translation, its magnitude is $b_p = a\sqrt{6}/6 = 0.408\,a = b/\sqrt{3}$, and — critically — it lies **in** the $\{111\}$ plane of the fault, so the partial can glide conservatively in that plane, converting perfect stacking into faulted stacking as it sweeps.
+
+> [!important] Definitions
+> **Shockley partial** — a partial dislocation with $\mathbf{b} = \tfrac{a}{6}\langle112\rangle$, lying in the $\{111\}$ fault plane it bounds. It is **glissile**: glide of the leading partial *creates* the fault, glide of the trailing partial *removes* it, and glide of the pair together translates the fault without changing its width.
+> **Leading and trailing partial** — the two members of the pair. The one that moves first (into perfect crystal) leaves the fault behind it: the *leading* partial. The second one follows through the faulted strip and restores perfect stacking: the *trailing* partial. Which is which depends on the sense of the applied stress; reversal of the stress reverses their roles and the pair glides back.
+> **Constriction** — the local recombination of the two partials into a single perfect dislocation, needed before the dislocation can cross-slip onto another plane. Requires the ribbon to be squeezed to zero width over some length, which costs energy $\propto \gamma_{SF}$.
+
+> [!important] The dissociation, checked three ways
+> 1. **Burgers-vector conservation.** The partial vectors must add to the parent vector:
+>
+> $$ \frac{a}{6}[2\bar{1}1] + \frac{a}{6}[1\bar{2}\bar{1}] = \frac{a}{6}[3\bar{3}0] = \frac{a}{2}[1\bar{1}0] \quad\checkmark $$
+>
+> 2. **Frank's rule (§2.5).** Dissociation is favourable only if the energy falls:
+>
+> $$ b_1^2 + b_2^2 = \frac{a^2}{6} + \frac{a^2}{6} = \frac{a^2}{3} \;<\; \frac{a^2}{2} = b^2 \quad\checkmark $$
+>
+> 3. **Geometry.** Both partials must lie *in the plane of the fault*, otherwise the pair cannot glide together: $[2\bar{1}1]\cdot[111] = 0$ and $[1\bar{2}\bar{1}]\cdot[111] = 0\ \checkmark$. Each partial is $30^\circ$ from the parent vector ($\cos\theta = \tfrac{3}{6} = 0.5$) and the two are $60^\circ$ apart, so their sum recovers the full $\tfrac{a}{2}\langle110\rangle$ magnitude: $2 b_p\cos30^\circ = 2(0.408a)(0.866) = 0.707a = b\ \checkmark$.
+
+The $30^\circ$ angle is not an accident of the example — it is forced. See the H4 below.
+
+Each $\{111\}$ plane contains three $\langle112\rangle$ axes, so six Shockley partial vectors when both senses are counted; over the four planes this gives **12 Shockley partial vectors** in the crystal, the same count as the 12 perfect $\tfrac{a}{2}\langle110\rangle$ vectors.
+
+| Plane | The three $\langle112\rangle$ axes lying in it | Perfect vectors reproduced by a $60^\circ$ pair |
+| --- | --- | --- |
+| $(111)$ | $[2\bar{1}\bar{1}]$, $[\bar{1}2\bar{1}]$, $[\bar{1}\bar{1}2]$ | $\tfrac{a}{2}[\bar{1}10]$, $\tfrac{a}{2}[\bar{1}01]$, $\tfrac{a}{2}[0\bar{1}1]$ |
+| $(\bar{1}11)$ | $[211]$, $[1\bar{2}1]$, $[1\bar{1}2]$ | $\tfrac{a}{2}[101]$, $\tfrac{a}{2}[\bar{1}01]$, $\tfrac{a}{2}[01\bar{1}]$ |
+| $(1\bar{1}1)$ | $[2\bar{1}1]$, $[121]$, $[\bar{1}12]$ | $\tfrac{a}{2}[011]$, $\tfrac{a}{2}[\bar{1}10]$, $\tfrac{a}{2}[10\bar{1}]$ |
+| $(11\bar{1})$ | $[21\bar{1}]$, $[112]$, $[\bar{1}\bar{1}\bar{2}]$ | $\tfrac{a}{2}[\bar{1}10]$, $\tfrac{a}{2}[101]$, $\tfrac{a}{2}[011]$ |
+
+#### Why the partials sit at exactly $30^\circ$ to the parent
+
+The angle is fixed by the requirement that the two partials be **equal in length and both in the fault plane**. Choose the parent vector in the fault plane and express it in the close-packed basis: because the $\langle112\rangle$ directions are the *shortest* lattice-irrational vectors in a $\{111\}$ plane and are spaced $60^\circ$ apart within it, the parent vector — which spans $60^\circ$ between two of them — can only be resolved as the sum of two equal vectors inclined $30^\circ$ to it. Any other pair would either be unequal (one partial would have a larger $b$ than the other, which Frank's rule rejects) or would leave the plane (which the ribbon forbids). Formally, in the orthonormal frame of the plane the three axes are $\pm(\hat{e}_1)$, $\pm(\tfrac12\hat{e}_1+\tfrac{\sqrt3}{2}\hat{e}_2)$, $\pm(\tfrac12\hat{e}_1-\tfrac{\sqrt3}{2}\hat{e}_2)$, and adding the first two successive axes returns a vector of length $\sqrt3 b_p = 0.707a$ inclined $30^\circ$ to each — precisely $\tfrac{a}{2}\langle110\rangle$.
+
+### 4.4 The extended dislocation: width of the fault ribbon
+
+Once split, the two partials are pushed apart by their elastic repulsion and pulled together by the fault they create. Writing the repulsion per unit length between two parallel dislocations separated by $d$ as
+
+$$ F_{rep} = \frac{G}{2\pi d}\left[ b_s^{(1)} b_s^{(2)} + \frac{b_e^{(1)} b_e^{(2)}}{1-\nu} \right] $$
+
+with $b_s$, $b_e$ the screw and edge components of each partial, and setting $F_{rep} = \gamma_{SF}$ (the fault tension, which acts like a surface tension per unit length) gives the equilibrium separation. With $b_p = b/\sqrt3$ and a partial at $30^\circ$ to the parent line:
+
+| Parent dislocation | Character of the two partials | Equilibrium separation $d$ |
+| --- | --- | --- |
+| **Edge** | opposite screw components, same-sign edge components | $d = \dfrac{G\,b_p^{\,2}}{8\pi\,\gamma_{SF}}\cdot\dfrac{2+\nu}{1-\nu}$ |
+| **Screw** | same-sign screw components, opposite edge components | $d = \dfrac{G\,b_p^{\,2}}{8\pi\,\gamma_{SF}}\cdot\dfrac{2-3\nu}{1-\nu}$ |
+
+$$ \boxed{\ d \;\propto\; \frac{G\,b_p^{\,2}}{\gamma_{SF}} \qquad\Longleftrightarrow\qquad \gamma_{SF} = \frac{G\,b_p^{\,2}}{8\pi d}\cdot\frac{2+\nu}{1-\nu}\ \ (\text{edge})\ } $$
+
+The scaling is the whole physics: a **high** $\gamma_{SF}$ pinches the ribbon shut, a **low** $\gamma_{SF}$ lets it spread. Because the prefactor is larger for the edge orientation, an edge dislocation is always dissociated *more widely* than a screw of the same material — which is why cross-slip (a screw process) is possible at all while climb and edge–obstacle interactions behave as if the core were wide.
+
+| Metal | $G$ (GPa) | $\nu$ | $b$ (nm) | $\gamma_{SF}$ (mJ/m²) | $d$ edge (nm) | $d$ screw (nm) |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Ag** | 30 | 0.38 | 0.289 | 22 | 5.8 | 2.4 |
+| **Cu** | 48 | 0.34 | 0.256 | 45 | 3.3 | 1.4 |
+| **Ni** | 76 | 0.31 | 0.249 | 125 | 1.7 | 0.7 |
+| **Al** | 26 | 0.345 | 0.286 | 166 | 0.6 | 0.3 |
+
+The widths above are computed from the boxed relation with typical handbook constants and are **illustrative** — they reproduce the magnitudes measured by weak-beam TEM (a few nm in Cu, sub-nm in Al) and, more importantly, the ordering.
+
+> [!note] Constriction — why a low fault energy means planar glide
+> To cross-slip, a screw dislocation must first **constrict**: the two partials have to be forced back into a single perfect line over some length $L$, which costs an energy of order $\gamma_{SF}\cdot L d$ per unit length released elsewhere — and the probability of that fluctuation is exponentially small in $\gamma_{SF} d^2/kT$.
+> - **Narrow ribbon** (Al, Ni): cheap constriction $\Rightarrow$ cross-slip easy $\Rightarrow$ dislocations bypass obstacles and cluster into cells $\Rightarrow$ **wavy glide**, low work-hardening rate, Stage III starts early (§2.17).
+> - **Wide ribbon** (brass, 304 stainless, Ag): expensive constriction $\Rightarrow$ cross-slip nearly forbidden $\Rightarrow$ **planar glide**, dislocations pile up on single planes $\Rightarrow$ very high work-hardening rate, strong tendency to twin (§2.2), and in austenitic steels the formation of $\varepsilon$-martensite.
+> This single chain is why two FCC metals with identical crystal structure — aluminium and 70/30 brass — behave like different classes of material.
+
+#### How the width is actually measured
+
+- **Weak-beam dark-field TEM** resolves the two partials directly and the separation is read off the image once the foil thickness and the projection are corrected.
+- **Triple-node geometry.** Where three extended dislocations meet, the equilibrium node radius $R$ is set by the balance of the three line tensions and the three fault tensions; measuring $R$ by conventional TEM gives $\gamma_{SF}$ through the Brown–Thölén relation $\gamma_{SF} = \dfrac{G b_p^2}{8\pi R}\left(\dfrac{2-\nu}{1-\nu}\right)\ln\!\left(\dfrac{R}{r_0}\right)$ — the standard route when the partials themselves are not resolvable.
+- **Indirectly, from behaviour:** the onset temperature of cross-slip, the Stage II hardening rate ($\theta_{II}$ scales roughly as $1/\gamma_{SF}$), and the stress at which twinning starts.
+
+### 4.5 Thompson's tetrahedron: the vector bookkeeping
+
+![[SD - Thompson tetrahedron.excalidraw]]
+
+The **Thompson tetrahedron** is a notation, not a new theory: a tetrahedron whose four faces are the four $\{111\}$ planes of the fcc crystal, whose six edges are the six $\langle110\rangle$ axes, and whose vertices $A$, $B$, $C$, $D$ name the faces *opposite* them. Every Burgers vector in this block is then a segment of the figure, and every reaction is a path along it. $\delta$ is the centroid of the face $ABC$; $\alpha$ the centroid of the face $BCD$.
+
+| Segment | Vector | What it represents | Character |
+| --- | --- | --- | --- |
+| $AB$, $BC$, $CA$, $DA$, $DB$, $DC$ | $\tfrac{a}{2}\langle110\rangle$ | perfect dislocation, edge length $a/\sqrt2$ | glissile on the two faces containing the edge |
+| $A\delta$, $B\delta$, $C\delta$ | $\tfrac{a}{6}\langle112\rangle$ | **Shockley partial** lying in the face $ABC$ | glissile in $ABC$ |
+| $D\delta$ | $\tfrac{a}{3}\langle111\rangle$ | **Frank partial**, normal to $ABC$, length $a/\sqrt3$ | sessile |
+| $\delta\alpha$ | $\tfrac{a}{6}\langle110\rangle$ | **stair-rod** where partials from two faces meet | sessile |
+
+Two identities do most of the work:
+
+$$ AB = A\delta + \delta B \quad\text{(the dissociation of a perfect dislocation)} $$
+
+$$ D\delta + \delta B = DB \quad\text{(a Frank partial + a Shockley partial} \to \text{a perfect dislocation)} $$
+
+The first is §4.1; the second is the **unfaulting** reaction of §4.7 — the fault is erased when a Shockley partial sweeps the faulted plane and merges with the Frank partial that bounded it. Thompson notation also shows at once why the **Lomer–Cottrell lock** (§2.5) is sessile: the stair-rod $\delta\alpha$ lies along the intersection of two faces and its $\mathbf{b}$ is *not* in any one of them.
+
+> [!tip] Reading a reaction off the tetrahedron
+> A reaction is allowed only if the two vectors can be drawn head-to-tail on the figure and the sum is again a segment. This instantly rules out the classic exam mistakes — e.g. pairing two Shockleys from *different* faces and expecting a perfect dislocation: their sum is a stair-rod of length $a/\sqrt{6}$... which is *shorter*, so the reaction is allowed energetically but the product is **sessile**, not glissile.
+
+### 4.6 Frank partials: $\mathbf{b} = \tfrac{a}{3}\langle111\rangle$
+
+![[SD - Frank partials slide.png|470]]
+
+*Figure — the lecture slide on Frank partials: the faulted plane closed by an edge partial whose Burgers vector $\tfrac{a}{3}\langle111\rangle$ is normal to the fault, the geometry that makes the Frank partial sessile.*
+
+The **Frank partial** is the second way a fault can terminate. Here the fault is a *single* close-packed plane — created, for instance, by removing one layer — and the dislocation that closes the gap does **not** lie in the plane; it is perpendicular to it, a pure edge dislocation with $\mathbf{b} = \tfrac{a}{3}\langle111\rangle$.
+
+The magnitude is worth noticing: $|\tfrac{a}{3}[111]| = a\sqrt3/3 = a/\sqrt3$, which is **exactly the $\{111\}$ interplanar spacing** $d_{111}$.
+
+$$ \boxed{\ \mathbf{b}_F = \frac{a}{3}\langle111\rangle,\qquad |\mathbf{b}_F| = \frac{a}{\sqrt3} = d_{111},\qquad b_F^2 = \frac{a^2}{3}\ } $$
+
+Because $|\mathbf{b}|$ equals the spacing between the planes, the loop can close the gap with **no shear at all**: the two halves of the crystal are simply brought together by one plane spacing. That is the geometric statement of "the Frank partial is the fault vector of the collapsed layer".
+
+> [!important] Definitions
+> **Frank partial** — an edge partial dislocation with $\mathbf{b} = \tfrac{a}{3}\langle111\rangle$, perpendicular to the stacking fault it bounds. It terminates a fault that is confined to one plane and cannot glide, because its Burgers vector is normal to that plane.
+> **Faulted loop** — a closed Frank partial loop enclosing a disc of stacking fault (a collapsed vacancy or interstitial plate). Vacancy type when the missing plane is inside the loop (intrinsic fault), interstitial type when an extra plane has been inserted (extrinsic fault).
+> **Prismatic loop** — more generally, any loop whose $\mathbf{b}$ is normal to its plane; the Frank loop is the faulted, $\{111\}$-plane member of that family.
+
+Why *sessile* is the defining property: a dislocation glides when its Burgers vector lies **in** the glide plane. Here $\mathbf{b} \perp$ fault plane, so any glide of the loop out of its plane would have to drag the fault disc with it — the fault would have to move through the crystal without growing, which is not a conservative process. The only conservative motion available is **climb**: the loop shrinks or grows by absorbing or emitting vacancies and interstitials, one plane at a time. This is why a Frank partial is a *strong, immovable barrier* to other dislocations, and why faulted loops persist in quenched and irradiated metals instead of annealing out at low temperature.
+
+> [!warning] Two different "Frank rules" — do not merge them
+> **Frank's rule (reactions)**, §2.5: $\mathbf{b}_1+\mathbf{b}_2\to\mathbf{b}_3$ is favourable if $b_3^2 < b_1^2 + b_2^2$. This decides whether a dissociation happens.
+> **Frank's rule (faulted loops)**: a loop bounding a stacking fault must have its Burgers vector *normal to the fault plane and equal to the fault displacement vector*, otherwise it drags a second, higher-energy fault around the loop. For a $\{111\}$ fault the fault displacement is exactly $\tfrac{a}{3}\langle111\rangle$ — which is why there is only **one** species of Frank partial and not a family of them.
+> Both are due to F. C. Frank, and exam questions often invoke the second while writing the first.
+
+#### Why the faulted loop wins at small size and loses at large
+
+A faulted loop carries two energies: the line energy $\alpha G b_F^2$ per unit length around its perimeter $\propto r$, and the fault energy $\gamma_{SF}$ times the enclosed area $\propto r^2$. A *perfect* loop avoids the fault entirely but must carry the larger vector $\tfrac{a}{2}\langle110\rangle$:
+
+$$ E_{\text{frank}} = \alpha G\,\frac{a^2}{3}\,2\pi r + \gamma_{SF}\,\pi r^2 \qquad\text{versus}\qquad E_{\text{perfect}} = \alpha G\,\frac{a^2}{2}\,2\pi r $$
+
+Subtracting, the faulted loop is stable while
+
+$$ \gamma_{SF}\,\pi r^2 < \alpha G\,2\pi r\left(\frac{a^2}{2}-\frac{a^2}{3}\right) = \alpha G\,2\pi r\,\frac{a^2}{6} \quad\Longrightarrow\quad r < \frac{a^2 \alpha G}{3\,\gamma_{SF}} $$
+
+so **small loops stay faulted, large loops unfault** — a result with direct consequences in §4.7 (irradiation damage) and in the annealing of quenched metals.
+
+### 4.7 How Frank partials are made — and how they are removed
+
+![[SD - Frank partial from a vacancy plate.excalidraw]]
+
+1. **Supersaturate the metal with vacancies.** Quenching from near the melting point, or irradiating it, freezes in far more vacancies than equilibrium allows.
+2. **The vacancies condense on a $\{111\}$ plane** — the close-packed plane, where the surface energy of the disc is lowest — forming a flat plate of missing atoms.
+3. **The plate collapses.** The two half-crystals are pulled together by one interplanar spacing and the surrounding lattice relaxes into an **intrinsic stacking fault** on the plane of the plate.
+4. **The rim of the faulted disc is a Frank partial loop** with $\mathbf{b} = \tfrac{a}{3}[111]$, a pure edge dislocation of vacancy type. When instead interstitials condense, the extra plane produces an **extrinsic** fault bounded by an interstitial-type Frank loop.
+
+The loop is then locked in place: it cannot glide (§4.6), so it acts as an obstacle, contributes to hardening, and can disappear only by two routes.
+
+> [!important] The two ways out for a faulted loop
+> **Climb (needs diffusion).** The loop absorbs or emits point defects and shrinks plane by plane. This is a high-temperature process, and it is the annihilation route during annealing; below roughly $0.3T_m$ it is frozen out and the loops survive indefinitely.
+> **Unfaulting by a Shockley sweep.** A Shockley partial is nucleated at the loop and sweeps the faulted plane; where it meets the far side of the loop it reacts with the Frank partial,
+>
+> $$ \underbrace{\frac{a}{3}[111]}_{\text{Frank}} + \underbrace{\frac{a}{6}[2\bar{1}1]}_{\text{Shockley}} \longrightarrow \frac{a}{6}[0\,3\,3] = \underbrace{\frac{a}{2}[011]}_{\text{perfect}} $$
+>
+> and the loop becomes a **perfect prismatic loop** — no fault, and now glissile along its prism. In Thompson's notation this is the identity $D\delta + \delta B = DB$ of §4.5.
+
+Where this matters in practice:
+
+| Situation | What forms | Consequence |
+| --- | --- | --- |
+| **Quenched Al, Cu, Au** | faulted vacancy loops on $\{111\}$, a few nm to tens of nm | hardening; loops visible as fringe contrast in TEM; a classic demonstration of vacancy supersaturation |
+| **Neutron- or ion-irradiated metals** | vacancy Frank loops *and* interstitial loops; in fcc, **stacking-fault tetrahedra** at high dose | radiation hardening and embrittlement; the loops pin glide dislocations |
+| **Austenitic stainless steels (reactor internals)** | dense Frank-loop populations | the dominant contribution to irradiation hardening; also solute segregation to the loops |
+| **Ion-implanted silicon** | $\{311\}$ defects and Frank loops in the damaged layer | residual damage after anneal, leakage in devices |
+| **Fatigue and cyclic loading** | partials and faults in planar-slip alloys | the persistent slip bands of low-SFE metals are built from dissociated dislocations |
+| **Annealing / recovery** | unfaulting then climb | loop density falls; hardness returns towards the annealed value |
+
+> [!note] Why faulted loops are such effective hardeners
+> A gliding dislocation cannot cut a faulted loop — the loop's $\mathbf{b}$ is out of every glide plane, so there is no reaction that removes it, and the fault must be dragged or sheared at high energy cost. The Orowan-type bypass stress therefore stays high even for loops only a few nanometres across, and the hardening per unit volume is far larger than for the same volume fraction of coherent precipitates. This is the microscopic origin of the "radiation hardening" that raises the yield stress and drops the ductility of reactor structural steels.
+
+#### The stacking-fault tetrahedron
+
+If a small triangular Frank loop on $\{111\}$ becomes unstable at its corners, it can dissociate into a tetrahedron bounded by **four** intrinsic faults on the four faces and six stair-rod dislocations along the edges — the **stacking-fault tetrahedron** (Silcox–Hirsch). It contains *no* Frank partial at all, is completely sessile, and is the characteristic defect of quenched gold and of heavily irradiated fcc metals. It is the one defect in this block that is stable, invisible to glide dislocations in every orientation, and removed only by vacancy emission at high temperature — a useful exam cameo of the fact that a faulted defect will always find the configuration of lowest total energy, even at the cost of inventing new partials.
+
+### 4.8 Shockley versus Frank — the comparison to write out
+
+| | **Shockley partial** | **Frank partial** |
+| --- | --- | --- |
+| Burgers vector | $\tfrac{a}{6}\langle112\rangle$ | $\tfrac{a}{3}\langle111\rangle$ |
+| Magnitude | $a/\sqrt6 = 0.408a$ | $a/\sqrt3 = 0.577a = d_{111}$ |
+| $b^2$ | $a^2/6$ | $a^2/3$ |
+| $\mathbf{b}$ vs fault plane | **lies in** the fault plane | **perpendicular** to the fault plane |
+| Character | mixed, $30^\circ$ to the parent $\mathbf{b}$ | pure edge |
+| Mobility | **glissile** — glides conservatively in the $\{111\}$ plane | **sessile** — climb only |
+| Effect of its glide | creates (leading) or erases (trailing) the fault; the pair translates the fault | cannot glide at all; its loop bounds a fixed fault disc |
+| Fault it is associated with | intrinsic fault ribbon (dynamic, width $d$) | the single fault plane of a collapsed disc (static) |
+| How it is created | dissociation of a perfect $\tfrac{a}{2}\langle110\rangle$ | collapse of a vacancy (or interstitial) plate; climb from a Shockley partial |
+| How it is removed | recombination into the perfect dislocation (constriction) | climb, or unfaulting by a Shockley sweep |
+| Found in | every fcc metal and alloy, always | quenched, irradiated, implanted and fatigued metals |
+| Effect on properties | sets cross-slip, work-hardening rate, twinning tendency | hardening, radiation embrittlement, loop pinning |
+| Thompson symbol | $A\delta$, $B\delta$, $C\delta$ | $D\delta$ |
+
+### 4.9 What the stacking-fault energy controls
+
+Because $\gamma_{SF}$ fixes the ribbon width $d$ (§4.4), and $d$ fixes how easily a dislocation can constrict, $\gamma_{SF}$ is a master variable. The chain of consequences, all of them already met in earlier blocks:
+
+| $\gamma_{SF}$ | Ribbon | Cross-slip | Work hardening | Twinning | Microstructure in TEM | Example |
+| --- | --- | --- | --- | --- | --- | --- |
+| **High** ($\gtrsim$100 mJ/m²) | narrow | easy | low rate, long Stage III | rare | dislocation cells, wavy slip lines | Al, Ni |
+| **Medium** (40–100) | moderate | possible at high $T$ | moderate | occasional | cells + planar arrays | Cu |
+| **Low** ($\lesssim$25) | wide | very difficult | high rate, extended Stage II | easy | planar arrays, faulted dipoles, twins | Ag, brass, 304 SS, fcc Co |
+
+- **Work hardening (§2.17).** $\theta_{II}$ rises as $\gamma_{SF}$ falls, because dislocations cannot cross-slip past each other and pile up instead. This is the whole difference between deep-drawing aluminium and deep-drawing brass.
+- **Twinning (§2.2).** A deformation twin in fcc is built by the passage of $\tfrac{a}{6}\langle112\rangle$ partials on successive $\{111\}$ planes — the same partials as §4.3, one plane apart, *not* recombining. Low $\gamma_{SF}$ lowers the stress for this, hence the TWIP steels and the twinning of 70/30 brass.
+- **Martensite.** The $\varepsilon$ (hcp) martensite of austenitic steels is nothing but an intrinsic fault on every second plane, i.e. the stacking sequence converted from $ABC$ to $AB$; low $\gamma_{SF}$ makes it form spontaneously on cooling or straining.
+- **Recovery and creep.** Climb of extended dislocations requires constriction first, so a wide ribbon slows recovery; in the same way the climb of Frank loops sets the annealing kinetics of irradiated material.
+- **Fatigue.** Planar-slip (low $\gamma_{SF}$) metals form sharp persistent slip bands and extrude intrusions easily — they fatigue-crack from the surface; wavy-slip metals distribute strain and form cells.
+
+---
+
+> [!tip] Exam pointer — Shockley and Frank partials
+> Have ready: (i) the dissociation equation with its **three checks** — vector sum, Frank's rule $a^2/2 \to a^2/3$ (33 %), and the geometric requirement that both partials lie in the fault plane at $30^\circ$ to the parent; (ii) $b_p = a/\sqrt6$, $b_F = a/\sqrt3 = d_{111}$, and $b_F^2 = a^2/3$; (iii) the boxed scaling $d \propto G b_p^2/\gamma_{SF}$ with the edge result $\tfrac{2+\nu}{1-\nu}$, and the sentence that **constriction is what cross-slip costs**, so a wide ribbon means planar glide; (iv) the Thompson construction — edge $=$ perfect, vertex-to-centroid $=$ Shockley, apex-to-centroid $=$ Frank, centroid-to-centroid $=$ stair-rod; (v) the **unfaulting** reaction Frank $+$ Shockley $=$ perfect; and (vi) the one trap: the Frank partial is sessile **because $\mathbf{b}$ is normal to the fault plane**, not because it is an edge dislocation.
+
+## Formula Summary — Partial Dislocations
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Perfect dislocation (fcc) | $b = \tfrac{a}{2}\langle110\rangle$, $b^2 = a^2/2$ | Lattice translation; leaves no fault |
+| Shockley partial | $b_p = \tfrac{a}{6}\langle112\rangle$, $b_p^2 = a^2/6 = b^2/3$ | Lies **in** the $\{111\}$ fault plane; glissile |
+| Frank partial | $b_F = \tfrac{a}{3}\langle111\rangle$, $b_F^2 = a^2/3$, $\lvert b_F\rvert = a/\sqrt3 = d_{111}$ | Normal to the fault plane; sessile |
+| Stair-rod partial | $b = \tfrac{a}{6}\langle110\rangle$ | At the intersection of two faults; sessile |
+| Dissociation criterion (Frank's rule) | $b_1^2 + b_2^2 < b^2$ | $\Rightarrow a^2/3 < a^2/2$: 33 % saving, always favourable in fcc |
+| Standard dissociation | $\tfrac{a}{2}[\bar{1}10] \to \tfrac{a}{6}[2\bar{1}1] + \tfrac{a}{6}[1\bar{2}\bar{1}]$ | Both partials in $(111)$; $60^\circ$ apart, $30^\circ$ from $b$ |
+| Partial/perfect magnitude ratio | $b_p = b/\sqrt3$ | Fixed by the $30^\circ$ geometry |
+| Repulsion between partials | $F = \dfrac{G}{2\pi d}\left[b_s^{(1)}b_s^{(2)} + \dfrac{b_e^{(1)}b_e^{(2)}}{1-\nu}\right]$ | Per unit length; balance with $\gamma_{SF}$ |
+| Ribbon width, edge parent | $d = \dfrac{G b_p^2}{8\pi\gamma_{SF}}\cdot\dfrac{2+\nu}{1-\nu}$ | Widest ribbons; sets the core width |
+| Ribbon width, screw parent | $d = \dfrac{G b_p^2}{8\pi\gamma_{SF}}\cdot\dfrac{2-3\nu}{1-\nu}$ | Narrower; governs cross-slip (§2.17) |
+| Fault tension balance | $\gamma_{SF} = F_{rep}(d)$ | Equilibrium width, no external stress |
+| Node method for $\gamma_{SF}$ | $\gamma_{SF} = \dfrac{G b_p^2}{8\pi R}\cdot\dfrac{2-\nu}{1-\nu}\ln\!\left(\dfrac{R}{r_0}\right)$ | Brown–Thölén; $R$ = node radius |
+| Faulted vs perfect loop | faulted (Frank) stable while $r < \dfrac{a^2\alpha G}{3\gamma_{SF}}$ | Small loops faulted, large loops unfault |
+| Unfaulting reaction | $\tfrac{a}{3}[111] + \tfrac{a}{6}[2\bar{1}1] \to \tfrac{a}{2}[011]$ | Frank $+$ Shockley $=$ perfect; $D\delta + \delta B = DB$ |
+| Thompson identities | $AB = A\delta + \delta B$; $D\delta + \delta B = DB$ | Edges $=$ perfect; $D\delta$ $=$ Frank |
+| Fault energy from stacking | $\gamma_{SF}\sim 20$–$170\ \text{mJ/m}^2$ | Ranking, not the absolute value, drives behaviour |
+
+> [!note] Source images
+> The lecture deck [[Shockley and Frank partial dislocations_Odd_2026-27.pdf]] contains only three slides — a title slide and one figure slide for each partial type; both figure slides are extracted above and stored in `Material Science/images/` as `SD - Shockley partials slide.png` and `SD - Frank partials slide.png`. All four Excalidraw diagrams in this block (vector triangle, stacking sequence, Thompson tetrahedron, vacancy-disc collapse) are original reconstructions, stored in `Excalidraw/` with the `SD - ` prefix.
+
+---
+
 # Composites
 
 A composite is what you get when two materials that would not naturally form one phase are forced to work together: one continuous **matrix** holds and protects a **dispersed** phase that carries load, adds stiffness, or supplies some other function. The engineering interest is not the average of the two properties but the *combination* — stiffness without density, strength without brittleness, toughness without weight. This block builds that idea from the definition (§5.1) through the classification (§5.4), the two strengthening strategies for particles (§5.6–§5.8), the shear-lag and rule-of-mixtures mechanics of fibres (§5.9–§5.11), the three matrix families (§5.13–§5.15), processing (§5.17), structural laminates and sandwich panels (§5.18), and nanocomposites (§5.19). It closes with the applications that make the subject recognisable — skis, the Boeing 787, and automotive body panels (§5.20).
