@@ -56,7 +56,7 @@ WHERE file.path = this.file.path
 - [ ] **4 · Shockley and Frankel Partial Dislocations** — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf|PDF]] · [[notes#4. Shockley and Frankel Partial Dislocations|Notes → §4]] (9 sections)
 - [ ] **5 · Composites** — [[Composites_Odd_2026-27.pdf|PDF]] · [[notes#5. Composites|Notes → §5]] (20 sections)
 - [x] **6 · Electrical and Electronic Properties — Part 1** — [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf|PDF]] · [[notes#6. Electrical and Electronic Properties — Part 1|Notes → §6]] (12 sections)
-- [ ] **7 · Electrical and Electronic Properties — Part 2** — [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf|PDF]] · [[notes#7. Electrical and Electronic Properties — Part 2|Notes → §7]] (14 sections)
+- [x] **7 · Electrical and Electronic Properties — Part 2** — [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf|PDF]] · [[notes#7. Electrical and Electronic Properties — Part 2|Notes → §7]] (14 sections)
 - [x] **8 · Magnetic Properties** — [[Magnetic Properties_Odd_2026-27.pdf|PDF]] · [[notes#8. Magnetic Properties|Notes → §8]] (17 sections)
 - [ ] **9 · Dielectric Materials, Polarization, Optical Properties** — [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf|PDF]] · [[notes#9. Dielectric Materials, Polarization, Optical Properties|Notes → §9]] (12 sections)
 
