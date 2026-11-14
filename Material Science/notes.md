@@ -2353,6 +2353,10 @@ Those materials with an energy gap of about $2$–$3\ \text{eV}$ or less are cal
 > [!warning] The dividing line is a convention, not a physical boundary
 > The $3\ \text{eV}$ cut is a rule of thumb. Diamond ($5.4\ \text{eV}$) and Si ($1.1\ \text{eV}$) behave very differently at room temperature only because the *fraction* of electrons thermally excited across the gap is exponential in $E_g/kT$ — not because the two materials differ in kind. A "semiconductor" at $4\ \text{K}$ is an insulator.
 
+![[EP - Band structure classification.excalidraw]]
+
+The decision sequence of §7.3–§7.6 in one figure: half-filled band → metal; full band → test for overlap; no overlap → the gap across all directions decides semiconductor or insulator, with the column-IV sequence providing the calibration from $5.4\ \text{eV}$ down to zero.
+
 ### 7.7 Intrinsic semiconductors: carrier statistics
 
 In **intrinsic** semiconductors the conduction is due to the intrinsic processes characteristic of the crystal in question, without the influence of impurities. A pure Si or Ge crystal is an intrinsic semiconductor: the electrons excited from the top of the valence band to the bottom of the conduction band by thermal energy are responsible for conduction.
@@ -2554,7 +2558,7 @@ which gives $I \to -I_0$ for large negative $V_i$ (the barrier-independent rever
 | Diode equation | $I = I_0\left[\exp(eV_i/kT)-1\right]$ | *Added depth*; $I_0$ = equilibrium exchange current |
 
 > [!note] Source images
-> The diagrams and plots embedded in this block — the resistivity ranges (Fig. 1 of Part 1), the parabolic $E$–$k$ (Fig. 1), the de Broglie wavelengths (Fig. 2), the Fermi–Dirac curves (Fig. 3), the field-biased distribution (Fig. 4), the collision sawtooth (Fig. 5), the Ag/Sn resistivity (Fig. 6), $H_c$ versus $T$ (Fig. 7), the Meissner effect (Fig. 8), type I/II magnetization (Fig. 9), the standing waves (Fig. 10), the $E$–$k$ break (Fig. 11) and the forbidden gap (Fig. 12); and in Part 2, the overlapping bands (Fig. 13), the insulator/semiconductor gap (Fig. 14), the midgap Fermi level (Fig. 15), the P-doped and Al-doped cells (Figs. 16–17), the $\log\sigma$ versus $1/T$ plot (Fig. 18) and the three junction band diagrams (Fig. 19) — are the original figures extracted from [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `EP1`/`EP2` prefix.
+> The diagrams and plots embedded in this block — the resistivity-range chart (Part 1, slide 2), the parabolic $E$–$k$ (Fig. 1), the de Broglie wavelengths (Fig. 2), the Fermi–Dirac curves (Fig. 3), the field-biased distribution (Fig. 4), the collision sawtooth (Fig. 5), the Ag/Sn resistivity (Fig. 6), $H_c$ versus $T$ (Fig. 7), the Meissner effect (Fig. 8), type I/II magnetization (Fig. 9), the standing waves (Fig. 10), the $E$–$k$ break (Fig. 11) and the forbidden gap (Fig. 12); and in Part 2, the overlapping bands (Fig. 13), the insulator/semiconductor gap (Fig. 14), the midgap Fermi level (Fig. 15), the P-doped and Al-doped cells (Figs. 16–17), the $\log\sigma$ versus $1/T$ plot (Fig. 18) and the three junction band diagrams (Fig. 19) — are the original figures extracted from [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] and stored in `Material Science/attachments/` with the `EP1`/`EP2` prefix. The band-structure classification flowchart in §7.6 is an original reconstruction of the decision sequence in the slides and lives in the vault as `Excalidraw/EP - Band structure classification.excalidraw.md`.
 
 ---
 
@@ -3129,9 +3133,9 @@ Every nonmetallic material becomes opaque at some wavelength, which depends on t
 
 | Band gap $E_g$ | Visible light absorbed | Appearance | Example |
 | --- | --- | --- | --- |
-| $> 3.1\ \text{eV}$ | None | Transparent, colourless (if pure) | Diamond ($5.6\ \text{eV}$) |
+| $E_g$ above $3.1\ \text{eV}$ | None | Transparent, colourless (if pure) | Diamond ($5.6\ \text{eV}$) |
 | $1.8$–$3.1\ \text{eV}$ | Part of the spectrum | Coloured | — |
-| $< 1.8\ \text{eV}$ | All of it | Opaque | Narrow-gap semiconductors |
+| $E_g$ below $1.8\ \text{eV}$ | All of it | Opaque | Narrow-gap semiconductors |
 
 > [!warning] The $3.1\ \text{eV}$ and $1.8\ \text{eV}$ thresholds are the visible-spectrum edges
 > Both numbers come from the same equation, $\lambda = hc/E_g$, evaluated at the ends of the visible range: $3.1\ \text{eV}$ corresponds to about $0.40\ \mu\text{m}$ (violet) and $1.8\ \text{eV}$ to about $0.70\ \mu\text{m}$ (red). A material with $E_g$ just inside the window absorbs the violet end and transmits the rest, which is why it looks yellow or red — the *complement* of what it absorbs. Colour in a transparent dielectric is therefore an absorption-edge position, not a pigment.
@@ -3155,7 +3159,7 @@ Every nonmetallic material becomes opaque at some wavelength, which depends on t
 | Orientation polarization | $P_o$ | Falls as $T$ rises (thermal randomization) |
 | Space charge polarization | $P_s$ | Slowest; interfacial/electrode charge |
 | Index of refraction | $n = c/v$ | Larger ions → larger $n$ |
-| Reflectance (normal incidence) | $R = \left(\dfrac{n-1}{n+1}\right)^2$ | Silicate glass $\approx 0.05$ |
+| Reflectance (normal incidence) | $R = \left(\dfrac{n-1}{n+1}\right)^2$ | Fresnel result read from $n$; silicate glass $\approx 0.05$ |
 | Photon energy condition | $h\nu \ge E_g$ | Otherwise the photon passes |
 | Absorption edge wavelength | $\lambda \le hc/E_g$ | $hc = 1.24\ \mu\text{m eV}$ |
 | Visible window | $1.8\ \text{eV} < E_g < 3.1\ \text{eV}$ | Below → opaque; above → colourless |
