@@ -185,6 +185,7 @@ The attachment prefix encodes **the course block plus the part number**, so that
 | 6–7 Electrical & Electronic Properties — 1 / 2 | `EP1 - ` / `EP2 - ` | `EP - ` |
 | 8 Magnetic Properties | `MAG - ` | `MAG - ` |
 | 9 Dielectric Materials, Polarization, Optical Properties | `DIE - ` | `DIE - ` |
+| Phase diagrams (lecture [[Phase_Diagrams.pdf]]; used by `endsem_solutions.md`) | `PD - ` | `PD - ` |
 
 Use **spaces and Title Case inside the name, not underscores**. When a new prefix is first used, add its row to this table.
 
