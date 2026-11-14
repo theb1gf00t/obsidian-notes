@@ -3431,12 +3431,13 @@ In the superconducting state the flux lines of a magnetic field are **ejected** 
 
 *Figure — magnetization against applied field for (a) type I and (b) type II: the type I curve is a single vertical drop at $H_c$, the type II curve has a gradual tail between $H_{c1}$ and $H_{c2}$.*
 
-| Feature | Type I (ideal) | Type II (hard) |
-| --- | --- | --- |
-| Flux expulsion | Complete up to $H_c$ | Complete only up to $H_{c1}$ |
-| Magnetization | $M = -H$ up to $H_c$, then zero | Gradual fall from $H_{c1}$ to zero at $H_{c2}$ |
-| Meissner effect | Complete | Incomplete between $H_{c1}$ and $H_{c2}$ (vortex region) |
-| Critical current density | Low | High — hence of practical importance |
+| Feature                  | Type I (ideal)                  | Type II (hard)                                           |
+| ------------------------ | ------------------------------- | -------------------------------------------------------- |
+| Flux expulsion           | Complete up to $H_c$            | Complete only up to $H_{c1}$                             |
+| Magnetization            | $M = -H$ up to $H_c$, then zero | Gradual fall from $H_{c1}$ to zero at $H_{c2}$           |
+| Meissner effect          | Complete                        | Incomplete between $H_{c1}$ and $H_{c2}$ (vortex region) |
+| Critical current density | Low                             | High — hence of practical importance                     |
+|                          |                                 |                                                          |
 
 Type II superconductors can carry high current densities and are therefore the ones of practical importance. Their current-carrying capacity is limited by how well the flux lines in the vortex region can be **pinned**, and the slides give the microstructural recipe for pinning:
 
