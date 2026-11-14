@@ -9,6 +9,19 @@ tags:
 
 Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf]], [[Mechanical Properties part 2_Odd_2026-27.pdf]], [[Mechanical Properties part 3_Odd_2026-27.pdf]], [[Composites_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]], [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]], [[Magnetic Properties_Odd_2026-27.pdf]], [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf]]) and the handwritten class notes in [[MO NOTES (1).pdf]] (pp. 100–131 and 132–152). Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***.
 
+## Pre-Midsem Topics (quick revision modules)
+
+| # | Topic | Status |
+| --- | --- | --- |
+| P1 | Crystal Defects | ✅ revision module below |
+| P2 | Introduction and Structures of Materials — I | ✅ revision module below |
+| P3 | Introduction and Structures of Materials — II | ✅ revision module below |
+| P4 | Introduction and Structures of Materials — IIIa | ✅ revision module below |
+| P5 | Introduction and Structures of Materials — IIIb | ✅ revision module below |
+| P6 | Introduction and Structures of Materials — IV | ✅ revision module below |
+| P7 | Phase Diagrams | ✅ revision module below |
+| P8 | Quasi Crystals | ✅ revision module below |
+
 ## Post-Midsem Topics (from [[syllabus]])
 
 | # | Topic | Status |
@@ -25,6 +38,435 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 
 > [!info] How the three parts fit together
 > **Part I** builds the vocabulary — deformation, stress, strain, types of loading, the catalogue of mechanical tests, and the five design properties. **Part II** explains *why* materials respond that way — the atomic model of elasticity, slip/twinning, CRSS and the Schmid factor, dislocation reactions — and then dissects the tensile test in full detail. **Part III** deals with materials that cannot be tested in simple tension (ceramics → three-point bending) and with the cheapest, most widely used test of all (hardness).
+
+---
+
+# Pre-Midsem — Quick Revision Modules
+
+Brief revision modules for the eight **pre-midsem** lecture PDFs — [[Crystal Defects.pdf]], [[Introduction and Structures of Materials - I.pdf]], [[Introduction and Structures of Materials - II.pdf]], [[Introduction and Structures of Materials - IIIa.pdf]], [[Introduction and Structures of Materials - IIIb.pdf]], [[Introduction and Structures of Materials - IV.pdf]], [[Phase_Diagrams.pdf]] and [[Quasicrystals.pdf]]. Slides follow **Raghavan, *Materials Science and Engineering*** and **Callister, *Fundamentals of Materials Science and Engineering***. These are *revision* modules, not full notes: each topic keeps the definitions, the numbers and the formulas, and drops the long derivations. The end-semester examination covers this block as well as the post-midsem block.
+
+> [!info] How the modules fit together
+> **Structure first, imperfection second, equilibrium last.** Topics P2–P6 build the perfect-crystal picture (levels of structure → lattices and symmetry → crystal geometry and X-ray diffraction → bonding-driven structures). P1 then breaks that perfection (point, line, surface and volume defects). P7 asks which phases are stable together (phase diagrams), and P8 shows the exception that breaks the rule of translational periodicity (quasicrystals).
+
+> [!note] Numbering
+> Pre-midsem topics are numbered **P1–P8** (syllabus order of [[syllabus]]) so that the numbers 1–9 stay reserved for the post-midsem topics below. H3 sections run `P1.1`, `P1.2`, …
+
+---
+
+## P1. Crystal Defects
+
+### P1.1 Classification of defects
+
+A real crystal is never perfect; defects are classified by their **dimensionality**.
+
+| Class | Dimension | Examples |
+| --- | --- | --- |
+| **Point defects** | 0-D | Vacancies, impurity atoms |
+| **Line defects** | 1-D | Dislocations |
+| **Surface defects** | 2-D | Grain boundaries, twin boundaries, stacking faults |
+| **Volume defects** | 3-D | Foreign-particle inclusions, large voids or pores, noncrystalline regions of at least a few tens of Å |
+
+### P1.2 Point defects
+
+- **Vacancy** — a missing atom from a lattice site.
+- **Substitutional impurity** — a foreign atom on a regular lattice site.
+- **Interstitial impurity** — a foreign atom in a void between lattice sites.
+- **Frenkel defect** — an ion leaves its site and sits in an interstitial position (a vacancy–interstitial pair).
+- **Schottky defect** — a pair of oppositely charged ions (cation + anion vacancies) missing, preserving neutrality.
+
+> [!important] Defects in ionic crystals
+> Ionic compounds have **cation vacancies, anion vacancies and cation interstitials**, and any defect must preserve **electroneutrality**. *Non-stoichiometry* (ZnO, FeO) creates such defects: in FeO, forming an $\text{Fe}^{3+}$ ion adds an excess $+1$ charge, offset by **one $\text{Fe}^{2+}$ vacancy for every two $\text{Fe}^{3+}$ ions** formed.
+
+- Interstitial sites: **tetrahedral** and **octahedral** voids exist in both FCC and BCC unit cells (sizes in §P6.3).
+- In an ionic compound an impurity can be interstitial, **anion-substitutional** or **cation-substitutional**.
+
+### P1.3 Line defects — dislocations
+
+| Type | Description | Burgers vector $\mathbf{b}$ vs. line |
+| --- | --- | --- |
+| **Edge** | An incomplete extra half-plane of atoms; top part displaced one step relative to the bottom | $\mathbf{b} \perp$ line |
+| **Screw** | Atomic planes spiral around the line | $\mathbf{b} \parallel$ line |
+| **Mixed** | Part edge, part screw — e.g. a dislocation loop from displacement over an elliptical area | Character varies along the line |
+
+- The **Burgers circuit** closes in a perfect crystal; in a crystal with a dislocation it fails to close, and the closure vector is $\mathbf{b}$.
+- Under an applied shear stress $\tau$, an edge dislocation **glides** step by step through the crystal — this is how slip happens (see §2.2).
+- Dislocations are seen as **dark lines in TEM** (e.g. titanium alloy, 51 450×).
+
+### P1.4 Surface defects
+
+> [!important] Definitions
+> **Grain boundary** — the region where two crystals of different orientation meet; the atomic arrangement there is *distorted and unrelated* to either grain. **Low-angle** boundaries are arrays of dislocations; **high-angle** boundaries are disordered.
+> **Tilt boundary** — a low-angle boundary made of **equally spaced edge dislocations of the same sign** stacked one above the other.
+> **Twist boundary** — a low-angle boundary made of a **cross-grid of two sets of screw dislocations**.
+> **Twin boundary** — the atoms on one side are a **mirror reflection** of those on the other (e.g. annealing twins in brass).
+> **Stacking fault** — a break in the stacking sequence; for FCC the perfect sequence is $ABCABC$ and a fault removes or inserts a layer (seen in the electron microscope).
+
+### P1.5 Defects in polymers
+
+The point-defect concept differs in polymers because of **chainlike macromolecules** and the nature of the polymer crystalline state. Vacancies and interstitial atoms/ions *are* seen in crystalline regions; **chain ends** count as defects (chemically unlike normal chain units) and vacancies are associated with them.
+
+> [!tip] Exam pointer — P1
+> Be ready to **sketch** an edge dislocation with its Burgers circuit, state $\mathbf{b}$ vs. line for edge/screw, **distinguish Frenkel from Schottky**, and explain tilt vs. twist boundaries as dislocation arrays.
+
+---
+
+## P2. Introduction and Structures of Materials — I
+
+### P2.1 Levels of structure
+
+Material structure is examined at decreasing length scales:
+
+| Level | What it is | Example in slides |
+| --- | --- | --- |
+| **Macrostructure** | Visible with the naked eye | Wood |
+| **Microstructure** | Grains and phases, seen under a microscope | Crystal boundaries in nickel ferrite $\text{Fe}_2\text{NiO}_4$ (900×) |
+| **Substructure** | Dislocations and sub-grain features | Curved dislocation lines in a Ni–Fe–Cr alloy (30 000×, EM) |
+| **Crystal structure** | Arrangement of atoms in the lattice | Cube-shaped salt crystals (40×) |
+| **Electronic structure** | Electrons and bonding | Ionic vs. covalent bonding |
+| **Nuclear structure** | Protons and neutrons | Atomic nucleus |
+
+### P2.2 The materials science tetrahedron
+
+The traditional **materials science tetrahedron** links **processing, structure, properties and performance** — a change at one corner changes the others. Engineering materials are first classified by family (see the classification chart in [[Introduction and Structures of Materials - I.pdf]]).
+
+> [!tip] Exam pointer — P2
+> Be able to list the six levels of structure in order of decreasing length scale and give an example of each; draw the tetrahedron.
+
+---
+
+## P3. Introduction and Structures of Materials — II
+
+### P3.1 Resolving power of a microscope
+
+> [!important] Abbe criterion
+> The resolution of a microscope is
+>
+> $$ d = 0.61\,\frac{\lambda}{n\sin\alpha} $$
+>
+> where $\lambda$ is the wavelength, $n$ the refractive index of the imaging medium and $\alpha$ the half aperture angle; $n\sin\alpha$ is the **numerical aperture**.
+
+- Numerical aperture is $\sim 1$ for a light microscope, $\sim 0.01$ for an electron microscope.
+- Light ($\lambda = 400$–$700\ \text{nm}$) ⟹ resolution $\sim 250$–$420\ \text{nm}$.
+- Electron wavelength (classical approximation): $\lambda = h/\sqrt{2meV}$ — $\lambda = 0.0037\ \text{nm}$ at $100\ \text{keV}$.
+- Theoretical resolution: $0.23\ \text{nm}$ at $100\ \text{keV}$ ($\lambda = 0.003701\ \text{nm}$) and $0.12\ \text{nm}$ at $300\ \text{keV}$ ($\lambda = 0.001969\ \text{nm}$) — **limited mainly by the quality of the electron optics**, not by $\lambda$.
+
+### P3.2 Crystalline vs. noncrystalline states
+
+Nearest-neighbour number and kind are nearly the same in both states; what the noncrystalline state **lacks is long-range periodicity**. In a crystal, any integral lattice translation takes an atom to an identical atom; this fails in the noncrystalline state — so noncrystalline solids give **no sharp diffraction pattern**.
+
+| Property | Crystalline | Noncrystalline |
+| --- | --- | --- |
+| Melting | **Sharp** melting point | Softens gradually over a range |
+| Packing / density | More closely packed, **higher density** | Lower density |
+| Secondary bonds | Closer packing strengthens them | Weaker on average |
+
+### P3.3 Factors promoting noncrystalline structure
+
+1. **Secondary bonding forces** — where primary bonds do not extend in all directions (1-D chains, 2-D sheets), weak secondary bonds must organise the 3-D crystal. Chains in the melt are like *a bowl of wriggling earthworms*; if secondary forces are too weak, the chains stay tangled and freeze into a **glassy** state where only vibrational freedom remains.
+2. **Free energy** — the crystalline state always has lower free energy; when the difference is small (open network structures), the tendency to crystallize is weak.
+3. **Cooling kinetics** — slow cooling allows crystallization, fast cooling prevents it. A metal may need $\sim 10^6\ \text{K s}^{-1}$; a silicate only a *fraction of a kelvin per hour*.
+
+### P3.4 Lattices and crystal structure
+
+- A **space lattice** is an infinite array of points with identical surroundings; the unit cell can be chosen in different ways (2-D square lattice example).
+- There are **14 Bravais lattices**. A face-centred tetragonal array is redundant: it is represented by a smaller **body-centred tetragonal (BCT)** cell.
+
+> [!important] Crystal structure
+> $$ \boxed{\ \text{Crystal structure} = \text{Lattice} + \text{Basis}\ } $$
+> Monoatomic crystals — SC, BCC, FCC — have one atom per lattice point. The *same* simple cubic lattice can carry different structures if the basis differs.
+
+> [!tip] Exam pointer — P3
+> Quote the **Abbe formula** and the numbers (light $\sim$ 250–420 nm; TEM 0.23 / 0.12 nm); list the **three factors** favouring glass formation; state "structure = lattice + basis".
+
+---
+
+## P4. Introduction and Structures of Materials — IIIa
+
+### P4.1 Common crystal structures
+
+| Structure | Atoms / cell | CN | Cell edge $a$ vs. $R$ | APF |
+| --- | --- | --- | --- | --- |
+| **Simple cubic (SC)** | 1 | 6 | $a = 2R$ | 0.52 |
+| **BCC** | 2 | 8 | $a = 4R/\sqrt{3}$ | 0.68 |
+| **FCC** | 4 | 12 | $a = 2\sqrt{2}\,R$ | 0.74 |
+| **HCP** | 6 | 12 | $c/a = 1.633$ (ideal) | 0.74 |
+| **Diamond cubic (DC)** | 8 | 4 | $a\sqrt{3}/8 = R$ | 0.34 |
+
+- **Closest distance of approach** = $2R$; **coordination number** (CN) = nearest neighbours; **packing efficiency (APF)** = volume of atoms in cell / volume of cell. The "effective number of lattice points" per cell counts corners as $\tfrac18$, edges $\tfrac14$, faces $\tfrac12$, body 1.
+- **Density:** $\rho = \dfrac{nA}{V_c N_A}$ ($n$ atoms/cell, $A$ atomic weight, $V_c$ cell volume) — worked for diamond and Cu in the slides.
+
+> [!important] Diamond cubic
+> The space lattice of DC is **FCC with two atoms per lattice point**: one atom at a lattice point (a corner) and the other **a quarter of the way along the body diagonal** (not a lattice point). Nearest-neighbour separation is $a\sqrt{3}/4$. CN is **4**, dictated by covalent bonding, giving **inefficient packing**.
+
+### P4.2 Close-packed structures
+
+On a close-packed plane each sphere touches six others, leaving two sets of alternate valleys, $B$ and $C$. The next layer sits in either set:
+
+- $\ldots ABCABC\ldots$ stacking ⟹ **FCC** (close-packed planes are $\{111\}$).
+- $\ldots ABABA\ldots$ stacking ⟹ **HCP** (close-packed plane is $(0001)$).
+
+### P4.3 Directions and planes — Miller indices
+
+1. Fix the origin (if the plane passes through it, shift to the corner of an adjacent cell).
+2. Take the intercepts, **invert** them, clear fractions to the smallest integers, and write $(hkl)$. A direction is the smallest integer vector $[uvw]$.
+
+> [!note] Conventions
+> - Unknown indices: $h, k, l$; families are $\langle hkl\rangle$ and $\{hkl\}$ — members are not necessarily parallel.
+> - Multi-digit indices are separated by commas, e.g. $(3,10,15)$.
+> - Reversing all signs gives the **opposite direction**, or the plane at the same distance on the other side of the origin.
+> - **In cubic crystals only**, a direction and the plane normal to it have the same indices: $[hkl] \perp (hkl)$.
+
+- **Zone law:** a direction $[uvw]$ lies in plane $(hkl)$ when $hu + kv + lw = 0$. The direction common to two planes is the cross product of their normals; planes sharing a direction form a **zone**.
+- **Miller–Bravais indices** (hexagonal): four-index $(hkil)$ with $i = -(h+k)$; for directions use $a_3 = -(a_1+a_2)$ and $t = -(u+v)$, written $[uvtw]$.
+
+> [!tip] Exam pointer — P4
+> Know the table in §P4.1 cold (atoms/cell, CN, APF); be able to compute **APF and density**; index a plane/direction; state ABC vs. AB stacking; explain why DC's APF is low.
+
+---
+
+## P5. Introduction and Structures of Materials — IIIb
+
+### P5.1 Symmetry elements
+
+| Element | Operation |
+| --- | --- |
+| **Identity** | Does nothing — every object has it |
+| **Reflection** | Mirror: image perpendicular to plane, equidistant on the far side |
+| **Inversion** | Through a centre of symmetry to an equal distance on the other side |
+| **Rotation** (proper) | By $360^\circ/n$ about an axis of order $n$ |
+| **Rotation** (improper) | By $360^\circ/n$ **plus** a reflection in the plane $\perp$ to the axis |
+| **Rotoinversion** | Rotation plus inversion ($\bar 1$, $\bar 2$, …) |
+
+- Symmetry operators combine, but only some combinations are possible (some give other symmetry, some are contradictory). The distinct allowed combinations (e.g. 222, 32, 422, 622) are the **32 point groups**.
+- **11** of the 32 contain an inversion centre — the **Laue groups**.
+- Adding translation (**glide planes**, **screw axes**) gives the **230 space groups** — the ways of repeating a motif in 3-D compatible with the 32 classes and 14 Bravais lattices.
+
+### P5.2 The seven crystal systems
+
+Ranked by symmetry: **cubic highest, triclinic lowest.**
+
+| System | Minimum symmetry | Unit cell |
+| --- | --- | --- |
+| **Cubic** | four triads along space diagonals | $a=b=c$; $\alpha=\beta=\gamma=90^\circ$ |
+| **Tetragonal** | one tetrad ($\parallel Z$) | $a=b\neq c$; $\alpha=\beta=\gamma=90^\circ$ |
+| **Orthorhombic** | three mutually $\perp$ diads | $a\neq b\neq c$; $\alpha=\beta=\gamma=90^\circ$ |
+| **Rhombohedral / trigonal** | one triad ($\parallel Z$) | $a=b=c$; $\alpha=\beta=\gamma\neq90^\circ$ |
+| **Hexagonal** | one hexad ($\parallel Z$) | $a=b\neq c$; $\alpha=\beta=90^\circ$, $\gamma=120^\circ$ |
+| **Monoclinic** | one diad ($\parallel Y$) | $a\neq b\neq c$; $\alpha=\gamma=90^\circ\neq\beta$ |
+| **Triclinic** | $1$ or $\bar 1$ | $a\neq b\neq c$; $\alpha\neq\beta\neq\gamma\neq90^\circ$ |
+
+### P5.3 Geometry of planes
+
+For a **cubic** crystal:
+
+$$ d_{hkl} = \frac{a}{\sqrt{h^2+k^2+l^2}}, \qquad \cos\phi = \frac{h_1h_2+k_1k_2+l_1l_2}{\sqrt{h_1^2+k_1^2+l_1^2}\,\sqrt{h_2^2+k_2^2+l_2^2}} $$
+
+General (lower-symmetry) forms of interplanar spacing, cell volume and interplanar angle are given in the slides.
+
+### P5.4 Structure determination by X-ray diffraction
+
+> [!important] Bragg's law
+> $$ \boxed{\ n\lambda = 2\,d_{hkl}\sin\theta\ } $$
+> Diffraction needs the path difference between planes to be a whole number of wavelengths. The characteristic X-ray spectrum (molybdenum target at 35 kV) supplies the monochromatic radiation.
+
+- **Atomic scattering factor** $f$ — scattering power of one atom. **Structure factor** $F = \sum f\,e^{2\pi i(hu+kv+lw)}$ over the atoms of the basis ($u,v,w$ fractional coordinates); a reflection is absent when $F = 0$.
+- Example: the **(100) reflection is absent for BCC** — reflection from the corner atoms is exactly cancelled by that from the body-centre atom.
+
+| Lattice | Reflections present |
+| --- | --- |
+| **SC** | all $(hkl)$ |
+| **BCC** | $h+k+l$ even |
+| **FCC** | $h,k,l$ all odd or all even (unmixed) |
+
+The HCP case is worked in the slides with its own structure-factor conditions.
+
+> [!tip] Exam pointer — P5
+> Know the **7 systems and their cell parameters**, the counts **32 / 11 / 230 / 14**, **Bragg's law**, and the BCC/FCC extinction rules (with the "100 absent in BCC" reasoning).
+
+---
+
+## P6. Introduction and Structures of Materials — IV
+
+### P6.1 Covalent solids
+
+Covalent bonds are directional (sp$^3$, sp$^2$); e.g. six sp$^2$ triangles bond to form a **hexagon** (graphite-type sheet). Directionality gives low coordination and open structures (cf. diamond, CN = 4).
+
+### P6.2 Metals and alloys — solid solutions
+
+> [!important] Solid solutions
+> **Interstitial solid solution** — a solute much smaller than the solvent occupies a void (carbon in FCC iron sits in the **octahedral** voids).
+> **Substitutional solid solution** — solute and solvent of comparable size; the solute replaces a solvent atom at random on regular sites (70 Cu–30 Zn $\alpha$-brass, FCC).
+
+> [!important] Hume-Rothery rules (substitutional solubility)
+> 1. Atomic diameters differ by **no more than 15 %**.
+> 2. **Small** electronegativity difference.
+> 3. **Same valency** and **same crystal structure**.
+
+Cu (FCC) and Zn (HCP) fail the third rule, so solubility is limited — **up to 35 % Zn** dissolves in FCC Cu at room temperature.
+
+### P6.3 Voids
+
+| Void | Largest sphere that fits | Count (FCC cell) | Count (BCC cell) |
+| --- | --- | --- | --- |
+| **Tetrahedral** | $r = 0.225R$ | 8 | 12 |
+| **Octahedral** | $r = 0.414R$ | 4 | 6 |
+
+The slides derive both sizes from the geometry of touching spheres (tetrahedral from the cube-corner tetrahedron, octahedral from the edge-centre/face-centre geometry). BCC voids are smaller and distorted compared with FCC.
+
+### P6.4 Ionic solids — ligancy and radius ratio
+
+The **radius ratio** $r_C/r_A$ fixes the cation's coordination number. At the **critical** ratio the cation just touches all its surrounding anions; below it the arrangement is **unstable** (the cation rattles and the anions touch each other), and above it (but below the next limit) it is **stable but not critical**.
+
+| $r_C/r_A$ | CN | Geometry |
+| --- | --- | --- |
+| $< 0.155$ | 2 | Linear |
+| $0.155$–$0.225$ | 3 | Triangular |
+| $0.225$–$0.414$ | 4 | Tetrahedral |
+| $0.414$–$0.732$ | 6 | Octahedral |
+| $0.732$–$1$ | 8 | Cubic |
+
+| Compound | $r_C/r_A$ | Predicted | Observed |
+| --- | --- | --- | --- |
+| **NaCl** | 0.54 | 6 | 6 (octahedral) ✓ |
+| **MgO** | 0.59 | 6 | 6 ✓ |
+| **CsCl** | 0.91 | 8 | 8 ✓ |
+| **CaF$_2$** | 0.73 | marginal | **8** observed |
+| **SiO$_2$** | 0.29 | 4 | 4 (tetrahedral) ✓ |
+| **ZnS** | 0.48 | 6 | **4** — fails |
+
+> [!warning] When the radius-ratio rule fails
+> If **directional bonding** persists, radius ratio alone does not predict ligancy. Si–O (50 % ionic, 50 % covalent) works because radius ratio and sp$^3$ geometry coincide; in **ZnS** the bond is more covalent, so sp$^3$ four-fold coordination wins over the predicted octahedral.
+
+**Long-range arrangement** (ligancy rules fix only the local packing):
+
+1. **Overall electrical neutrality** must hold (in NaCl the $\text{NaCl}_6$ group has net charge 5, neutralised in the long range).
+2. Ionic bonding is **nondirectional**, so ions pack as closely as the local coordination allows.
+3. If small, highly charged cations (charge 3–4) are present, cation–cation repulsion forces an arrangement that **maximises cation–cation distance**, even without close packing.
+
+### P6.5 Silica and silicates
+
+The **silicate tetrahedron** ($\text{SiO}_4$) has Si at the centre and O at the four corners; it is the building block of crystalline and noncrystalline silica. Adding $\text{Na}_2\text{O}$ to silica **introduces weaker bonds** (breaks the network). Mixed (ionic–covalent) bonding is common in such solids.
+
+### P6.6 Polymers
+
+- Built on **covalent carbon bonds** ⟹ good thermal and electrical **insulators**, relatively inert (no corrosion like metals). *Mer* = unit; monomer → polymer (thousands of units, a macromolecule).
+- Joining along one direction ⟹ **long-chain** polymers (chains held by secondary bonds); joining in other directions too ⟹ a 3-D network of primary bonds.
+
+| Class | Structure | Behaviour on heating |
+| --- | --- | --- |
+| **Thermoplasts** | Long chains, secondary bonds | Plasticity **increases** with temperature |
+| **Thermosets** | 3-D primary-bond network | Hard and rigid; **do not soften**, harden further, then **degrade** (e.g. Bakelite) |
+
+- Long-chain polymers subdivide into **plastics** (randomly oriented chains), **fibres** (chains aligned along the fibre) and **elastomers** (rubbery behaviour).
+- **Crystallinity:** usually noncrystalline (tangled) or **semicrystalline** (parallel regions + random regions). Mechanical working aligns chains and promotes crystallinity.
+
+> [!tip] Exam pointer — P6
+> Know the **void sizes** (0.225 R, 0.414 R), the **radius-ratio table** with NaCl / CsCl / ZnS examples, the **Hume-Rothery rules**, and thermoplast vs. thermoset.
+
+---
+
+## P7. Phase Diagrams
+
+> [!note] Depth
+> This module is only a revision summary. The full treatment lives in the [[Phase Diagrams/Syllabus|Phase Diagrams]] folder and [[Post Midsem Notes]].
+
+### P7.1 Phase, component, Gibbs phase rule
+
+> [!important] Definitions
+> **Phase** — a physically distinct, chemically homogeneous and mechanically separable region of a system. A gas is always one phase; a liquid *solution* is one phase, a liquid *mixture* (oil + water) is two; a solid solution is one phase; the same composition with different crystal structures is different phases.
+> **Phase diagram** — a map of the equilibrium relationships between phases as a function of temperature, pressure and composition.
+> **Components** — the independent chemical species of the system (H$_2$O; Cu and Ni; Al$_2$O$_3$ and Cr$_2$O$_3$; Fe and Fe$_3$C or graphite for Fe–C).
+
+With $C$ components and $P$ phases there are $P(C-1)$ composition variables plus $T$ and $p$:
+
+$$ \boxed{\ F = C - P + 2\ } \qquad\qquad F = C - P + 1 \ \ (\text{binary at constant pressure}) $$
+
+- $F$ cannot be negative, which caps the number of coexisting phases (for $C = 2$, at most **4**).
+- Unary diagrams are $p$–$T$ (e.g. iron); binary diagrams are drawn at atmospheric pressure as $T$–composition.
+
+### P7.2 Types of binary diagrams
+
+| Type | Condition | Key feature | Examples |
+| --- | --- | --- | --- |
+| **Isomorphous** | Complete solubility in liquid and solid; same crystal structure + Hume-Rothery | Only $L$ and $S$ phases, two-phase $L+S$ region between **liquidus** and **solidus** | Cu–Ni, Ag–Au, Ge–Si, Al$_2$O$_3$–Cr$_2$O$_3$ |
+| **Eutectic** | Limited solid solubility; comparable melting points | $L \to \alpha + \beta$ at $T_e$; **solvus** bounds $\alpha$, $\alpha+\beta$ | Pb–Sn |
+| **Peritectic** | Melting points vastly different | Invariant reaction involving liquid + solid | Ag–Pt |
+| **Eutectoid** | Same as eutectic but entirely in the solid state ($\gamma \to \alpha + \beta$) | Invariant | Fe–C |
+
+- A **two-phase region always separates single-phase regions** in a binary diagram.
+- In a single-phase region the composition axis gives the phase composition; in a two-phase region draw a **tie-line** — its intersections with the boundaries give the equilibrium compositions $c_l$, $c_s$.
+- Eutectic / eutectoid / peritectic are **invariant reactions** ($F = 0$ at constant pressure).
+
+### P7.3 Lever rule
+
+> [!important] Lever rule
+> For overall composition $c_0$ in a two-phase field with phase compositions $c_\alpha$ and $c_\beta$ (tie-line ends):
+>
+> $$ \boxed{\ W_\alpha = \frac{c_\beta - c_0}{c_\beta - c_\alpha}, \qquad W_\beta = \frac{c_0 - c_\alpha}{c_\beta - c_\alpha}\ } $$
+>
+> The tie-line is a lever with the fulcrum at $c_0$; each phase's weight is proportional to the arm on the *opposite* side.
+
+- **Not applicable at the eutectic or peritectic temperature** (three phases, an isothermal reaction in progress); use it just above or just below to find (i) the proeutectic fraction, (ii) the eutectic-mixture fraction, (iii) the fraction of a phase inside the eutectic mixture.
+
+### P7.4 Application — zone refining
+
+The solid that crystallizes first from a melt is usually **purer in the solvent $A$** than the liquid. Repeated melting of the purest fraction gives very pure $A$ — in practice this is done on a **rod with a narrow molten zone** swept along it by an induction coil or electron beam; surface tension holds the zone without a (contaminating) container. Impurities are swept toward the end; **ten passes** can lower impurity to $\sim 10^{-6}$ of the initial level — essential for semiconductor crystals.
+
+> [!tip] Exam pointer — P7
+> **Gibbs rule** (and its constant-pressure form), the **lever rule** with its limitation, a sketch of each diagram type with its invariant reaction, and the zone-refining principle. The Fe–C diagram is shown in the slides — see [[Phase Diagrams/Syllabus|Phase Diagrams]] for the eutectoid/eutectic details.
+
+---
+
+## P8. Quasi Crystals
+
+### P8.1 What is a quasicrystal?
+
+> [!important] Definition
+> A **quasicrystal** exhibits **long-range order** in a diffraction experiment yet has **no translational periodicity**. It combines features of crystals (atoms in patterns) and amorphous solids (the patterns do not repeat).
+
+- Ordinary crystals show only **2-, 3-, 4- or 6-fold** symmetry; quasicrystals can also show **5-, 10- or 12-fold** symmetry.
+- Typical constituents are conductive metals (Al, Cu, Fe).
+
+### P8.2 History
+
+| Year | Event |
+| --- | --- |
+| **1982** | **Dan Shechtman** finds ten-fold symmetry in rapidly cooled Al–Mn at NIST (noted "10-fold???" in his journal) |
+| **1984** | Shechtman et al. paper: rapidly solidified Al with 10–14 % Mn shows **icosahedral symmetry** with long-range order (electron diffraction) |
+| **1987** | First **stable** icosahedral quasicrystals — ternary Fe–Cu–Al |
+| **2000** | Stable **binary** icosahedral quasicrystals — Ca–Cd and Yb–Cd |
+| **2011** | Shechtman wins the **Nobel Prize in Chemistry** |
+
+- *Stable* quasicrystals matter because they grow to considerable size and show the features of well-ordered crystalline phases, which made structure determination possible.
+- Uses mentioned: non-stick frying pans, needles, LED lights.
+
+> [!tip] Exam pointer — P8
+> Definition (long-range order **without** translational periodicity), the forbidden symmetries (5/10/12-fold), the discoverer and the 1982 / 2011 dates.
+
+---
+
+## Pre-Midsem Formula Summary
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Abbe resolution | $d = 0.61\,\lambda/(n\sin\alpha)$ | $n\sin\alpha$ = numerical aperture |
+| Electron wavelength | $\lambda = h/\sqrt{2meV}$ | Classical approximation (non-relativistic) |
+| Crystal structure | Lattice + Basis | — |
+| Density | $\rho = nA/(V_cN_A)$ | $n$ atoms per unit cell |
+| Atomic packing factor | $\text{APF} = \dfrac{n\cdot\tfrac43\pi R^3}{V_c}$ | SC 0.52, BCC 0.68, FCC/HCP 0.74, DC 0.34 |
+| Cell edge vs. radius | SC $2R$; BCC $4R/\sqrt3$; FCC $2\sqrt2R$ | Hard-sphere touching condition |
+| Zone law | $hu + kv + lw = 0$ | Direction $[uvw]$ lies in plane $(hkl)$ |
+| Miller–Bravais | $i = -(h+k)$, $t = -(u+v)$ | Hexagonal only |
+| Interplanar spacing (cubic) | $d = a/\sqrt{h^2+k^2+l^2}$ | Cubic only |
+| Bragg's law | $n\lambda = 2d\sin\theta$ | Condition for diffraction |
+| Structure factor | $F = \sum f\,e^{2\pi i(hu+kv+lw)}$ | $F = 0$ ⟹ reflection absent |
+| Void radii | Tetrahedral $0.225R$; octahedral $0.414R$ | Hard-sphere, FCC |
+| Radius ratio | $r_C/r_A$ → CN 2, 3, 4, 6, 8 | Breaks down for directional bonding (ZnS) |
+| Gibbs phase rule | $F = C - P + 2$ | $F = C - P + 1$ for binary at constant $p$ |
+| Lever rule | $W_\alpha = (c_\beta - c_0)/(c_\beta - c_\alpha)$ | Not valid at the invariant temperature |
+
+> [!note] Source images
+> The pre-midsem modules are text-only revision summaries and embed no figures; the diagrams (Burgers circuits, Bravais lattices, stacking sequences, void geometry, phase diagrams) are in the linked lecture PDFs at the slide named in each section. The post-midsem blocks below keep their own figure provenance notes.
 
 ---
 

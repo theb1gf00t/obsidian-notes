@@ -250,6 +250,17 @@ The Notes column carries the validity limit, the assumption, or the definition o
 
 ---
 
+## 11A. Pre-Midsem Revision Modules (exception to §11.1)
+
+The eight pre-midsem topics are written as **brief revision modules**, not full notes — the zero-omission rule of §11.1 does **not** apply to them. They sit in `notes.md` under `# Pre-Midsem — Quick Revision Modules`, *before* the post-midsem blocks.
+
+- **Numbering:** `## P1.` … `## P8.` (syllabus order) with H3 `P1.1`, `P1.2`, … so that 1–9 stay reserved for post-midsem topics. Cross-references read `§P4.1`.
+- **Structure per topic:** short H3 sections → definition callouts and tables → one `[!tip] Exam pointer`. The block closes with a `## Pre-Midsem Formula Summary` and a `[!note] Source images` note.
+- **Keep:** definitions, numbers, formulas, classifications, examples. **Drop:** long derivations, enrichment (H4) subsections, extracted figures.
+- All other conventions (callout taxonomy, math, tables, typography) still apply. Phase diagrams (P7) point to the deeper [[Post Midsem Notes]] rather than duplicating it.
+
+---
+
 ## 12. Adding a New Topic — Workflow
 
 1. **Read the syllabus row.** Take the topic's exact title and number from [[syllabus]]; confirm the row exists in the Syllabus Map table.

@@ -37,14 +37,14 @@ WHERE file.path = this.file.path
 
 ## Pre-Midsem — 8 topics
 
-- [ ] **1 · Crystal Defects** — [[Crystal Defects.pdf|PDF]] · *notes not yet written*
-- [ ] **2 · Introduction and Structures of Materials — I** — [[Introduction and Structures of Materials - I.pdf|PDF]] · *notes not yet written*
-- [ ] **3 · Introduction and Structures of Materials — II** — [[Introduction and Structures of Materials - II.pdf|PDF]] · *notes not yet written*
-- [ ] **4 · Introduction and Structures of Materials — IIIa** — [[Introduction and Structures of Materials - IIIa.pdf|PDF]] · *notes not yet written*
-- [ ] **5 · Introduction and Structures of Materials — IIIb** — [[Introduction and Structures of Materials - IIIb.pdf|PDF]] · *notes not yet written*
-- [ ] **6 · Introduction and Structures of Materials — IV** — [[Introduction and Structures of Materials - IV.pdf|PDF]] · *notes not yet written*
-- [ ] **7 · Phase Diagrams** — [[Phase_Diagrams.pdf|PDF]] · *notes not yet written* · depth: [[Phase Diagrams/Syllabus|Phase Diagrams syllabus]] + [[Post Midsem Notes]]
-- [ ] **8 · Quasi Crystals** — [[Quasicrystals.pdf|PDF]] · *notes not yet written* · papers: [[A journey through the history of quasicrystals » MIT Physics.pdf|MIT Physics]], [[A journey through the history of quasicrystals – The Varsity.pdf|The Varsity]], [[Paul_Steinhardt_The_Second_Kind_of_Impossible.pdf|Steinhardt]], [[quasicrystals_nobelprize_dot_org.pdf|NobelPrize.org]]
+- [ ] **1 · Crystal Defects** — [[Crystal Defects.pdf|PDF]] · [[notes#P1. Crystal Defects|Revision module → P1]]
+- [ ] **2 · Introduction and Structures of Materials — I** — [[Introduction and Structures of Materials - I.pdf|PDF]] · [[notes#P2. Introduction and Structures of Materials — I|Revision module → P2]]
+- [ ] **3 · Introduction and Structures of Materials — II** — [[Introduction and Structures of Materials - II.pdf|PDF]] · [[notes#P3. Introduction and Structures of Materials — II|Revision module → P3]]
+- [ ] **4 · Introduction and Structures of Materials — IIIa** — [[Introduction and Structures of Materials - IIIa.pdf|PDF]] · [[notes#P4. Introduction and Structures of Materials — IIIa|Revision module → P4]]
+- [ ] **5 · Introduction and Structures of Materials — IIIb** — [[Introduction and Structures of Materials - IIIb.pdf|PDF]] · [[notes#P5. Introduction and Structures of Materials — IIIb|Revision module → P5]]
+- [ ] **6 · Introduction and Structures of Materials — IV** — [[Introduction and Structures of Materials - IV.pdf|PDF]] · [[notes#P6. Introduction and Structures of Materials — IV|Revision module → P6]]
+- [ ] **7 · Phase Diagrams** — [[Phase_Diagrams.pdf|PDF]] · [[notes#P7. Phase Diagrams|Revision module → P7]] · depth: [[Phase Diagrams/Syllabus|Phase Diagrams syllabus]] + [[Post Midsem Notes]]
+- [ ] **8 · Quasi Crystals** — [[Quasicrystals.pdf|PDF]] · [[notes#P8. Quasi Crystals|Revision module → P8]] · papers: [[A journey through the history of quasicrystals » MIT Physics.pdf|MIT Physics]], [[A journey through the history of quasicrystals – The Varsity.pdf|The Varsity]], [[Paul_Steinhardt_The_Second_Kind_of_Impossible.pdf|Steinhardt]], [[quasicrystals_nobelprize_dot_org.pdf|NobelPrize.org]]
 
 ---
 
@@ -257,7 +257,7 @@ Every written section of [[notes]], grouped by topic, so a topic can be opened a
 ## Open gaps
 
 > [!warning] What is still missing
-> - **All eight pre-midsem topics** have slides but no written notes yet.
+> - The **eight pre-midsem topics** have only brief revision modules (P1–P8, no figures) — not full notes.
 > - Pre-midsem topic 7 (phase diagrams) already has a separate, much deeper treatment in the [[Phase Diagrams/Syllabus|Phase Diagrams]] folder — use [[Post Midsem Notes]] there rather than duplicating it here.
 
 > [!question] Self-check before you tick a topic
