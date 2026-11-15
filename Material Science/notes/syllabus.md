@@ -58,7 +58,7 @@ WHERE file.path = this.file.path
 - [x] **6 · Electrical and Electronic Properties — Part 1** — [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf|PDF]] · [[notes#6. Electrical and Electronic Properties — Part 1|Notes → §6]] (12 sections)
 - [x] **7 · Electrical and Electronic Properties — Part 2** — [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf|PDF]] · [[notes#7. Electrical and Electronic Properties — Part 2|Notes → §7]] (14 sections)
 - [x] **8 · Magnetic Properties** — [[Magnetic Properties_Odd_2026-27.pdf|PDF]] · [[notes#8. Magnetic Properties|Notes → §8]] (17 sections)
-- [ ] **9 · Dielectric Materials, Polarization, Optical Properties** — [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf|PDF]] · [[notes#9. Dielectric Materials, Polarization, Optical Properties|Notes → §9]] (12 sections)
+- [x] **9 · Dielectric Materials, Polarization, Optical Properties** — [[Dielectric materials_Polarization_Optical properties_Odd_2026-27.pdf|PDF]] · [[notes#9. Dielectric Materials, Polarization, Optical Properties|Notes → §9]] (12 sections)
 
 > [!note] Slug-to-slide map
 > The PDF file names carry the `_Odd_2026-27` suffix and spell the titles slightly differently from the syllabus (e.g. syllabus *Mechanical Properties - I* → file *Mechanical Properties part 1*). The topic number is the anchor: **topic N in the syllabus = `## N` in [[notes]] = the Nth lecture PDF**.
