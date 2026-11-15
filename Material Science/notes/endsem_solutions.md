@@ -1420,7 +1420,7 @@ Worked solutions to the third End-Sem paper, [[endsem3.pdf]] (IIT (BHU) Varanasi
 
 ---
 
-## E3-A. Dislocations, mechanical behaviour and particle reinforcement (Q1–Q7)
+## E3-A. Dislocations and mechanical behaviour (Q1–Q6)
 
 > [!question] Q1: Explain what are Shockley and Frank partial dislocations in FCC. [5]
 >
@@ -1713,12 +1713,14 @@ Worked solutions to the third End-Sem paper, [[endsem3.pdf]] (IIT (BHU) Varanasi
 > >
 > > Steel is also strong and stiff in tension and cheap. The same idea is extended in **prestressed concrete**: high-strength steel wires are stretched, the concrete is poured and hardened, and when the tension is released the wires put the concrete into **compression**, so a service tensile stress must first cancel that compression before a crack can open.
 
-> [!tip] Exam pointer — Endsem 3, Q1–Q7
-> Q1: dissociation with its three checks and the Frank partial sessile because $\mathbf{b}$ is normal to the fault plane. Q2: derive $\tau_R = \sigma\cos\phi_1\cos\phi_2$ and prove $m_{\max} = 0.5$ with the direction-cosine inequality. Q4: five one-mark definitions, each with its formula ($\nu$, Considère, offset line, $U_r = \sigma_y^2/2E$). Q5: two curves and the DBTT intersection. Q6: indenter + load + measurement + formula for all four tests. Q7(b): matched thermal expansion, no corrosion in cement, strong bond (§2.4, §2.5, §2.7–§2.15, §3.4–§3.7, §4).
+> [!tip] Exam pointer — Endsem 3, mechanical (Q1–Q6)
+> Q1: dissociation with its three checks and the Frank partial sessile because $\mathbf{b}$ is normal to the fault plane. Q2: derive $\tau_R = \sigma\cos\phi_1\cos\phi_2$ and prove $m_{\max} = 0.5$ with the direction-cosine inequality. Q4: five one-mark definitions, each with its formula ($\nu$, Considère, offset line, $U_r = \sigma_y^2/2E$). Q5: two curves and the DBTT intersection. Q6: indenter + load + measurement + formula for all four tests (§2.4, §2.5, §2.7–§2.15, §3.4–§3.7, §4).
 
 ---
 
-## E3-B. Composites (Q8–Q9)
+## E3-B. Composites (Q7–Q9)
+
+*Q7 appears with the mechanical group above because it is the first composites question; Q8 and Q9 follow.*
 
 > [!question] Q8: Derive the equations for elastic modulus of composite in longitudinal and transverse direction for continuous and aligned fiber composites. [2.5×2 = 5]
 >
@@ -1794,8 +1796,8 @@ Worked solutions to the third End-Sem paper, [[endsem3.pdf]] (IIT (BHU) Varanasi
 > > | Weakness | Not stiff; service limit about 200 °C |
 > > | Best fit | Marine, automotive, pipes, tanks, floorings |
 
-> [!tip] Exam pointer — Endsem 3, composites (Q8–Q9)
-> Q8: write the isostrain and isostress derivations as numbered steps and finish with both boxed equations, noting upper and lower bounds. Q9: four advantages, two limitations, applications (§5.10, §5.13).
+> [!tip] Exam pointer — Endsem 3, composites (Q7–Q9)
+> Q8: write the isostrain and isostress derivations as numbered steps and finish with both boxed equations, noting upper and lower bounds. Q9: four advantages, two limitations, applications (§5.7, §5.10, §5.13).
 
 ---
 
