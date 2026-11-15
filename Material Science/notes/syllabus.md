@@ -54,7 +54,7 @@ WHERE file.path = this.file.path
 - [x] **2 · Mechanical Properties — II** — [[Mechanical Properties part 2_Odd_2026-27.pdf|PDF]] · [[notes#2. Mechanical Properties — II|Notes → §2]] (19 sections)
 - [x] **3 · Mechanical Properties — III** — [[Mechanical Properties part 3_Odd_2026-27.pdf|PDF]] · [[notes#3. Mechanical Properties — III|Notes → §3]] (10 sections)
 - [x] **4 · Shockley and Frankel Partial Dislocations** — [[Shockley and Frank partial dislocations_Odd_2026-27.pdf|PDF]] · [[notes#4. Shockley and Frankel Partial Dislocations|Notes → §4]] (9 sections)
-- [ ] **5 · Composites** — [[Composites_Odd_2026-27.pdf|PDF]] · [[notes#5. Composites|Notes → §5]] (20 sections)
+- [x] **5 · Composites** — [[Composites_Odd_2026-27.pdf|PDF]] · [[notes#5. Composites|Notes → §5]] (20 sections)
 - [x] **6 · Electrical and Electronic Properties — Part 1** — [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf|PDF]] · [[notes#6. Electrical and Electronic Properties — Part 1|Notes → §6]] (12 sections)
 - [x] **7 · Electrical and Electronic Properties — Part 2** — [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf|PDF]] · [[notes#7. Electrical and Electronic Properties — Part 2|Notes → §7]] (14 sections)
 - [x] **8 · Magnetic Properties** — [[Magnetic Properties_Odd_2026-27.pdf|PDF]] · [[notes#8. Magnetic Properties|Notes → §8]] (17 sections)
