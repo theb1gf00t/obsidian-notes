@@ -412,6 +412,96 @@ $$ \boxed{\ F = C - P + 2\ } \qquad\qquad F = C - P + 1 \ \ (\text{binary at con
 
 The solid that crystallizes first from a melt is usually **purer in the solvent $A$** than the liquid. Repeated melting of the purest fraction gives very pure $A$ — in practice this is done on a **rod with a narrow molten zone** swept along it by an induction coil or electron beam; surface tension holds the zone without a (contaminating) container. Impurities are swept toward the end; **ten passes** can lower impurity to $\sim 10^{-6}$ of the initial level — essential for semiconductor crystals.
 
+#### Zone refining — the segregation picture (depth beyond the slides)
+
+The slides' argument is that the first solid to freeze is purer in $A$ than the liquid it comes from. The quantity that measures this is the **equilibrium distribution (segregation) coefficient**, read straight off the tie-line at temperature $T$:
+
+$$ \boxed{\ k_0 = \frac{c_s}{c_l}\ } $$
+
+- $k_0 < 1$ (the usual case, where the solute lowers the melting point — liquidus slopes down with solute): the solid rejects solute into the liquid, so the **molten zone sweeps impurity along with it** to the far end of the rod. The smaller $k_0$, the more effective each pass.
+- $k_0 > 1$ (solute raises the melting point): the solid is *richer* in solute, which therefore piles up at the **starting** end — the pass direction effectively reverses.
+- For a single pass of a zone of length $l$ through a rod of initial concentration $c_0$, the solute concentration in the re-frozen solid at distance $x$ from the start is (Pfann's result, assuming $k_0$ is constant and the liquid is well mixed):
+
+$$ c_s(x) = c_0\left[\,1-(1-k_0)\,e^{-k_0 x/l}\,\right] $$
+
+so the first part of the rod is purified to $k_0c_0$ and the concentration climbs back toward $c_0$ with distance; the last zone to freeze carries the concentrated impurity and is cut off.
+
+#### Zone refining — why many passes, and the practical limits
+
+- Every pass in the **same direction** repeats the "melt the purest part, re-freeze" cycle of the slides; the starting end gets purer each time and the impurity accumulates at the finishing end (ten passes → $\sim 10^{-6}$ of the initial level).
+- A narrow zone gives better single-pass separation but needs more time; the zone must be short enough for **surface tension** to hold it without a crucible.
+- Only a **small** quantity of ultra-pure material results — the price of the method — which is why it is reserved for semiconductor-grade crystals.
+
+> [!warning] Common exam trap
+> Zone refining is **not** a way of removing impurity by evaporation or filtering; it works *only* because the solidus and liquidus are at different compositions ($k_0 \neq 1$). A system with $k_0 = 1$ (solidus and liquidus coinciding) cannot be zone refined.
+
+### P7.5 The iron–carbon phase diagram
+
+Iron–carbon is the most important binary diagram in engineering because it governs **steels and cast irons**. The diagram below plots temperature against wt % C from pure Fe to $6.7$ wt % C — the composition of the compound **cementite**, $\text{Fe}_3\text{C}$ (so $\text{Fe}$ and $\text{Fe}_3\text{C}$ are used as the two components, as noted in §P7.1).
+
+![[PD - Iron Carbon Phase Diagram.png|520]]
+
+*Figure — the Fe–Fe$_3$C diagram: three invariant horizontals (peritectic at 1493 °C, eutectic at 1147 °C, eutectoid at 727 °C), the steel/cast-iron division at 2.14 wt % C and the sketched microstructures of hypo- and hyper-eutectoid steels.*
+
+#### Phases
+
+| Phase | Structure | Notes |
+| --- | --- | --- |
+| **$\alpha$ — ferrite** | BCC | Dissolves at most **0.022 wt % C** (at 727 °C); soft and ductile |
+| **$\gamma$ — austenite** | FCC | Dissolves up to **2.14 wt % C** (at 1147 °C); stable only above 727 °C; interstitial C sits in octahedral voids (§P6.2) |
+| **$\delta$ — ferrite** | BCC | High-temperature form, between 1394 °C and 1538 °C |
+| **$\text{Fe}_3\text{C}$ — cementite** | Orthorhombic compound, 6.7 wt % C | Hard and brittle intermetallic |
+| **L** | Liquid | Melting point of pure Fe is 1538 °C |
+
+- Pure Fe is $\alpha$ (BCC) up to **912 °C**, $\gamma$ (FCC) from 912 to **1394 °C**, and $\delta$ (BCC) from 1394 °C to the melting point — the allotropic changes behind the $\alpha$–$\gamma$ and $\gamma$–$\delta$ fields.
+- The much larger solubility of C in FCC $\gamma$ than in BCC $\alpha$ follows from the larger octahedral void of FCC (0.414 R vs. the much smaller BCC voids, §P6.3).
+
+#### The three invariant reactions
+
+| Reaction | Temperature | Composition (wt % C) | Transformation |
+| --- | --- | --- | --- |
+| **Peritectic** | 1493 °C | in the $\delta$–L corner | $\delta + L \rightleftharpoons \gamma$ |
+| **Eutectic** | 1147 °C | **4.30** | $L \rightleftharpoons \gamma\,(2.14) + \text{Fe}_3\text{C}\,(6.7)$ |
+| **Eutectoid** | 727 °C | **0.76** | $\gamma\,(0.76) \rightleftharpoons \alpha\,(0.022) + \text{Fe}_3\text{C}\,(6.7)$ |
+
+- All three are **invariant** ($F = 0$ at constant pressure, §P7.1). The eutectoid is the same type of reaction as the eutectic, but it occurs entirely in the **solid** state (§P7.2).
+- The eutectic product is **ledeburite** (austenite + cementite); on cooling below 727 °C its austenite turns to pearlite, giving *transformed ledeburite*.
+- The eutectoid product is **pearlite** — a fine lamellar mixture of ferrite and cementite.
+
+> [!note] The critical-temperature lines
+> The lines marked on the diagram are the ones used in heat treatment: **$A_1$** — the eutectoid horizontal (727 °C); **$A_3$** — the $\gamma/(\alpha+\gamma)$ boundary falling from 912 °C to the eutectoid point; **$A_{cm}$** — the $\gamma/(\gamma+\text{Fe}_3\text{C})$ boundary rising from the eutectoid point to 2.14 wt % C at 1147 °C; **$A_4$** — the $\gamma/\delta$ boundary near 1394 °C.
+
+#### Steel and cast iron
+
+| Alloy class | Carbon range | Sub-division |
+| --- | --- | --- |
+| **Steel** | up to **2.14 wt % C** | **Hypoeutectoid** $< 0.76$; **eutectoid** $= 0.76$; **hypereutectoid** $0.76$–$2.14$ |
+| **Cast iron** | **2.14**–$6.7$ wt % C | Hypoeutectic $< 4.30$; eutectic $= 4.30$; hypereutectic $> 4.30$ |
+
+#### Microstructures of slowly cooled steels
+
+1. **Hypoeutectoid steel** (e.g. 0.4 wt % C): cooling from $\gamma$, **proeutectoid $\alpha$** nucleates at the grain boundaries on crossing $A_3$; the remaining $\gamma$ is enriched toward 0.76 wt % C and at 727 °C transforms to **pearlite**. Final structure: **proeutectoid ferrite + pearlite**.
+2. **Eutectoid steel** (0.76 wt % C): $\gamma$ transforms wholly to pearlite — **100 % pearlite**.
+3. **Hypereutectoid steel** (e.g. 1.5 wt % C): crossing $A_{cm}$, **proeutectoid cementite** precipitates along the $\gamma$ grain boundaries; the remaining $\gamma$ is depleted toward 0.76 wt % C and becomes pearlite at 727 °C. Final structure: **proeutectoid cementite + pearlite**.
+
+> [!important] Lever rule just below 727 °C (steels)
+> Using the tie-line from $0.022$ ($\alpha$) to $0.76$ wt % C, the lever rule of §P7.3 gives, for a hypoeutectoid steel of composition $c_0$:
+>
+> $$ W_{\alpha,\,\text{pro}} = \frac{0.76 - c_0}{0.76 - 0.022}, \qquad W_{\text{pearlite}} = \frac{c_0 - 0.022}{0.76 - 0.022} $$
+>
+> and for a hypereutectoid steel, with the tie-line $0.76$ to $6.7$:
+>
+> $$ W_{\text{Fe}_3\text{C},\,\text{pro}} = \frac{c_0 - 0.76}{6.7 - 0.76}, \qquad W_{\text{pearlite}} = \frac{6.7 - c_0}{6.7 - 0.76} $$
+
+**Worked example** — 0.40 wt % C steel just below 727 °C:
+
+$$ W_{\alpha,\,\text{pro}} = \frac{0.76-0.40}{0.76-0.022} = 0.49, \qquad W_{\text{pearlite}} = 0.51 $$
+
+Inside the pearlite the ferrite/cementite split is $W_\alpha = \dfrac{6.7-0.76}{6.7-0.022} = 0.89$ and $W_{\text{Fe}_3\text{C}} = 0.11$. (As in §P7.3, the rule is applied *just above or just below* the invariant temperature, never at it.)
+
+> [!tip] Exam pointer — P7.4–P7.5
+> For zone refining: $k_0 = c_s/c_l$, the many-pass logic and why it needs $k_0\neq1$. For Fe–C: reproduce the diagram with the numbers **0.022, 0.76, 2.14, 4.30, 6.7 wt % C** and **727 / 912 / 1147 / 1394 / 1493 / 1538 °C**, write the three invariant reactions, classify an alloy as hypo/hyper-eutectoid, and compute proeutectoid and pearlite fractions with the lever rule.
+
 > [!tip] Exam pointer — P7
 > **Gibbs rule** (and its constant-pressure form), the **lever rule** with its limitation, a sketch of each diagram type with its invariant reaction, and the zone-refining principle. The Fe–C diagram is shown in the slides — see [[Phase Diagrams/Syllabus|Phase Diagrams]] for the eutectoid/eutectic details.
 
@@ -464,6 +554,10 @@ The solid that crystallizes first from a melt is usually **purer in the solvent 
 | Radius ratio | $r_C/r_A$ → CN 2, 3, 4, 6, 8 | Breaks down for directional bonding (ZnS) |
 | Gibbs phase rule | $F = C - P + 2$ | $F = C - P + 1$ for binary at constant $p$ |
 | Lever rule | $W_\alpha = (c_\beta - c_0)/(c_\beta - c_\alpha)$ | Not valid at the invariant temperature |
+| Segregation coefficient | $k_0 = c_s/c_l$ | From the tie-line; zone refining needs $k_0\neq1$ |
+| Zone-refining profile (one pass) | $c_s(x)=c_0[1-(1-k_0)e^{-k_0x/l}]$ | Constant $k_0$, well-mixed liquid; $l$ = zone length |
+| Hypoeutectoid steel, below 727 °C | $W_{\alpha,\text{pro}}=(0.76-c_0)/(0.76-0.022)$ | Lever rule just below the eutectoid; $W_{\text{pearlite}}=1-W_{\alpha,\text{pro}}$ |
+| Hypereutectoid steel, below 727 °C | $W_{\text{Fe}_3\text{C,pro}}=(c_0-0.76)/(6.7-0.76)$ | Lever rule just below the eutectoid |
 
 > [!note] Source images
 > The pre-midsem modules are text-only revision summaries and embed no figures; the diagrams (Burgers circuits, Bravais lattices, stacking sequences, void geometry, phase diagrams) are in the linked lecture PDFs at the slide named in each section. The post-midsem blocks below keep their own figure provenance notes.
