@@ -12,7 +12,7 @@ tags:
 
 # Computer Graphics — Syllabus
 
-This file is the **authority** for the topic list, the topic order and the midsem / post-midsem split. [[CG_Endsem_Notes]] is written against it section for section; every topic below names its lecture deck and jumps straight to the matching heading in the notes.
+This file is the **authority** for the topic list, the topic order and the midsem / post-midsem split. The post-midsem note [[CG_Endsem_Notes]] is written against it section for section; every topic below names its lecture deck and jumps straight to the matching heading in the note file that holds it.
 
 The split is by **date of the deck**, not by subject:
 
@@ -26,7 +26,7 @@ The split is by **date of the deck**, not by subject:
 
 > [!info] How to use this tracker
 > - Tick the box on a topic line when the topic is **revised and recallable**, not merely read once. Untick it if a revision pass exposes a hole.
-> - **PDF** opens the lecture deck; **Notes** jumps to the topic's heading in [[CG_Endsem_Notes]]; the section index at the bottom gives a one-click jump to every written section.
+> - **PDF** opens the lecture deck; **Notes** jumps to the topic's heading in the note file that holds it — [[CG_Endsem_Notes]] for the post-midsem block, [[CG_Midsem_notes]] for the pre-midsem one; the section index at the bottom gives a one-click jump to every written section.
 > - The counter below is live (Dataview) — it reads the checkboxes in this file, so nothing needs counting by hand.
 > - `§` numbers are the H2/H3 section numbers used inside [[CG_Endsem_Notes]] (e.g. §4.5 is a real heading there).
 > - Each post-midsem topic that contains an algorithm also carries an **interactive dry-run widget** — the widget column in the table at the bottom says which one.
@@ -252,6 +252,18 @@ The block's diagrams are either page renders lifted from the decks (`Computer Gr
 | [[CG - Gupta Sproull Coverage.excalidraw\|Gupta Sproull Coverage]] | The perpendicular distance and the two-neighbour blend of §7.7–§7.9 |
 | [[CG - 2D Animation Pipeline.excalidraw\|2D Animation Pipeline]] | The six stages of §8.3 |
 | [[CG - Jump Arc Keyframes.excalidraw\|Jump Arc Keyframes]] | The seven keys and the $4Ht(1-t)$ arc of §8.6–§8.11 |
+
+Page renders lifted from the decks (every one is embedded with a width and an italic caption):
+
+| Figure | Carries |
+| --- | --- |
+| [[CG - Concave Subject Split.png\|Concave Subject Split]] | The two lobes of the concave subject of §3.9 |
+| [[CG - Weiler Atherton Crossings.png\|Weiler Atherton Crossings]] | The four exit/entry crossings of §3.10 |
+| [[CG - Tetrahedron Back Face Result.png\|Tetrahedron Back Face Result]] | The two retained faces of the tetrahedron of §4.2 |
+| [[CG - BSP Traversal Order.png\|BSP Traversal Order]] | The deck's annotated draw order of §5.8 |
+| [[CG - Bitmapped Font L.png\|Bitmapped Font L]] | The $5\times7$ bitmap of §6.14 |
+| [[CG - Outlined Font L.png\|Outlined Font L]] | The six-vertex outline of §6.15 |
+| [[CG - Gupta Sproull E vs NE Case.png\|Gupta Sproull E vs NE Case]] | The E and NE cases and the sign of $s$ of §7.8 |
 
 ---
 

@@ -481,20 +481,20 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
     stage.innerHTML = "";
     stage.appendChild(el("rect", { x: 0, y: 0, width: 460, height: 360, fill: "none" }));
     stage.appendChild(el("rect", { x: X(B.xmin), y: Y(B.ymax), width: X(B.xmax) - X(B.xmin), height: Y(B.ymin) - Y(B.ymax),
-      fill: "rgba(47,158,68,0.10)", stroke: "#2f9e44", "stroke-width": 1.5 }));
-    stage.appendChild(el("text", { x: X(B.xmin) + 3, y: Y(B.ymax) - 6, fill: "#2f9e44", "font-size": 11 })).textContent = "clip box (z checked in table)";
+      fill: "rgba(47,158,68,0.10)", stroke: "var(--color-green,#2f9e44)", "stroke-width": 1.5 }));
+    stage.appendChild(el("text", { x: X(B.xmin) + 3, y: Y(B.ymax) - 6, fill: "var(--color-green,#2f9e44)", "font-size": 11 })).textContent = "clip box (z checked in table)";
     stage.appendChild(el("line", { x1: X(A0[0]), y1: Y(A0[1]), x2: X(B0[0]), y2: Y(B0[1]),
-      stroke: "#adb5bd", "stroke-width": 1.5, "stroke-dasharray": "5 4" }));
+      stroke: "var(--background-modifier-border,#adb5bd)", "stroke-width": 1.5, "stroke-dasharray": "5 4" }));
     stage.appendChild(el("line", { x1: X(s.P[0]), y1: Y(s.P[1]), x2: X(s.Q[0]), y2: Y(s.Q[1]),
-      stroke: s.kind === "reject" ? "#e03131" : "#1971c2", "stroke-width": 3 }));
-    [[s.P, "P", "#1971c2"], [s.Q, "Q", "#1971c2"]].forEach(([p, lab, col]) => {
+      stroke: s.kind === "reject" ? "var(--color-red,#e03131)" : "var(--color-blue,#1971c2)", "stroke-width": 3 }));
+    [[s.P, "P", "var(--color-blue,#1971c2)"], [s.Q, "Q", "var(--color-blue,#1971c2)"]].forEach(([p, lab, col]) => {
       stage.appendChild(el("circle", { cx: X(p[0]), cy: Y(p[1]), r: 4.5, fill: col }));
       const tx = el("text", { x: X(p[0]) + 7, y: Y(p[1]) - 7, fill: col, "font-size": 11 });
       tx.textContent = lab + bits(code(p));
       stage.appendChild(tx);
     });
     if (s.pt) {
-      stage.appendChild(el("circle", { cx: X(s.pt[0]), cy: Y(s.pt[1]), r: 5, fill: "none", stroke: "#e8590c", "stroke-width": 2 }));
+      stage.appendChild(el("circle", { cx: X(s.pt[0]), cy: Y(s.pt[1]), r: 5, fill: "none", stroke: "var(--color-orange,#e8590c)", "stroke-width": 2 }));
     }
     const ax = (y, txt) => { const t = el("text", { x: 4, y: y, fill: "var(--text-faint,#888)", "font-size": 10 }); t.textContent = txt; stage.appendChild(t); };
     ax(352, "x: −6 … 12   ·   y: −3 … 12   ·   z is not drawn");
@@ -931,16 +931,16 @@ Two consequences:
   function draw(s) {
     const st = document.getElementById("sh-stage");
     st.innerHTML = "";
-    st.appendChild(el("rect", { x: X(W.xmin), y: Y(W.ymax), width: X(W.xmax) - X(W.xmin), height: Y(W.ymin) - Y(W.ymax), fill: "rgba(47,158,68,0.10)", stroke: "#2f9e44", "stroke-width": 2 }));
-    st.appendChild(el("text", { x: X(W.xmin) + 4, y: Y(W.ymax) - 6, "font-size": 11, fill: "#2f9e44" })).textContent = "window 0…2";
-    if (s.input && s.input.length > 1) st.appendChild(poly(s.input.concat([s.input[0]]), { stroke: "#adb5bd", "stroke-width": 1.5, "stroke-dasharray": "4 4" }));
+    st.appendChild(el("rect", { x: X(W.xmin), y: Y(W.ymax), width: X(W.xmax) - X(W.xmin), height: Y(W.ymin) - Y(W.ymax), fill: "rgba(47,158,68,0.10)", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2 }));
+    st.appendChild(el("text", { x: X(W.xmin) + 4, y: Y(W.ymax) - 6, "font-size": 11, fill: "var(--color-green,#2f9e44)" })).textContent = "window 0…2";
+    if (s.input && s.input.length > 1) st.appendChild(poly(s.input.concat([s.input[0]]), { stroke: "var(--background-modifier-border,#adb5bd)", "stroke-width": 1.5, "stroke-dasharray": "4 4" }));
     if (s.out && s.out.length > 1) {
-      st.appendChild(poly(s.out.concat([s.out[0]]), { stroke: "#1971c2", "stroke-width": 2.5, fill: "rgba(25,113,194,0.16)" }));
-      s.out.forEach(p => st.appendChild(el("circle", { cx: X(p[0]), cy: Y(p[1]), r: 3.5, fill: "#1971c2" })));
+      st.appendChild(poly(s.out.concat([s.out[0]]), { stroke: "var(--color-blue,#1971c2)", "stroke-width": 2.5, fill: "rgba(25,113,194,0.16)" }));
+      s.out.forEach(p => st.appendChild(el("circle", { cx: X(p[0]), cy: Y(p[1]), r: 3.5, fill: "var(--color-blue,#1971c2)" })));
     }
     if (s.S && s.E) {
-      st.appendChild(el("line", { x1: X(s.S[0]), y1: Y(s.S[1]), x2: X(s.E[0]), y2: Y(s.E[1]), stroke: "#e8590c", "stroke-width": 3 }));
-      if (s.I) st.appendChild(el("circle", { cx: X(s.I[0]), cy: Y(s.I[1]), r: 5, fill: "none", stroke: "#e8590c", "stroke-width": 2 }));
+      st.appendChild(el("line", { x1: X(s.S[0]), y1: Y(s.S[1]), x2: X(s.E[0]), y2: Y(s.E[1]), stroke: "var(--color-orange,#e8590c)", "stroke-width": 3 }));
+      if (s.I) st.appendChild(el("circle", { cx: X(s.I[0]), cy: Y(s.I[1]), r: 5, fill: "none", stroke: "var(--color-orange,#e8590c)", "stroke-width": 2 }));
     }
     const ax = el("text", { x: 8, y: 318, "font-size": 10, fill: "var(--text-faint,#888)" });
     ax.textContent = "grey dashed = input polygon · orange = edge being processed · blue = output list so far";
@@ -1159,7 +1159,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 ### 4.8 Interactive dry run
 
 > [!tip] How to use the widget
-> Two triangles are scan-converted in order, first the near one, then the far one. Each step is one covered pixel of one surface: the widget compares the new $z$ against $DB$ and shows the outcome. Watch the near surface win the overlap region, and watch the far one still paint the pixels the near one never covered.
+> Two triangles are scan-converted in order, first the near one, then the far one. Each step is one covered pixel of one surface: the widget compares the new $z$ against $DB$ and shows the outcome. Watch the near surface win the overlap region, and watch the far one still paint the pixels the near one never covered. The depths here are in an arbitrary unit, so the buffer is initialised to $\infty$ — the same "far value" as the algorithm box's $1$, since every real depth is nearer than it.
 
 ```html
 <div id="w-zb" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui,sans-serif)">
@@ -1184,8 +1184,8 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 <script>
 (() => {
   const COLS = 10, ROWS = 8, CELL = 28;
-  const triA = { pts: [[1, 1], [9, 2], [5, 7]], plane: (x, y) => 2 + 0.05 * x + 0.03 * y, colour: "#1971c2", name: "A" };
-  const triB = { pts: [[0, 5], [7, 7], [9, 0]], plane: (x, y) => 5 + 0.05 * x + 0.03 * y, colour: "#e8590c", name: "B" };
+  const triA = { pts: [[1, 1], [9, 2], [5, 7]], plane: (x, y) => 2 + 0.05 * x + 0.03 * y, colour: "var(--color-blue,#1971c2)", name: "A" };
+  const triB = { pts: [[0, 5], [7, 7], [9, 0]], plane: (x, y) => 5 + 0.05 * x + 0.03 * y, colour: "var(--color-orange,#e8590c)", name: "B" };
   function inside(t, x, y) {
     const [a, b, c] = t.pts;
     const d1 = (x - b[0]) * (a[1] - b[1]) - (a[0] - b[0]) * (y - b[1]);
@@ -1213,15 +1213,15 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
     fbSvg.innerHTML = ""; dbSvg.innerHTML = "";
     for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
       const bg = fb[y][x] || "none";
-      fbSvg.appendChild(el("rect", { x: x * CELL, y: y * CELL, width: CELL, height: CELL, fill: bg, stroke: "#ced4da", "stroke-width": 0.8 }));
+      fbSvg.appendChild(el("rect", { x: x * CELL, y: y * CELL, width: CELL, height: CELL, fill: bg, stroke: "var(--background-modifier-border,#ced4da)", "stroke-width": 0.8 }));
       const d = el("text", { x: x * CELL + CELL / 2, y: y * CELL + CELL / 2 + 4, "font-size": 9, "text-anchor": "middle", fill: "var(--text-normal,#333)" });
       d.textContent = tc(db[y][x]);
-      dbSvg.appendChild(el("rect", { x: x * CELL, y: y * CELL, width: CELL, height: CELL, fill: "none", stroke: "#ced4da", "stroke-width": 0.8 }));
+      dbSvg.appendChild(el("rect", { x: x * CELL, y: y * CELL, width: CELL, height: CELL, fill: "none", stroke: "var(--background-modifier-border,#ced4da)", "stroke-width": 0.8 }));
       dbSvg.appendChild(d);
     }
     if (s) {
-      fbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "#2f9e44", "stroke-width": 2.5 }));
-      dbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "#2f9e44", "stroke-width": 2.5 }));
+      fbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2.5 }));
+      dbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2.5 }));
     }
     if (!s) { document.getElementById("zb-say").textContent = "Ready. Depth buffer = ∞ everywhere; frame buffer empty."; return; }
     document.getElementById("zb-say").textContent =
@@ -1356,7 +1356,7 @@ The deck's convention is fixed by the sentence: *the arrow $\mathbf{n}_i$ points
 > 4:     node  ← p, node.plane ← plane of p
 > 5:     IN ← {}, OUT ← {}
 > 6:     for every other polygon q in S:
-> 7:         classify every vertex v of q by sign of f_q(v) = (v − p) · n
+> 7:         classify every vertex v of q by sign of f_p(v) = (v − p) · n
 > 8:         if all signs < 0:  put q in IN
 > 9:         else if all signs > 0: put q in OUT
 > 10:        else: split q at the plane into q_IN and q_OUT, put both
@@ -1962,7 +1962,7 @@ The choice is not cosmetic. A boundary that is **8-connected** (its pixels touch
 | Fill | Boundary 4-connected | Boundary 8-connected |
 | --- | --- | --- |
 | **4-connected** | contained | contained — a diagonal gap is still a wall |
-| **8-connected** | **leaks** through a diagonal gap | contained |
+| **8-connected** | contained — the wall has no corner contact to slip through | **leaks** through a diagonal gap |
 
 So the safe pairing for a closed region is *8-connected boundary with 4-connected fill*, or *4-connected boundary with 8-connected fill*. This is why paint programs expose the connectivity as a fill option: the wrong pair floods the whole canvas.
 
@@ -2898,4 +2898,4 @@ The widget tweens the character between the takeoff key and the landing key acro
 | Outline area | $1\times7+5\times1-1=11$ units² | scales by $2^2=4$; area ≠ pixel count |
 
 > [!note] Source images
-> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result and the depth-buffer frames from [[CG_Oct_8.pdf]], the Weiler–Atherton crossings and concave-subject split from [[CG_Oct_5.pdf]], the BSP traversal order from [[CG_26_Oct.pdf]], the E/NE case of Gupta–Sproull from [[CG_Nov-2.pdf]], and the bitmapped and outlined letter `L` from [[CG-29th_Oct.pdf]].
+> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result from [[CG_Oct_8.pdf]], the Weiler–Atherton crossings and the concave-subject split from [[CG_Oct_5.pdf]], the BSP traversal order from [[CG_26_Oct.pdf]], the E/NE case of Gupta–Sproull from [[CG_Nov-2.pdf]], and the bitmapped and outlined letter `L` from [[CG-29th_Oct.pdf]].

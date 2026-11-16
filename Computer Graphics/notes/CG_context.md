@@ -100,7 +100,7 @@ Rules:
 1. `## N. <Topic>` — one line saying which deck and how many slides.
 2. Numbered H3 sections in the deck's order (figure → prose → definition → derivation → table → worked example).
 3. `### N.k Algorithm box` for every algorithm in the deck (see §7).
-4. The **interactive widget** for that algorithm, embedded right after its algorithm box.
+4. The **interactive widget** for that algorithm, in its own `### N.k Interactive dry run` section immediately after the algorithm box and its trace.
 5. `> [!tip] Exam pointer` as the last element of the topic.
 6. `## Formula Summary` at the end of the whole note (one table for the block).
 7. `> [!note] Source images` provenance callout at the end of the note.
@@ -305,7 +305,7 @@ Tables are the default for traces, classifications and comparisons:
 3. **Preserve the lecturer's conventions** — bit order, clip order, depth direction, tie-breaking (`d = 0` chooses E). These are examinable.
 4. **Numbers are sacred.** If a page is mojibake, reconstruct only what the surrounding pages support; never silently change a digit.
 5. **Non-destructive edits.** Extend by targeted inline edits; never rewrite a finished block from scratch.
-6. **Status tracking.** Update the Syllabus Map row in [[CG_Syllabus]] (`✅ noted`) whenever a topic is added.
+6. **Status tracking.** Tick the topic's checkbox (`- [x]`) on its line in [[CG_Syllabus]] — the Dataview counter and the section index must be updated in the same pass.
 
 ---
 
@@ -318,7 +318,7 @@ Tables are the default for traces, classifications and comparisons:
 5. **Write the H2 topic** with numbered H3 sections in the deck's order, plus H4 depth.
 6. **Add the algorithm box and the widget** for every algorithm (§7).
 7. **Close** with `[!tip] Exam pointer`; add the topic's rows to `## Formula Summary`; finish the note with the `[!note] Source images` callout.
-8. **Update** the Syllabus Map status and the section index.
+8. **Update** the topic's checkbox line, the widget and figure rows it adds, and the section index in [[CG_Syllabus]].
 
 ### Checklist before finishing
 
