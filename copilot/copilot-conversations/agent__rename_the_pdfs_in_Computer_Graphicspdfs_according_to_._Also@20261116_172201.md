@@ -6,7 +6,7 @@ sessionId: "1c1985b1-a8f1-44e1-9a93-6b595b28346b"
 agentLabel: "rename the pdfs in {Computer Graphics/pdfs} according to . A…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":116774,"contextWindow":1000000,"inputTokens":4,"outputTokens":3,"cacheReadTokens":116056,"cacheWriteTokens":711,"updatedAt":1794831721573}'
+usage: '{"usedTokens":134983,"contextWindow":1000000,"inputTokens":2,"outputTokens":419,"cacheReadTokens":134153,"cacheWriteTokens":409,"updatedAt":1794832127815}'
 ---
 
 **user**: rename the pdfs in {Computer Graphics/pdfs} according to .
@@ -119,5 +119,49 @@ That changes the "single `html` code block" rule in `CG_context` §7.2, so I'd u
 **user**: I have installed JS Engine. rewrite the widgets and make them run through JS engine.
 [Timestamp: 2026/11/16 17:53:40]
 
-**ai**: First I'm checking how the 8 widgets are built, so I can convert them mechanically and not retype them.All 8 blocks pass a JavaScript syntax check. Next I'm updating the "how to use" callouts and the rulebook text that still describe the old `html` format.
+**ai**: First I'm checking how the 8 widgets are built, so I can convert them mechanically and not retype them.All 8 blocks pass a JavaScript syntax check. Next I'm updating the "how to use" callouts and the rulebook text that still describe the old `html` format.The text updates are done. Next I'll run one widget in a simulated DOM to check that stepping and play actually work, if a DOM library is available.Firefox is available, so I'll run all 8 widgets in a headless harness that mimics `container` and clicks Next Step and Play.I converted all 8 widgets to JS Engine blocks, and in a Firefox test harness every one rendered and stepped correctly. I haven't run them inside your Obsidian.
+
+**What changed in `CG_Endsem_Notes`.**
+- The 8 widgets (§3.10, §4.16, §5.8, §6.10, §7.9, §7.13, §8.12, §9.12) are now fenced as ` ```js-engine ` instead of ` ```html `.
+- Each block sets the widget markup on the plugin's `container`, then runs the original script.
+- Element lookups go through `container`, not `document`, so the widgets don't interfere with each other.
+- I did not change the algorithm logic.
+
+**What I tested.**
+- All 8 blocks pass a JavaScript syntax check.
+- I ran them in headless Firefox with a stand-in for the plugin's `container`. All 8 built their UI and showed four buttons, Play, Pause, Next Step and Reset.
+- After three Next Step clicks each one showed the right trace. For example, Cohen–Sutherland showed "Pass 3: clip B at Top (y = 6), t = 0.667 → (4, 6, 6)", and Gupta–Sproull showed "Column 3 · d = 6 → NE".
+- Reset restored the starting narration, and Play ran the animation without errors.
+
+**What I couldn't test.** I can't run Obsidian itself here, so I haven't confirmed the JS Engine plugin version you have behaves like my stand-in. Open §3.10 first. If it renders and Next Step works, the others will too. If it doesn't, send me what you see.
+
+**Notes for use.**
+- The widgets render in Reading view and Live Preview, but not in Source mode.
+- Navigating away mid-Play can leave a timer running briefly.
+
+**Rulebook updates.**
+- `CG_context` §7.2 and §7.3 now describe the `js-engine` format and the `container`-scoped lookups, and the old "code-block reality check" warning is replaced by a "How the widgets run" note.
+- `CG_Syllabus` now says the widgets run inside the note through JS Engine.
+- The pre-conversion copies are in `/tmp/cgbak/` with a `.pre-jsengine` suffix.
 [Timestamp: 2026/11/16 17:53:40]
+
+**user**: where are these widgets?
+[Timestamp: 2026/11/16 17:58:39]
+
+**ai**: All 8 widgets are in `Computer Graphics/notes/CG_Endsem_Notes.md`. Each one sits under a heading called "Interactive dry run", right after its algorithm's worked trace.
+
+| Section | Line | Widget |
+| --- | --- | --- |
+| §3.10 | 537 | Cohen–Sutherland line clipping |
+| §4.16 | 1013 | Sutherland–Hodgman polygon clipping |
+| §5.8 | 1314 | Z-buffer |
+| §6.10 | 1672 | BSP tree build and traversal |
+| §7.9 | 1974 | Scan-line polygon fill |
+| §7.13 | 2163 | Flood / seed fill |
+| §8.12 | 2620 | Gupta–Sproull anti-aliasing |
+| §9.12 | 2904 | In-between interpolation |
+
+To see one running, open the note in Reading view and scroll to the heading. In Source mode you'll see only the code. The syllabus also lists them in the "Interactive dry runs" table in [[CG_Syllabus]], with one-click links to each section.
+
+If a widget shows as a plain code block instead of buttons, JS Engine isn't enabled for that note. Check Settings → Community plugins.
+[Timestamp: 2026/11/16 17:58:39]
