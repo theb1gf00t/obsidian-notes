@@ -61,15 +61,15 @@ WHERE file.path = this.file.path
 
 ## Post-Midsem — 9 topics
 
-- [x] **1 · 3D Viewing Transformation and Camera Setup** — [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|PDF (28 Sep)]] · [[CG_Endsem_Notes#1. 3D Viewing Transformation and Camera Setup|Notes → §1]] (4 sections)
-- [x] **2 · 3D Viewing, Camera and Projection Fundamentals** — [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|PDF]] · [[CG_Endsem_Notes#2. 3D Viewing, Camera and Projection Fundamentals|Notes → §2]]  (7 sections)
-- [x] **3 · Viewport Mapping and Cohen–Sutherland Clipping** — [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|PDF]] · [[CG_Endsem_Notes#3. Viewport Mapping and Cohen–Sutherland Clipping|Notes → §3]] (11 sections) · widget `#w-cs`
-- [x] **4 · Polygon and 3D Fill-Area Clipping** — [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|PDF]] · [[CG_Endsem_Notes#4. Polygon and 3D Fill-Area Clipping|Notes → §4]] (17 sections) · widget `#w-sh`
-- [x] **5 · Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer** — [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|PDF]] · [[CG_Endsem_Notes#5. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer|Notes → §5]] (9 sections) · widget `#w-zb`
-- [x] **6 · Hidden Surface Removal II — Painter's Algorithm and BSP Trees** — [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|PDF]] · [[CG_Endsem_Notes#6. Hidden Surface Removal II — Painter's Algorithm and BSP Trees|Notes → §6]] (11 sections) · widget `#w-bsp`
-- [x] **7 · Fill-Area Algorithms, Scan Conversion and the 3D Pipeline** — [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|PDF]] · [[CG_Endsem_Notes#7. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline|Notes → §7]] (16 sections) · widgets `#w-sl`, `#w-ff`
-- [x] **8 · Anti-Aliasing I — The Gupta–Sproull Algorithm** — [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|PDF]] · [[CG_Endsem_Notes#8. Anti-Aliasing I — The Gupta–Sproull Algorithm|Notes → §8]] (13 sections) · widget `#w-gs`
-- [x] **9 · Animation — The 2D Production Process** — [[Post 9 - Animation - The 2D Production Process.pdf|PDF]] · [[CG_Endsem_Notes#9. Animation — The 2D Production Process|Notes → §9]] (13 sections) · widget `#w-tween`
+- [ ] **1 · 3D Viewing Transformation and Camera Setup** — [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|PDF (28 Sep)]] · [[CG_Endsem_Notes#1. 3D Viewing Transformation and Camera Setup|Notes → §1]] (4 sections)
+- [ ] **2 · 3D Viewing, Camera and Projection Fundamentals** — [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|PDF]] · [[CG_Endsem_Notes#2. 3D Viewing, Camera and Projection Fundamentals|Notes → §2]]  (7 sections)
+- [ ] **3 · Viewport Mapping and Cohen–Sutherland Clipping** — [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|PDF]] · [[CG_Endsem_Notes#3. Viewport Mapping and Cohen–Sutherland Clipping|Notes → §3]] (11 sections) · widget `#w-cs`
+- [ ] **4 · Polygon and 3D Fill-Area Clipping** — [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|PDF]] · [[CG_Endsem_Notes#4. Polygon and 3D Fill-Area Clipping|Notes → §4]] (17 sections) · widget `#w-sh`
+- [ ] **5 · Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer** — [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|PDF]] · [[CG_Endsem_Notes#5. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer|Notes → §5]] (9 sections) · widget `#w-zb`
+- [ ] **6 · Hidden Surface Removal II — Painter's Algorithm and BSP Trees** — [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|PDF]] · [[CG_Endsem_Notes#6. Hidden Surface Removal II — Painter's Algorithm and BSP Trees|Notes → §6]] (11 sections) · widget `#w-bsp`
+- [ ] **7 · Fill-Area Algorithms, Scan Conversion and the 3D Pipeline** — [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|PDF]] · [[CG_Endsem_Notes#7. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline|Notes → §7]] (16 sections) · widgets `#w-sl`, `#w-ff`
+- [ ] **8 · Anti-Aliasing I — The Gupta–Sproull Algorithm** — [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|PDF]] · [[CG_Endsem_Notes#8. Anti-Aliasing I — The Gupta–Sproull Algorithm|Notes → §8]] (13 sections) · widget `#w-gs`
+- [ ] **9 · Animation — The 2D Production Process** — [[Post 9 - Animation - The 2D Production Process.pdf|PDF]] · [[CG_Endsem_Notes#9. Animation — The 2D Production Process|Notes → §9]] (13 sections) · widget `#w-tween`
 
 > [!tip] Exam pointer
 > The marks in this block sit on the **traces, not the definitions**: build the camera basis and the world-to-view matrix for a numeric scene (§1.2), project a point through the canonical cube (§2.2–§2.5), an outcode-by-outcode line clip (§3.4, §3.8), the four-case Sutherland–Hodgman walk (§4.4–§4.8), the tetrahedron normal test (§5.2) and the incremental z recursion (§5.6), the full BSP draw order with the split of polygon 9 (§6.6–§6.8), a row-by-row scan-line trace (§7.7) and a seed-fill stack trace (§7.11), the Gupta–Sproull decision variable together with its eight coverage values (§8.6, §8.10), and the in-between arithmetic $h(t)=4Ht(1-t)$ (§9.11).
@@ -230,7 +230,7 @@ Every written section of [[CG_Endsem_Notes]], grouped by topic, so a topic can b
 
 ## Interactive dry runs
 
-Each algorithm in the post-midsem block has one self-contained widget: a `Play` / `Pause` / `Next Step` / `Reset` control bar over a drawing of the algorithm's own data. The code lives in the note as a single `html` block; [[CG_context]] explains how to run it.
+Each algorithm in the post-midsem block has one self-contained widget: a `Play` / `Pause` / `Next Step` / `Reset` control bar over a drawing of the algorithm's own data. Each widget is a single `js-engine` block that runs inside the note through the JS Engine plugin; [[CG_context]] §7 gives the contract.
 
 | Widget | Where | Algorithm | What to watch |
 | --- | --- | --- | --- |

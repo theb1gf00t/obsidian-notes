@@ -168,26 +168,28 @@ Every algorithm in a deck — Bresenham, midpoint, Cohen–Sutherland, Sutherlan
 
 ### 7.2 Widget contract (strict)
 
-Every algorithm section ships an **interactive dry run** written as one HTML document:
+Every algorithm section ships an **interactive dry run** written as one **JS Engine** block (the [JS Engine](https://github.com/mProjectsCode/obsidian-js-engine-plugin) community plugin must be installed and enabled):
 
-1. **One single, continuous fenced code block**, tagged `html`. Never split a widget across two blocks, never leave `<script>` outside the fence.
+1. **One single, continuous fenced code block**, tagged `js-engine`. Never split a widget across two blocks. The block body is plain JavaScript that receives the plugin's `container` element: it sets `container.innerHTML` to the widget markup, then runs the widget script. No `<script>` or `<style>` tags — a script tag in `innerHTML` does not execute.
 2. **Required controls:** `Play`, `Pause`, `Next Step`, `Reset` — all four on every widget, plus whatever extra control the algorithm needs (speed slider, geometry picker, filter selector).
 3. **Required visual layer:** a live view of the algorithm's state — a canvas/SVG showing the geometry *and* a side panel showing the data structure being mutated (outcode bits, vertex list, depth buffer, stack, AET, keyframe table).
-4. **Pure vanilla JavaScript**, inline `<style>`, HTML/SVG/`<canvas>` only. **No CDN, no framework, no external font, no build step.** Everything must run from a local file with no network.
+4. **Pure vanilla JavaScript**, inline `style="…"` attributes, HTML/SVG/`<canvas>` only. **No CDN, no framework, no external font, no build step.** Everything runs offline.
 5. **Theme-aware colours** via Obsidian CSS variables so the widget matches light and dark mode:
    - `var(--background-primary)`, `var(--background-secondary)`, `var(--background-modifier-border)`
    - `var(--text-normal)`, `var(--text-muted)`, `var(--text-faint)`
    - `var(--interactive-accent)`, `var(--interactive-accent-hover)`
    - `var(--color-red)`, `var(--color-green)`, `var(--color-blue)`, `var(--color-yellow)`, `var(--color-purple)`, `var(--color-orange)`
-   Provide a fallback in the same declaration — `var(--background-secondary, #f4f4f4)` — so the widget still renders outside Obsidian.
+   Provide a fallback in the same declaration — `var(--background-secondary, #f4f4f4)` — so the widget still looks right if the variable is missing.
 6. **Narration line** under the controls: one sentence per step saying exactly what the algorithm just did (`Pass 1 · clip A at x = 0 · t = 1/3 · A′ = (0, 4, 2)`). The dry run must be *readable*, not just animated.
-7. **Deterministic and re-entrant:** `Reset` restores the initial state exactly; `Next Step` stops at the terminal state; `Play` uses `setInterval`/`requestAnimationFrame` with a pause-safe timer; no global leaks (`(() => { … })()`), no `document.write`.
+7. **Deterministic and re-entrant:** `Reset` restores the initial state exactly; `Next Step` stops at the terminal state; `Play` uses `setInterval`/`requestAnimationFrame` with a pause-safe timer; no global leaks (`(() => { … })()`), no `document.write`. **Look elements up through `container`**, never `document`: define `const $ = (id) => container.querySelector("#" + id);` once, so several widgets or panes never collide.
 8. **Accessible:** real `<button>` elements, visible focus, no reliance on colour alone (pair every colour with a label or a number), text at `13–14px`.
 9. **Size:** full width of the note, height `320–460px` for the stage plus the control bar. Scale the drawing to the element's width (recompute on `resize`).
 
 ### 7.3 Widget skeleton (copy this shape)
 
-```html
+```js-engine
+// `container` is provided by JS Engine
+container.innerHTML = `
 <div id="w-cs" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="cs-play">▶ Play</button>
@@ -197,16 +199,15 @@ Every algorithm section ships an **interactive dry run** written as one HTML doc
   </div>
   <div id="cs-say" style="min-height:22px;color:var(--text-muted,#555);margin-bottom:8px">Ready · press Next Step</div>
   <svg id="cs-stage" viewBox="0 0 640 320" style="width:100%;height:auto;display:block"></svg>
-</div>
-<script>
+</div>`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
-  // state, render(), step(), play/pause/reset wiring
+  // state, render(), step(), play/pause/reset wiring — use $("cs-play"), never document.getElementById
 })();
-</script>
 ```
 
-> [!warning] Code-block reality check
-> The ```` ```html ```` fence is the required delivery format — it is a **code block**, so Obsidian shows the source, not a running widget. Run it by copying the block into a `.html` file, or with a code-execution plugin. Keep the block self-contained precisely so that it can be run either way.
+> [!note] How the widgets run
+> The ```` ```js-engine ```` fence executes in **Reading view** and **Live Preview** once the JS Engine plugin is enabled (*Settings → Community plugins*); in Source mode, or without the plugin, you see the source. If a widget is blank, check that the plugin is on and reopen the note. Template literals must not contain a backtick or `${`.
 
 ### 7.4 Which algorithms get a widget (post-midsem block)
 
@@ -362,8 +363,8 @@ $$ \boxed{\ \text{key result}\ } $$
 > 1: …
 > ```
 
-\`\`\`html
-<self-contained widget>
+\`\`\`js-engine
+<container.innerHTML = markup; widget script>
 \`\`\`
 
 > [!warning] <Trap>

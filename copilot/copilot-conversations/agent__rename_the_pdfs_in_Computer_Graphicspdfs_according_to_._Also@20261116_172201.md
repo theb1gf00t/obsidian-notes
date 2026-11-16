@@ -6,7 +6,7 @@ sessionId: "1c1985b1-a8f1-44e1-9a93-6b595b28346b"
 agentLabel: "rename the pdfs in {Computer Graphics/pdfs} according to . A…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":115120,"contextWindow":1000000,"inputTokens":2,"outputTokens":794,"cacheReadTokens":113486,"cacheWriteTokens":838,"updatedAt":1794831366197}'
+usage: '{"usedTokens":116774,"contextWindow":1000000,"inputTokens":4,"outputTokens":3,"cacheReadTokens":116056,"cacheWriteTokens":711,"updatedAt":1794831721573}'
 ---
 
 **user**: rename the pdfs in {Computer Graphics/pdfs} according to .
@@ -66,3 +66,58 @@ All wikilinks in the three notes resolve to real headings, PDFs and images. The 
 
 I backed up the three notes to `/tmp/cgbak/` before editing.
 [Timestamp: 2026/11/16 17:43:50]
+
+**user**: are there any interactive widgets in notes for dry running?
+[Timestamp: 2026/11/16 17:50:36]
+
+**ai**: Yes. `CG_Endsem_Notes` has 8 interactive dry-run widgets, one for each algorithm in the post-midsem block:
+
+| Widget | Section | Algorithm |
+| --- | --- | --- |
+| `#w-cs` | §3.10 | Cohen–Sutherland line clipping |
+| `#w-sh` | §4.16 | Sutherland–Hodgman polygon clipping |
+| `#w-zb` | §5.8 | Z-buffer |
+| `#w-bsp` | §6.10 | BSP tree build and traversal |
+| `#w-sl` | §7.9 | Scan-line polygon fill |
+| `#w-ff` | §7.13 | Flood / seed fill |
+| `#w-gs` | §8.12 | Gupta–Sproull anti-aliasing |
+| `#w-tween` | §9.12 | In-between interpolation |
+
+Each one has Play, Pause, Next Step and Reset buttons, a narration line, and a live view of the algorithm's data.
+
+**They won't run inside Obsidian.** Each widget is a fenced `html` code block, which Obsidian shows as source code, not a running page. This is what the rulebook in `CG_context` specifies. To use one, copy the block into a `.html` file and open it in a browser. Alternatively, a code-execution plugin that renders HTML blocks will run it.
+
+**§1 and §2 have no widget.** The 28 Sep lecture (§1) and the projection lecture (§2) contain no algorithm to step through. The context rules mark topic 1 as "none — geometry demo optional". I can add an optional camera or projection demo if you want one, such as dragging the camera and watching $M_{w2v}$ and the transformed point update.
+[Timestamp: 2026/11/16 17:50:36]
+
+**user**: is there a way for these widgets to run inside obsidian.
+or any plugin or anything that lets me make interactive simulations
+[Timestamp: 2026/11/16 17:51:45]
+
+**ai**: Yes, there are a few ways. I haven't tested any of them in your vault, and plugin behaviour changes between versions, so check each one before relying on it.
+
+**1. Iframe embed (no plugin).**
+- Obsidian renders raw HTML in notes, and a scripted `<iframe>` runs its own JavaScript. A `<script>` pasted straight into a note doesn't run, so the iframe is what makes it work.
+- You'd save each widget as `.html` (for example in `Computer Graphics/widgets/`) and embed it with `<iframe src="app://local/…/widget.html">`, or inline with `srcdoc`. The `app://local` path only works in the desktop app.
+- It's the least invasive option, and the widgets are already self-contained with no CDN. They would show in the note the way a figure does.
+
+**2. A JS-running plugin.**
+- Plugins such as **JS Engine** or **Dataview** (`dataviewjs` blocks) run JavaScript in a code block and let it draw into the note. I'd expect them to handle canvas, SVG and buttons.
+- The widgets would need to be rewritten to attach to the plugin's container element instead of using `<div>` and `<script>`. That's a moderate rewrite per widget.
+- Both plugins execute arbitrary code from your notes, which is fine for your own notes.
+
+**3. Other plugins for building simulations.**
+- **Meta Bind** adds sliders, inputs and buttons that bind to note properties. It suits parameter-tweaking demos better than step-by-step animation.
+- **Excalidraw scripting** can automate drawings, but it's awkward for step-through traces.
+- Community plugins that render HTML or iframe blocks, or embed local pages, also exist. Search Community Plugins for "html", "iframe" or "embed", and check that they're maintained.
+
+**My recommendation:** option 1. It needs no plugin and no rewrite, and the files also open in any browser. If you'd like, I can do it: I'd split the 8 widgets into `widgets/*.html` files and swap each ` ```html ` block in `CG_Endsem_Notes` for an iframe embed.
+
+That changes the "single `html` code block" rule in `CG_context` §7.2, so I'd update that rule too. I'd check first that the iframe actually runs in your Obsidian, using one widget, before converting all 8.
+[Timestamp: 2026/11/16 17:51:45]
+
+**user**: I have installed JS Engine. rewrite the widgets and make them run through JS engine.
+[Timestamp: 2026/11/16 17:53:40]
+
+**ai**: First I'm checking how the 8 widgets are built, so I can convert them mechanically and not retype them.All 8 blocks pass a JavaScript syntax check. Next I'm updating the "how to use" callouts and the rulebook text that still describe the old `html` format.
+[Timestamp: 2026/11/16 17:53:40]

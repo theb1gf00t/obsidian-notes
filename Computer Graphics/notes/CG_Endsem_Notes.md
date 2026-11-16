@@ -534,7 +534,9 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 > [!tip] How to use the widget
 > `Next Step` advances one *pass* (one endpoint moved onto one plane). The left panel is the geometry; the right panel is the working state: both codes, the OR/AND decision, and the surviving $t$ interval. The $z$ coordinate is checked in the table, not drawn — the sketch is an $xy$ projection.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-cs" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui,sans-serif)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="cs-play" style="padding:5px 12px;border-radius:6px;border:1px solid var(--background-modifier-border,#bbb);background:var(--interactive-accent,#4a7fd4);color:var(--text-on-accent,#fff);cursor:pointer">▶ Play</button>
@@ -559,7 +561,8 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const B = { xmin: 0, xmax: 6, ymin: 0, ymax: 6, zmin: 0, zmax: 8 };
   const A0 = [-4, 2, -2], B0 = [8, 8, 10];
@@ -613,10 +616,10 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 
   const steps = build();
   let i = 0, timer = null;
-  const stage = document.getElementById("cs-stage");
-  const say = document.getElementById("cs-say");
-  const tbody = document.querySelector("#cs-table tbody");
-  const state = document.getElementById("cs-state");
+  const stage = $("cs-stage");
+  const say = $("cs-say");
+  const tbody = container.querySelector("#cs-table tbody");
+  const state = $("cs-state");
   const NS = "http://www.w3.org/2000/svg";
   const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
 
@@ -673,16 +676,15 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
   }
 
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("cs-next").onclick = () => { stop(); if (i < steps.length - 1) i++; paint(); };
-  document.getElementById("cs-reset").onclick = () => { stop(); i = 0; paint(); };
-  document.getElementById("cs-pause").onclick = stop;
-  document.getElementById("cs-play").onclick = () => {
+  $("cs-next").onclick = () => { stop(); if (i < steps.length - 1) i++; paint(); };
+  $("cs-reset").onclick = () => { stop(); i = 0; paint(); };
+  $("cs-pause").onclick = stop;
+  $("cs-play").onclick = () => {
     stop();
     timer = setInterval(() => { if (i < steps.length - 1) { i++; paint(); } else { stop(); } }, 1200);
   };
   paint();
 })();
-</script>
 ```
 
 ### 3.11 Exam pointer
@@ -1008,7 +1010,9 @@ Two consequences:
 > [!tip] How to use the widget
 > The polygon $[(-1,0),(3,0),(1,3)]$ is clipped against $[0,2]^{2}$ in the book order left → right → top → bottom. Each step processes **one edge** and names its case. The right-hand column is the output list *growing*, which is the part that exam questions ask you to reproduce.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-sh" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui,sans-serif)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="sh-play" style="padding:5px 12px;border-radius:6px;border:1px solid var(--background-modifier-border,#bbb);background:var(--interactive-accent,#4a7fd4);color:var(--text-on-accent,#fff);cursor:pointer">▶ Play</button>
@@ -1026,7 +1030,8 @@ Two consequences:
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const W = { xmin: 0, xmax: 2, ymin: 0, ymax: 2 };
   const start = [[-1, 0], [3, 0], [1, 3]];
@@ -1075,7 +1080,7 @@ Two consequences:
     return el("polyline", Object.assign({ points: pts.map(p => X(p[0]) + "," + Y(p[1])).join(" "), fill: "none" }, attrs));
   }
   function draw(s) {
-    const st = document.getElementById("sh-stage");
+    const st = $("sh-stage");
     st.innerHTML = "";
     st.appendChild(el("rect", { x: X(W.xmin), y: Y(W.ymax), width: X(W.xmax) - X(W.xmin), height: Y(W.ymin) - Y(W.ymax), fill: "rgba(47,158,68,0.10)", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2 }));
     st.appendChild(el("text", { x: X(W.xmin) + 4, y: Y(W.ymax) - 6, "font-size": 11, fill: "var(--color-green,#2f9e44)" })).textContent = "window 0…2";
@@ -1095,21 +1100,20 @@ Two consequences:
   function paint() {
     const s = steps[i];
     draw(s);
-    document.getElementById("sh-say").textContent = s.log;
-    document.getElementById("sh-pass").textContent = "Pass " + Math.min(s.pi + 1, 4) + " of 4 — " + s.ps.name;
-    const o = document.getElementById("sh-out");
+    $("sh-say").textContent = s.log;
+    $("sh-pass").textContent = "Pass " + Math.min(s.pi + 1, 4) + " of 4 — " + s.ps.name;
+    const o = $("sh-out");
     o.innerHTML = "<b>out list</b><br>" + (s.out.length ? s.out.map((p, k) => k + ": " + fmt(p)).join("<br>") : "<i>empty</i>");
     const keep = steps.slice(0, i + 1).filter(x => x.phase === "edge").slice(-4);
-    document.getElementById("sh-log").innerHTML = keep.map(x => "· " + x.log).join("<br>");
+    $("sh-log").innerHTML = keep.map(x => "· " + x.log).join("<br>");
   }
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("sh-next").onclick = () => { stop(); if (i < steps.length - 1) i++; paint(); };
-  document.getElementById("sh-reset").onclick = () => { stop(); i = 0; paint(); };
-  document.getElementById("sh-pause").onclick = stop;
-  document.getElementById("sh-play").onclick = () => { stop(); timer = setInterval(() => { if (i < steps.length - 1) { i++; paint(); } else stop(); }, 900); };
+  $("sh-next").onclick = () => { stop(); if (i < steps.length - 1) i++; paint(); };
+  $("sh-reset").onclick = () => { stop(); i = 0; paint(); };
+  $("sh-pause").onclick = stop;
+  $("sh-play").onclick = () => { stop(); timer = setInterval(() => { if (i < steps.length - 1) { i++; paint(); } else stop(); }, 900); };
   paint();
 })();
-</script>
 ```
 
 ### 4.17 Exam pointer
@@ -1307,7 +1311,9 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 > [!tip] How to use the widget
 > Two triangles are scan-converted in order, first the near one, then the far one. Each step is one covered pixel of one surface: the widget compares the new $z$ against $DB$ and shows the outcome. Watch the near surface win the overlap region, and watch the far one still paint the pixels the near one never covered. The depths here are in an arbitrary unit, so the buffer is initialised to $\infty$ — the same "far value" as the algorithm box's $1$, since every real depth is nearer than it.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-zb" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui,sans-serif)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="zb-play" style="padding:5px 12px;border-radius:6px;border:1px solid var(--background-modifier-border,#bbb);background:var(--interactive-accent,#4a7fd4);color:var(--text-on-accent,#fff);cursor:pointer">▶ Play</button>
@@ -1327,7 +1333,8 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const COLS = 10, ROWS = 8, CELL = 28;
   const triA = { pts: [[1, 1], [9, 2], [5, 7]], plane: (x, y) => 2 + 0.05 * x + 0.03 * y, colour: "var(--color-blue,#1971c2)", name: "A" };
@@ -1355,7 +1362,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 
   function paint() {
     const s = cur >= 0 ? steps[cur] : null;
-    const fbSvg = document.getElementById("zb-fb"), dbSvg = document.getElementById("zb-db");
+    const fbSvg = $("zb-fb"), dbSvg = $("zb-db");
     fbSvg.innerHTML = ""; dbSvg.innerHTML = "";
     for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
       const bg = fb[y][x] || "none";
@@ -1369,8 +1376,8 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
       fbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2.5 }));
       dbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "var(--color-green,#2f9e44)", "stroke-width": 2.5 }));
     }
-    if (!s) { document.getElementById("zb-say").textContent = "Ready. Depth buffer = ∞ everywhere; frame buffer empty."; return; }
-    document.getElementById("zb-say").textContent =
+    if (!s) { $("zb-say").textContent = "Ready. Depth buffer = ∞ everywhere; frame buffer empty."; return; }
+    $("zb-say").textContent =
       "Surface " + s.t.name + " at pixel (" + s.x + ", " + s.y + "): z = " + s.z.toFixed(2) +
       " · stored DB = " + tc(s.before) + " → " + (s.win ? "z < DB: write depth and colour" : "z ≥ DB: reject, nearer surface stays");
   }
@@ -1383,13 +1390,12 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
     if (s.win) { db[s.y][s.x] = s.z; fb[s.y][s.x] = s.t.colour; }
     paint();
   }
-  document.getElementById("zb-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("zb-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } init(); paint(); };
-  document.getElementById("zb-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("zb-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 240); };
+  $("zb-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("zb-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } init(); paint(); };
+  $("zb-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("zb-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 240); };
   init(); paint();
 })();
-</script>
 ```
 
 ### 5.9 Exam pointer
@@ -1663,7 +1669,9 @@ Two observations that make the order memorable:
 
 The widget below walks the deck's twelve-step trace on the deck's tree. Watch the *draw order* strip grow: it should end at `2 3 4 1 8 9b 5 6 7 9a 10 11`, and the panel shows each node's eye test as it is evaluated.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-bsp" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="bsp-play">▶ Play</button>
@@ -1679,7 +1687,8 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
     green = painted · accent = current node · grey = not yet visited · IN / OUT is the eye's side of that node's plane
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const NODES = {
     "1":  { x: 380, y: 40,  side: "OUT", kids: ["2", "5"] },
@@ -1712,9 +1721,9 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
     { n: "11", d: ["11"],    s: "Leaf 11 draws. Every pending subtree has returned: the frame is complete." }
   ];
   const NS = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById("bsp-stage");
-  const say = document.getElementById("bsp-say");
-  const orderBox = document.getElementById("bsp-order");
+  const svg = $("bsp-stage");
+  const say = $("bsp-say");
+  const orderBox = $("bsp-order");
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   const refs = {};
   let cur = -1, timer = null, drawn = [];
@@ -1777,13 +1786,12 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
     say.textContent = "Step " + (cur + 1) + "/" + STEPS.length + " · " + st.s;
     paint();
   }
-  document.getElementById("bsp-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("bsp-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 1100); };
-  document.getElementById("bsp-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("bsp-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } init(); };
+  $("bsp-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("bsp-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 1100); };
+  $("bsp-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("bsp-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } init(); };
   init();
 })();
-</script>
 ```
 
 ### 6.11 Exam pointer
@@ -1963,7 +1971,9 @@ Check two entries by hand. At $y=30$, edge $AC$ is $x = 10 + 0.4(30-10) = 18$ an
 
 The widget fills the triangle of §7.7 one scan line at a time. The left panel is the raster; the right panel is the live AET, with each edge's current $x$ and slope, the sorted crossings, and the resulting span. Step until $y = 60$ and the triangle is complete.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-sl" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="sl-play">▶ Play</button>
@@ -1984,7 +1994,8 @@ The widget fills the triangle of §7.7 one scan line at a time. The left panel i
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const S = 5, OX = 40, OY = 20, H = 400;
   const A = { x: 10, y: 10 }, B = { x: 50, y: 20 }, C = { x: 30, y: 60 };
@@ -1996,7 +2007,7 @@ The widget fills the triangle of §7.7 one scan line at a time. The left panel i
   const px = x => OX + x * S;
   const py = y => H - OY - y * S;
   const NS = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById("sl-stage");
+  const svg = $("sl-stage");
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   const fillLayer = el("g", {});
   const lineLayer = el("g", {});
@@ -2030,10 +2041,10 @@ The widget fills the triangle of §7.7 one scan line at a time. The left panel i
   function reset() {
     cur = -1; total = 0; fills = [];
     fillLayer.innerHTML = ""; lineLayer.innerHTML = "";
-    document.getElementById("sl-aet").textContent = "—";
-    document.getElementById("sl-xs").textContent = "—";
-    document.getElementById("sl-total").textContent = "0";
-    document.getElementById("sl-say").textContent = "Ready · triangle A(10,10) B(50,20) C(30,60) · press Next Step";
+    $("sl-aet").textContent = "—";
+    $("sl-xs").textContent = "—";
+    $("sl-total").textContent = "0";
+    $("sl-say").textContent = "Ready · triangle A(10,10) B(50,20) C(30,60) · press Next Step";
   }
   function step() {
     if (cur >= steps.length - 1) { if (timer) { clearInterval(timer); timer = null; } return; }
@@ -2041,11 +2052,11 @@ The widget fills the triangle of §7.7 one scan line at a time. The left panel i
     const y = steps[cur];
     const act = activeAt(y);
     lineLayer.innerHTML = "";
-    document.getElementById("sl-aet").innerHTML = act.length
+    $("sl-aet").innerHTML = act.length
       ? act.map(e => e.name + "  x = " + e.x.toFixed(2) + "  (" + (e.dx >= 0 ? "+" : "") + e.dx.toFixed(2) + "/line)").join("<br>")
       : "empty";
     const xs = act.map(e => e.x);
-    document.getElementById("sl-xs").textContent = xs.length ? xs.map(v => v.toFixed(2)).join("  ") : "—";
+    $("sl-xs").textContent = xs.length ? xs.map(v => v.toFixed(2)).join("  ") : "—";
 
     const ln = el("line", { x1: px(0), y1: py(y), x2: px(70), y2: py(y), stroke: "var(--color-red,#e03131)", "stroke-width": 1.5, "stroke-dasharray": "4 3" });
     lineLayer.appendChild(ln);
@@ -2071,16 +2082,15 @@ The widget fills the triangle of §7.7 one scan line at a time. The left panel i
     act.forEach(e => {
       fillLayer.appendChild(el("circle", { cx: px(e.x), cy: py(y), r: 3.5, fill: "var(--color-red,#e03131)" }));
     });
-    document.getElementById("sl-total").textContent = total + " pixels";
-    document.getElementById("sl-say").textContent = say;
+    $("sl-total").textContent = total + " pixels";
+    $("sl-say").textContent = say;
   }
-  document.getElementById("sl-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("sl-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 320); };
-  document.getElementById("sl-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("sl-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } reset(); };
+  $("sl-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("sl-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 320); };
+  $("sl-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("sl-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } reset(); };
   reset();
 })();
-</script>
 ```
 
 ### 7.10 Seed fill, boundary fill, flood fill
@@ -2150,7 +2160,9 @@ The deck runs the same stack-based pseudo-code three times and prints the stack 
 
 The widget below runs both connectivities on the same closed boundary. The boundary has **diagonal corner contacts** — it is 8-connected but not 4-connected. Choose 4-connectivity and the fill stays inside; choose 8-connectivity and it escapes through the corner and floods the canvas. Watch the stack counter and the "pushed" figure in the narration.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-ff" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
     <button id="ff-play">▶ Play</button>
@@ -2177,7 +2189,8 @@ The widget below runs both connectivities on the same closed boundary. The bound
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const MAP = [
     "..................",
@@ -2194,7 +2207,7 @@ The widget below runs both connectivities on the same closed boundary. The bound
   ];
   const COLS = 18, ROWS = MAP.length, CELL = 26;
   const NS = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById("ff-stage");
+  const svg = $("ff-stage");
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   const cells = {};
   for (let r = 0; r < ROWS; r++) {
@@ -2209,7 +2222,7 @@ The widget below runs both connectivities on the same closed boundary. The bound
   svg.appendChild(seedMark);
 
   let stack = [], filled = new Set(), timer = null, connected = 4;
-  const say = document.getElementById("ff-say");
+  const say = $("ff-say");
 
   function blocked(c, r) {
     return c < 0 || r < 0 || c >= COLS || r >= ROWS || MAP[r][c] === "#";
@@ -2229,9 +2242,9 @@ The widget below runs both connectivities on the same closed boundary. The bound
       cells[k].style.opacity = 1;
     });
     seedMark.setAttribute("visibility", "visible");
-    document.getElementById("ff-size").textContent = "1";
-    document.getElementById("ff-count").textContent = "0";
-    document.getElementById("ff-top").textContent = "(3,3)";
+    $("ff-size").textContent = "1";
+    $("ff-count").textContent = "0";
+    $("ff-top").textContent = "(3,3)";
     say.textContent = "Ready · seed at (3,3) · " + connected + "-connected · press Next Step";
   }
   function step() {
@@ -2248,20 +2261,19 @@ The widget below runs both connectivities on the same closed boundary. The bound
       cells[k].style.fill = "var(--color-yellow,#f08c00)"; pushed++;
     });
     if (c === 3 && r === 3) seedMark.setAttribute("visibility", "hidden");
-    document.getElementById("ff-size").textContent = stack.length;
-    document.getElementById("ff-count").textContent = filled.size;
-    document.getElementById("ff-top").textContent = stack.length ? "(" + stack[stack.length - 1][0] + "," + stack[stack.length - 1][1] + ")" : "empty";
+    $("ff-size").textContent = stack.length;
+    $("ff-count").textContent = filled.size;
+    $("ff-top").textContent = stack.length ? "(" + stack[stack.length - 1][0] + "," + stack[stack.length - 1][1] + ")" : "empty";
     say.textContent = "pop (" + c + "," + r + ") · stack " + before + " → " + stack.length + " (" + pushed + " pushed) · filled " + filled.size;
   }
-  document.getElementById("ff-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("ff-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 90); };
-  document.getElementById("ff-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("ff-reset").onclick = reset;
-  document.getElementById("ff-c4").onchange = () => { connected = 4; reset(); };
-  document.getElementById("ff-c8").onchange = () => { connected = 8; reset(); };
+  $("ff-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("ff-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 90); };
+  $("ff-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("ff-reset").onclick = reset;
+  $("ff-c4").onchange = () => { connected = 4; reset(); };
+  $("ff-c8").onchange = () => { connected = 8; reset(); };
   reset();
 })();
-</script>
 ```
 
 > [!warning] What to conclude from the leak
@@ -2605,7 +2617,9 @@ The shaded band therefore spans three rows in every column, with the centre pixe
 
 The widget walks the eight columns of §8.10. Each step shades the selected pixel and its two vertical neighbours, and the table records $d$, the choice, $s$ and the three weights. Watch column 4 — the exact midpoint — where the pixel above and the pixel below receive the same $\alpha$.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-gs" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
     <button id="gs-play">▶ Play</button>
@@ -2622,12 +2636,13 @@ The widget walks the eight columns of §8.10. Each step shades the selected pixe
     </div>
   </div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const CELL = 40, OX = 20, OY = 20, XMAX = 9, YMAX = 7;
   const DX = 8, DY = 5, L = Math.sqrt(DX * DX + DY * DY), TWOL = 2 * L, K = DX / L;
   const NS = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById("gs-stage");
+  const svg = $("gs-stage");
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   const px = x => OX + x * CELL, py = y => OY + (YMAX - y) * CELL;
   const pixelLayer = el("g", {}), gridLayer = el("g", {}), markLayer = el("g", {});
@@ -2650,8 +2665,8 @@ The widget walks the eight columns of §8.10. Each step shades the selected pixe
 
   const a_const = DY, b_const = -DX;
   let x, y, d, cur, timer, rows;
-  const say = document.getElementById("gs-say");
-  const table = document.getElementById("gs-table");
+  const say = $("gs-say");
+  const table = $("gs-table");
 
   function reset() {
     if (timer) { clearInterval(timer); timer = null; }
@@ -2696,13 +2711,12 @@ The widget walks the eight columns of §8.10. Each step shades the selected pixe
       " · s = (" + dBefore + (dBefore > 0 ? " − 8" : " + 8") + ")/18.868 = " + s.toFixed(3) +
       " · α = " + aSel.toFixed(3) + " · αu = " + au.toFixed(3) + " · αl = " + al.toFixed(3);
   }
-  document.getElementById("gs-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("gs-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 900); };
-  document.getElementById("gs-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("gs-reset").onclick = reset;
+  $("gs-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("gs-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 900); };
+  $("gs-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("gs-reset").onclick = reset;
   reset();
 })();
-</script>
 ```
 
 ### 8.13 Exam pointer
@@ -2887,7 +2901,9 @@ The middle in-between is identical in both columns — easing always pins the ha
 
 The widget tweens the character between the takeoff key and the landing key across 13 frames. Switch between **linear** and **eased** spacing and watch the dots on the timing track: linear spacing is uniform, eased spacing bunches at both ends. The panel shows $t$, $t'$ and the position actually drawn.
 
-```html
+```js-engine
+// Rendered by the JS Engine plugin: `container` is this block's output element.
+container.innerHTML = `
 <div id="w-tween" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
     <button id="tw-play">▶ Play</button>
@@ -2905,13 +2921,14 @@ The widget tweens the character between the takeoff key and the landing key acro
   <svg id="tw-stage" viewBox="0 0 560 300" style="width:100%;height:auto;display:block;background:var(--background-secondary,#f8f9fa);border-radius:8px"></svg>
   <div id="tw-table" style="margin-top:8px;font-family:var(--font-monospace,monospace);font-size:12px;line-height:1.6;max-height:110px;overflow:auto"></div>
 </div>
-<script>
+`;
+const $ = (id) => container.querySelector("#" + id);
 (() => {
   const NS = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById("tw-stage");
+  const svg = $("tw-stage");
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   const GROUND = 226, X0 = 60, X1 = 500, H = 130, N = 13;
-  const say = document.getElementById("tw-say");
+  const say = $("tw-say");
   let frame = 0, timer = null, eased = false, drawn = [];
 
   // static scene
@@ -2955,7 +2972,7 @@ The widget tweens the character between the takeoff key and the landing key acro
     const p = pose(0);
     drawFigure(figure, p.x, p.y, 1);
     frameLabel.textContent = "frame 1 / 13";
-    document.getElementById("tw-table").innerHTML = "<span style='color:var(--text-faint,#888)'>—</span>";
+    $("tw-table").innerHTML = "<span style='color:var(--text-faint,#888)'>—</span>";
     say.textContent = "Ready · 13 frames from takeoff to landing · " + (eased ? "smoothstep" : "linear") + " spacing · press Next Step";
   }
   function step() {
@@ -2980,17 +2997,16 @@ The widget tweens the character between the takeoff key and the landing key acro
       const tt = (i + 1) / (N - 1);
       return "f" + (i + 2) + "  t=" + tt.toFixed(2) + "  t′=" + q.tt.toFixed(3) + "  x=" + q.x.toFixed(0) + "  h=" + (GROUND - q.y).toFixed(0);
     });
-    document.getElementById("tw-table").innerHTML = rows.join("<br>");
+    $("tw-table").innerHTML = rows.join("<br>");
   }
-  document.getElementById("tw-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
-  document.getElementById("tw-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 420); };
-  document.getElementById("tw-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
-  document.getElementById("tw-reset").onclick = reset;
-  document.getElementById("tw-linear").onchange = () => { eased = false; reset(); };
-  document.getElementById("tw-ease").onchange = () => { eased = true; reset(); };
+  $("tw-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  $("tw-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 420); };
+  $("tw-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  $("tw-reset").onclick = reset;
+  $("tw-linear").onchange = () => { eased = false; reset(); };
+  $("tw-ease").onchange = () => { eased = true; reset(); };
   reset();
 })();
-</script>
 ```
 
 ### 9.13 Exam pointer
