@@ -870,7 +870,7 @@ Three vertices in, six out: $1,2,3$ are all removed and $1'$–$6'$ are all new.
 
 ### 4.9 The limitation: a concave subject can split
 
-Take a concave U-shaped subject $V=[1,\dots,8]$ against one clipper, keeping $y\ge y_{\min}$:
+Sutherland–Hodgman has one important failure mode: when the subject polygon is concave and the clip boundary cuts it into two or more separate pieces, the algorithm stores all those pieces in a single output vertex list. This is not a bug in the intersection arithmetic — it is a fundamental structural limitation. Take a concave U-shaped subject $V=[1,\dots,8]$ against one clipper, keeping $y\ge y_{\min}$:
 
 | $i$ | $S\to E$ | Case | Append |
 | --- | --- | --- | --- |
@@ -893,7 +893,7 @@ That is **two disconnected pieces stored as one vertex list**. Rendered as a sin
 
 ### 4.10 Weiler–Atherton
 
-The alternative walks the boundaries themselves and switches between subject and window at every crossing.
+The alternative to Sutherland–Hodgman is an algorithm that handles concave polygons correctly by producing a separate output contour for each disconnected visible region. Instead of processing edge-by-edge, Weiler–Atherton walks the boundaries themselves and switches between subject and window at every crossing.
 
 > [!important] Weiler–Atherton — traversal rules
 > - Trace the **subject** boundary in its stored orientation.
@@ -941,7 +941,7 @@ Together the two contours are exactly subject ∩ window. Sutherland–Hodgman o
 
 ### 4.12 3D point clipping
 
-After normalisation the volume is the cube $C=[-1,1]^{3}$, bounded by six planes $x=\pm1$, $y=\pm1$, $z=\pm1$. A point is kept **iff all three intervals hold**:
+After normalisation the volume is the cube $C=[-1,1]^{3}$, bounded by six planes $x=\pm1$, $y=\pm1$, $z=\pm1$. This is the 3D analogue of point clipping in §3.1 — same logic, just one more dimension. A point is kept **iff all three intervals hold**:
 
 $$ -1\le x\le1 \quad\text{AND}\quad -1\le y\le1 \quad\text{AND}\quad -1\le z\le1 $$
 
@@ -957,7 +957,7 @@ One violated interval rejects the point.
 
 ### 4.13 Bounding boxes before exact clipping
 
-A face may contain many vertices, and exact clipping examines every edge. Its **bounding box** uses only the coordinate extremes, so comparing boxes is far cheaper. The box test has three outcomes and one non-outcome:
+A face may contain many vertices, and exact clipping examines every edge — which is expensive. The **bounding box** is a cheap early-out: it uses only the extreme coordinates of the face, so a simple range comparison against the cube can quickly accept or reject the whole face without touching any edges. The box test has three outcomes and one non-outcome:
 
 | Object bounding box | Decision | Reason |
 | --- | --- | --- |
@@ -988,6 +988,8 @@ Clip the filled triangle $A=(2,0.5,0)$, $B=(0.5,2,0)$, $C=(2,2,0)$ to the cube $
 > - The parameters $\tfrac23$ and $\tfrac13$ belong to **different directed edges**; reusing one for the other is the classic error.
 
 ### 4.15 Clipping versus occlusion
+
+This distinction is easy to confuse and important to keep straight, because they answer completely different questions.
 
 > [!important] The distinction the rest of the block is built on
 > **Clipping** removes geometry wholly or partly *outside the view volume*; every test is against the volume's six boundaries.
