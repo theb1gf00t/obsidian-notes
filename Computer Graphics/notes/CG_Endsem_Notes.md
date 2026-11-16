@@ -88,6 +88,8 @@ n_x & n_y & n_z & -\mathbf{n}\cdot\mathbf{o}\\
 
 After the viewing transform, the part of space the camera can record is a **view volume** bounded by six planes $x_{\min},x_{\max},y_{\min},y_{\max},z_{near},z_{far}$.
 
+![[CG - Camera Frame and View Volume.excalidraw]]
+
 | Projection | Shape of the view volume | Parallel edges? | Object size with depth |
 | --- | --- | --- | --- |
 | **Parallel / orthographic** | parallelepiped (a box) | yes | constant |
@@ -571,10 +573,6 @@ $$ V=[v_1,v_2,\dots,v_n] $$
 > - **new vertices** — edge/ boundary intersections, and sometimes window corners;
 > - **new edges** — segments that run *along* the window boundary.
 
-![[CG - Concave Subject Split.png]]
-
-*Figure — the concave-subject limitation: one clip boundary cuts the U-shape into two lobes, and Sutherland–Hodgman stores both in a single vertex list, producing a polygon whose boundary walks along the clip edge twice.*
-
 ### 3.3 The window as four half-planes
 
 A rectangular window is the intersection of four half-planes, so a polygon can be clipped by four independent half-plane passes. Each pass needs only one test:
@@ -734,6 +732,10 @@ Take a concave U-shaped subject $V=[1,\dots,8]$ against one clipper, keeping $y\
 | 7 | $8\to1$ | In→Out | $8'$ |
 
 $$ out=[2',3,4,4',6',7,8,8'] $$
+
+![[CG - Concave Subject Split.png|460]]
+
+*Figure — the concave-subject limitation: one clip boundary cuts the U-shape into two lobes, and Sutherland–Hodgman stores both in a single vertex list, producing a polygon whose boundary walks along the clip edge twice.*
 
 That is **two disconnected pieces stored as one vertex list**. Rendered as a single polygon, the boundary walks from $4'$ to $6'$ along the clip edge and from $8'$ to $2'$ along it again — the degenerate connector is drawn twice. Sutherland–Hodgman is therefore correct only for **convex subjects** (or when the two pieces are allowed to be joined by a doubled edge).
 
@@ -1110,11 +1112,11 @@ $$ z(x+1,y-1)=z(x,y)-\frac{A}{C}+\frac{B}{C} \qquad\text{(right and down in one 
 
 $$ x' = x-\frac{1}{m} $$
 
-so the depth at the first pixel of the new scan line is
+so the depth at the first pixel of the new scan line is the old depth plus the one-line drop ($+B/C$) plus one step of $-A/C$ for every unit the edge moved in $x$:
 
-$$ z' = z - \frac{A}{C} - \frac{B}{mC} \quad\text{equivalently}\quad z' = z - \frac{A}{C}\left(1-\frac{1}{m}\right)\text{ only when } x \text{ is unchanged} $$
+$$ z' = z + \frac{B}{C} - \frac{A}{C}\,(x'-x) = z + \frac{B}{C} + \frac{A}{mC} $$
 
-The two terms account, respectively, for the change of $x$ across scan lines and the change of $y$ between them. This is **scan-line coherence**: neighbouring pixels on a surface have neighbouring depths, so the buffer is filled by addition.
+The two terms account, respectively, for the change of $y$ between the scan lines and the change of $x$ along the edge. This is **scan-line coherence**: neighbouring pixels on a surface have neighbouring depths, so the buffer is filled by addition.
 
 **Worked numeric check.** Take a surface with $A=2$, $B=1$, $C=2$, $D=-10$, i.e. $z=(10-2x-y)/2$.
 
@@ -1122,6 +1124,7 @@ The two terms account, respectively, for the change of $x$ across scan lines and
 - One pixel right, $(2,2)$: $z=3.0-A/C=3.0-1.0=2.0$; direct check gives $(10-4-2)/2=2.0$ ✓.
 - One scan line down, $(1,1)$: $z=3.0+B/C=3.5$; direct check gives $(10-2-1)/2=3.5$ ✓.
 - Right and down, $(2,1)$: $z=3.0-1.0+0.5=2.5$; direct check gives $(10-4-1)/2=2.5$ ✓.
+- Next scan line from the edge, $m=2$: the leftmost pixel moves to $x'=1-\tfrac12=0.5$ and $z'=3.0+0.5+2/(2\cdot2)=4.0$; direct check gives $(10-1-1)/2=4.0$ ✓ — the edge term is not optional.
 
 ### 4.7 The algorithm
 
@@ -1135,7 +1138,7 @@ The two terms account, respectively, for the change of $x$ across scan lines and
 > 6:         for each pixel x across the span:
 > 7:             if z < DB[x][y] then DB[x][y] = z; FB[x][y] = surface colour
 > 8:             z = z - A/C            # step right
-> 9:         z_next_line = z_at_left_edge - A/C + B/C
+> 9:         z_left = z_left + B/C - (A/C)(x'_left - x_left)   # next line, x'_left = x_left - 1/m
 > 10: end for
 > ```
 > **Cost.** $O(nN)$ for $n$ surfaces overlapping $N$ pixels in total — one comparison per covered pixel, no sorting, no pairwise surface tests.
@@ -1146,7 +1149,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 > - Initialise $x$ to the leftmost pixel of the surface, $y$ to its top scan line, and $z$ to the depth at that leftmost edge point.
 > - Set the constants $\Delta z_x=-A/C$ (change along the scan line) and $\Delta z_y=B/C$ (change between scan lines).
 > - For each pixel across the scan line: store $z$ in $DV[x][y]$, then $z\mathrel{+}=\Delta z_x$.
-> - At the end of a scan line: move the edge $x$ by $-1/m$, and update $z$ by $-A/C+B/C$ for the next scan line.
+> - At the end of a scan line: move the edge by $-1/m$ in $x$, add $\Delta z_y=B/C$ for the drop to the next line, and add $\Delta z_x$ once per unit the edge moved.
 
 > [!warning] The three classic z-buffer errors
 > - **Wrong depth direction.** If depth grows *inward*, the test is $z<DB$, and initialisation is the far value. Flip the convention without flipping the test and the farthest surface wins.
@@ -1198,10 +1201,11 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
     }
   });
   let db, fb, cur = -1, timer = null;
-  const init = () => { db = Array.from({ length: ROWS }, () => Array(COLS).fill(1)); fb = Array.from({ length: ROWS }, () => Array(COLS).fill("")); cur = -1; };
+  const FAR = 99;
+  const init = () => { db = Array.from({ length: ROWS }, () => Array(COLS).fill(FAR)); fb = Array.from({ length: ROWS }, () => Array(COLS).fill("")); cur = -1; };
   const NS = "http://www.w3.org/2000/svg";
   const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  const tc = v => v >= 1 ? "1" : v.toFixed(2);
+  const tc = v => v >= FAR ? "∞" : v.toFixed(2);
 
   function paint() {
     const s = cur >= 0 ? steps[cur] : null;
@@ -1219,20 +1223,18 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
       fbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "#2f9e44", "stroke-width": 2.5 }));
       dbSvg.appendChild(el("rect", { x: s.x * CELL + 1, y: s.y * CELL + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "#2f9e44", "stroke-width": 2.5 }));
     }
-    if (!s) { document.getElementById("zb-say").textContent = "Ready. Depth buffer = 1 everywhere; frame buffer empty."; return; }
-    const px = db[s.y][s.x];
-    const win = s.z < px;
+    if (!s) { document.getElementById("zb-say").textContent = "Ready. Depth buffer = ∞ everywhere; frame buffer empty."; return; }
     document.getElementById("zb-say").textContent =
       "Surface " + s.t.name + " at pixel (" + s.x + ", " + s.y + "): z = " + s.z.toFixed(2) +
-      " · stored DB = " + (cur === 0 ? "1" : tc(px)) + " → " + (win ? "z < DB: write depth and colour" : "z ≥ DB: reject, nearer surface stays") +
-      (win && s.z < 100 ? "" : "");
+      " · stored DB = " + tc(s.before) + " → " + (s.win ? "z < DB: write depth and colour" : "z ≥ DB: reject, nearer surface stays");
   }
   function step() {
     if (cur >= steps.length - 1) { if (timer) { clearInterval(timer); timer = null; } return; }
     cur++;
     const s = steps[cur];
-    const win = s.z < db[s.y][s.x];
-    if (win) { db[s.y][s.x] = s.z; fb[s.y][s.x] = s.t.colour; }
+    s.before = db[s.y][s.x];
+    s.win = s.z < s.before;
+    if (s.win) { db[s.y][s.x] = s.z; fb[s.y][s.x] = s.t.colour; }
     paint();
   }
   document.getElementById("zb-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
@@ -1336,8 +1338,6 @@ where $\mathbf{p}$ is any point on the dividing plane and $\mathbf{n}$ its norma
 | $f(\mathbf{r}) > 0$ | on the side the normal points to | **OUT** |
 | $f(\mathbf{r}) = 0$ | on the plane | boundary — the deck's ties count as inside |
 | $f(\mathbf{r}) < 0$ | on the opposite side | **IN** |
-
-![[CG - BSP Tree Traversal.excalidraw]]
 
 The deck's convention is fixed by the sentence: *the arrow $\mathbf{n}_i$ points toward OUT*. So a polygon entirely on the normal side of the dividing plane goes to the OUT subtree, one entirely on the other side goes to IN, and one with **vertices of both signs** crosses the plane and must be split. The same function, evaluated at the eye instead of at a vertex, tells the renderer which side the viewer is on — and that single bit decides the traversal order.
 
@@ -1445,6 +1445,8 @@ Take an edge with $f(\mathbf{u}) = -2$ and $f(\mathbf{v}) = +6$. Then $t = (-2)/
 > [!important] Why the rule is correct
 > The node's plane divides space into two half-spaces, and every polygon in the IN subtree lies entirely in one of them while every polygon in the OUT subtree lies entirely in the other. A viewer standing on the OUT side sees the plane's IN half-space *through* the plane: everything there is farther away than the plane itself. So the far subtree must be painted first, then the plane's own polygon, then the near subtree. The recursion applies the same argument at every level, which is why a single eye test per node is enough.
 
+![[CG - BSP Tree Traversal.excalidraw]]
+
 The deck's own eye is on the OUT side of plane 1 and supplies a per-node table. *The eye stays fixed; each node supplies a different plane*, so each row can differ:
 
 | Node | Eye side | Local traversal |
@@ -1482,6 +1484,10 @@ Walking the recursion with the eye fixed gives the deck's annotated trace (slide
 | 12 | 11 | leaf | draw 11; every pending visit is complete | 2, 3, 4, 1, 8, 9b, 5, 6, 7, 9a, 10, 11 |
 
 $$ \text{draw order} = 2,\ 3,\ 4,\ 1,\ 8,\ 9b,\ 5,\ 6,\ 7,\ 9a,\ 10,\ 11 $$
+
+![[CG - BSP Traversal Order.png|480]]
+
+*Figure — the deck's annotated traversal: the tree with each node's eye side marked and the polygons numbered in the order they are painted, ending at $2,3,4,1,8,9b,5,6,7,9a,10,11$.*
 
 Two observations that make the order memorable:
 
