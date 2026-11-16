@@ -1253,4 +1253,927 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 
 ---
 
+## 5. Hidden Surface Removal II — Painter's Algorithm and BSP Trees
+
+*Deck: [[CG_26_Oct.pdf]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
+
+### 5.1 Painting back to front
+
+The painter's algorithm is the oldest hidden-surface method and the one that matches intuition: an artist paints the distant hills first and the near tree last, and the tree simply covers part of the hills. Nothing is tested per pixel — **the drawing order itself is the visibility computation**. If every polygon is painted in order of *decreasing* distance from the eye, each new polygon overwrites only what should be hidden behind it, and the final frame buffer holds the visible surface of every pixel.
+
+The whole method therefore reduces to one question: *can the polygons be put in a total order by depth?* The naive answer — sort by the $z$ of the centroid, or by the farthest vertex — is a heuristic, not a proof, and the deck spends most of its slides on the cases where the heuristic has no correct answer.
+
+> [!important] Depth-sort (painter's) — statement
+> ```text
+> 1: compute a depth key for every polygon   (e.g. smallest z, or centroid z)
+> 2: sort the polygons by decreasing depth   (farthest first)
+> 3: for each adjacent pair (P, Q) in that order, apply the four tests
+> 4:     if a test succeeds, the order P then Q is correct — keep it
+> 5:     if all four fail, swap P and Q and re-test (at most n times)
+> 6:     if the swap returns to the starting order, a cycle exists
+> 7:         split one polygon by the other's plane, and restart
+> 8: paint the resulting list from farthest to nearest
+> ```
+>
+> **Input:** a set of polygons with their planes and a viewpoint.
+> **Output:** a paint order, or a split polygon set that admits one.
+> **Cost:** $O(n\log n)$ for the sort, plus the pairwise tests in the worst case $O(n^2)$; the whole cost is paid **again for every new viewpoint**.
+
+> [!note] Why painting works at all
+> The frame buffer is destructive: writing a pixel replaces what was there. That is normally a bug, but here it is the mechanism. Because a nearer surface is guaranteed to be painted later, "last write wins" *is* the depth test — at the price of painting the hidden surfaces first and then covering them up. The overdraw is the cost of never storing a depth per pixel.
+
+### 5.2 The four tests that decide a pair
+
+Sorting produces a candidate order; the tests certify that a *particular adjacent pair* $P$ (farther) and $Q$ (nearer) is safe. They go from cheapest and most decisive to most expensive.
+
+| # | Test | If it succeeds | Cost |
+| --- | --- | --- | --- |
+| 1 | the $x$-extents of $P$ and $Q$ do not overlap | the pair cannot hide each other; order is free | $O(1)$ |
+| 2 | the $y$-extents of $P$ and $Q$ do not overlap | same — disjoint in screen space | $O(1)$ |
+| 3 | every vertex of $P$ lies behind the plane of $Q$ | $P$ is wholly farther, so $P$ then $Q$ is correct | $O(v_P)$ |
+| 4 | every vertex of $Q$ lies in front of the plane of $P$ | again $P$ then $Q$ is correct | $O(v_Q)$ |
+| — | all four fail | swap and retest; a persistent cycle means **split** | $O(n)$ retests |
+
+The deck's slides are titled **"Step 4 passes"** and **"Step 4 fails"**: the first shows a configuration where the plane test certifies the order, the second the configuration where it cannot, and the caption on the failing slide is the sentence to remember —
+
+> *Cyclic overlap makes each polygon hide another, so no single drawing order works.*
+
+Test 4 is the load-bearing one because tests 1–2 only prove *irrelevance*: two polygons whose screen rectangles are disjoint can be painted in any order. Tests 3–4 are the only ones that prove an *order*, and they are exactly the tests that a cycle defeats.
+
+> [!warning] "Sort by depth" is not "sort by centroid z"
+> A single scalar key cannot represent a polygon that spans a range of depths. A long ground plane whose centroid is far away can still pass in front of a small nearby object, and a polygon seen almost edge-on has a centroid that says nothing about where its surface is. The four tests exist because **no scalar key is a valid sort for arbitrary polygons** — when they all fail, the geometry, not the key, must be cut.
+
+### 5.3 The failure cases
+
+| Case | What goes wrong | Cure |
+| --- | --- | --- |
+| **Cyclic overlap** (the deck's headline) | $P_1$ hides $P_2$, $P_2$ hides $P_3$, $P_3$ hides $P_1$ — a cycle in the "must be painted after" relation | split one polygon of the cycle |
+| **Intersecting polygons** | neither is wholly in front of the other; the correct order changes across the line of intersection | split along the intersection |
+| **Polygon straddling the eye plane** | parts of it are behind the eye; depth keys become meaningless or infinite | clip against the near plane first |
+| **Coincident / tied surfaces** | equal keys, order undefined, flicker between frames | nudge, or use a depth buffer |
+| **Many small vs one huge polygon** | a huge polygon's key is a poor summary of its extent | split the huge polygon |
+
+Cyclic overlap is worth a picture in words because it is easy to draw and easy to state in an exam. Take three long thin triangles lying nearly in the same plane, arranged like the three blades of a pinwheel, each overlapping the next and being overlapped by the previous one. Looked at from the common side:
+
+- along the first overlap, $P_1$ is nearer than $P_2$;
+- along the second, $P_2$ is nearer than $P_3$;
+- along the third, $P_3$ is nearer than $P_1$.
+
+Three pairwise truths, no global order. The relation "nearer than" is not transitive here, so no sorting algorithm can succeed; the only escape is to **cut one polygon** so that the cycle becomes a chain.
+
+### 5.4 The plane function
+
+Everything that follows — building the tree, splitting a polygon, choosing the traversal — uses one scalar function.
+
+$$ f(\mathbf{r}) = (\mathbf{r} - \mathbf{p}) \cdot \mathbf{n} $$
+
+where $\mathbf{p}$ is any point on the dividing plane and $\mathbf{n}$ its normal. With $\lVert \mathbf{n}\rVert = 1$, $f(\mathbf{r})$ is the **signed perpendicular distance** from the plane to $\mathbf{r}$; with an unnormalised $\mathbf{n}$ it is that distance scaled by $\lVert \mathbf{n} \rVert$, which is harmless because only the *sign* is used.
+
+| Value | Meaning | Deck's label |
+| --- | --- | --- |
+| $f(\mathbf{r}) > 0$ | on the side the normal points to | **OUT** |
+| $f(\mathbf{r}) = 0$ | on the plane | boundary — the deck's ties count as inside |
+| $f(\mathbf{r}) < 0$ | on the opposite side | **IN** |
+
+![[CG - BSP Tree Traversal.excalidraw]]
+
+The deck's convention is fixed by the sentence: *the arrow $\mathbf{n}_i$ points toward OUT*. So a polygon entirely on the normal side of the dividing plane goes to the OUT subtree, one entirely on the other side goes to IN, and one with **vertices of both signs** crosses the plane and must be split. The same function, evaluated at the eye instead of at a vertex, tells the renderer which side the viewer is on — and that single bit decides the traversal order.
+
+> [!note] The same test builds and traverses
+> > *"The same test builds and traverses the BSP tree."*
+>
+> Building asks $f(\text{vertex})$ for every polygon vertex; rendering asks $f(\text{eye})$ once per node. The build answer is fixed forever; the render answer changes with the camera. This is the whole economy of a BSP tree: the expensive geometric work (classification and splitting) is done once, and each new frame costs only one dot product per node.
+
+### 5.5 Building the tree
+
+> [!important] BSP construction — statement
+> ```text
+> 1: BUILD(list S)
+> 2:     if S is empty: return an empty leaf
+> 3:     choose a polygon p from S            (the root of this subtree)
+> 4:     node  ← p, node.plane ← plane of p
+> 5:     IN ← {}, OUT ← {}
+> 6:     for every other polygon q in S:
+> 7:         classify every vertex v of q by sign of f_q(v) = (v − p) · n
+> 8:         if all signs < 0:  put q in IN
+> 9:         else if all signs > 0: put q in OUT
+> 10:        else: split q at the plane into q_IN and q_OUT, put both
+> 11:    node.IN  ← BUILD(IN)
+> 12:    node.OUT ← BUILD(OUT)
+> 13:    return node
+> ```
+>
+> **Invariant:** at every node, all polygons in the IN subtree lie on the non-normal side of that node's plane, and all polygons in the OUT subtree lie on the normal side. The node's own polygon lies in the plane itself.
+> **Cost:** one plane test per polygon per level — $O(n\log n)$ for a balanced tree, $O(n^2)$ if the splits degenerate into a chain, and every split adds a polygon, so the output can be larger than the input.
+
+The deck builds the tree in exactly this order and stops at three checkpoints, which are worth reproducing because each one shows a different feature of the build.
+
+**First partition — polygon 1 becomes the root.** Extend the plane of polygon 1, classify the remaining polygons by side, and recurse. With the deck's geometry:
+
+| Node | IN subtree | OUT subtree |
+| --- | --- | --- |
+| 1 | 2, 3, 4 | 5, 6, 7, 8, 9, 10, 11 |
+
+**The prompt "nodes considering 5?"** — the OUT subtree of 1 still needs a root, and the deck picks polygon 5. Its plane cuts the set into:
+
+| Node | IN subtree | OUT subtree |
+| --- | --- | --- |
+| 5 | 6, 7, 9a, 10, 11 | 8, 9b |
+
+**The prompt "nodes considering 3, 6, 8?"** — the remaining subtrees each get a root: 3 for the IN branch of 2, 6 for the IN branch of 5, 8 for the OUT branch of 5. Continuing the same rule to the leaves produces the tree the deck draws:
+
+```text
+                  1
+          2               5
+      3               6       8
+          4       7       9b
+                      9a
+                          10
+                              11
+```
+
+Read the shape, not the x-positions: **2 and 3 are chains of single-child nodes**, because after removing polygon 1 and polygon 5's partition, those subtrees contained only polygons that all lay on one side. A BSP tree is not balanced and is not a search tree — its shape is whatever the chosen splitting planes produce.
+
+### 5.6 Splitting a polygon: cutting 9 into 9a and 9b
+
+The deck's split is the one place where a polygon is created rather than merely classified. Polygon 9 straddles the plane of polygon 5, so one copy of 9 goes to each side under new names:
+
+> *"The plane of polygon 5 cuts polygon 9 into two pieces. Different signs at the endpoints mean that polygon 9 crosses the plane. Split at $s$, where $f_5(s) = 0$. Place each piece in its corresponding subtree."*
+
+The split is a one-dimensional root find along an edge. For an edge from $\mathbf{u}$ to $\mathbf{v}$ with $f(\mathbf{u})$ and $f(\mathbf{v})$ of opposite signs, write $\mathbf{s} = \mathbf{u} + t(\mathbf{v} - \mathbf{u})$ and solve $f(\mathbf{s}) = 0$:
+
+$$ f(\mathbf{u}) + t\big(f(\mathbf{v}) - f(\mathbf{u})\big) = 0
+\quad\Longrightarrow\quad
+\boxed{\ t = \frac{f(\mathbf{u})}{f(\mathbf{u}) - f(\mathbf{v})}\ } $$
+
+Because the signs differ, the denominator cannot vanish, and $t \in (0,1)$ — the crossing is strictly inside the edge. The new vertex $\mathbf{s}$ is inserted into both copies of the polygon; the vertices before the crossing go to one piece, those after to the other, and each piece is closed along the cut.
+
+#### The split parameter in numbers
+
+Take an edge with $f(\mathbf{u}) = -2$ and $f(\mathbf{v}) = +6$. Then $t = (-2)/((-2) - 6) = 1/4$, so the crossing sits a quarter of the way from $\mathbf{u}$ to $\mathbf{v}$; check: $f$ at that point is $-2 + \tfrac14(8) = 0$. This is the same interpolation the clipper uses in §3.5, applied to a signed plane function instead of to a coordinate — the arithmetic is identical, only the quantity being interpolated changes.
+
+> [!warning] Splitting is not free
+> Each split adds vertices and polygons, so a scene built from many mutually crossing polygons can grow substantially, and the tree's memory is proportional to the *split* polygon count, not the input count. The deck's example happens to split exactly one polygon; in the worst case every polygon crosses every plane it meets.
+
+### 5.7 Rendering: the eye selects the traversal order
+
+> [!important] BSP rendering — statement
+> ```text
+> 1: RENDER(node, eye)
+> 2:     if node is empty: return
+> 3:     s ← f_node(eye) = (eye − p_node) · n_node
+> 4:     if s > 0:                       // eye on the OUT side
+> 5:         RENDER(node.IN, eye)        // far subtree first
+> 6:         draw node.polygon
+> 7:         RENDER(node.OUT, eye)       // near subtree last
+> 8:     else:                           // eye on the IN side
+> 9:         RENDER(node.OUT, eye)       // far subtree first
+> 10:        draw node.polygon
+> 11:        RENDER(node.IN, eye)        // near subtree last
+> ```
+>
+> **Invariant:** at the moment a node's polygon is drawn, everything behind it has already been painted and everything in front of it is still to come — which is precisely the painter's order.
+> **Cost:** $O(n)$ per frame, one dot product and two recursive calls per node, **no sorting and no per-pixel test**.
+
+| Eye side | Local order | Why it is the painter's order |
+| --- | --- | --- |
+| **OUT** ($f > 0$) | IN subtree → node → OUT subtree | the whole IN side is on the far side of the plane |
+| **IN** ($f < 0$) | OUT subtree → node → IN subtree | the whole OUT side is on the far side of the plane |
+
+> [!important] Why the rule is correct
+> The node's plane divides space into two half-spaces, and every polygon in the IN subtree lies entirely in one of them while every polygon in the OUT subtree lies entirely in the other. A viewer standing on the OUT side sees the plane's IN half-space *through* the plane: everything there is farther away than the plane itself. So the far subtree must be painted first, then the plane's own polygon, then the near subtree. The recursion applies the same argument at every level, which is why a single eye test per node is enough.
+
+The deck's own eye is on the OUT side of plane 1 and supplies a per-node table. *The eye stays fixed; each node supplies a different plane*, so each row can differ:
+
+| Node | Eye side | Local traversal |
+| --- | --- | --- |
+| 1 | OUT | IN → 1 → OUT |
+| 2 | IN | OUT → 2 → IN |
+| 3 | OUT | IN → 3 → OUT |
+| 5 | IN | OUT → 5 → IN |
+| 8 | IN | OUT → 8 → IN |
+| 6 | IN | OUT → 6 → IN |
+| 7 | OUT | IN → 7 → OUT |
+| 9a | IN | OUT → 9a → IN |
+| 10 | IN | OUT → 10 → IN |
+| 4, 9b, 11 | leaves | draw directly |
+
+The row that always causes trouble in the deck is **node 7**: the eye is *below* its plane, i.e. on the IN side, because polygon 7's normal points downward. The traversal order at a node is a property of that node's own orientation, not of the tree's drawing on the page.
+
+### 5.8 The complete trace
+
+Walking the recursion with the eye fixed gives the deck's annotated trace (slides 1/8 → 8/8). The pending nodes form a call stack; a node is drawn only when its far subtree has returned.
+
+| Step | At node | Eye side | Action | Drawn so far |
+| --- | --- | --- | --- | --- |
+| 1 | 1 | OUT | enter; visit the IN subtree rooted at 2 before drawing 1 | — |
+| 2 | 2 | IN | OUT empty → draw 2 → visit 3 | 2 |
+| 3 | 3 | OUT | IN empty → draw 3 → visit leaf 4 | 2, 3 |
+| 4 | 4 | leaf | draw 4; subtree of 2 complete → draw 1 | 2, 3, 4, 1 |
+| 5 | 5 | IN | visit the OUT subtree rooted at 8 first | 2, 3, 4, 1 |
+| 6 | 8 | IN | OUT empty → draw 8 → visit leaf 9b | 2, 3, 4, 1, 8, 9b |
+| 7 | 5 | IN | OUT subtree done → draw 5 → visit 6 | …, 5 |
+| 8 | 6 | IN | OUT empty → draw 6 → visit 7 | …, 6 |
+| 9 | 7 | OUT | IN empty → draw 7 → visit 9a | …, 7 |
+| 10 | 9a | IN | OUT empty → draw 9a → visit 10 | …, 9a |
+| 11 | 10 | IN | OUT empty → draw 10 → visit 11 | …, 10 |
+| 12 | 11 | leaf | draw 11; every pending visit is complete | 2, 3, 4, 1, 8, 9b, 5, 6, 7, 9a, 10, 11 |
+
+$$ \text{draw order} = 2,\ 3,\ 4,\ 1,\ 8,\ 9b,\ 5,\ 6,\ 7,\ 9a,\ 10,\ 11 $$
+
+Two observations that make the order memorable:
+
+- **1 is drawn fourth, not first.** Entering the root does not mean drawing it — the whole IN subtree must be finished first, and that subtree is where the near polygons 2, 3, 4 live.
+- **5 is drawn after 8 and 9b but before 6, 7, 9a, 10, 11.** The eye is on 5's IN side, so its OUT side (8, 9b) is far and goes first, and its IN side (6, 7, 9a, 10, 11) is near and goes last.
+
+### 5.9 Why a BSP tree is worth the build
+
+| Property | Painter's with sort | BSP tree |
+| --- | --- | --- |
+| Work per frame | $O(n\log n)$ sort + pairwise tests + overdraw | $O(n)$ traversal, no sort |
+| Reuse across viewpoints | none — the order is recomputed | the partition is fixed; only the eye tests change |
+| Correctness with cyclic overlap | fails | succeeds, because splitting removed the cycles |
+| Geometry cost | none | splits add polygons; build is $O(n\log n)$ to $O(n^2)$ |
+| Static scenes | fine | ideal (walls, rooms, terrain) |
+| Degenerate/coincident planes | fragile | fragile — choose splitting planes carefully |
+
+> [!note] Where the depth ordering went
+> Notice that no z-buffer is involved and no pixel is ever compared. The BSP tree *precomputes* the visibility order for **all** viewpoints at once, because the order only depends on which side of each plane the eye happens to be — a finite amount of information. That is why a BSP renderer is cheap per frame and why the structure must be rebuilt whenever the geometry moves.
+
+> [!warning] The classic BSP pitfalls
+> - A **badly chosen splitting plane** (a polygon that crosses many others) causes a split explosion; heuristics pick the plane that minimises splits and balances the tree.
+> - Polygons lying **in the same plane** must be handled as a special case, or they end up in both subtrees and are drawn twice (harmless with opaque paint, wrong with transparency).
+> - BSP gives a **per-polygon** order; polygons that interpenetrate after the build (moving objects) invalidate it.
+
+### 5.10 Interactive dry run
+
+The widget below walks the deck's twelve-step trace on the deck's tree. Watch the *draw order* strip grow: it should end at `2 3 4 1 8 9b 5 6 7 9a 10 11`, and the panel shows each node's eye test as it is evaluated.
+
+```html
+<div id="w-bsp" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <button id="bsp-play">▶ Play</button>
+    <button id="bsp-pause">⏸ Pause</button>
+    <button id="bsp-next">⏭ Next Step</button>
+    <button id="bsp-reset">↺ Reset</button>
+  </div>
+  <div id="bsp-say" style="min-height:44px;color:var(--text-muted,#555);margin-bottom:8px">Ready · the eye is fixed, the tree is built · press Next Step</div>
+  <svg id="bsp-stage" viewBox="0 0 760 400" style="width:100%;height:auto;display:block"></svg>
+  <div style="margin-top:8px;font-size:13px;color:var(--text-muted,#555)">Painted so far</div>
+  <div id="bsp-order" style="display:flex;gap:6px;flex-wrap:wrap;min-height:26px;margin-top:4px"></div>
+  <div id="bsp-legend" style="margin-top:8px;font-size:13px;color:var(--text-faint,#777)">
+    green = painted · accent = current node · grey = not yet visited · IN / OUT is the eye's side of that node's plane
+  </div>
+</div>
+<script>
+(() => {
+  const NODES = {
+    "1":  { x: 380, y: 40,  side: "OUT", kids: ["2", "5"] },
+    "2":  { x: 180, y: 110, side: "IN",  kids: ["3", ""] },
+    "3":  { x: 110, y: 185, side: "OUT", kids: ["", "4"] },
+    "4":  { x: 250, y: 185, side: "",    kids: [] },
+    "5":  { x: 560, y: 110, side: "IN",  kids: ["6", "8"] },
+    "6":  { x: 480, y: 185, side: "IN",  kids: ["7", ""] },
+    "7":  { x: 420, y: 255, side: "OUT", kids: ["", "9a"] },
+    "8":  { x: 650, y: 185, side: "IN",  kids: ["9b", ""] },
+    "9a": { x: 520, y: 255, side: "IN",  kids: ["10", ""] },
+    "9b": { x: 700, y: 255, side: "",    kids: [] },
+    "10": { x: 560, y: 320, side: "IN",  kids: ["11", ""] },
+    "11": { x: 600, y: 380, side: "",    kids: [] }
+  };
+  const EDGES = [["1","2"],["1","5"],["2","3"],["3","4"],["5","6"],["5","8"],
+                 ["6","7"],["7","9a"],["8","9b"],["9a","10"],["10","11"]];
+  const STEPS = [
+    { n: "1",  d: [],        s: "Node 1: the eye is OUT (f₁(e) > 0), so the order is IN → 1 → OUT. Descend into the IN subtree at 2; polygon 1 waits." },
+    { n: "2",  d: ["2"],     s: "Node 2: eye IN → OUT → 2 → IN. Its OUT child is empty, so draw 2 now and descend to 3." },
+    { n: "3",  d: ["3"],     s: "Node 3: eye OUT → IN → 3 → OUT. Its IN child is empty, so draw 3 and descend to leaf 4." },
+    { n: "4",  d: ["4","1"], s: "Leaf 4 draws directly. Subtree of 2 is complete, so the waiting polygon 1 is drawn — fourth, not first." },
+    { n: "5",  d: [],        s: "Node 5: eye IN → OUT → 5 → IN. Its OUT subtree (rooted at 8) is farther, so visit it before drawing 5." },
+    { n: "8",  d: ["8","9b"],s: "Node 8: eye IN, OUT child empty. Draw 8, then its IN leaf 9b. Subtree of 8 is complete." },
+    { n: "5",  d: ["5"],     s: "Back at 5 with its OUT side done: draw 5, then descend into its IN subtree at 6." },
+    { n: "6",  d: ["6"],     s: "Node 6: eye IN, OUT child empty. Draw 6, then its IN child 7." },
+    { n: "7",  d: ["7"],     s: "Node 7: the normal points down, the eye is below the plane → eye OUT → IN → 7 → OUT. IN empty: draw 7, descend to 9a." },
+    { n: "9a", d: ["9a"],    s: "Node 9a: eye IN, OUT child empty. Draw 9a, then its IN child 10." },
+    { n: "10", d: ["10"],    s: "Node 10: eye IN, OUT child empty. Draw 10, then leaf 11." },
+    { n: "11", d: ["11"],    s: "Leaf 11 draws. Every pending subtree has returned: the frame is complete." }
+  ];
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("bsp-stage");
+  const say = document.getElementById("bsp-say");
+  const orderBox = document.getElementById("bsp-order");
+  const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const refs = {};
+  let cur = -1, timer = null, drawn = [];
+
+  EDGES.forEach(([a, b]) => {
+    const A = NODES[a], B = NODES[b];
+    svg.appendChild(el("line", { x1: A.x, y1: A.y, x2: B.x, y2: B.y, stroke: "var(--background-modifier-border,#adb5bd)", "stroke-width": 2 }));
+  });
+  Object.keys(NODES).forEach(id => {
+    const n = NODES[id];
+    const g = el("g", {});
+    const c = el("circle", { cx: n.x, cy: n.y, r: 15, "stroke-width": 2 });
+    const t = el("text", { x: n.x, y: n.y + 5, "text-anchor": "middle", "font-size": 13, "font-family": "var(--font-interface,system-ui)", "font-weight": 600 });
+    t.textContent = id;
+    const tag = el("text", { x: n.x, y: n.y - 22, "text-anchor": "middle", "font-size": 10, "font-family": "var(--font-interface,system-ui)" });
+    tag.textContent = n.side;
+    g.appendChild(c); g.appendChild(t); g.appendChild(tag);
+    svg.appendChild(g);
+    refs[id] = { c, t, tag };
+  });
+  const note = el("text", { x: 20, y: 30, "font-size": 12, "font-family": "var(--font-interface,system-ui)" });
+  note.textContent = "BSP tree (left = IN, right = OUT)";
+  note.setAttribute("fill", "var(--text-faint,#777)");
+  svg.appendChild(note);
+
+  function paint() {
+    Object.keys(refs).forEach(id => {
+      const r = refs[id];
+      const isCur = cur >= 0 && STEPS[cur].n === id;
+      const done = drawn.indexOf(id) >= 0;
+      r.c.style.fill = isCur ? "var(--interactive-accent,#4c6ef5)" : (done ? "var(--color-green,#2f9e44)" : "var(--background-secondary,#f1f3f5)");
+      r.c.style.stroke = isCur ? "var(--interactive-accent,#4c6ef5)" : (done ? "var(--color-green,#2f9e44)" : "var(--background-modifier-border,#adb5bd)");
+      r.t.style.fill = (isCur || done) ? "#fff" : "var(--text-normal,#222)";
+      r.tag.style.fill = "var(--text-muted,#666)";
+    });
+    orderBox.innerHTML = "";
+    if (drawn.length === 0) {
+      const s = document.createElement("span");
+      s.textContent = "—";
+      s.style.color = "var(--text-faint,#888)";
+      orderBox.appendChild(s);
+    }
+    drawn.forEach((id, i) => {
+      const chip = document.createElement("span");
+      chip.textContent = (i + 1) + ". " + id;
+      chip.style.cssText = "padding:2px 8px;border-radius:6px;font-size:13px;background:var(--color-green,#2f9e44);color:#fff";
+      orderBox.appendChild(chip);
+    });
+  }
+  function init() {
+    cur = -1; drawn = [];
+    say.textContent = "Ready · the eye is fixed, the tree is built · press Next Step";
+    paint();
+  }
+  function step() {
+    if (cur >= STEPS.length - 1) { if (timer) { clearInterval(timer); timer = null; } return; }
+    cur++;
+    const st = STEPS[cur];
+    st.d.forEach(id => { if (drawn.indexOf(id) < 0) drawn.push(id); });
+    say.textContent = "Step " + (cur + 1) + "/" + STEPS.length + " · " + st.s;
+    paint();
+  }
+  document.getElementById("bsp-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  document.getElementById("bsp-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 1100); };
+  document.getElementById("bsp-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  document.getElementById("bsp-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } init(); };
+  init();
+})();
+</script>
+```
+
+### 5.11 Exam pointer
+
+> [!tip] Exam pointer — painter's algorithm and BSP
+> - State the painter's idea in one sentence, then the four tests in order, then say **which test fails** in cyclic overlap (the plane-side test).
+> - Be able to draw three polygons in a cycle and argue that no order exists — "each polygon hides another" is the deck's own wording.
+> - Write $f(\mathbf{r}) = (\mathbf{r}-\mathbf{p})\cdot\mathbf{n}$ and give the sign table: $>0$ OUT, $<0$ IN, $=0$ on the plane.
+> - Reproduce the first partition (root 1: IN 2,3,4 · OUT 5…11) and the second (root 5: IN 6,7,9a,10,11 · OUT 8,9b).
+> - Split formula $t = f(u)/(f(u)-f(v))$ with $f(u)$, $f(v)$ of opposite signs.
+> - Write the two traversal rules and the eye-side table (1 OUT, 2 IN, 3 OUT, 5 IN, 8 IN, 6 IN, 7 OUT, 9a IN, 10 IN), then the draw order $2,3,4,1,8,9b,5,6,7,9a,10,11$.
+> - Compare costs: build $O(n\log n)$–$O(n^2)$ once, traversal $O(n)$ per frame, versus a per-frame sort for the painter.
+
+---
+
+## 6. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline
+
+*Deck: [[CG-29th_Oct.pdf]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
+
+### 6.1 The six stages
+
+The deck restates the pipeline that §1.1 introduced, but this time stage by stage and with the vocabulary that the rest of the lecture uses. Each stage either changes **what an object is** or **which coordinate system it lives in**.
+
+| Stage | Operation | Coordinate change | The deck's own description |
+| --- | --- | --- | --- |
+| 1 · **Represent** | object representation | — | geometry as polygon meshes, implicit surfaces or particle systems; independent of where the object will sit |
+| 2 · **Model** | modelling (geometric) transformation | local → world | places every independently defined object into one shared world frame |
+| 3 · **Illuminate** | lighting and shading | — (world) | assigns colour by simulating how light interacts with a surface and its material |
+| 4 · **View** | viewing pipeline | world → camera → view plane → viewport | decides *what part of the scene the camera actually sees* |
+| 5 · **Rasterize** | scan conversion | continuous device → discrete pixels | converts the viewport to the pixel grid; introduces aliasing |
+| 6 · **Display** | frame-buffer output | — | the image on the device |
+
+> [!note] Representation is independent of placement
+> The deck is explicit that stage 1 does not know where the object will be. A mesh, an implicit surface or a particle cloud is a description in its *own* coordinates; stage 2 is what attaches a position, orientation and scale. This separation is why one representation can be instanced many times in one scene and why the viewing transform can be changed without touching the geometry.
+
+Two stage-level facts the deck states outright:
+
+- **Stage 4 is the largest.** It contains **three transformations** — world → camera, camera → view plane (projection), window → viewport — and **two operations** — clipping and hidden-surface removal.
+- **Stage 5 is where quality is lost.** Device coordinates are continuous, the display is a grid, and the conversion introduces *alias* — visible as jagged edges. Anti-aliasing is applied here, which is exactly the subject of §7.
+
+### 6.2 Lighting versus shading
+
+The deck separates two words that are routinely conflated, and the separation is examinable as a two-column comparison.
+
+| | **Lighting** | **Shading** |
+| --- | --- | --- |
+| Computes | colour / intensity **at a point** | how those values **vary across a surface** |
+| Inputs | light source, material, surface normal, viewing direction | the lighting results at a small set of points |
+| Method | a lighting model simulating optical phenomena | interpolation between the computed points |
+| Cost | extensive computation per point | much cheaper — far fewer lighting evaluations |
+| Question answered | *what colour should this surface point have?* | *how should that value change across the visible surface?* |
+
+> [!important] Definitions
+> **Lighting (illumination)** — evaluation of a lighting model at a point, using the light's properties, the surface's material and normal, and the viewing direction.
+> **Shading** — the interpolation-based process of colouring the pixels of a surface from the lighting values computed at a few points.
+
+### 6.3 The three shading models
+
+| Model | What is interpolated | Look | Cost |
+| --- | --- | --- | --- |
+| **Flat** | nothing — one colour per polygon | faceted; each facet a constant tone | cheapest; one lighting evaluation per polygon |
+| **Gouraud** (1971) | **colours** at the vertices, linearly across the polygon | smooth on curved objects; highlights can be missed or smeared | one lighting evaluation per vertex, then interpolation |
+| **Phong** (1973) | **surface normals** at the vertices, re-lighting per pixel | the most realistic highlights; the normals bend across the facet | one normal interpolation and one lighting evaluation **per pixel** |
+
+> [!note] Why Gouraud loses highlights
+> A highlight is a *narrow* peak of the lighting function. Gouraud evaluates the lighting only at the vertices and interpolates the results, so a highlight that falls between two vertices has no vertex value to be interpolated from — it disappears, or smears into a broad patch. Phong interpolates the *normal* instead and evaluates the lighting at every pixel, so the peak is found wherever the interpolated normal happens to point at the light. The price is a lighting evaluation per pixel rather than per vertex.
+
+The deck's summary line is the one to quote: all three models solve the same problem — *how light behaves per polygon* — at increasing computational cost.
+
+### 6.4 Aliasing at the raster stage
+
+Scan conversion maps a continuous viewport onto a discrete grid. A line that is one pixel wide in continuous space has no exact pixel representation: at each column the rasterizer must choose one row, and the chosen rows step, producing the **staircase**. That staircase is aliasing, and it is not an error in the line algorithm — it is the unavoidable consequence of sampling.
+
+> [!warning] Aliasing is not a bug in Bresenham
+> Any algorithm that writes one pixel per column produces a staircase. Bresenham/midpoint choose the *nearest* pixel, which is optimal for a one-pixel line, yet the result still staircases. Removing the staircase requires changing the *number of samples per pixel* — either by shading several pixels per column (pre-filtering, §7) or by supersampling. Do not answer "use a better line algorithm" to an aliasing question.
+
+### 6.5 Inside–outside tests
+
+Filling a polygon requires deciding, for every pixel, whether it is inside. The deck presents the two standard rules.
+
+> [!important] Definitions
+> **Even–odd (parity) rule** — cast a ray from the test point to infinity and count the polygon edges it crosses; the point is inside if the count is odd. Equivalently, sort the scan line's crossings by $x$ and fill between pairs: 1–2, 3–4, …
+> **Nonzero winding rule** — sum the signed crossings of the ray (an edge crossing upward counts $+1$, downward $-1$); the point is inside if the sum is nonzero.
+
+| | Even–odd | Nonzero winding |
+| --- | --- | --- |
+| Counts | number of crossings | signed sum of crossings |
+| A doubly-wound region | **outside** (even) | **inside** (sum $=2$) |
+| Self-overlapping polygon | shows a hole where the polygon overlaps itself | filled solid |
+| Implementation | parity bit flipped at each crossing | integer accumulator |
+| Typical use | simple polygons, general-purpose fill | font outlines, PostScript-style fills |
+
+The two rules agree on every simple polygon and disagree only where the boundary overlaps itself, which is why the choice is invisible in the deck's triangle and decisive for a self-intersecting outline.
+
+For a pixel's neighbourhood the deck writes the eight neighbours as offsets, with $+y$ up:
+
+| Direction | Offset | Direction | Offset |
+| --- | --- | --- | --- |
+| T (top) | $(0,+1)$ | TL | $(-1,+1)$ |
+| B (bottom) | $(0,-1)$ | TR | $(+1,+1)$ |
+| L (left) | $(-1,0)$ | BL | $(-1,-1)$ |
+| R (right) | $(+1,0)$ | BR | $(+1,-1)$ |
+
+The four orthogonal offsets define **4-connectivity**; all eight define **8-connectivity**. That single choice changes which regions a fill can reach (§6.10).
+
+### 6.6 The scan-line idea
+
+A scan-line fill turns the two-dimensional inside test into a one-dimensional one, once per row of pixels. For a fixed $y$, the polygon's boundary is crossed at a finite set of $x$ values; sorting them and filling between alternate pairs fills the row exactly.
+
+![[CG - Scan Line Fill.excalidraw]]
+
+Three data structures carry the work:
+
+> [!important] Definitions
+> **Edge table (ET)** — every non-horizontal edge, bucketed by its lower $y$ endpoint, storing $y_{\max}$, the $x$ at that lower endpoint, and the slope reciprocal $1/m = \Delta x/\Delta y$.
+> **Active edge table (AET)** — the edges that currently cross the scan line, kept sorted by their current $x$. An edge enters the AET at its lower endpoint and leaves just after its upper endpoint.
+> **Span** — a pair of consecutive $x$ crossings in the sorted AET; the pixels between them are interior.
+
+Two implementation facts make the algorithm fast and correct:
+
+- **Incremental $x$.** The intersection of an edge with the next scan line is not recomputed from the line equation; it is advanced by the constant $1/m$:
+$$ x_{y+1} = x_y + \frac{1}{m} = x_y + \frac{\Delta x}{\Delta y} $$
+- **Half-open edges.** An edge is active for $y \in [y_{\min}, y_{\max})$. A vertex shared by two edges is then counted once at a local minimum and zero times at a local maximum, which keeps the parity correct without any special-case code.
+
+> [!warning] Horizontal edges never enter the AET
+> A horizontal edge has $\Delta y = 0$, so $1/m$ is infinite and it never crosses a scan line transversally. It is simply omitted from the edge table; the vertices at its ends are handled by the half-open rule of the two non-horizontal edges that meet there.
+
+### 6.7 Worked trace: a triangle, row by row
+
+Take the triangle $A(10,10)$, $B(50,20)$, $C(30,60)$ in a coordinate system with $y$ increasing upward, and fill it by scan lines.
+
+| Edge | $y_{\min}$ | $y_{\max}$ | $x$ at $y_{\min}$ | $1/m = \Delta x/\Delta y$ |
+| --- | --- | --- | --- | --- |
+| $AB$ | 10 | 20 | 10 | $(50-10)/(20-10) = 4$ |
+| $AC$ | 10 | 60 | 10 | $(30-10)/(60-10) = 0.4$ |
+| $BC$ | 20 | 60 | 50 | $(30-50)/(60-20) = -0.5$ |
+
+| Scan line $y$ | AET after insertion (sorted by $x$) | Span | Pixels |
+| --- | --- | --- | --- |
+| 10 | $AB:10,\ AC:10$ | 10 → 10 | 1 (the apex $A$) |
+| 15 | $AB:30,\ AC:12$ | 12 → 30 | 19 |
+| 20 | $AC:14,\ BC:50$ (AB leaves: $y = y_{\max}$) | 14 → 50 | 37 |
+| 30 | $AC:18,\ BC:45$ | 18 → 45 | 28 |
+| 40 | $AC:22,\ BC:40$ | 22 → 40 | 19 |
+| 50 | $AC:26,\ BC:35$ | 26 → 35 | 10 |
+| 55 | $AC:28,\ BC:32.5$ | 28 → 32 | 5 |
+
+Check two entries by hand. At $y=30$, edge $AC$ is $x = 10 + 0.4(30-10) = 18$ and edge $BC$ is $x = 50 - 0.5(30-20) = 45$; the two crossings bracket the interior, so the span is $18 \to 45$. At $y=40$ the same formulas give $22$ and $40$. The number of pixels in a span $x_1 \to x_2$ on integer rows is $\lfloor x_2 \rfloor - \lceil x_1 \rceil + 1$, which is where the counts above come from.
+
+> [!note] What the trace demonstrates
+> - The AET **gains** an edge exactly at its lower endpoint ($BC$ appears at $y=20$) and **loses** one just after its upper endpoint ($AB$ disappears at $y=20$).
+> - Between consecutive rows nothing is recomputed: $AC$ moves $18 \to 18.4 \to 18.8$ by adding $0.4$, and $BC$ moves $45 \to 44.5 \to 44$ by adding $-0.5$.
+> - The span never needs the polygon's interior — only the sorted crossings. That is what makes the method $O(\text{edges})$ per row instead of $O(\text{pixels} \times \text{edges})$.
+
+### 6.8 Scan-line polygon fill — algorithm
+
+> [!important] Scan-line polygon fill — statement
+> ```text
+> 1: build the edge table: for each non-horizontal edge store (ymax, x_at_ymin, 1/m)
+> 2: bucket each edge by floor(ymin);  y ← the smallest occupied bucket
+> 3: AET ← empty
+> 4: while AET is not empty or edges remain:
+> 5:     move every edge whose ymin = y from the ET into the AET
+> 6:     remove from the AET every edge with ymax ≤ y         // half-open rule
+> 7:     sort the AET by current x
+> 8:     for each consecutive pair (x1, x2) in the AET:
+> 9:         fill pixels from ceil(x1) to floor(x2) on row y
+> 10:    for every edge in the AET: x ← x + 1/m            // incremental update
+> 11:    y ← y + 1
+> ```
+>
+> **Input:** an ordered vertex list of a polygon (the deck's closing line is literally *"Input: Set of Vertices of the Polygon"*).
+> **Output:** the set of interior pixels.
+> **Cost:** $O(E)$ per scan line for the AET update, plus the sort; with an insertion-sorted AET the total is $O(E + S)$ amortised for $E$ edges and $S$ spans, because the AET order changes only when edges cross.
+
+### 6.9 Interactive dry run
+
+The widget fills the triangle of §6.7 one scan line at a time. The left panel is the raster; the right panel is the live AET, with each edge's current $x$ and slope, the sorted crossings, and the resulting span. Step until $y = 60$ and the triangle is complete.
+
+```html
+<div id="w-sl" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <button id="sl-play">▶ Play</button>
+    <button id="sl-pause">⏸ Pause</button>
+    <button id="sl-next">⏭ Next Step</button>
+    <button id="sl-reset">↺ Reset</button>
+  </div>
+  <div id="sl-say" style="min-height:40px;color:var(--text-muted,#555);margin-bottom:8px">Ready · triangle A(10,10) B(50,20) C(30,60) · press Next Step</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start">
+    <svg id="sl-stage" viewBox="0 0 420 400" style="flex:1 1 300px;min-width:260px;height:auto;display:block;background:var(--background-secondary,#f8f9fa);border-radius:8px"></svg>
+    <div style="flex:1 1 220px;min-width:200px">
+      <div style="font-size:13px;color:var(--text-faint,#777);margin-bottom:4px">Active edge table</div>
+      <div id="sl-aet" style="font-family:var(--font-monospace,monospace);font-size:13px;line-height:1.7;min-height:90px"></div>
+      <div style="font-size:13px;color:var(--text-faint,#777);margin:10px 0 4px">Sorted crossings</div>
+      <div id="sl-xs" style="font-family:var(--font-monospace,monospace);font-size:13px"></div>
+      <div style="font-size:13px;color:var(--text-faint,#777);margin:10px 0 4px">Pixels filled</div>
+      <div id="sl-total" style="font-family:var(--font-monospace,monospace);font-size:13px">0</div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const S = 5, OX = 40, OY = 20, H = 400;
+  const A = { x: 10, y: 10 }, B = { x: 50, y: 20 }, C = { x: 30, y: 60 };
+  const EDGES = [
+    { name: "AB", y0: 10, y1: 20, x0: 10, dx: 4 },
+    { name: "AC", y0: 10, y1: 60, x0: 10, dx: 0.4 },
+    { name: "BC", y0: 20, y1: 60, x0: 50, dx: -0.5 }
+  ];
+  const px = x => OX + x * S;
+  const py = y => H - OY - y * S;
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("sl-stage");
+  const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const fillLayer = el("g", {});
+  const lineLayer = el("g", {});
+  let steps = [], cur = -1, timer = null, total = 0;
+
+  // static grid + polygon
+  for (let g = 0; g <= 70; g += 10) {
+    svg.appendChild(el("line", { x1: px(0), y1: py(g), x2: px(70), y2: py(g), stroke: "var(--background-modifier-border,#e9ecef)", "stroke-width": 1 }));
+    svg.appendChild(el("line", { x1: px(g), y1: py(0), x2: px(g), y2: py(70), stroke: "var(--background-modifier-border,#e9ecef)", "stroke-width": 1 }));
+    const ty = el("text", { x: px(0) - 8, y: py(g) + 4, "text-anchor": "end", "font-size": 10, fill: "var(--text-faint,#888)" });
+    ty.textContent = g; svg.appendChild(ty);
+    const tx = el("text", { x: px(g), y: py(0) + 16, "text-anchor": "middle", "font-size": 10, fill: "var(--text-faint,#888)" });
+    tx.textContent = g; svg.appendChild(tx);
+  }
+  svg.appendChild(fillLayer);
+  svg.appendChild(el("polygon", { points: px(A.x) + "," + py(A.y) + " " + px(B.x) + "," + py(B.y) + " " + px(C.x) + "," + py(C.y), fill: "none", stroke: "var(--text-normal,#222)", "stroke-width": 2 }));
+  [["A", A], ["B", B], ["C", C]].forEach(([n, p]) => {
+    const t = el("text", { x: px(p.x) - 14, y: py(p.y) - 6, "font-size": 11, fill: "var(--text-muted,#666)" });
+    t.textContent = n; svg.appendChild(t);
+  });
+  svg.appendChild(lineLayer);
+
+  function activeAt(y) {
+    return EDGES.filter(e => y >= e.y0 && y < e.y1).map(e => ({
+      name: e.name, x: e.x0 + (y - e.y0) * e.dx, dx: e.dx
+    })).sort((p, q) => p.x - q.x);
+  }
+  for (let y = 10; y <= 60; y++) steps.push(y);
+  let fills = [];
+
+  function reset() {
+    cur = -1; total = 0; fills = [];
+    fillLayer.innerHTML = ""; lineLayer.innerHTML = "";
+    document.getElementById("sl-aet").textContent = "—";
+    document.getElementById("sl-xs").textContent = "—";
+    document.getElementById("sl-total").textContent = "0";
+    document.getElementById("sl-say").textContent = "Ready · triangle A(10,10) B(50,20) C(30,60) · press Next Step";
+  }
+  function step() {
+    if (cur >= steps.length - 1) { if (timer) { clearInterval(timer); timer = null; } return; }
+    cur++;
+    const y = steps[cur];
+    const act = activeAt(y);
+    lineLayer.innerHTML = "";
+    document.getElementById("sl-aet").innerHTML = act.length
+      ? act.map(e => e.name + "  x = " + e.x.toFixed(2) + "  (" + (e.dx >= 0 ? "+" : "") + e.dx.toFixed(2) + "/line)").join("<br>")
+      : "empty";
+    const xs = act.map(e => e.x);
+    document.getElementById("sl-xs").textContent = xs.length ? xs.map(v => v.toFixed(2)).join("  ");
+
+    const ln = el("line", { x1: px(0), y1: py(y), x2: px(70), y2: py(y), stroke: "var(--color-red,#e03131)", "stroke-width": 1.5, "stroke-dasharray": "4 3" });
+    lineLayer.appendChild(ln);
+
+    let say = "y = " + y + " · AET: ";
+    if (act.length === 0) {
+      say += "empty → nothing to fill";
+    } else {
+      say += act.map(e => e.name + " at " + e.x.toFixed(2)).join(", ");
+      for (let i = 0; i + 1 < act.length; i += 2) {
+        const x1 = act[i].x, x2 = act[i + 1].x;
+        const c1 = Math.ceil(x1), c2 = Math.floor(x2);
+        const n = Math.max(0, c2 - c1 + 1);
+        total += n;
+        if (n > 0) fills.push({ y, x1: c1, x2: c2 });
+        say += " · fill " + x1.toFixed(1) + " → " + x2.toFixed(1) + " (" + n + " px)";
+      }
+    }
+    fillLayer.innerHTML = "";
+    fills.forEach(f => {
+      fillLayer.appendChild(el("rect", { x: px(f.x1), y: py(f.y) - 2, width: (f.x2 - f.x1 + 1) * S, height: 4, fill: "var(--interactive-accent,#4c6ef5)", opacity: 0.75 }));
+    });
+    act.forEach(e => {
+      fillLayer.appendChild(el("circle", { cx: px(e.x), cy: py(y), r: 3.5, fill: "var(--color-red,#e03131)" }));
+    });
+    document.getElementById("sl-total").textContent = total + " pixels";
+    document.getElementById("sl-say").textContent = say;
+  }
+  document.getElementById("sl-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  document.getElementById("sl-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 320); };
+  document.getElementById("sl-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  document.getElementById("sl-reset").onclick = () => { if (timer) { clearInterval(timer); timer = null; } reset(); };
+  reset();
+})();
+</script>
+```
+
+### 6.10 Seed fill, boundary fill, flood fill
+
+The scan-line algorithm fills *one polygon* whose vertices are known. The seed-fill family fills *a connected region of pixels* whose extent is discovered as it goes — the natural method for interactive paint programs and for regions defined by their colour rather than by geometry.
+
+> [!important] Definitions
+> **Seed fill** — start from one interior pixel (the seed) and colour its connected neighbours, stopping where the region ends.
+> **Boundary fill** — the region is bounded by a known boundary colour; a pixel is filled only if its colour is neither the boundary colour nor the fill colour. This is the deck's test: *colour ≠ boundary **and** ≠ specified colour*.
+> **Flood fill** — the region is defined by a uniform interior colour; a pixel is filled only if its colour equals the original interior colour (the one under the seed).
+> **4-connected** — neighbours are the four orthogonal pixels $T, B, L, R$; the fill cannot cross a diagonal.
+> **8-connected** — neighbours are all eight pixels $T, B, L, R, TL, TR, BL, BR$; the fill can slip through a diagonal gap.
+
+| | Boundary fill | Flood fill |
+| --- | --- | --- |
+| Test on a candidate pixel | colour ≠ boundary **and** colour ≠ fill | colour = original interior colour |
+| Region known by | its wall | its interior colour |
+| Filling a multi-coloured interior | works (everything not the wall is fair game) | fails — only the one colour is replaced |
+| Typical use | paint-bucket with an outline | background replacement, magic wand |
+
+#### 4- versus 8-connectivity
+
+The choice is not cosmetic. A boundary that is **8-connected** (its pixels touch only at corners in places) is *impermeable to a 4-connected fill* but *permeable to an 8-connected fill*, because the diagonal step is exactly the move that slips through the corner contact.
+
+| Fill | Boundary 4-connected | Boundary 8-connected |
+| --- | --- | --- |
+| **4-connected** | contained | contained — a diagonal gap is still a wall |
+| **8-connected** | **leaks** through a diagonal gap | contained |
+
+So the safe pairing for a closed region is *8-connected boundary with 4-connected fill*, or *4-connected boundary with 8-connected fill*. This is why paint programs expose the connectivity as a fill option: the wrong pair floods the whole canvas.
+
+### 6.11 The deck's stack traces
+
+The deck runs the same stack-based pseudo-code three times and prints the stack size after every pop. The numbers are the algorithm's fingerprint: a pop either pushes some new neighbours or pushes none.
+
+| Demo | Stack-size sequence | Pops | Reading |
+| --- | --- | --- | --- |
+| 4-connected region | $1\to4$, $4\to5$, $5\to4$, $4\to3$, $3\to4$, $4\to3$, $3\to2$, $2\to1$, $1\to0$ | 9 | the seed pushes 4 neighbours; later pops push 0 or 1 because most neighbours are already filled |
+| 8-connected region | $1\to8$ (8 pushed), then $8\to7$, $7\to6$, $6\to5$, $5\to4$, $4\to3$, $3\to2$, $2\to1$, $1\to0$ (0 pushed each time) | 9 | the seed pushes all 8 neighbours; every later pop finds nothing new |
+| boundary fill | $1\to3$ (3 pushed), $3\to2$, $2\to1$, $1\to0$ | 4 | only three neighbours pass the boundary test |
+
+> [!note] Reading a stack trace
+> The pair "$a \to b$ (k pushed)" is a complete statement about one iteration: $a$ pixels were on the stack, one was popped ($a-1$ remain), $k$ new ones were pushed, and the result is $b = a - 1 + k$. Check the 8-connected line: $8 - 1 + 0 = 7$; then $7 - 1 + 0 = 6$; and so on to $1 - 1 + 0 = 0$. The trace terminates when the stack is empty, and the number of pops equals the number of pixels filled — 9 for the first two demos, 4 for the boundary demo.
+
+### 6.12 Seed fill — algorithm
+
+> [!important] Seed / flood fill — statement
+> ```text
+> 1: push the seed pixel; mark it as filled
+> 2: while the stack is not empty:
+> 3:     p ← pop()
+> 4:     set the pixel p to the fill colour
+> 5:     for each neighbour q of p (4 or 8 of them, in a fixed order):
+> 6:         if q is inside the region test and q is not already marked:
+> 7:             mark q; push q
+> 8: (recursion is the same algorithm with the call stack in place of the explicit stack)
+> ```
+>
+> **Input:** a seed pixel, a region test (boundary colour or interior colour), and a connectivity.
+> **Output:** the filled region.
+> **Cost:** $O(\text{pixels in the region})$ pops, each doing 4 or 8 constant-time neighbour tests; the stack holds at most $O(\text{perimeter})$ entries. Marking **on push**, not on pop, is what prevents the same pixel being queued many times.
+
+> [!warning] Mark on push, or the stack explodes
+> If a pixel is marked only when it is popped, a pixel with several already-queued neighbours is pushed once per neighbour, and the stack can grow far beyond the region's perimeter. The deck's traces are consistent with marking on push: every stack size stays small and the pop count equals the pixel count exactly.
+
+### 6.13 Interactive dry run
+
+The widget below runs both connectivities on the same closed boundary. The boundary has **diagonal corner contacts** — it is 8-connected but not 4-connected. Choose 4-connectivity and the fill stays inside; choose 8-connectivity and it escapes through the corner and floods the canvas. Watch the stack counter and the "pushed" figure in the narration.
+
+```html
+<div id="w-ff" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
+    <button id="ff-play">▶ Play</button>
+    <button id="ff-pause">⏸ Pause</button>
+    <button id="ff-next">⏭ Next Step</button>
+    <button id="ff-reset">↺ Reset</button>
+    <label style="margin-left:6px;font-size:13px;color:var(--text-muted,#555)">
+      <input type="radio" name="ffc" id="ff-c4" checked> 4-connected
+    </label>
+    <label style="font-size:13px;color:var(--text-muted,#555)">
+      <input type="radio" name="ffc" id="ff-c8"> 8-connected
+    </label>
+  </div>
+  <div id="ff-say" style="min-height:40px;color:var(--text-muted,#555);margin-bottom:8px">Ready · seed at (3,3) · 4-connected · press Next Step</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start">
+    <svg id="ff-stage" viewBox="0 0 470 300" style="flex:1 1 320px;min-width:280px;height:auto;display:block;background:var(--background-secondary,#f8f9fa);border-radius:8px"></svg>
+    <div style="flex:1 1 170px;min-width:160px;font-family:var(--font-monospace,monospace);font-size:13px;line-height:1.7">
+      <div style="color:var(--text-faint,#777);font-family:var(--font-interface,system-ui)">Stack</div>
+      <div id="ff-size">1</div>
+      <div style="color:var(--text-faint,#777);font-family:var(--font-interface,system-ui);margin-top:8px">Pixels filled</div>
+      <div id="ff-count">0</div>
+      <div style="color:var(--text-faint,#777);font-family:var(--font-interface,system-ui);margin-top:8px">Top of stack</div>
+      <div id="ff-top">(3,3)</div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const MAP = [
+    "..................",
+    ".######...........",
+    ".#....#...........",
+    ".#....#...........",
+    ".#....#...........",
+    ".#.....#..........",
+    ".#......#.........",
+    ".#.....#..........",
+    ".#....#...........",
+    ".######...........",
+    ".................."
+  ];
+  const COLS = 18, ROWS = MAP.length, CELL = 26;
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("ff-stage");
+  const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const cells = {};
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const rect = el("rect", { x: c * CELL + 1, y: r * CELL + 1, width: CELL - 2, height: CELL - 2, rx: 3, stroke: "var(--background-modifier-border,#dee2e6)", "stroke-width": 0.5 });
+      rect.style.fill = MAP[r][c] === "#" ? "var(--text-faint,#495057)" : "var(--background-primary,#fff)";
+      svg.appendChild(rect);
+      cells[c + "," + r] = rect;
+    }
+  }
+  const seedMark = el("circle", { cx: 3 * CELL + CELL / 2, cy: 3 * CELL + CELL / 2, r: 4, fill: "var(--color-red,#e03131)" });
+  svg.appendChild(seedMark);
+
+  let stack = [], filled = new Set(), timer = null, connected = 4;
+  const say = document.getElementById("ff-say");
+
+  function blocked(c, r) {
+    return c < 0 || r < 0 || c >= COLS || r >= ROWS || MAP[r][c] === "#";
+  }
+  function neighbours(c, r) {
+    const out = [[c, r - 1], [c - 1, r], [c + 1, r], [c, r + 1]];
+    if (connected === 8) out.push([c - 1, r - 1], [c + 1, r - 1], [c - 1, r + 1], [c + 1, r + 1]);
+    return out;
+  }
+  function reset() {
+    if (timer) { clearInterval(timer); timer = null; }
+    stack = [[3, 3]];
+    filled = new Set(["3,3"]);
+    Object.keys(cells).forEach(k => {
+      const [c, r] = k.split(",").map(Number);
+      cells[k].style.fill = MAP[r][c] === "#" ? "var(--text-faint,#495057)" : "var(--background-primary,#fff)";
+      cells[k].style.opacity = 1;
+    });
+    seedMark.setAttribute("visibility", "visible");
+    document.getElementById("ff-size").textContent = "1";
+    document.getElementById("ff-count").textContent = "0";
+    document.getElementById("ff-top").textContent = "(3,3)";
+    say.textContent = "Ready · seed at (3,3) · " + connected + "-connected · press Next Step";
+  }
+  function step() {
+    if (stack.length === 0) { if (timer) { clearInterval(timer); timer = null; } say.textContent = "Stack empty · region complete · " + filled.size + " pixels"; return; }
+    const before = stack.length;
+    const [c, r] = stack.pop();
+    cells[c + "," + r].style.fill = "var(--interactive-accent,#4c6ef5)";
+    let pushed = 0;
+    neighbours(c, r).forEach(([nc, nr]) => {
+      if (blocked(nc, nr)) return;
+      const k = nc + "," + nr;
+      if (filled.has(k)) return;
+      filled.add(k); stack.push([nc, nr]);
+      cells[k].style.fill = "var(--color-yellow,#f08c00)"; pushed++;
+    });
+    if (c === 3 && r === 3) seedMark.setAttribute("visibility", "hidden");
+    document.getElementById("ff-size").textContent = stack.length;
+    document.getElementById("ff-count").textContent = filled.size;
+    document.getElementById("ff-top").textContent = stack.length ? "(" + stack[stack.length - 1][0] + "," + stack[stack.length - 1][1] + ")" : "empty";
+    say.textContent = "pop (" + c + "," + r + ") · stack " + before + " → " + stack.length + " (" + pushed + " pushed) · filled " + filled.size;
+  }
+  document.getElementById("ff-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  document.getElementById("ff-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 90); };
+  document.getElementById("ff-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  document.getElementById("ff-reset").onclick = reset;
+  document.getElementById("ff-c4").onchange = () => { connected = 4; reset(); };
+  document.getElementById("ff-c8").onchange = () => { connected = 8; reset(); };
+  reset();
+})();
+</script>
+```
+
+> [!warning] What to conclude from the leak
+> The boundary in the widget is closed in the 8-connected sense — you cannot walk from inside to outside without touching a boundary pixel along an 8-neighbour step. A 4-connected fill still cannot escape, because its only moves are orthogonal and every orthogonal route is blocked. Switch the fill to 8-connected and it steps diagonally through the corner contact immediately. **The topology of the fill must be at least as strict as the topology of the boundary**, which is the general statement behind the table in §6.10.
+
+### 6.14 Character generation: the bitmapped font
+
+There are two ways to put a character on a raster, and the deck builds the same letter $L$ both ways.
+
+A **bitmapped font** stores the character as a small binary image: one bit per pixel, $1$ = on, $0$ = off. For the deck's $5\times7$ letter:
+
+![[CG - Bitmapped Font L.png|300]]
+
+*Figure — the $5\times7$ bitmap of `L`: six upper rows `10000`, bottom row `11111`.*
+
+| Quantity | Value | Arithmetic |
+| --- | --- | --- |
+| Grid | $5 \times 7$ | — |
+| Stored samples | 35 bits | $5 \times 7$ |
+| On pixels | 11 | vertical stroke 7 + foot 5 − shared corner 1 |
+| Enlarged grid | $10 \times 14$ | each dimension $\times 2$ |
+| Enlarged storage | 140 bits | $10 \times 14$ |
+| Enlarged on pixels | 44 | $11 \times 4$ — each original pixel becomes a $2\times2$ block |
+
+> [!note] Why enlargement multiplies the on-pixels by four
+> Nearest-neighbour replication replaces every original pixel by a $2\times2$ block, so area (and the count of on-pixels) scales by $2^2 = 4$ while the *pattern* is unchanged. The deck's conclusion is the important part: *replication preserves the block pattern; it does not recover a smoother character outline.* A magnified bitmap is a blocky bitmap, not a better letter.
+
+### 6.15 Character generation: the outlined font
+
+An **outlined font** stores the character as geometry: points and line segments that describe the boundary. The deck's `L` is a six-vertex counterclockwise polygon.
+
+![[CG - Outlined Font L.png|300]]
+
+*Figure — the same `L` as a polygon with vertices $(0,0),(5,0),(5,1),(1,1),(1,7),(0,7)$; the outline is scaled and then scan-converted.*
+
+| Quantity | Value | Note |
+| --- | --- | --- |
+| Vertices (CCW) | $(0,0),(5,0),(5,1),(1,1),(1,7),(0,7)$ | six points, closed |
+| Raster extent | $[0,5]\times[0,7]$ | vertices describe **cell boundaries**, pixel centres at $(i+\tfrac12, j+\tfrac12)$ |
+| Geometric area | 11 square units | vertical stroke $1\times7$ plus foot $5\times1$ minus the shared $1\times1$ corner |
+| After scaling by 2 | vertices doubled, area 44 | area scales by $2^2$ |
+| Rasterized on-pixels at $2\times$ | 44 for this axis-aligned outline | the deck's lucky coincidence |
+
+> [!warning] Area is not a pixel count
+> The deck ends the section with the sentence to remember: *geometric area and the number of rasterized pixels are different quantities in general.* They coincide here (11 and 44) only because the outline is axis-aligned, one unit thick, and sits exactly on cell boundaries. A slanted or curved outline has a raster pixel count that differs from its area, which is why fonts are designed in outline and *then* hinted/rasterized rather than stored as bitmaps.
+
+| | Bitmapped font | Outlined font |
+| --- | --- | --- |
+| Storage | one bit per pixel of every size | points + segments, one master |
+| Scaling | replicate blocks — quality lost | transform the geometry, re-rasterize — quality kept |
+| Rotation | degrades badly | exact (a transform on the points) |
+| Rendering cost | trivial — copy bits | needs a polygon fill per glyph |
+| Small sizes | crisp, hand-tuned | needs hinting to stay legible |
+| The deck's example | $5\times7 = 35$ bits, 11 on | 6 vertices, area 11 |
+
+### 6.16 Exam pointer
+
+> [!tip] Exam pointer — fill areas and the pipeline
+> - Six stages with their coordinate changes, and stage 4's **3 transformations + 2 operations**.
+> - Lighting versus shading in two columns, then flat / Gouraud / Phong with what each interpolates and why Gouraud loses highlights.
+> - Even–odd versus nonzero winding, including a doubly-wound region.
+> - ET / AET definitions, the half-open rule, $x \leftarrow x + 1/m$, and the triangle trace of §6.7.
+> - Seed vs boundary vs flood fill, the deck's test `colour ≠ boundary AND ≠ fill`, and the 4/8-connectivity leak table.
+> - Reproduce the stack traces: $1\to4 \ldots 1\to0$ (4-connected), $1\to8$ then all $(0\text{ pushed})$ (8-connected), $1\to3 \ldots$ (boundary).
+> - Bitmap $5\times7$: 35 bits, 11 on; doubled: 140 bits, 44 on. Outline: six vertices, area 11, and the warning that area ≠ pixel count.
+
+---
+
 <!-- §NEXT§ -->

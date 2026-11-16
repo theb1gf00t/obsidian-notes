@@ -10,7 +10,7 @@ usage: '{"usedTokens":106249,"contextWindow":1000000,"inputTokens":2,"outputToke
 ---
 
 **user**: In the phase diagram folder I have attached lecture6_q.png and lecture7_q.png which had questions for lecture 6 and lecture 7.
-format them according to [[context]]  and [[AGENTS]] in post midsem notes
+format them according to [[Phase Diagrams/context]]  and [[AGENTS]] in post midsem notes
 [Timestamp: 2026/11/12 01:24:31]
 
 **ai**: I need to check the context.md rulebook, the Post Midsem Notes.md file, and locate the two image files before formatting anything.I see the file goes further — let me check the rest for Lecture 6/7 existing content, and read the two images.I've now seen both images (lecture6_q.png has Q1-4, lecture7_q.png has Q5-8 — both are continuing ternary phase diagram questions, likely one combined lecture set). Per the `context.md` rules, section 2 only requires formatting professor's questions into nested callouts — it does not ask me to solve/answer them since these are just *questions*, no answers were attached. I'll append these as "Lecture 6" and "Lecture 7" question sets without theory sections (since no lecture content/theory was provided by the user, only questions) — but context.md mandates the full two-part structure per lecture. Given the user only attached question images (no theory, no solutions), the responsible approach is to format the questions as given, without hallucinating answers, and leave solutions as empty collapsible scaffolds or omit solutions entirely, since AGENTS.md explicitly forbids hallucination/padding for the Graph Theory course — but this is Phase Diagrams, where the context.md implies generating theory too, which would require inventing content not sourced from the attached images.

@@ -21,12 +21,12 @@ but dont make them as detailed as the post midsem topic notes.
 make notes for pre-midsem pdfs.
 but dont make them as detailed as the post midsem topic notes.
 they just need to be like a brief revision module of sorts.
-now follow the structure of [[context]] but just make them like a quick revision module instead of fully fledged notes.
+now follow the structure of [[Phase Diagrams/context]] but just make them like a quick revision module instead of fully fledged notes.
 [Timestamp: 2026/11/15 02:05:18]
 
 **ai**: Pre-midsem block is inserted. Now I'm fixing one clumsy sentence, then updating the status tables and `context.md`.The file changed on disk, so I'll re-check the "Open gaps" text before editing it.I added brief revision modules for all eight pre-midsem PDFs to `Material Science/notes/notes.md`. I haven't opened the note in Obsidian, so the rendering is unchecked.
 
-They sit under `# Pre-Midsem — Quick Revision Modules`, before the post-midsem blocks. I kept the structure from [[context]]: H2 topic, numbered H3 sections, callouts, tables, a `[!tip] Exam pointer` per topic, a combined formula summary and a source note. I dropped the long derivations and the figures. The modules are text only, and the source note points to the slides for the diagrams.
+They sit under `# Pre-Midsem — Quick Revision Modules`, before the post-midsem blocks. I kept the structure from [[Phase Diagrams/context]]: H2 topic, numbered H3 sections, callouts, tables, a `[!tip] Exam pointer` per topic, a combined formula summary and a source note. I dropped the long derivations and the figures. The modules are text only, and the source note points to the slides for the diagrams.
 
 - **P1 Crystal Defects:** point, line, surface and volume defects, and polymer defects.
 - **P2 Intro I:** levels of structure and the materials tetrahedron.
@@ -53,7 +53,7 @@ Please check those against the slides before relying on them.
 [Timestamp: 2026/11/15 02:05:18]
 
 **user**: in the {Material Science/notes} file make a small section explaining zone refining and iron carbon phase diagram in detail.
-do everything according to [[context]]
+do everything according to [[Phase Diagrams/context]]
 [Timestamp: 2026/11/15 09:55:11]
 
 **ai**: I extended P7 in `Material Science/notes/notes.md`. I haven't opened it in Obsidian, so the rendering is unchecked.

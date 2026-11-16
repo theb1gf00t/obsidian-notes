@@ -13,7 +13,7 @@ lastAccessedAt: 1794685633273
 **user**: make a separate endsem_solutions.md file and in it solve [[endsem1.pdf]] paper in detail.
 refer to {Material Science/notes} and all the other pdfs in the pdfs folder if necessary.
 
-solve the paper in detail and format it according to [[context]]
+solve the paper in detail and format it according to [[Phase Diagrams/context]]
 [Timestamp: 2026/11/15 00:11:49]
 
 **ai**: Reading the remaining source sections (composites, electronic, magnetic, dielectric) and viewing the Ag–Pt diagram before writing.Now magnetic and dielectric sections.I've created `Material Science/notes/endsem_solutions.md` with all 12 questions solved. I haven't opened it in Obsidian, so the rendering is unchecked. A script check found no unquoted lines inside the callouts.

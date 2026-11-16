@@ -14,7 +14,7 @@ link the pdfs and sections of the notes to the syllabus topics and add a checkbo
 and other things as you deem necessary.
 [Timestamp: 2026/11/14 16:08:44]
 
-**ai**: Now I'll rebuild the syllabus as a linked, tickable tracker. Writing the file:Done — [[syllabus]] is now a full syllabus tracker. What changed in `Material Science/notes/syllabus.md`:
+**ai**: Now I'll rebuild the syllabus as a linked, tickable tracker. Writing the file:Done — [[Phase Diagrams/Syllabus]] is now a full syllabus tracker. What changed in `Material Science/notes/syllabus.md`:
 
 **1. Checkboxes (one per topic, 17 total)**
 - `## Pre-Midsem — 8 topics` and `## Post-Midsem — 9 topics`, each topic a real task item (`- [ ] **1 · Mechanical Properties — I** …`) you can tick in reading or preview mode.

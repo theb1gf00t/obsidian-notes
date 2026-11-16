@@ -10,7 +10,7 @@ usage: '{"usedTokens":45127,"contextWindow":200000,"updatedAt":1794651620360}'
 lastAccessedAt: 1794652737794
 ---
 
-**user**: add notes for composites as well using pdfs [[Composites_Odd_2026-27.pdf]] and [[MO NOTES (1).pdf]] . refer to [[context]] for any discrepencies.
+**user**: add notes for composites as well using pdfs [[Composites_Odd_2026-27.pdf]] and [[MO NOTES (1).pdf]] . refer to [[Phase Diagrams/context]] for any discrepencies.
 [Timestamp: 2026/11/14 15:30:00]
 
 **ai**: Composites notes are complete and verified. Final pass found and fixed only small issues, so here's the state of the block.

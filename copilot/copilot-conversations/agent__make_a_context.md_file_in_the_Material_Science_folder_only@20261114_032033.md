@@ -12,7 +12,7 @@ usage: '{"usedTokens":55943,"contextWindow":200000,"updatedAt":1794606752202}'
 **user**: make a context.md file in the Material Science folder only noting down the format in which the notes are formed. so I dont have to specfy details of making notes through pdfs again I just have to refer to that file.
 [Timestamp: 2026/11/14 03:20:33]
 
-**ai**: I have the full picture of how `notes.md` is built. Now writing the rulebook.Created [[context]] in the `Material Science/` folder — a self-contained format rulebook for `notes.md`, so you never have to re-specify the layout again. Nothing in `notes.md` was touched.
+**ai**: I have the full picture of how `notes.md` is built. Now writing the rulebook.Created [[Phase Diagrams/context]] in the `Material Science/` folder — a self-contained format rulebook for `notes.md`, so you never have to re-specify the layout again. Nothing in `notes.md` was touched.
 
 **What it records (all reverse-engineered from the existing note):**
 

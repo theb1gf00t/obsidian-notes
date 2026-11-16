@@ -9,7 +9,7 @@ agentLabel: "Notes: electrical, dielectric & optical properties"
 usage: '{"usedTokens":106238,"contextWindow":200000,"updatedAt":1794642457205}'
 ---
 
-**user**: makes notes for electric and electronic properties from [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and for Dielectric materials and polarization optical properties. from [[MP - Yoffee Diagram DBTT.excalidraw]] according to [[context]] .
+**user**: makes notes for electric and electronic properties from [[Electrical and Electronic Properties - Part 2_Odd_2026-27.pdf]] [[Electrical and Electronic Properties - Part 1_Odd_2026-27.pdf]] and for Dielectric materials and polarization optical properties. from [[MP - Yoffee Diagram DBTT.excalidraw]] according to [[Phase Diagrams/context]] .
 [Timestamp: 2026/11/14 13:05:50]
 
 **ai**: I'll start by reading the context file and the existing notes structure, then the PDFs.Now I'll write the electrical block into [[Material Science/notes.md]], inserting it in syllabus order before the magnetic block.Now the dielectric and optical block, appended after the magnetic block:The note is complete. I'll add one original synthesis flowchart (classification by band structure), since every *existing* figure was extracted rather than redrawn:Done. Everything was appended to [[notes]] in syllabus order, following `Material Science/context.md` (the Phase Diagrams `context.md` is a different rulebook and does not apply here).

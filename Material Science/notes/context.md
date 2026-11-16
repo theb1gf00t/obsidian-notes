@@ -263,7 +263,7 @@ The eight pre-midsem topics are written as **brief revision modules**, not full 
 
 ## 12. Adding a New Topic — Workflow
 
-1. **Read the syllabus row.** Take the topic's exact title and number from [[syllabus]]; confirm the row exists in the Syllabus Map table.
+1. **Read the syllabus row.** Take the topic's exact title and number from [[Material Science/notes/syllabus]]; confirm the row exists in the Syllabus Map table.
 2. **Mine the source PDF.** Work through the lecture slides in order, plus the relevant page range of [[MO NOTES (1).pdf]]; note the lecturer's worked examples and emphasis.
 3. **Extract figures.** Pull the photographs, plots and tables out of the PDF into `images/` using the correct prefix from §7.5 and a Title Case descriptive name.
 4. **Reconstruct schematics.** Draw the diagram-only figures as Excalidraw files in `Excalidraw/` with the block's Excalidraw prefix, then verify each one renders (`excalidraw_render`) before citing it.

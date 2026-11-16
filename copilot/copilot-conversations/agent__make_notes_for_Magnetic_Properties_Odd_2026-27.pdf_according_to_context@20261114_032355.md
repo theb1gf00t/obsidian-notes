@@ -9,7 +9,7 @@ agentLabel: "Magnetic Properties PDF notes"
 usage: '{"usedTokens":122231,"contextWindow":200000,"updatedAt":1794607273129}'
 ---
 
-**user**: make notes for [[Magnetic Properties_Odd_2026-27.pdf]] according to [[context]]
+**user**: make notes for [[Magnetic Properties_Odd_2026-27.pdf]] according to [[Phase Diagrams/context]]
 [Timestamp: 2026/11/14 03:23:55]
 
 **ai**: I'll start by reading the context conventions and the existing notes structure, then the PDF.Now I'll write the new course block. First the drawing, then the note text.Now the note itself — appending the new course block:Now update the Syllabus Map status:Done — Topic 8 is now written into [[notes]] in the folder's established schema.

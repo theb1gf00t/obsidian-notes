@@ -8,7 +8,7 @@ tags:
 lastAccessedAt: 1794652708220
 ---
 
-**user**: modify the [[syllabus]] fille.
+**user**: modify the [[Phase Diagrams/Syllabus]] fille.
 link the pdfs and sections of the notes to the syllabus topics and add a checkbox after each topic that I can tick to see whether I finished it or not.
 [Timestamp: 2026/11/14 15:43:33]
 

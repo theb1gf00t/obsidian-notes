@@ -22,7 +22,7 @@ Compiled from the lecture slides ([[Mechanical Properties part 1_Odd_2026-27.pdf
 | P7 | Phase Diagrams | ✅ revision module below |
 | P8 | Quasi Crystals | ✅ revision module below |
 
-## Post-Midsem Topics (from [[syllabus]])
+## Post-Midsem Topics (from [[Material Science/notes/syllabus]])
 
 | # | Topic | Status |
 | --- | --- | --- |
@@ -49,7 +49,7 @@ Brief revision modules for the eight **pre-midsem** lecture PDFs — [[Crystal D
 > **Structure first, imperfection second, equilibrium last.** Topics P2–P6 build the perfect-crystal picture (levels of structure → lattices and symmetry → crystal geometry and X-ray diffraction → bonding-driven structures). P1 then breaks that perfection (point, line, surface and volume defects). P7 asks which phases are stable together (phase diagrams), and P8 shows the exception that breaks the rule of translational periodicity (quasicrystals).
 
 > [!note] Numbering
-> Pre-midsem topics are numbered **P1–P8** (syllabus order of [[syllabus]]) so that the numbers 1–9 stay reserved for the post-midsem topics below. H3 sections run `P1.1`, `P1.2`, …
+> Pre-midsem topics are numbered **P1–P8** (syllabus order of [[Material Science/notes/syllabus]]) so that the numbers 1–9 stay reserved for the post-midsem topics below. H3 sections run `P1.1`, `P1.2`, …
 
 ---
 

@@ -8,7 +8,7 @@ tags:
 lastAccessedAt: 1793461390421
 ---
 
-**user**: [[context]] we will start with lecture 2.
+**user**: [[Phase Diagrams/context]] we will start with lecture 2.
 the summarizing questions are:
 Draw the graph of critical radius pertaining to heterogeneous nucleation as a function of the contact angle. 
 Are there ever three values of the precipitate-boundary, precipitate-matrix, and matrix-boundary interfacial energies for which heterogeneous nucleation is energetically less favourable than homogeneous nucleation?
@@ -22,7 +22,7 @@ i will add answers according dont worry about that.
 **ai**: **Error:** Internal error: This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).
 [Timestamp: 2026/10/31 21:04:41]
 
-**user**: [[context]] we will start with lecture 2.
+**user**: [[Phase Diagrams/context]] we will start with lecture 2.
 the summarizing questions are:
 Draw the graph of critical radius pertaining to heterogeneous nucleation as a function of the contact angle. 
 Are there ever three values of the precipitate-boundary, precipitate-matrix, and matrix-boundary interfacial energies for which heterogeneous nucleation is energetically less favourable than homogeneous nucleation?

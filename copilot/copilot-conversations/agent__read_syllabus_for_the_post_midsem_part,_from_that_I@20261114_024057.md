@@ -9,7 +9,7 @@ agentLabel: "Mechanical Properties I-III detailed notes"
 usage: '{"usedTokens":111532,"contextWindow":200000,"updatedAt":1794605040374}'
 ---
 
-**user**: read [[syllabus]] for the post midsem part, from that I need in detailed notes for:
+**user**: read [[Phase Diagrams/Syllabus]] for the post midsem part, from that I need in detailed notes for:
 1. Mechanical Properties - I
 2. Mechanical Properties - II
 3. Mechanical Properties - III

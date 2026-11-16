@@ -34,10 +34,10 @@ So the real prerequisite is **[[notes#7.3 The valence band, the conduction band,
 
 ## Why the syllabus order still puts it last
 
-[[syllabus]] runs 6 → 7 → 8 → 9, and the block intro at the top of §9 is written in that voice ("the previous block ended by deriving a forbidden energy gap and then using it to build a diode"). That's a *narrative* ordering, not a hard prerequisite chain. If you want to start §9 now, the honest reading path is:
+[[Phase Diagrams/Syllabus]] runs 6 → 7 → 8 → 9, and the block intro at the top of §9 is written in that voice ("the previous block ended by deriving a forbidden energy gap and then using it to build a diode"). That's a *narrative* ordering, not a hard prerequisite chain. If you want to start §9 now, the honest reading path is:
 
 1. §7.3, §7.4, §7.5, §7.6 — 4 sections, ~15 min
-2. §9.1 → §9.9 straight through (self-contained, and this is where the exam marks sit — the four mechanisms are named in the syllabus's [[syllabus#^|exam pointer]])
+2. §9.1 → §9.9 straight through (self-contained, and this is where the exam marks sit — the four mechanisms are named in the syllabus's [[Phase Diagrams/Syllabus#^|exam pointer]])
 3. §9.10–9.12, which is where the band-gap picture earns its keep
 4. Come back to §6/§7 in full when you reach that topic for its own sake (the superconductivity and $E$–$k$ material is examined on its own merits, e.g. band structure → conductivity class in §7.3).
 

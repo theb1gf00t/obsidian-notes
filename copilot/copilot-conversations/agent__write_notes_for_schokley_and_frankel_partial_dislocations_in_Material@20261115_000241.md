@@ -9,10 +9,10 @@ tags:
 usage: '{"usedTokens":57643,"contextWindow":1000000,"inputTokens":2,"outputTokens":271,"cacheReadTokens":55944,"cacheWriteTokens":1426,"updatedAt":1794681275736}'
 ---
 
-**user**: write notes for schokley and frankel partial dislocations in {Material Science/notes} according to [[context]]
+**user**: write notes for schokley and frankel partial dislocations in {Material Science/notes} according to [[Phase Diagrams/context]]
 [Timestamp: 2026/11/15 00:02:41]
 
-**ai**: Everything is in place already; only the status flag is stale. I'll update it.I didn't write new notes, because `notes.md` already has a full Shockley and Frank partial dislocations section in the [[context]] format. The only gap was the Syllabus Map status for topic 4, which still read `—`. I changed it to `✅ noted below`.
+**ai**: Everything is in place already; only the status flag is stale. I'll update it.I didn't write new notes, because `notes.md` already has a full Shockley and Frank partial dislocations section in the [[Phase Diagrams/context]] format. The only gap was the Syllabus Map status for topic 4, which still read `—`. I changed it to `✅ noted below`.
 
 The existing section is at lines 1997–2312 of `Material Science/notes/notes.md`. It has the following:
 - **Structure:** an H1 block, `## 4.` with sections 4.1–4.9, an exam pointer, a Formula Summary and a Source images note.

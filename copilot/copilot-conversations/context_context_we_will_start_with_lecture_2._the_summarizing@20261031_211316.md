@@ -7,7 +7,7 @@ tags:
   - copilot-conversation
 ---
 
-**user**: [[context]] [[context]] we will start with lecture 2.
+**user**: [[Phase Diagrams/context]] [[Phase Diagrams/context]] we will start with lecture 2.
 the summarizing questions are:
 Draw the graph of critical radius pertaining to heterogeneous nucleation as a function of the contact angle. 
 Are there ever three values of the precipitate-boundary, precipitate-matrix, and matrix-boundary interfacial energies for which heterogeneous nucleation is energetically less favourable than homogeneous nucleation?

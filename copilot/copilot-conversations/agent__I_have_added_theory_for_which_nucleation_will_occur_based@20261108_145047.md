@@ -10,7 +10,7 @@ usage: '{"usedTokens":80225,"contextWindow":200000,"inputTokens":5,"outputTokens
 ---
 
 **user**: I have added theory for which nucleation will occur based on given values of interfacial energies at the end of lecture 2 notes.
-incorporate that theory in the lecture 2 theory according to [[context]]
+incorporate that theory in the lecture 2 theory according to [[Phase Diagrams/context]]
 [Timestamp: 2026/11/08 14:50:47]
 
 **ai**: I'll help you incorporate the theory. Let me first check the context file and then examine what you've added.I can see the file. The theory you've added appears to be starting at line 106 (after Q4) and includes:
@@ -31,7 +31,7 @@ Let me integrate this into the proper section structure under **B. Governing For
   - **Worked Example: Partial Wetting** (with all calculations)
 
 ✅ **Maintained structural coherence:**
-- Follows the [[context]] hierarchy exactly: placed after parameter definitions (section B) and before literature references
+- Follows the [[Phase Diagrams/context]] hierarchy exactly: placed after parameter definitions (section B) and before literature references
 - All three regimes (Partial Wetting, Complete Wetting, Complete Non-Wetting) are now integrated with their physical interpretations
 - The worked example stays connected to the method
 

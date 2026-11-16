@@ -37,21 +37,21 @@ So "Mechanical Properties" is not a topic heading — it's a **course block**, o
 
 Three reasons, all deliberate:
 
-1. **It's the only block holding three syllabus topics.** The syllabus lists *Mechanical Properties — I / II / III* as three separate post-midsem topics (1, 2, 3) from three separate PDFs, but they are one continuous lecture arc. [[context]] §4.2 fixes the rule: `#` H1 = "a course block — a group of related lecture PDFs", `##` H2 = "one syllabus topic / PDF". Three related PDFs → one H1, three H2s. [[Electrical & Electronic Properties]] follows the same pattern with two topics (§6, §7).
+1. **It's the only block holding three syllabus topics.** The syllabus lists *Mechanical Properties — I / II / III* as three separate post-midsem topics (1, 2, 3) from three separate PDFs, but they are one continuous lecture arc. [[Phase Diagrams/context]] §4.2 fixes the rule: `#` H1 = "a course block — a group of related lecture PDFs", `##` H2 = "one syllabus topic / PDF". Three related PDFs → one H1, three H2s. [[Electrical & Electronic Properties]] follows the same pattern with two topics (§6, §7).
 
-2. **The shared furniture sits at the end of the whole block, not per topic.** Because H1 is the block, the orientation callout (line 26) and the single `## Formula Summary` table (line 1953) belong to all of §1–§3 together. That's why the formula table arrives only *after* §3.10 instead of after each part — the block closes once, per [[context]] §4.3.
+2. **The shared furniture sits at the end of the whole block, not per topic.** Because H1 is the block, the orientation callout (line 26) and the single `## Formula Summary` table (line 1953) belong to all of §1–§3 together. That's why the formula table arrives only *after* §3.10 instead of after each part — the block closes once, per [[Phase Diagrams/context]] §4.3.
 
-3. **It's the first written block, not a different syllabus division.** [[notes]] currently only covers post-midsem material, and mechanical properties is post-midsem topic 1 — so it lands immediately under the Syllabus Map. The pre-midsem eight topics (1–8 in [[syllabus]]) have no written sections yet; their slot is simply empty above it.
+3. **It's the first written block, not a different syllabus division.** [[notes]] currently only covers post-midsem material, and mechanical properties is post-midsem topic 1 — so it lands immediately under the Syllabus Map. The pre-midsem eight topics (1–8 in [[Phase Diagrams/Syllabus]]) have no written sections yet; their slot is simply empty above it.
 
-One related quirk you may have noticed: the H2 numbers jump **§3 → §5**. That's not a division either — post-midsem topic 4 (Shockley/Frank partial dislocations) has a PDF but no written section, and [[syllabus]] §"Open gaps" says the numbering is left as a hole on purpose so the numbers stay glued to the syllabus.
+One related quirk you may have noticed: the H2 numbers jump **§3 → §5**. That's not a division either — post-midsem topic 4 (Shockley/Frank partial dislocations) has a PDF but no written section, and [[Phase Diagrams/Syllabus]] §"Open gaps" says the numbering is left as a hole on purpose so the numbers stay glued to the syllabus.
 
 ## If you want it changed
 
 I can restructure it, but each option costs something:
 
-- **Three H1s** (`# Mechanical Properties — I/II/III`) — matches the syllabus one-to-one, but you lose the block-level intro and the combined Formula Summary, and it contradicts [[context]] §4.2.
+- **Three H1s** (`# Mechanical Properties — I/II/III`) — matches the syllabus one-to-one, but you lose the block-level intro and the combined Formula Summary, and it contradicts [[Phase Diagrams/context]] §4.2.
 - **One H2 for all three parts** — would collapse the syllabus's topics 1–3 into one entry, breaking the `[[syllabus]]` → `[[notes]]` anchors in the section index.
-- **Wrap everything under a `# Post-Midsem` H1** — clean-looking, but adds a fifth level of nesting that [[context]] explicitly forbids.
+- **Wrap everything under a `# Post-Midsem` H1** — clean-looking, but adds a fifth level of nesting that [[Phase Diagrams/context]] explicitly forbids.
 
 Say which one you want and I'll do it as targeted edits.
 [Timestamp: 2026/11/14 17:45:04]
@@ -87,9 +87,9 @@ The mechanical shift itself:
 - `### N.x` → `## N.x` (37 sections) and `####` → `###` (all H4 enrichment subsections)
 - the shared formula table became `## Formula Summary — Mechanical Properties (Parts I–III)`, following the `— <block>` naming the other four summaries already use
 
-Verification: 137 heading lines rewritten, **zero** content lines touched (every changed line in the diff is a `#` heading), no `####` left in the block, all `---` separators and the 91 callout lines intact. The `[[notes#1. Mechanical Properties — I]]` and `[[notes#1.1 …]]` anchors in [[syllabus]] resolve unchanged, since heading text was not altered.
+Verification: 137 heading lines rewritten, **zero** content lines touched (every changed line in the diff is a `#` heading), no `####` left in the block, all `---` separators and the 91 callout lines intact. The `[[notes#1. Mechanical Properties — I]]` and `[[notes#1.1 …]]` anchors in [[Phase Diagrams/Syllabus]] resolve unchanged, since heading text was not altered.
 
-I also corrected [[context]] §4.2, whose H1 example named `# Mechanical Properties` (no longer a heading) and now records the one-H1-per-topic convention for the 1–3 family.
+I also corrected [[Phase Diagrams/context]] §4.2, whose H1 example named `# Mechanical Properties` (no longer a heading) and now records the one-H1-per-topic convention for the 1–3 family.
 
 One asymmetry remains: the other four blocks still carry their wrapper (`# Composites` → `## 5. Composites` → `### 5.1`), so their sections sit one level deeper than the mechanical ones. Say the word and I'll flatten those four identically — same one-pass transform, same verification. Undo at any point with `git checkout -- "Material Science/notes/notes.md" "Material Science/notes/context.md"`.
 [Timestamp: 2026/11/14 17:48:04]
