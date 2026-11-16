@@ -62,7 +62,7 @@ WHERE file.path = this.file.path
 ## Post-Midsem — 9 topics
 
 - [x] **1 · 3D Viewing Transformation and Camera Setup** — [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|PDF (28 Sep)]] · [[CG_Endsem_Notes#1. 3D Viewing Transformation and Camera Setup|Notes → §1]] (4 sections)
-- [ ] **2 · 3D Viewing, Camera and Projection Fundamentals** — [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|PDF]] · [[CG_Endsem_Notes#2. 3D Viewing, Camera and Projection Fundamentals|Notes → §2]]  (7 sections)
+- [x] **2 · 3D Viewing, Camera and Projection Fundamentals** — [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|PDF]] · [[CG_Endsem_Notes#2. 3D Viewing, Camera and Projection Fundamentals|Notes → §2]]  (7 sections)
 - [ ] **3 · Viewport Mapping and Cohen–Sutherland Clipping** — [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|PDF]] · [[CG_Endsem_Notes#3. Viewport Mapping and Cohen–Sutherland Clipping|Notes → §3]] (11 sections) · widget `#w-cs`
 - [ ] **4 · Polygon and 3D Fill-Area Clipping** — [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|PDF]] · [[CG_Endsem_Notes#4. Polygon and 3D Fill-Area Clipping|Notes → §4]] (17 sections) · widget `#w-sh`
 - [ ] **5 · Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer** — [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|PDF]] · [[CG_Endsem_Notes#5. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer|Notes → §5]] (9 sections) · widget `#w-zb`
