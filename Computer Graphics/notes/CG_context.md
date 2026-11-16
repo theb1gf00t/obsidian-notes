@@ -26,7 +26,7 @@ Two notes exist, one per course block:
 | File | Block | Source decks |
 | --- | --- | --- |
 | [[CG_Midsem_notes]] | **Pre-midsem** — 30 July → 10 September | `Pre 1 - Introduction to Computer Graphics` … `Pre 8 - Practice Problems` |
-| [[CG_Endsem_Notes]] | **Post-midsem** — 29 September onward | `Post 1 - 3D Viewing, Camera and Projection Fundamentals` … `Post 8 - Animation - The 2D Production Process` |
+| [[CG_Endsem_Notes]] | **Post-midsem** — 28 September onward | `Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep)` … `Post 9 - Animation - The 2D Production Process` |
 
 > [!warning] Naming trap
 > The post-midsem CG note is **[[CG_Endsem_Notes]]** in `Computer Graphics/notes/`, *not* `Phase Diagrams/Post Midsem Notes.md`. Never write post-midsem CG material into the Phase Diagrams folder.
@@ -44,7 +44,7 @@ Two notes exist, one per course block:
 
 The compilation line at the top of each H1 block states which deck(s) it was built from, with the wikilink, e.g.:
 
-> Compiled from [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]] (78 slides). All figures are either extracted page renders from that deck or Excalidraw reconstructions listed in the source note.
+> Compiled from [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]] (78 slides). All figures are either extracted page renders from that deck or Excalidraw reconstructions listed in the source note.
 
 > [!note] Decks are annotated slide exports
 > Every deck in `pdfs/` is an **Xournal++ annotation export**, not a clean slide file: the lecturer writes over the slides by hand. Consequences for note-making —
@@ -293,7 +293,7 @@ Tables are the default for traces, classifications and comparisons:
 - **Em dash** `—` for breaks and definition separators; **en dash** `–` inside names (Cohen–Sutherland, Sutherland–Hodgman, Weiler–Atherton, Gupta–Sproull, Gouraud, Phong); hyphen only inside words.
 - Arrows `→` for "leads to", `↔` for correspondences, `≠`, `≤`, `≥` for relations.
 - Section cross-references `§2.6`, `§3.1–§3.2` always point at an existing H3 number; renumber every reference when sections move.
-- Source citations are real wikilinks to the deck: [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]], [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 2 deck]], [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]], [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]], [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]], [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]], [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]], [[Post 8 - Animation - The 2D Production Process.pdf|Post 8 deck]].
+- Source citations are real wikilinks to the deck: [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|Post 1 deck]], [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]], [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 3 deck]], [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|Post 4 deck]], [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 5 deck]], [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 6 deck]], [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 7 deck]], [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 8 deck]], [[Post 9 - Animation - The 2D Production Process.pdf|Post 9 deck]].
 - Slide numbers may be cited in prose (`slide 50`) when a figure is taken from there.
 
 ---

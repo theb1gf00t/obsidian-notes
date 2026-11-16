@@ -6,7 +6,7 @@ sessionId: "1c1985b1-a8f1-44e1-9a93-6b595b28346b"
 agentLabel: "rename the pdfs in {Computer Graphics/pdfs} according to . A…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":81852,"contextWindow":1000000,"inputTokens":2,"outputTokens":803,"cacheReadTokens":79286,"cacheWriteTokens":1761,"updatedAt":1794830071523}'
+usage: '{"usedTokens":115120,"contextWindow":1000000,"inputTokens":2,"outputTokens":794,"cacheReadTokens":113486,"cacheWriteTokens":838,"updatedAt":1794831366197}'
 ---
 
 **user**: rename the pdfs in {Computer Graphics/pdfs} according to .
@@ -37,5 +37,32 @@ Also makes notes for the 28th september pdfs according to [[CG_context]] and [[C
 but in the [[CG_Endsem_Notes]] and [[CG_Syllabus]] I only see 8 sections.
 [Timestamp: 2026/11/16 17:43:50]
 
-**ai**: You're right. The 28 Sep deck is a separate lecture, not a duplicate. It covers the viewing transformation and the intro to projection, while the 29 Sep deck starts from a recap and goes on to the projection matrices and viewport mapping. That makes 9 post-midsem decks, so I'll restructure to match. First I'm checking how the syllabus and the context file number things.
+**ai**: You're right. The 28 Sep deck is a separate lecture, not a duplicate. It covers the viewing transformation and the intro to projection, while the 29 Sep deck starts from a recap and goes on to the projection matrices and viewport mapping. That makes 9 post-midsem decks, so I'll restructure to match. First I'm checking how the syllabus and the context file number things.Renumbering is a vault-wide change: nine PDF renames, then every heading, `§` reference and wikilink. I'll first check what else points at these names so nothing breaks.That was denied, and fairly: the vault rules say not to search outside the active folder. I'll scope it to `Computer Graphics/`.Now the notes script. It extracts the new block, shifts the old numbering and re-inserts the block as §1.The notes are renumbered. I'll fix the intro sentence to mention the new §1, then do the syllabus and the context file.Renumbering is done. Last step is checking that every wikilink in the three notes resolves to a real heading or PDF.You were right: there are 9 post-midsem decks, and both notes now show 9 sections. I had wrongly treated the 28 Sep deck as a duplicate of Post 1. It's a separate lecture that builds the viewing transformation and introduces projection. The next lecture recaps it and goes on to the projection matrices and viewport mapping.
+
+All wikilinks in the three notes resolve to real headings, PDFs and images. The one flagged hit is the placeholder `[[<deck>.pdf]]` in the `CG_context` skeleton, which isn't a real link. I haven't opened the notes in Obsidian to check they render.
+
+**PDFs.** The 28 Sep deck is now Post 1, and the old Posts 1–8 are Posts 2–9:
+
+| New | Deck |
+| --- | --- |
+| Post 1 | 3D Viewing Transformation and Camera Setup (28 Sep) |
+| Post 2 | 3D Viewing, Camera and Projection Fundamentals |
+| Post 3 | Viewport Mapping and Cohen–Sutherland Clipping |
+| Post 4 | Polygon and 3D Fill-Area Clipping |
+| Post 5 | Hidden Surface Removal I |
+| Post 6 | Hidden Surface Removal II |
+| Post 7 | Fill-Area Algorithms, Scan Conversion and the 3D Pipeline |
+| Post 8 | Anti-Aliasing I |
+| Post 9 | Animation |
+
+**`CG_Endsem_Notes`.**
+- The 28 Sep material is now its own `## 1. 3D Viewing Transformation and Camera Setup` (§1.1 to §1.4), with a short exam pointer I added.
+- The old §1 to §8 are now §2 to §9, with every heading, `§` cross-reference, deck link and the overview table shifted to match.
+- The intro sentence now mentions the new §1.
+
+**`CG_Syllabus`.** The post-midsem block is now "9 topics", with 9 ticked entries, a new §1 section index and the new figures listed. The "28 Sep duplicate" note is removed, and the split now starts at 28 September.
+
+**`CG_context`.** The post-midsem block now starts 28 September, and the deck wikilink list covers all nine decks.
+
+I backed up the three notes to `/tmp/cgbak/` before editing.
 [Timestamp: 2026/11/16 17:43:50]

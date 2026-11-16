@@ -11,21 +11,22 @@ tags:
 
 # Post-Midsem — 3D Viewing, Clipping, Hidden Surfaces, Rasterization and Animation
 
-This block carries the course from a scene described in three dimensions to the pixels that finally appear on the screen. Every deck in it is one **stage of the viewing pipeline**: build the camera frame and the view volume (§1), clip what falls outside it — lines first, then filled polygons and 3D faces (§2–§3), decide which of the surviving surfaces is actually seen (§4–§5), convert the surviving areas into pixels (§6), and then repair the damage that discretisation does to those pixels (§7). The last deck leaves the geometry behind and animates it (§8).
+This block carries the course from a scene described in three dimensions to the pixels that finally appear on the screen. Every deck in it is one **stage of the viewing pipeline**: re-describe the scene from the camera (§1), build the view volume and the projection (§2), clip what falls outside it — lines first, then filled polygons and 3D faces (§3–§4), decide which of the surviving surfaces is actually seen (§5–§6), convert the surviving areas into pixels (§7), and then repair the damage that discretisation does to those pixels (§8). The last deck leaves the geometry behind and animates it (§9).
 
 *Topic list and progress: [[CG_Syllabus]] · formatting rules: [[CG_context]] · the earlier block: [[CG_Midsem_notes]].*
 
 > [!info] How the block is organised
 > | Topic | Deck | Slides | Question it answers |
 > | --- | --- | --- | --- |
-> | 1 | [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]] | 78 | Where is the camera, what can it see, and how does 3D become a 2D coordinate? |
-> | 2 | [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 2 deck]] | 97 | How is the 2D image placed on the screen, and how is a line trimmed to the window? |
-> | 3 | [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]] | 89 | How is a *filled* polygon clipped, and how is a 3D face clipped? |
-> | 4 | [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]] | 106 | Which faces point away, and which surface is nearest at each pixel? |
-> | 5 | [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]] | 80 | How do we order whole polygons, and what if no order exists? |
-> | 6 | [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]] | 116 | How is the interior of a polygon filled, and how are characters drawn? |
-> | 7 | [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]] | 70 | How is a jagged line made smooth? |
-> | 8 | [[Post 8 - Animation - The 2D Production Process.pdf|Post 8 deck]] | 55 | How is motion produced from still drawings? |
+> | 1 | [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|Post 1 deck]] | 76 | How is the world re-described from the camera's point of view, and why must it then be projected? |
+> | 2 | [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]] | 78 | Where is the camera, what can it see, and how does 3D become a 2D coordinate? |
+> | 3 | [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 3 deck]] | 97 | How is the 2D image placed on the screen, and how is a line trimmed to the window? |
+> | 4 | [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|Post 4 deck]] | 89 | How is a *filled* polygon clipped, and how is a 3D face clipped? |
+> | 5 | [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 5 deck]] | 106 | Which faces point away, and which surface is nearest at each pixel? |
+> | 6 | [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 6 deck]] | 80 | How do we order whole polygons, and what if no order exists? |
+> | 7 | [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 7 deck]] | 116 | How is the interior of a polygon filled, and how are characters drawn? |
+> | 8 | [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 8 deck]] | 70 | How is a jagged line made smooth? |
+> | 9 | [[Post 9 - Animation - The 2D Production Process.pdf|Post 9 deck]] | 55 | How is motion produced from still drawings? |
 
 > [!warning] The four conventions this block uses everywhere
 > - **Right-handed** coordinates; **the viewer looks along $-z$** in the camera frame, so visible points have $z<0$.
@@ -35,11 +36,155 @@ This block carries the course from a scene described in three dimensions to the 
 
 ---
 
-## 1. 3D Viewing, Camera and Projection Fundamentals
+## 1. 3D Viewing Transformation and Camera Setup
 
-*Deck: [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]] — 78 slides, plus the 28 September lecture [[Post 1 - 3D Viewing, Camera and Projection Fundamentals (28 Sep alt).pdf|alt deck]] — 76 pages (§1.7–§1.9). Compiles the pipeline overview, the world-to-view transform, the canonical view volume, the projection matrices and the viewport transform.*
+*Deck: [[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|Post 1 deck]] — 76 slides (28 September). The camera analogy, the view coordinate system $\mathbf u,\mathbf v,\mathbf n$, the world-to-view matrix with a full numeric example, and the motivation for projection.*
 
-### 1.1 The six stages in one picture
+### 1.1 Viewing as taking a photograph
+
+The 28 September lecture ([[Post 1 - 3D Viewing Transformation and Camera Setup (28 Sep).pdf|Post 1 deck]], 76 pages) opens the post-midsem block. It builds the viewing transformation from scratch — a camera analogy, the view coordinate system and a fully numeric example — and then motivates projection. The next lecture, [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]], recaps it and goes on to the canonical cube, the projection matrices and viewport mapping (§2). It opens with the whole chain on one slide:
+
+![[CG - Object to Screen Space Pipeline.png|760]]
+*Object space → world space → camera space → canonical view volume → screen space (Post 1 deck, p. 59). Transformations change the coordinate description; the scene geometry stays the same until projection.*
+
+| Space | Meaning | Obtained by |
+| --- | --- | --- |
+| **Object space** | the object's local coordinates | — |
+| **World space** | objects positioned in the shared scene | model transform |
+| **Camera / view space** | coordinates relative to the camera's position and orientation (camera at origin) | view (camera) transformation |
+| **Canonical view volume** | normalised cube $-1\le x,y,z\le 1$ after projection and clipping | projection transformation (perspective or orthographic) |
+| **Screen space** | final 2D pixel coordinates | viewport transformation |
+
+#### Why a viewing transformation exists
+
+The deck argues from photography. To take a photograph we point the camera in a direction with an orientation, set the focus, and click. We never look at the scene directly — we look **through the camera**, and focusing tells us the quality and coverage of the picture.
+
+- **First case — looking directly at the scene:** we see it in the **world coordinate system**.
+- **Second case — looking through the camera:** we see a *different scene*, one that is **changed** by the arrangement of lenses in the camera, to aid our estimation.
+- So taking a photograph means **transforming the 3D world-coordinate scene into a description in another coordinate system**, characterised by the camera parameters (position and orientation).
+- That new system is called the **view coordinate system (VC)**; the transformation is the **viewing transformation**.
+- To simulate it: first define the view coordinate system, then perform the transformation.
+
+#### Setting up the view coordinate system
+
+![[CG - View Coordinate Setup.png|520]]
+*The camera basis, the view-up vector and the view plane (Post 1 deck, p. 27).*
+
+The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather than $x,y,z$ — the deck says it uses this notation from here on). The deck determines them in this order:
+
+1. **Origin.** The camera is represented as a point in the 3D world coordinate system; that point is the origin of VC, denoted $\mathbf{o}$.
+2. **$\hat{\mathbf{n}}$.** With a *look-at point* $\mathbf{p}$ (the centre of interest), simple vector algebra gives $\mathbf{n}=\mathbf{o}-\mathbf{p}$, normalised: $\hat{\mathbf{n}}=\mathbf{n}/\lVert\mathbf{n}\rVert$. So $\hat{\mathbf n}$ points **opposite to the looking direction**.
+3. **$\hat{\mathbf{v}}$.** Specify an arbitrary point $\mathbf{p}_{up}$ in the direction of the head while looking through the camera — the **view-up** direction. Then $\vec V_{up}=\mathbf{p}_{up}-\mathbf{o}$ and $\hat{\mathbf v}=\vec V_{up}/\lVert\vec V_{up}\rVert$.
+4. **$\hat{\mathbf{u}}$.** $\mathbf u$ is perpendicular to the plane spanned by $\mathbf n$ and $\mathbf v$, hence $\mathbf u=\mathbf v\times\mathbf n$. Since $\mathbf n$ and $\mathbf v$ are unit vectors, **no further normalisation is required**.
+
+> [!important] Summary of the VC construction (deck's summary slide)
+> Given the camera position $\bar o$ (origin of the coordinate system), the view-up point $\bar p_{up}$ and the centre of interest / look-at point $\bar p$:
+> 1. $\hat n$ — unit basis vector opposite to the looking direction: $\bar n=\bar o-\bar p$, $\hat n=\bar n/|\bar n|$.
+> 2. $\hat v$ — unit basis vector along the view-up direction: $\vec V_{up}=\bar p_{up}-\bar o$, $\hat v=\vec V_{up}/|\vec V_{up}|$.
+> 3. $\hat u$ — the third unit basis vector: $\hat u=\hat v\times\hat n$.
+
+> [!warning] Two conventions for the same frame
+> §2.2 writes $\mathbf u=\mathbf v_{up}\times\mathbf n$ and $\mathbf v=\mathbf n\times\mathbf u$, which *re-orthogonalises* $\mathbf v$ and so works for any up-vector. The 28 September deck takes $\hat{\mathbf v}$ directly from the view-up vector and then $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}$; this is exact only when the view-up vector is already perpendicular to $\mathbf n$, which is true in its example. Both give the same frame in that case — use the deck's form when solving its numericals.
+
+#### The transformation $M_{w2v}$
+
+Let $P$ be an arbitrary point in world coordinates. We need a matrix $M_{w2v}$ such that $P'=M_{w2v}\,P$ is the point in VC. Assume the VC origin (the camera position) is $(o_{vx},o_{vy},o_{vz})$ and the three basis vectors are $\mathbf u(u_x,u_y,u_z)$, $\mathbf v(v_x,v_y,v_z)$, $\mathbf n(n_x,n_y,n_z)$. To align VC with WC we need a **sequence of transformations**, achieved by two operations — **translation** and **rotation**.
+
+The deck builds the matrix in four named steps (translate, rotate, compose, transform), with the translation written out as
+
+$$ T=\begin{bmatrix}1&0&0&-o_{vx}\\0&1&0&-o_{vy}\\0&0&1&-o_{vz}\\0&0&0&1\end{bmatrix},\qquad
+R=\begin{bmatrix}u_x&u_y&u_z&0\\v_x&v_y&v_z&0\\n_x&n_y&n_z&0\\0&0&0&1\end{bmatrix},\qquad M_{w2v}=R\,T $$
+
+- **Step 1 — translation.** Subtract the camera position from each point; the camera maps to the origin; orientation does not change.
+- **Step 2 — rotation.** Rows are the camera basis vectors; each row gives one view coordinate. *Why this is correct:* each row computes one dot product with $\mathbf u$, $\mathbf v$ or $\mathbf n$, and orthonormal rows preserve lengths and angles.
+- **Step 3 — compose.** Translation acts first for column vectors, so $M_{w2v}=RT$, applied once to every point.
+- **Compact form.** Each translation term is the *negative projection of the camera position onto one camera axis* ($-\mathbf u\cdot\mathbf o$, $-\mathbf v\cdot\mathbf o$, $-\mathbf n\cdot\mathbf o$); rows 1–3 give the camera-axis coordinates, the last column accounts for the camera position, the last row preserves homogeneous form (this is the matrix of §2.2).
+- The camera is **not projected yet**; projection is a separate transformation applied after points are expressed in view coordinates.
+
+### 1.2 Worked example: the square object
+
+![[CG - Camera Basis Example Scene.png|520]]
+*The scene (Post 1 deck, p. 46): square object with $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$; camera at $(1,2,2)$ looking at the object centre $(2,2,2)$.*
+
+> *We are looking at the square object with vertices $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$. The camera is located at the point $(1,2,2)$. The look-at point is the centre of the object $(2,2,2)$. The up direction is parallel to the positive $z$ direction. What is the coordinate of the centre of the object, after its transformation to the viewing coordinate system?*
+
+**Step 1 — the three basis vectors.**
+
+- Camera position $\mathbf o=(1,2,2)$, look-at point $\mathbf p=(2,2,2)$.
+- $\mathbf n=\mathbf o-\mathbf p=(-1,0,0)$, already unit length, so $\hat{\mathbf n}=(-1,0,0)$.
+- The up direction is parallel to $+z$, so directly $\hat{\mathbf v}=(0,0,1)$ without any further calculation. (Another way of specifying the up vector, instead of a point in the up direction, is to give the direction itself.)
+- $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}=(0,0,1)\times(-1,0,0)=(0,-1,0)$.
+
+So the deck's basis is $\hat n(-1,0,0)$, $\hat u(0,-1,0)$, $\hat v(0,0,1)$ — this follows the cross-product order the deck fixed in Part 1.
+
+**Step 2 — the matrices.** With the basis vectors as rows and the camera position negated:
+
+$$ R=\begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix},\qquad
+T=\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix} $$
+
+**Step 3 — compose** $M_{W2V}=RT$:
+
+$$ \begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix}
+\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix}
+=\begin{bmatrix}0&-1&0&2\\0&0&1&-2\\-1&0&0&1\\0&0&0&1\end{bmatrix} $$
+
+![[CG - Composite View Matrix Example.png|560]]
+*The composite view matrix as printed in the deck (Post 1 deck, p. 56).*
+
+Check of the last column with the compact form: $-\mathbf u\cdot\mathbf o=-(0\cdot1-1\cdot2+0)=2$; $-\mathbf v\cdot\mathbf o=-(2)=-2$; $-\mathbf n\cdot\mathbf o=-(-1)=1$. ✓
+
+**Step 4 — transform the look-at point / object centre.** $P_{world}=[2,2,2,1]^{T}$:
+
+$$ P_{view}=M_{W2V}P_{world}=\begin{bmatrix}-2+2\\2-2\\-2+1\\1\end{bmatrix}=[0,\,0,\,-1,\,1]^{T} $$
+
+![[CG - Look-at Point Transform.png|560]]
+*The look-at point lands at $P(0,0,-1)$ (Post 1 deck, p. 58).*
+
+> [!note] Reading the answer
+> The object centre is at $(0,0,-1)$: **one unit in front of the camera along $-\mathbf n$**. The camera is at the origin looking down the viewing axis, as required.
+
+> [!note] Camera space, after the camera transformation
+> **Input:** coordinates in world space. **Operation:** apply the view (camera) transformation so the camera is at the origin looking down its viewing axis. **Output:** coordinates in camera space (eye space). At this stage objects are still in 3D coordinates relative to the camera — they still have perspective depth, with no "squashing" yet.
+
+### 1.3 Why projection is needed
+
+The deck then re-enters the chain at the *projection* box, marking it "why projection needed" (Post 1 deck, p. 59).
+
+- **The scene in the view coordinate system is 3D.** To get a 2D image we need a way to **transform** a 3D scene into a 2D one; the technique is **projection**.
+- In general, projection transforms objects from $n$ dimensions to $(n-1)$ dimensions; the discussion is restricted to 3D → 2D.
+- **Basic idea:** project a 3D object onto a 2D **view plane**. From each point of the surface we generate **straight lines towards the view plane**, known as **projectors**; the intersection points of the projectors with the view plane together give the projected image.
+- A usually rectangular area on the view plane that contains the projected objects is the **clipping window**.
+- A 3D **view volume** is also defined in the scene: objects inside it are projected onto the view plane; others are discarded through **clipping** (discussed later). The entire scene is *not* projected — only the portion enclosed by the view volume — which gives flexibility to synthesise images as we want.
+- We therefore must choose an **appropriate view volume**, which requires an understanding of the different projection types.
+
+| Projection | Projectors | Size vs depth | Typical use |
+| --- | --- | --- | --- |
+| **Parallel** | remain parallel | does not change with depth | measurement and CAD |
+| **Perspective** | meet at the camera | distant objects appear smaller | realistic depth cues |
+
+![[CG - Perspective Foreshortening.png|560]]
+*Discussion slide "Why does perspective look natural?" — perspective foreshortening: apparent size decreases with distance (Post 1 deck, p. 75).*
+
+The deck closes the section with the question *how to derive the projection matrix?*, and promises to derive each transformation separately before comparing their equations — that derivation is §2.5.
+
+> [!note] Coverage of this deck
+> The deck's final slides about the projection types (p. 62) are exported with unreadable fonts (mojibake); the table above was taken from the readable slide 74 and the figures. Slides 1–10 are blank title slides.
+
+### 1.4 Exam pointer
+
+> [!tip] Exam pointer — the viewing transformation
+> - Build $\hat n=(\mathbf o-\mathbf p)/\lVert\mathbf o-\mathbf p\rVert$, then $\hat v$ from the view-up direction, then $\hat u=\hat v\times\hat n$ — in that order.
+> - Write $M_{w2v}=R\,T$ with the basis vectors as the rows of $R$ and $-\mathbf o$ in $T$; know why translation acts first.
+> - Reproduce the square-object example: $\hat n(-1,0,0)$, $\hat u(0,-1,0)$, $\hat v(0,0,1)$, the composite matrix, and $P_{view}=(0,0,-1)$.
+> - Say that the camera transformation does not project; projection is the next, separate step.
+
+---
+
+## 2. 3D Viewing, Camera and Projection Fundamentals
+
+*Deck: [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]] — 78 slides. Compiles the pipeline overview, the world-to-view transform, the canonical view volume, the projection matrices and the viewport transform.*
+
+### 2.1 The six stages in one picture
 
 The deck opens by fixing the vocabulary for everything that follows: a renderer is a fixed sequence of six stages, and each stage changes either *what an object is* or *which coordinate system it lives in*.
 
@@ -59,7 +204,7 @@ Two clarifications the deck insists on:
 - **Lighting ≠ shading.** Lighting computes the colour at a *point* from the light source and material properties; shading *interpolates* those point results across a surface. Lighting is expensive and sparse, shading is cheap and dense.
 - **Modelling ≠ viewing.** Both are affine transforms on the same points, but modelling builds the scene while viewing changes the observer. The scene is identical from every camera.
 
-### 1.2 World-to-view: building the camera frame
+### 2.2 World-to-view: building the camera frame
 
 The camera is specified in world coordinates by its position $\mathbf{o}$ and the direction it looks along. The viewing transform moves the world so that the camera sits at the origin looking down $-z$ — it changes the **coordinate frame**, and nothing else.
 
@@ -84,7 +229,7 @@ n_x & n_y & n_z & -\mathbf{n}\cdot\mathbf{o}\\
 > [!warning] The camera is not projected yet
 > This is the single most common confusion in the block. $M_{view}$ only re-expresses points in the camera frame; it does not flatten anything, and a point behind the camera still gets coordinates. **Projection is a separate matrix applied afterwards**, and clipping is a separate operation again.
 
-### 1.3 The view volume
+### 2.3 The view volume
 
 After the viewing transform, the part of space the camera can record is a **view volume** bounded by six planes $x_{\min},x_{\max},y_{\min},y_{\max},z_{near},z_{far}$.
 
@@ -97,7 +242,7 @@ After the viewing transform, the part of space the camera can record is a **view
 
 Anything wholly outside the volume is **clipped away**; anything crossing a boundary is **trimmed**. Clipping is a pure efficiency device: every primitive that survives is cheaper than the ones that do not, because all later stages — projection divide, hidden-surface tests, scan conversion — only ever see the survivors.
 
-### 1.4 Why normalise the volume to a canonical cube
+### 2.4 Why normalise the volume to a canonical cube
 
 The deck pauses on this question explicitly, because the answer explains half the matrices in the course.
 
@@ -105,12 +250,12 @@ The deck pauses on this question explicitly, because the answer explains half th
 > - **One set of clip tests.** After normalisation every boundary is $x=\pm1$, $y=\pm1$, $z=\pm1$, so clipping and inside/outside tests are six comparisons against constants, with no per-scene parameters.
 > - **One projection-independent pipeline.** Orthographic and perspective scenes reduce to the same cube, so everything downstream (clipping, hidden-surface removal, scan conversion) is written once.
 > - **A fixed depth range.** $z\in[-1,1]$ gives the depth buffer a known range, so depth precision and the near/far mapping are decided in one place.
-> - **Device independence.** The cube is dimensionless; resolution and aspect ratio are chosen later, at viewport mapping (§1.6).
+> - **Device independence.** The cube is dimensionless; resolution and aspect ratio are chosen later, at viewport mapping (§2.6).
 > - **Hardware.** A fixed-function pipeline can hard-wire the comparisons.
 
-The cost is a **non-uniform scale**: normalising a wide, shallow frustum squeezes it, and the perspective divide has already distorted distances. That is why depth must be interpolated *after* the divide, not before (the z-buffer section, §4.7, relies on this).
+The cost is a **non-uniform scale**: normalising a wide, shallow frustum squeezes it, and the perspective divide has already distorted distances. That is why depth must be interpolated *after* the divide, not before (the z-buffer section, §5.7, relies on this).
 
-### 1.5 The projection matrices
+### 2.5 The projection matrices
 
 Both projections are $4\times4$ matrices applied to homogeneous points $[x\;y\;z\;1]^{T}$; they differ only in what happens to $w$.
 
@@ -156,7 +301,7 @@ The fourth row is the whole trick: it sets $w=-z_{cam}$, so dividing by $w$ mult
 
 Writing $x_{ndc}=x_{cam}/(-z_{cam})$ directly would be a per-vertex division with no matrix. Packing it into the fourth row means the *same* pipeline — multiply by a $4\times4$, then divide by $w$ — handles both projections, and clipping can be done in homogeneous space *before* the divide. That ordering matters: clipping after the divide would need special handling for points at or behind the eye.
 
-### 1.6 Viewport mapping
+### 2.6 Viewport mapping
 
 The canonical cube (or the 2D window that survives clipping) is dimensionless. The **viewport** is the rectangle on the actual display, in device coordinates, where the image is drawn. Window-to-viewport mapping is the affine map between the two, and the deck derives it by solving one equation per axis.
 
@@ -183,137 +328,7 @@ $$ M_{wv} = \begin{bmatrix} s_x & 0 & 0 & t_x\\ 0 & s_y & 0 & t_y\\ 0&0&1&0\\ 0&
 > [!warning] Aspect-ratio distortion
 > $s_x$ and $s_y$ are independent, so a square window mapped onto a non-square viewport becomes a rectangle. A circle becomes an ellipse. Guard against it by choosing the viewport aspect to equal the window aspect, or by scaling both axes with the same factor and letter-boxing the remainder.
 
-### 1.7 The 28 September lecture: viewing as taking a photograph
-
-The 28 September deck ([[Post 1 - 3D Viewing, Camera and Projection Fundamentals (28 Sep alt).pdf|Post 1 alt deck]], 76 pages) covers the same viewing ground as the main deck but from the beginning, using a camera analogy and a fully numeric example. It opens with the whole chain on one slide:
-
-![[CG - Object to Screen Space Pipeline.png|760]]
-*Object space → world space → camera space → canonical view volume → screen space (alt deck, p. 59). Transformations change the coordinate description; the scene geometry stays the same until projection.*
-
-| Space | Meaning | Obtained by |
-| --- | --- | --- |
-| **Object space** | the object's local coordinates | — |
-| **World space** | objects positioned in the shared scene | model transform |
-| **Camera / view space** | coordinates relative to the camera's position and orientation (camera at origin) | view (camera) transformation |
-| **Canonical view volume** | normalised cube $-1\le x,y,z\le 1$ after projection and clipping | projection transformation (perspective or orthographic) |
-| **Screen space** | final 2D pixel coordinates | viewport transformation |
-
-#### Why a viewing transformation exists
-
-The deck argues from photography. To take a photograph we point the camera in a direction with an orientation, set the focus, and click. We never look at the scene directly — we look **through the camera**, and focusing tells us the quality and coverage of the picture.
-
-- **First case — looking directly at the scene:** we see it in the **world coordinate system**.
-- **Second case — looking through the camera:** we see a *different scene*, one that is **changed** by the arrangement of lenses in the camera, to aid our estimation.
-- So taking a photograph means **transforming the 3D world-coordinate scene into a description in another coordinate system**, characterised by the camera parameters (position and orientation).
-- That new system is called the **view coordinate system (VC)**; the transformation is the **viewing transformation**.
-- To simulate it: first define the view coordinate system, then perform the transformation.
-
-#### Setting up the view coordinate system
-
-![[CG - View Coordinate Setup.png|520]]
-*The camera basis, the view-up vector and the view plane (alt deck, p. 27).*
-
-The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather than $x,y,z$ — the deck says it uses this notation from here on). The deck determines them in this order:
-
-1. **Origin.** The camera is represented as a point in the 3D world coordinate system; that point is the origin of VC, denoted $\mathbf{o}$.
-2. **$\hat{\mathbf{n}}$.** With a *look-at point* $\mathbf{p}$ (the centre of interest), simple vector algebra gives $\mathbf{n}=\mathbf{o}-\mathbf{p}$, normalised: $\hat{\mathbf{n}}=\mathbf{n}/\lVert\mathbf{n}\rVert$. So $\hat{\mathbf n}$ points **opposite to the looking direction**.
-3. **$\hat{\mathbf{v}}$.** Specify an arbitrary point $\mathbf{p}_{up}$ in the direction of the head while looking through the camera — the **view-up** direction. Then $\vec V_{up}=\mathbf{p}_{up}-\mathbf{o}$ and $\hat{\mathbf v}=\vec V_{up}/\lVert\vec V_{up}\rVert$.
-4. **$\hat{\mathbf{u}}$.** $\mathbf u$ is perpendicular to the plane spanned by $\mathbf n$ and $\mathbf v$, hence $\mathbf u=\mathbf v\times\mathbf n$. Since $\mathbf n$ and $\mathbf v$ are unit vectors, **no further normalisation is required**.
-
-> [!important] Summary of the VC construction (deck's summary slide)
-> Given the camera position $\bar o$ (origin of the coordinate system), the view-up point $\bar p_{up}$ and the centre of interest / look-at point $\bar p$:
-> 1. $\hat n$ — unit basis vector opposite to the looking direction: $\bar n=\bar o-\bar p$, $\hat n=\bar n/|\bar n|$.
-> 2. $\hat v$ — unit basis vector along the view-up direction: $\vec V_{up}=\bar p_{up}-\bar o$, $\hat v=\vec V_{up}/|\vec V_{up}|$.
-> 3. $\hat u$ — the third unit basis vector: $\hat u=\hat v\times\hat n$.
-
-> [!warning] Two conventions for the same frame
-> §1.2 writes $\mathbf u=\mathbf v_{up}\times\mathbf n$ and $\mathbf v=\mathbf n\times\mathbf u$, which *re-orthogonalises* $\mathbf v$ and so works for any up-vector. The 28 September deck takes $\hat{\mathbf v}$ directly from the view-up vector and then $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}$; this is exact only when the view-up vector is already perpendicular to $\mathbf n$, which is true in its example. Both give the same frame in that case — use the deck's form when solving its numericals.
-
-#### The transformation $M_{w2v}$
-
-Let $P$ be an arbitrary point in world coordinates. We need a matrix $M_{w2v}$ such that $P'=M_{w2v}\,P$ is the point in VC. Assume the VC origin (the camera position) is $(o_{vx},o_{vy},o_{vz})$ and the three basis vectors are $\mathbf u(u_x,u_y,u_z)$, $\mathbf v(v_x,v_y,v_z)$, $\mathbf n(n_x,n_y,n_z)$. To align VC with WC we need a **sequence of transformations**, achieved by two operations — **translation** and **rotation**.
-
-The deck builds the matrix in four named steps (translate, rotate, compose, transform), with the translation written out as
-
-$$ T=\begin{bmatrix}1&0&0&-o_{vx}\\0&1&0&-o_{vy}\\0&0&1&-o_{vz}\\0&0&0&1\end{bmatrix},\qquad
-R=\begin{bmatrix}u_x&u_y&u_z&0\\v_x&v_y&v_z&0\\n_x&n_y&n_z&0\\0&0&0&1\end{bmatrix},\qquad M_{w2v}=R\,T $$
-
-- **Step 1 — translation.** Subtract the camera position from each point; the camera maps to the origin; orientation does not change.
-- **Step 2 — rotation.** Rows are the camera basis vectors; each row gives one view coordinate. *Why this is correct:* each row computes one dot product with $\mathbf u$, $\mathbf v$ or $\mathbf n$, and orthonormal rows preserve lengths and angles.
-- **Step 3 — compose.** Translation acts first for column vectors, so $M_{w2v}=RT$, applied once to every point.
-- **Compact form.** Each translation term is the *negative projection of the camera position onto one camera axis* ($-\mathbf u\cdot\mathbf o$, $-\mathbf v\cdot\mathbf o$, $-\mathbf n\cdot\mathbf o$); rows 1–3 give the camera-axis coordinates, the last column accounts for the camera position, the last row preserves homogeneous form (this is the matrix of §1.2).
-- The camera is **not projected yet**; projection is a separate transformation applied after points are expressed in view coordinates.
-
-### 1.8 Worked example from the 28 September lecture
-
-![[CG - Camera Basis Example Scene.png|520]]
-*The scene (alt deck, p. 46): square object with $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$; camera at $(1,2,2)$ looking at the object centre $(2,2,2)$.*
-
-> *We are looking at the square object with vertices $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$. The camera is located at the point $(1,2,2)$. The look-at point is the centre of the object $(2,2,2)$. The up direction is parallel to the positive $z$ direction. What is the coordinate of the centre of the object, after its transformation to the viewing coordinate system?*
-
-**Step 1 — the three basis vectors.**
-
-- Camera position $\mathbf o=(1,2,2)$, look-at point $\mathbf p=(2,2,2)$.
-- $\mathbf n=\mathbf o-\mathbf p=(-1,0,0)$, already unit length, so $\hat{\mathbf n}=(-1,0,0)$.
-- The up direction is parallel to $+z$, so directly $\hat{\mathbf v}=(0,0,1)$ without any further calculation. (Another way of specifying the up vector, instead of a point in the up direction, is to give the direction itself.)
-- $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}=(0,0,1)\times(-1,0,0)=(0,-1,0)$.
-
-So the deck's basis is $\hat n(-1,0,0)$, $\hat u(0,-1,0)$, $\hat v(0,0,1)$ — this follows the same cross-product order as the main deck's worked example.
-
-**Step 2 — the matrices.** With the basis vectors as rows and the camera position negated:
-
-$$ R=\begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix},\qquad
-T=\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix} $$
-
-**Step 3 — compose** $M_{W2V}=RT$:
-
-$$ \begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix}
-\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix}
-=\begin{bmatrix}0&-1&0&2\\0&0&1&-2\\-1&0&0&1\\0&0&0&1\end{bmatrix} $$
-
-![[CG - Composite View Matrix Example.png|560]]
-*The composite view matrix as printed in the deck (alt deck, p. 56).*
-
-Check of the last column with the compact form: $-\mathbf u\cdot\mathbf o=-(0\cdot1-1\cdot2+0)=2$; $-\mathbf v\cdot\mathbf o=-(2)=-2$; $-\mathbf n\cdot\mathbf o=-(-1)=1$. ✓
-
-**Step 4 — transform the look-at point / object centre.** $P_{world}=[2,2,2,1]^{T}$:
-
-$$ P_{view}=M_{W2V}P_{world}=\begin{bmatrix}-2+2\\2-2\\-2+1\\1\end{bmatrix}=[0,\,0,\,-1,\,1]^{T} $$
-
-![[CG - Look-at Point Transform.png|560]]
-*The look-at point lands at $P(0,0,-1)$ (alt deck, p. 58).*
-
-> [!note] Reading the answer
-> The object centre is at $(0,0,-1)$: **one unit in front of the camera along $-\mathbf n$**. The camera is at the origin looking down the viewing axis, as required.
-
-> [!note] Camera space, after the camera transformation
-> **Input:** coordinates in world space. **Operation:** apply the view (camera) transformation so the camera is at the origin looking down its viewing axis. **Output:** coordinates in camera space (eye space). At this stage objects are still in 3D coordinates relative to the camera — they still have perspective depth, with no "squashing" yet.
-
-### 1.9 Why projection is needed
-
-The deck then re-enters the chain at the *projection* box, marking it "why projection needed" (alt deck, p. 59).
-
-- **The scene in the view coordinate system is 3D.** To get a 2D image we need a way to **transform** a 3D scene into a 2D one; the technique is **projection**.
-- In general, projection transforms objects from $n$ dimensions to $(n-1)$ dimensions; the discussion is restricted to 3D → 2D.
-- **Basic idea:** project a 3D object onto a 2D **view plane**. From each point of the surface we generate **straight lines towards the view plane**, known as **projectors**; the intersection points of the projectors with the view plane together give the projected image.
-- A usually rectangular area on the view plane that contains the projected objects is the **clipping window**.
-- A 3D **view volume** is also defined in the scene: objects inside it are projected onto the view plane; others are discarded through **clipping** (discussed later). The entire scene is *not* projected — only the portion enclosed by the view volume — which gives flexibility to synthesise images as we want.
-- We therefore must choose an **appropriate view volume**, which requires an understanding of the different projection types.
-
-| Projection | Projectors | Size vs depth | Typical use |
-| --- | --- | --- | --- |
-| **Parallel** | remain parallel | does not change with depth | measurement and CAD |
-| **Perspective** | meet at the camera | distant objects appear smaller | realistic depth cues |
-
-![[CG - Perspective Foreshortening.png|560]]
-*Discussion slide "Why does perspective look natural?" — perspective foreshortening: apparent size decreases with distance (alt deck, p. 75).*
-
-The deck closes the section with the question *how to derive the projection matrix?*, and promises to derive each transformation separately before comparing their equations — that derivation is §1.5.
-
-> [!note] Coverage of the alt deck
-> The deck's final slides about the projection types (p. 62) are exported with unreadable fonts (mojibake); the table above was taken from the readable slide 74 and the figures. Slides 1–10 are blank title slides.
-
-### 1.10 Exam pointer
+### 2.7 Exam pointer
 
 
 > [!tip] Exam pointer — viewing and projection
@@ -326,11 +341,11 @@ The deck closes the section with the question *how to derive the projection matr
 
 ---
 
-## 2. Viewport Mapping and Cohen–Sutherland Clipping
+## 3. Viewport Mapping and Cohen–Sutherland Clipping
 
-*Deck: [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 2 deck]] — 97 slides. Point clipping, the 4-bit region code, trivial accept/reject, iterative boundary intersection, then the same algorithm in 3D with six planes.*
+*Deck: [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 3 deck]] — 97 slides. Point clipping, the 4-bit region code, trivial accept/reject, iterative boundary intersection, then the same algorithm in 3D with six planes.*
 
-### 2.1 Point clipping
+### 3.1 Point clipping
 
 A point $(x,y)$ is inside the window exactly when both intervals hold:
 
@@ -338,7 +353,7 @@ $$ x_{\min}\le x\le x_{\max} \quad\text{AND}\quad y_{\min}\le y\le y_{\max} $$
 
 Equality counts as inside — a point on the boundary is retained. One violated interval is enough to reject.
 
-### 2.2 Region codes
+### 3.2 Region codes
 
 Instead of testing four inequalities per endpoint, the four results are packed into a single **4-bit region code** (outcode).
 
@@ -358,7 +373,7 @@ The nine regions of the plane therefore carry the codes $1001,1000,1010$ (top ro
 > **Trivial accept** — a decision that the whole segment is visible, taken without computing any intersection.
 > **Trivial reject** — a decision that the whole segment is invisible, taken without computing any intersection.
 
-### 2.3 Trivial accept and trivial reject
+### 3.3 Trivial accept and trivial reject
 
 Compute $C_0$ for $P_0$ and $C_1$ for $P_1$, then combine the two codes bitwise.
 
@@ -373,7 +388,7 @@ The AND test works because a shared set bit means both endpoints are on the oute
 > [!warning] AND = 0 is not a promise of visibility
 > $C_0\;\text{AND}\;C_1=0000$ only says the shortcut *cannot reject yet*. The two endpoints may still be outside on *different* sides, so the segment can miss the window entirely. A later pass can reject it. Never report "visible" from the AND test — only "not yet rejected".
 
-### 2.4 Clipping one boundary at a time
+### 3.4 Clipping one boundary at a time
 
 When neither shortcut applies, one outside endpoint is moved onto a boundary:
 
@@ -384,7 +399,7 @@ When neither shortcut applies, one outside endpoint is moved onto a boundary:
 
 The segment is parameterised once, $P(t)=P_0+t(P_1-P_0)$ with $0\le t\le 1$, and every clipped endpoint remains a point of the same line. The working interval therefore only ever shrinks: $[t_{start},t_{end}]\subseteq[0,1]$, with each pass moving one end inward. That is why the algorithm terminates — each pass strictly removes a piece of the segment.
 
-### 2.5 The line-equation view
+### 3.5 The line-equation view
 
 For 2D work the deck also clips with the line's Cartesian equation, which is often quicker by hand. From two points, get $y=mx+c$, then convert to general form $ax+by+c=0$; substituting a boundary value gives the other coordinate directly.
 
@@ -400,7 +415,7 @@ $$ y=-\frac{1}{4}x+\frac{13}{4} \quad\Longleftrightarrow\quad \boxed{\,x+4y-13=0
 
 With $x+2y-9=0$ and a left boundary $x=0$, the intersection is $y=9/2$; with a top boundary $y=6$ it is $x=9-12=-3$. The Cartesian form is convenient when the boundary is axis-aligned, which it always is in this algorithm.
 
-### 2.6 The three-dimensional extension
+### 3.6 The three-dimensional extension
 
 The window becomes a **box** $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times[z_{\min},z_{\max}]$ — six boundary planes instead of four — so each endpoint needs a **6-bit** code.
 
@@ -415,7 +430,7 @@ The window becomes a **box** $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times
 
 `000000` means inside or on the boundary. The accept/reject logic is **identical** to 2D — OR for accept, AND for reject — and a point can set several bits at once: Far + Top + Right is `101010`.
 
-### 2.7 Intersection formulas for all six planes
+### 3.7 Intersection formulas for all six planes
 
 $$ P(t)=P_0+t(P_1-P_0),\qquad 0\le t\le 1 $$
 
@@ -431,7 +446,7 @@ $$ P(t)=P_0+t(P_1-P_0),\qquad 0\le t\le 1 $$
 > [!note] Why the denominator is never zero
 > Clipping happens only at a bit that is **set for one endpoint and clear for the other**, so that coordinate differs between $P_0$ and $P_1$ — the denominator cannot vanish. This is the numerical reason the algorithm is robust, and the reason it must pick a plane from the *outside* endpoint's set bits rather than testing planes blindly.
 
-### 2.8 Worked example in 3D
+### 3.8 Worked example in 3D
 
 Clip the segment from $A=(-4,2,-2)$ to $B=(8,8,10)$ against the box $0\le x\le 6$, $0\le y\le 6$, $0\le z\le 8$.
 
@@ -497,7 +512,7 @@ OR $=000000$ ⇒ **accept**. The visible segment is $A'B'=(0,4,2)\to(4,6,6)$, i.
 
 Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $B'$. Both endpoints are inside or on the boundary.
 
-### 2.9 The algorithm
+### 3.9 The algorithm
 
 > [!important] Cohen–Sutherland line clipping — statement
 > ```text
@@ -514,7 +529,7 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 > ```
 > **Cost.** Each pass costs one division and a handful of multiplications; at most one pass per boundary, so at most six passes per segment (four in 2D). Trivial accept/reject is $O(1)$ with no arithmetic.
 
-### 2.10 Interactive dry run
+### 3.10 Interactive dry run
 
 > [!tip] How to use the widget
 > `Next Step` advances one *pass* (one endpoint moved onto one plane). The left panel is the geometry; the right panel is the working state: both codes, the OR/AND decision, and the surviving $t$ interval. The $z$ coordinate is checked in the table, not drawn — the sketch is an $xy$ projection.
@@ -670,7 +685,7 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 </script>
 ```
 
-### 2.11 Exam pointer
+### 3.11 Exam pointer
 
 > [!tip] Exam pointer — Cohen–Sutherland
 > - Write the 4-bit table with its sign functions, and the 6-bit table with its mask values (`100000` … `000001`).
@@ -681,11 +696,11 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 
 ---
 
-## 3. Polygon and 3D Fill-Area Clipping
+## 4. Polygon and 3D Fill-Area Clipping
 
-*Deck: [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]] — 89 slides. Fill-area clipping, Sutherland–Hodgman with its four cases and full numeric trace, Weiler–Atherton boundary traversal, 3D point/face clipping, and the visibility problem that the next two topics solve.*
+*Deck: [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|Post 4 deck]] — 89 slides. Fill-area clipping, Sutherland–Hodgman with its four cases and full numeric trace, Weiler–Atherton boundary traversal, 3D point/face clipping, and the visibility problem that the next two topics solve.*
 
-### 3.1 Polygons as ordered, closed vertex lists
+### 4.1 Polygons as ordered, closed vertex lists
 
 A polygon enters the clipper as an **ordered list**, not a set:
 
@@ -697,14 +712,14 @@ $$ V=[v_1,v_2,\dots,v_n] $$
 - Square brackets emphasise that the order carries meaning: $[v_1,v_2,v_3]$ and $[v_2,v_3,v_1]$ are the same polygon (a cyclic rotation), but $[v_1,v_3,v_2]$ is the mirror traversal.
 - The output must be a **closed, ordered boundary** too — that closure is exactly what clipping each edge independently cannot guarantee.
 
-### 3.2 Why polygon clipping is not line clipping
+### 4.2 Why polygon clipping is not line clipping
 
 > [!important] Why a separate algorithm is needed
 > Clipping the four edges of a polygon as four independent segments produces a set of disjoint visible pieces, plus the parts of the window boundary that now form the outline of the visible region. Those boundary pieces belong to no original edge, so the result is **not a closed polygon**. Polygon clipping must therefore invent vertices and edges:
 > - **new vertices** — edge/ boundary intersections, and sometimes window corners;
 > - **new edges** — segments that run *along* the window boundary.
 
-### 3.3 The window as four half-planes
+### 4.3 The window as four half-planes
 
 A rectangular window is the intersection of four half-planes, so a polygon can be clipped by four independent half-plane passes. Each pass needs only one test:
 
@@ -715,7 +730,7 @@ A rectangular window is the intersection of four half-planes, so a polygon can b
 | Bottom | $y\ge y_{\min}$ | $y<y_{\min}$ |
 | Top | $y\le y_{\max}$ | $y>y_{\max}$ |
 
-### 3.4 The four edge cases
+### 4.4 The four edge cases
 
 For one clip boundary, classify the current vertex $S$ and the next vertex $E$. There are exactly four combinations, and each dictates what enters the output list.
 
@@ -731,7 +746,7 @@ For one clip boundary, classify the current vertex $S$ and the next vertex $E$. 
 > [!note] Why outside–outside appends nothing
 > Both endpoints lie strictly beyond the same boundary, so the entire edge lies beyond it as well (the half-plane is convex). No part of that edge can be inside, and no crossing exists — an intersection would have to be *between* the endpoints, which would make one of them inside.
 
-### 3.5 Computing the intersection
+### 4.5 Computing the intersection
 
 Parameterise the edge and solve for the crossing:
 
@@ -746,7 +761,7 @@ $$ P(t)=S+t(E-S),\qquad 0\le t\le 1 $$
 - A crossing exactly at an endpoint gives $t=0$ or $t=1$: the point duplicates a vertex, so **merge duplicates** before emitting.
 - Use a consistent endpoint order and consistent arithmetic to keep numerically coincident points identical; otherwise the output list contains hairline degenerate edges.
 
-### 3.6 The procedure
+### 4.6 The procedure
 
 > [!important] Sutherland–Hodgman — statement
 > ```text
@@ -767,7 +782,7 @@ $$ P(t)=S+t(E-S),\qquad 0\le t\le 1 $$
 
 The order of the four passes does not change the final region, only the vertex order and the number of temporary vertices. The book order — left, right, top, bottom — makes the working predictable.
 
-### 3.7 Pictorial worked example
+### 4.7 Pictorial worked example
 
 Take $V=[1,2,3]$ anticlockwise, with vertex 1 above the window, vertex 2 inside and vertex 3 to its right. Read inside/outside off the picture and track the list after every pass:
 
@@ -780,7 +795,7 @@ Take $V=[1,2,3]$ anticlockwise, with vertex 1 above the window, vertex 2 inside 
 
 Five vertices survive: $2',3',3'',1'$ are new, and only vertex 2 comes from the original triangle.
 
-### 3.8 Numerical trace
+### 4.8 Numerical trace
 
 Clip the triangle $1=(-1,0)$, $2=(3,0)$, $3=(1,3)$ against $0\le x\le 2$, $0\le y\le 2$, in the order left, right, top, bottom. Predict first: how many vertices will the result have?
 
@@ -847,7 +862,7 @@ $$ V'=[\,(2,\tfrac32),\,(\tfrac53,2),\,(\tfrac13,2),\,(0,\tfrac32),\,(0,0),\,(2,
 
 Three vertices in, six out: $1,2,3$ are all removed and $1'$–$6'$ are all new.
 
-### 3.9 The limitation: a concave subject can split
+### 4.9 The limitation: a concave subject can split
 
 Take a concave U-shaped subject $V=[1,\dots,8]$ against one clipper, keeping $y\ge y_{\min}$:
 
@@ -870,7 +885,7 @@ $$ out=[2',3,4,4',6',7,8,8'] $$
 
 That is **two disconnected pieces stored as one vertex list**. Rendered as a single polygon, the boundary walks from $4'$ to $6'$ along the clip edge and from $8'$ to $2'$ along it again — the degenerate connector is drawn twice. Sutherland–Hodgman is therefore correct only for **convex subjects** (or when the two pieces are allowed to be joined by a doubled edge).
 
-### 3.10 Weiler–Atherton
+### 4.10 Weiler–Atherton
 
 The alternative walks the boundaries themselves and switches between subject and window at every crossing.
 
@@ -908,7 +923,7 @@ Ordered down the window's left edge (anticlockwise ⇒ downward): $2'$ exit, $1'
 
 Together the two contours are exactly subject ∩ window. Sutherland–Hodgman on the same input gives $[2,2',3',4,5,6',1',1]$, whose edges $2'\to3'$ and $6'\to1'$ lie on the window boundary — the doubled connector again.
 
-### 3.11 Comparison
+### 4.11 Comparison
 
 | Aspect | Sutherland–Hodgman | Weiler–Atherton |
 | --- | --- | --- |
@@ -918,7 +933,7 @@ Together the two contours are exactly subject ∩ window. Sutherland–Hodgman o
 | Bookkeeping | four inside/outside cases | crossings, entry/exit labels, links |
 | Failure mode | concave subject ⇒ spurious connecting edges | tangencies and shared edges need special rules |
 
-### 3.12 3D point clipping
+### 4.12 3D point clipping
 
 After normalisation the volume is the cube $C=[-1,1]^{3}$, bounded by six planes $x=\pm1$, $y=\pm1$, $z=\pm1$. A point is kept **iff all three intervals hold**:
 
@@ -934,7 +949,7 @@ One violated interval rejects the point.
 > | C | 1.2 | 0.3 | 0 | reject | $x=1.2>1$ |
 > | D | 0 | $-1.1$ | 1.3 | reject | $y<-1$ and $z>1$ |
 
-### 3.13 Bounding boxes before exact clipping
+### 4.13 Bounding boxes before exact clipping
 
 A face may contain many vertices, and exact clipping examines every edge. Its **bounding box** uses only the coordinate extremes, so comparing boxes is far cheaper. The box test has three outcomes and one non-outcome:
 
@@ -948,7 +963,7 @@ A face may contain many vertices, and exact clipping examines every edge. Its **
 > [!warning] Overlap is not intersection
 > Box overlap only says the boxes share points. The box also contains empty space, and a face may occupy none of the shared part. **Box overlap is inconclusive** — only exact face clipping answers it. Conversely, disjoint boxes *do* guarantee disjoint objects, so rejection is safe.
 
-### 3.14 3D face clipping, worked
+### 4.14 3D face clipping, worked
 
 Clip the filled triangle $A=(2,0.5,0)$, $B=(0.5,2,0)$, $C=(2,2,0)$ to the cube $-1\le x,y,z\le1$.
 
@@ -966,7 +981,7 @@ Clip the filled triangle $A=(2,0.5,0)$, $B=(0.5,2,0)$, $C=(2,2,0)$ to the cube $
 > - A bounding-box overlap may sit entirely in empty box space — the box test said "continue", the exact test said "nothing".
 > - The parameters $\tfrac23$ and $\tfrac13$ belong to **different directed edges**; reusing one for the other is the classic error.
 
-### 3.15 Clipping versus occlusion
+### 4.15 Clipping versus occlusion
 
 > [!important] The distinction the rest of the block is built on
 > **Clipping** removes geometry wholly or partly *outside the view volume*; every test is against the volume's six boundaries.
@@ -988,7 +1003,7 @@ Two consequences:
 
 **Resolution and sampling rule.** One sample per pixel, at the pixel centre; a pixel is covered if its centre is covered; a centre exactly on an edge counts as covered (closed triangle). At $4\times4$ that gives 10 of 16 pixels; at $8\times8$, 21 of 64. The object-space answer does not change with resolution; the image-space answer is recomputed at every resolution.
 
-### 3.16 Interactive dry run
+### 4.16 Interactive dry run
 
 > [!tip] How to use the widget
 > The polygon $[(-1,0),(3,0),(1,3)]$ is clipped against $[0,2]^{2}$ in the book order left → right → top → bottom. Each step processes **one edge** and names its case. The right-hand column is the output list *growing*, which is the part that exam questions ask you to reproduce.
@@ -1097,7 +1112,7 @@ Two consequences:
 </script>
 ```
 
-### 3.17 Exam pointer
+### 4.17 Exam pointer
 
 > [!tip] Exam pointer — polygon clipping
 > - State why per-edge clipping fails (no closed boundary; needs new vertices *and* new edges).
@@ -1110,11 +1125,11 @@ Two consequences:
 
 ---
 
-## 4. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer
+## 5. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer
 
-*Deck: [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]] — 106 slides. The two first-line defences: throw away faces that point away from the eye, then resolve the rest pixel by pixel with a depth buffer.*
+*Deck: [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 5 deck]] — 106 slides. The two first-line defences: throw away faces that point away from the eye, then resolve the rest pixel by pixel with a depth buffer.*
 
-### 4.1 Back-face elimination
+### 5.1 Back-face elimination
 
 For a closed polyhedron, every face has an **outward normal**. A face whose normal turns away from the viewer cannot be seen from this viewpoint, so it can be discarded before any pixel work.
 
@@ -1139,7 +1154,7 @@ $$ \mathbf{N}\cdot\mathbf{v} = -N_z \qquad
 > [!note] Why counter-clockwise seen from outside
 > The right-hand rule ties the cross product to the vertex order: reversing the order reverses $\mathbf{N}$. A consistent outward convention therefore turns a purely combinatorial fact (the order the vertices were stored in) into a geometric one (which side is outside). Get the convention backwards and the algorithm culls exactly the visible faces.
 
-### 4.2 Worked example: a tetrahedron viewed along the negative z-axis
+### 5.2 Worked example: a tetrahedron viewed along the negative z-axis
 
 Given $A=(4,5,4)$, $B=(2,3,6)$, $C=(6,1,4)$, $D=(3,2,2)$, viewing vector $\mathbf{v}=(0,0,-1)$, and the outward face list $ABC$, $ADB$, $DCB$, $ACD$.
 
@@ -1185,7 +1200,7 @@ Two independent checks the deck performs:
 - $\mathbf{N}\cdot(\text{opposite vertex} - \text{face vertex}) = -44 < 0$ for **every** face — the normals are outward, consistently.
 - $\mathbf{N}_{ABC}+\mathbf{N}_{ADB}+\mathbf{N}_{DCB}+\mathbf{N}_{ACD}=(0,0,0)$ — the normals of a closed surface sum to zero.
 
-### 4.3 Why back-face elimination is not enough
+### 5.3 Why back-face elimination is not enough
 
 Back-face elimination compares a face with **its own** solid only. It cannot answer:
 
@@ -1196,7 +1211,7 @@ Back-face elimination compares a face with **its own** solid only. It cannot ans
 
 What survives culling still needs a depth comparison per pixel or per object. That is the job of the next two methods.
 
-### 4.4 The depth (z) buffer: the idea
+### 5.4 The depth (z) buffer: the idea
 
 The z-buffer is an **image-space** method: two buffers of the same size as the screen, one storing the nearest depth found so far at each pixel, one storing the colour that produced it.
 
@@ -1209,11 +1224,11 @@ For every surface, and every pixel its projection covers, compute the surface's 
 
 $$ \text{if } z < DB[x][y] \text{ then } DB[x][y]=z,\; FB[x][y]=\text{colour of the surface} $$
 
-Because the comparison is per pixel, the surfaces may be processed in **any order** — the result is identical, which is what makes the method hardware-friendly and immune to the cyclic-overlap problem that defeats the painter's algorithm (§5.2).
+Because the comparison is per pixel, the surfaces may be processed in **any order** — the result is identical, which is what makes the method hardware-friendly and immune to the cyclic-overlap problem that defeats the painter's algorithm (§6.2).
 
 ![[CG - Z Buffer.excalidraw]]
 
-### 4.5 Depth from the plane equation
+### 5.5 Depth from the plane equation
 
 Every planar surface satisfies
 
@@ -1228,7 +1243,7 @@ $$ \mathbf{N}=(A,B,C)=(P_2-P_1)\times(P_3-P_1),\qquad D=-Ax_1-By_1-Cz_1 $$
 > 2. **Normal by cross product:** $\mathbf{N}=\mathbf{u}\times\mathbf{v}=(A,B,C)$.
 > 3. **Form the equation:** substitute $\mathbf{N}$ and any one vertex into $Ax+By+Cz+D=0$ and solve for $D$.
 
-### 4.6 Incremental depth: never evaluate the plane twice
+### 5.6 Incremental depth: never evaluate the plane twice
 
 Evaluating $z=(-D-Ax-By)/C$ at every pixel costs a multiply and a divide per pixel. Because $z$ is linear in $x$ and $y$, each step across a scan line changes $z$ by a **constant**:
 
@@ -1257,7 +1272,7 @@ The two terms account, respectively, for the change of $y$ between the scan line
 - Right and down, $(2,1)$: $z=3.0-1.0+0.5=2.5$; direct check gives $(10-4-1)/2=2.5$ ✓.
 - Next scan line from the edge, $m=2$: the leftmost pixel moves to $x'=1-\tfrac12=0.5$ and $z'=3.0+0.5+2/(2\cdot2)=4.0$; direct check gives $(10-1-1)/2=4.0$ ✓ — the edge term is not optional.
 
-### 4.7 The algorithm
+### 5.7 The algorithm
 
 > [!important] Depth-buffer algorithm — statement
 > ```text
@@ -1287,7 +1302,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 > - **Divide by zero.** $C=0$ means a surface parallel to the view plane's depth axis — the plane equation must be solved for $z$ from a different coefficient, or the surface rejected.
 > - **Depth precision.** $z$ is interpolated after the perspective divide, so its spacing in screen space is non-linear; a small far plane range and a deep scene still collide in the buffer (z-fighting).
 
-### 4.8 Interactive dry run
+### 5.8 Interactive dry run
 
 > [!tip] How to use the widget
 > Two triangles are scan-converted in order, first the near one, then the far one. Each step is one covered pixel of one surface: the widget compares the new $z$ against $DB$ and shows the outcome. Watch the near surface win the overlap region, and watch the far one still paint the pixels the near one never covered. The depths here are in an arbitrary unit, so the buffer is initialised to $\infty$ — the same "far value" as the algorithm box's $1$, since every real depth is nearer than it.
@@ -1377,7 +1392,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 </script>
 ```
 
-### 4.9 Exam pointer
+### 5.9 Exam pointer
 
 > [!tip] Exam pointer — back-face and z-buffer
 > - Compute $\mathbf{N}=(B-A)\times(C-A)$ and classify by the sign of $\mathbf{N}\cdot\mathbf{v}$; know that $\mathbf{N}\cdot\mathbf{v}=-N_z$ for $\mathbf{v}=(0,0,-1)$.
@@ -1388,11 +1403,11 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 
 ---
 
-## 5. Hidden Surface Removal II — Painter's Algorithm and BSP Trees
+## 6. Hidden Surface Removal II — Painter's Algorithm and BSP Trees
 
-*Deck: [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
+*Deck: [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 6 deck]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
 
-### 5.1 Painting back to front
+### 6.1 Painting back to front
 
 The painter's algorithm is the oldest hidden-surface method and the one that matches intuition: an artist paints the distant hills first and the near tree last, and the tree simply covers part of the hills. Nothing is tested per pixel — **the drawing order itself is the visibility computation**. If every polygon is painted in order of *decreasing* distance from the eye, each new polygon overwrites only what should be hidden behind it, and the final frame buffer holds the visible surface of every pixel.
 
@@ -1417,7 +1432,7 @@ The whole method therefore reduces to one question: *can the polygons be put in 
 > [!note] Why painting works at all
 > The frame buffer is destructive: writing a pixel replaces what was there. That is normally a bug, but here it is the mechanism. Because a nearer surface is guaranteed to be painted later, "last write wins" *is* the depth test — at the price of painting the hidden surfaces first and then covering them up. The overdraw is the cost of never storing a depth per pixel.
 
-### 5.2 The four tests that decide a pair
+### 6.2 The four tests that decide a pair
 
 Sorting produces a candidate order; the tests certify that a *particular adjacent pair* $P$ (farther) and $Q$ (nearer) is safe. They go from cheapest and most decisive to most expensive.
 
@@ -1438,7 +1453,7 @@ Test 4 is the load-bearing one because tests 1–2 only prove *irrelevance*: two
 > [!warning] "Sort by depth" is not "sort by centroid z"
 > A single scalar key cannot represent a polygon that spans a range of depths. A long ground plane whose centroid is far away can still pass in front of a small nearby object, and a polygon seen almost edge-on has a centroid that says nothing about where its surface is. The four tests exist because **no scalar key is a valid sort for arbitrary polygons** — when they all fail, the geometry, not the key, must be cut.
 
-### 5.3 The failure cases
+### 6.3 The failure cases
 
 | Case | What goes wrong | Cure |
 | --- | --- | --- |
@@ -1456,7 +1471,7 @@ Cyclic overlap is worth a picture in words because it is easy to draw and easy t
 
 Three pairwise truths, no global order. The relation "nearer than" is not transitive here, so no sorting algorithm can succeed; the only escape is to **cut one polygon** so that the cycle becomes a chain.
 
-### 5.4 The plane function
+### 6.4 The plane function
 
 Everything that follows — building the tree, splitting a polygon, choosing the traversal — uses one scalar function.
 
@@ -1477,7 +1492,7 @@ The deck's convention is fixed by the sentence: *the arrow $\mathbf{n}_i$ points
 >
 > Building asks $f(\text{vertex})$ for every polygon vertex; rendering asks $f(\text{eye})$ once per node. The build answer is fixed forever; the render answer changes with the camera. This is the whole economy of a BSP tree: the expensive geometric work (classification and splitting) is done once, and each new frame costs only one dot product per node.
 
-### 5.5 Building the tree
+### 6.5 Building the tree
 
 > [!important] BSP construction — statement
 > ```text
@@ -1527,7 +1542,7 @@ The deck builds the tree in exactly this order and stops at three checkpoints, w
 
 Read the shape, not the x-positions: **2 and 3 are chains of single-child nodes**, because after removing polygon 1 and polygon 5's partition, those subtrees contained only polygons that all lay on one side. A BSP tree is not balanced and is not a search tree — its shape is whatever the chosen splitting planes produce.
 
-### 5.6 Splitting a polygon: cutting 9 into 9a and 9b
+### 6.6 Splitting a polygon: cutting 9 into 9a and 9b
 
 The deck's split is the one place where a polygon is created rather than merely classified. Polygon 9 straddles the plane of polygon 5, so one copy of 9 goes to each side under new names:
 
@@ -1543,12 +1558,12 @@ Because the signs differ, the denominator cannot vanish, and $t \in (0,1)$ — t
 
 #### The split parameter in numbers
 
-Take an edge with $f(\mathbf{u}) = -2$ and $f(\mathbf{v}) = +6$. Then $t = (-2)/((-2) - 6) = 1/4$, so the crossing sits a quarter of the way from $\mathbf{u}$ to $\mathbf{v}$; check: $f$ at that point is $-2 + \tfrac14(8) = 0$. This is the same interpolation the clipper uses in §3.5, applied to a signed plane function instead of to a coordinate — the arithmetic is identical, only the quantity being interpolated changes.
+Take an edge with $f(\mathbf{u}) = -2$ and $f(\mathbf{v}) = +6$. Then $t = (-2)/((-2) - 6) = 1/4$, so the crossing sits a quarter of the way from $\mathbf{u}$ to $\mathbf{v}$; check: $f$ at that point is $-2 + \tfrac14(8) = 0$. This is the same interpolation the clipper uses in §4.5, applied to a signed plane function instead of to a coordinate — the arithmetic is identical, only the quantity being interpolated changes.
 
 > [!warning] Splitting is not free
 > Each split adds vertices and polygons, so a scene built from many mutually crossing polygons can grow substantially, and the tree's memory is proportional to the *split* polygon count, not the input count. The deck's example happens to split exactly one polygon; in the worst case every polygon crosses every plane it meets.
 
-### 5.7 Rendering: the eye selects the traversal order
+### 6.7 Rendering: the eye selects the traversal order
 
 > [!important] BSP rendering — statement
 > ```text
@@ -1595,7 +1610,7 @@ The deck's own eye is on the OUT side of plane 1 and supplies a per-node table. 
 
 The row that always causes trouble in the deck is **node 7**: the eye is *below* its plane, i.e. on the IN side, because polygon 7's normal points downward. The traversal order at a node is a property of that node's own orientation, not of the tree's drawing on the page.
 
-### 5.8 The complete trace
+### 6.8 The complete trace
 
 Walking the recursion with the eye fixed gives the deck's annotated trace (slides 1/8 → 8/8). The pending nodes form a call stack; a node is drawn only when its far subtree has returned.
 
@@ -1625,7 +1640,7 @@ Two observations that make the order memorable:
 - **1 is drawn fourth, not first.** Entering the root does not mean drawing it — the whole IN subtree must be finished first, and that subtree is where the near polygons 2, 3, 4 live.
 - **5 is drawn after 8 and 9b but before 6, 7, 9a, 10, 11.** The eye is on 5's IN side, so its OUT side (8, 9b) is far and goes first, and its IN side (6, 7, 9a, 10, 11) is near and goes last.
 
-### 5.9 Why a BSP tree is worth the build
+### 6.9 Why a BSP tree is worth the build
 
 | Property | Painter's with sort | BSP tree |
 | --- | --- | --- |
@@ -1644,7 +1659,7 @@ Two observations that make the order memorable:
 > - Polygons lying **in the same plane** must be handled as a special case, or they end up in both subtrees and are drawn twice (harmless with opaque paint, wrong with transparency).
 > - BSP gives a **per-polygon** order; polygons that interpenetrate after the build (moving objects) invalidate it.
 
-### 5.10 Interactive dry run
+### 6.10 Interactive dry run
 
 The widget below walks the deck's twelve-step trace on the deck's tree. Watch the *draw order* strip grow: it should end at `2 3 4 1 8 9b 5 6 7 9a 10 11`, and the panel shows each node's eye test as it is evaluated.
 
@@ -1771,7 +1786,7 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
 </script>
 ```
 
-### 5.11 Exam pointer
+### 6.11 Exam pointer
 
 > [!tip] Exam pointer — painter's algorithm and BSP
 > - State the painter's idea in one sentence, then the four tests in order, then say **which test fails** in cyclic overlap (the plane-side test).
@@ -1784,13 +1799,13 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
 
 ---
 
-## 6. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline
+## 7. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline
 
-*Deck: [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
+*Deck: [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 7 deck]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
 
-### 6.1 The six stages
+### 7.1 The six stages
 
-The deck restates the pipeline that §1.1 introduced, but this time stage by stage and with the vocabulary that the rest of the lecture uses. Each stage either changes **what an object is** or **which coordinate system it lives in**.
+The deck restates the pipeline that §2.1 introduced, but this time stage by stage and with the vocabulary that the rest of the lecture uses. Each stage either changes **what an object is** or **which coordinate system it lives in**.
 
 | Stage | Operation | Coordinate change | The deck's own description |
 | --- | --- | --- | --- |
@@ -1807,9 +1822,9 @@ The deck restates the pipeline that §1.1 introduced, but this time stage by sta
 Two stage-level facts the deck states outright:
 
 - **Stage 4 is the largest.** It contains **three transformations** — world → camera, camera → view plane (projection), window → viewport — and **two operations** — clipping and hidden-surface removal.
-- **Stage 5 is where quality is lost.** Device coordinates are continuous, the display is a grid, and the conversion introduces *alias* — visible as jagged edges. Anti-aliasing is applied here, which is exactly the subject of §7.
+- **Stage 5 is where quality is lost.** Device coordinates are continuous, the display is a grid, and the conversion introduces *alias* — visible as jagged edges. Anti-aliasing is applied here, which is exactly the subject of §8.
 
-### 6.2 Lighting versus shading
+### 7.2 Lighting versus shading
 
 The deck separates two words that are routinely conflated, and the separation is examinable as a two-column comparison.
 
@@ -1825,7 +1840,7 @@ The deck separates two words that are routinely conflated, and the separation is
 > **Lighting (illumination)** — evaluation of a lighting model at a point, using the light's properties, the surface's material and normal, and the viewing direction.
 > **Shading** — the interpolation-based process of colouring the pixels of a surface from the lighting values computed at a few points.
 
-### 6.3 The three shading models
+### 7.3 The three shading models
 
 | Model | What is interpolated | Look | Cost |
 | --- | --- | --- | --- |
@@ -1838,14 +1853,14 @@ The deck separates two words that are routinely conflated, and the separation is
 
 The deck's summary line is the one to quote: all three models solve the same problem — *how light behaves per polygon* — at increasing computational cost.
 
-### 6.4 Aliasing at the raster stage
+### 7.4 Aliasing at the raster stage
 
 Scan conversion maps a continuous viewport onto a discrete grid. A line that is one pixel wide in continuous space has no exact pixel representation: at each column the rasterizer must choose one row, and the chosen rows step, producing the **staircase**. That staircase is aliasing, and it is not an error in the line algorithm — it is the unavoidable consequence of sampling.
 
 > [!warning] Aliasing is not a bug in Bresenham
-> Any algorithm that writes one pixel per column produces a staircase. Bresenham/midpoint choose the *nearest* pixel, which is optimal for a one-pixel line, yet the result still staircases. Removing the staircase requires changing the *number of samples per pixel* — either by shading several pixels per column (pre-filtering, §7) or by supersampling. Do not answer "use a better line algorithm" to an aliasing question.
+> Any algorithm that writes one pixel per column produces a staircase. Bresenham/midpoint choose the *nearest* pixel, which is optimal for a one-pixel line, yet the result still staircases. Removing the staircase requires changing the *number of samples per pixel* — either by shading several pixels per column (pre-filtering, §8) or by supersampling. Do not answer "use a better line algorithm" to an aliasing question.
 
-### 6.5 Inside–outside tests
+### 7.5 Inside–outside tests
 
 Filling a polygon requires deciding, for every pixel, whether it is inside. The deck presents the two standard rules.
 
@@ -1872,9 +1887,9 @@ For a pixel's neighbourhood the deck writes the eight neighbours as offsets, wit
 | L (left) | $(-1,0)$ | BL | $(-1,-1)$ |
 | R (right) | $(+1,0)$ | BR | $(+1,-1)$ |
 
-The four orthogonal offsets define **4-connectivity**; all eight define **8-connectivity**. That single choice changes which regions a fill can reach (§6.10).
+The four orthogonal offsets define **4-connectivity**; all eight define **8-connectivity**. That single choice changes which regions a fill can reach (§7.10).
 
-### 6.6 The scan-line idea
+### 7.6 The scan-line idea
 
 A scan-line fill turns the two-dimensional inside test into a one-dimensional one, once per row of pixels. For a fixed $y$, the polygon's boundary is crossed at a finite set of $x$ values; sorting them and filling between alternate pairs fills the row exactly.
 
@@ -1896,7 +1911,7 @@ $$ x_{y+1} = x_y + \frac{1}{m} = x_y + \frac{\Delta x}{\Delta y} $$
 > [!warning] Horizontal edges never enter the AET
 > A horizontal edge has $\Delta y = 0$, so $1/m$ is infinite and it never crosses a scan line transversally. It is simply omitted from the edge table; the vertices at its ends are handled by the half-open rule of the two non-horizontal edges that meet there.
 
-### 6.7 Worked trace: a triangle, row by row
+### 7.7 Worked trace: a triangle, row by row
 
 Take the triangle $A(10,10)$, $B(50,20)$, $C(30,60)$ in a coordinate system with $y$ increasing upward, and fill it by scan lines.
 
@@ -1923,7 +1938,7 @@ Check two entries by hand. At $y=30$, edge $AC$ is $x = 10 + 0.4(30-10) = 18$ an
 > - Between consecutive rows nothing is recomputed: $AC$ moves $18 \to 18.4 \to 18.8$ by adding $0.4$, and $BC$ moves $45 \to 44.5 \to 44$ by adding $-0.5$.
 > - The span never needs the polygon's interior — only the sorted crossings. That is what makes the method $O(\text{edges})$ per row instead of $O(\text{pixels} \times \text{edges})$.
 
-### 6.8 Scan-line polygon fill — algorithm
+### 7.8 Scan-line polygon fill — algorithm
 
 > [!important] Scan-line polygon fill — statement
 > ```text
@@ -1944,9 +1959,9 @@ Check two entries by hand. At $y=30$, edge $AC$ is $x = 10 + 0.4(30-10) = 18$ an
 > **Output:** the set of interior pixels.
 > **Cost:** $O(E)$ per scan line for the AET update, plus the sort; with an insertion-sorted AET the total is $O(E + S)$ amortised for $E$ edges and $S$ spans, because the AET order changes only when edges cross.
 
-### 6.9 Interactive dry run
+### 7.9 Interactive dry run
 
-The widget fills the triangle of §6.7 one scan line at a time. The left panel is the raster; the right panel is the live AET, with each edge's current $x$ and slope, the sorted crossings, and the resulting span. Step until $y = 60$ and the triangle is complete.
+The widget fills the triangle of §7.7 one scan line at a time. The left panel is the raster; the right panel is the live AET, with each edge's current $x$ and slope, the sorted crossings, and the resulting span. Step until $y = 60$ and the triangle is complete.
 
 ```html
 <div id="w-sl" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
@@ -2068,7 +2083,7 @@ The widget fills the triangle of §6.7 one scan line at a time. The left panel i
 </script>
 ```
 
-### 6.10 Seed fill, boundary fill, flood fill
+### 7.10 Seed fill, boundary fill, flood fill
 
 The scan-line algorithm fills *one polygon* whose vertices are known. The seed-fill family fills *a connected region of pixels* whose extent is discovered as it goes — the natural method for interactive paint programs and for regions defined by their colour rather than by geometry.
 
@@ -2097,7 +2112,7 @@ The choice is not cosmetic. A boundary that is **8-connected** (its pixels touch
 
 So the safe pairing for a closed region is *8-connected boundary with 4-connected fill*, or *4-connected boundary with 8-connected fill*. This is why paint programs expose the connectivity as a fill option: the wrong pair floods the whole canvas.
 
-### 6.11 The deck's stack traces
+### 7.11 The deck's stack traces
 
 The deck runs the same stack-based pseudo-code three times and prints the stack size after every pop. The numbers are the algorithm's fingerprint: a pop either pushes some new neighbours or pushes none.
 
@@ -2110,7 +2125,7 @@ The deck runs the same stack-based pseudo-code three times and prints the stack 
 > [!note] Reading a stack trace
 > The pair "$a \to b$ (k pushed)" is a complete statement about one iteration: $a$ pixels were on the stack, one was popped ($a-1$ remain), $k$ new ones were pushed, and the result is $b = a - 1 + k$. Check the 8-connected line: $8 - 1 + 0 = 7$; then $7 - 1 + 0 = 6$; and so on to $1 - 1 + 0 = 0$. The trace terminates when the stack is empty, and the number of pops equals the number of pixels filled — 9 for the first two demos, 4 for the boundary demo.
 
-### 6.12 Seed fill — algorithm
+### 7.12 Seed fill — algorithm
 
 > [!important] Seed / flood fill — statement
 > ```text
@@ -2131,7 +2146,7 @@ The deck runs the same stack-based pseudo-code three times and prints the stack 
 > [!warning] Mark on push, or the stack explodes
 > If a pixel is marked only when it is popped, a pixel with several already-queued neighbours is pushed once per neighbour, and the stack can grow far beyond the region's perimeter. The deck's traces are consistent with marking on push: every stack size stays small and the pop count equals the pixel count exactly.
 
-### 6.13 Interactive dry run
+### 7.13 Interactive dry run
 
 The widget below runs both connectivities on the same closed boundary. The boundary has **diagonal corner contacts** — it is 8-connected but not 4-connected. Choose 4-connectivity and the fill stays inside; choose 8-connectivity and it escapes through the corner and floods the canvas. Watch the stack counter and the "pushed" figure in the narration.
 
@@ -2250,9 +2265,9 @@ The widget below runs both connectivities on the same closed boundary. The bound
 ```
 
 > [!warning] What to conclude from the leak
-> The boundary in the widget is closed in the 8-connected sense — you cannot walk from inside to outside without touching a boundary pixel along an 8-neighbour step. A 4-connected fill still cannot escape, because its only moves are orthogonal and every orthogonal route is blocked. Switch the fill to 8-connected and it steps diagonally through the corner contact immediately. **The topology of the fill must be at least as strict as the topology of the boundary**, which is the general statement behind the table in §6.10.
+> The boundary in the widget is closed in the 8-connected sense — you cannot walk from inside to outside without touching a boundary pixel along an 8-neighbour step. A 4-connected fill still cannot escape, because its only moves are orthogonal and every orthogonal route is blocked. Switch the fill to 8-connected and it steps diagonally through the corner contact immediately. **The topology of the fill must be at least as strict as the topology of the boundary**, which is the general statement behind the table in §7.10.
 
-### 6.14 Character generation: the bitmapped font
+### 7.14 Character generation: the bitmapped font
 
 There are two ways to put a character on a raster, and the deck builds the same letter $L$ both ways.
 
@@ -2274,7 +2289,7 @@ A **bitmapped font** stores the character as a small binary image: one bit per p
 > [!note] Why enlargement multiplies the on-pixels by four
 > Nearest-neighbour replication replaces every original pixel by a $2\times2$ block, so area (and the count of on-pixels) scales by $2^2 = 4$ while the *pattern* is unchanged. The deck's conclusion is the important part: *replication preserves the block pattern; it does not recover a smoother character outline.* A magnified bitmap is a blocky bitmap, not a better letter.
 
-### 6.15 Character generation: the outlined font
+### 7.15 Character generation: the outlined font
 
 An **outlined font** stores the character as geometry: points and line segments that describe the boundary. The deck's `L` is a six-vertex counterclockwise polygon.
 
@@ -2302,24 +2317,24 @@ An **outlined font** stores the character as geometry: points and line segments 
 | Small sizes | crisp, hand-tuned | needs hinting to stay legible |
 | The deck's example | $5\times7 = 35$ bits, 11 on | 6 vertices, area 11 |
 
-### 6.16 Exam pointer
+### 7.16 Exam pointer
 
 > [!tip] Exam pointer — fill areas and the pipeline
 > - Six stages with their coordinate changes, and stage 4's **3 transformations + 2 operations**.
 > - Lighting versus shading in two columns, then flat / Gouraud / Phong with what each interpolates and why Gouraud loses highlights.
 > - Even–odd versus nonzero winding, including a doubly-wound region.
-> - ET / AET definitions, the half-open rule, $x \leftarrow x + 1/m$, and the triangle trace of §6.7.
+> - ET / AET definitions, the half-open rule, $x \leftarrow x + 1/m$, and the triangle trace of §7.7.
 > - Seed vs boundary vs flood fill, the deck's test `colour ≠ boundary AND ≠ fill`, and the 4/8-connectivity leak table.
 > - Reproduce the stack traces: $1\to4 \ldots 1\to0$ (4-connected), $1\to8$ then all $(0\text{ pushed})$ (8-connected), $1\to3 \ldots$ (boundary).
 > - Bitmap $5\times7$: 35 bits, 11 on; doubled: 140 bits, 44 on. Outline: six vertices, area 11, and the warning that area ≠ pixel count.
 
 ---
 
-## 7. Anti-Aliasing I — The Gupta–Sproull Algorithm
+## 8. Anti-Aliasing I — The Gupta–Sproull Algorithm
 
-*Deck: [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]] — 70 slides. Two parts: the midpoint line algorithm that decides **which** pixel, then the Gupta–Sproull extension that decides **how bright** each of the three pixels in the column should be.*
+*Deck: [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 8 deck]] — 70 slides. Two parts: the midpoint line algorithm that decides **which** pixel, then the Gupta–Sproull extension that decides **how bright** each of the three pixels in the column should be.*
 
-### 7.1 What the algorithm is
+### 8.1 What the algorithm is
 
 The midpoint algorithm answers one question per step and answers it with a sign: E or NE. That produces the nearest pixel but says nothing about *how much* of the pixel the line actually covers — the staircase survives. Gupta–Sproull keeps the midpoint choice untouched and adds a **pre-filtering** step: the chosen pixel and its two vertical neighbours in the same column are all shaded, with weights taken from their perpendicular distance to the line.
 
@@ -2335,7 +2350,7 @@ The deck fixes the working octant once and never revisits it:
 
 ![[CG - Gupta Sproull Coverage.excalidraw]]
 
-### 7.2 Part 1 — two candidates and a midpoint
+### 8.2 Part 1 — two candidates and a midpoint
 
 Having just chosen $(x_k, y_k)$, the next pixel is one of two, because $x$ always advances by exactly one:
 
@@ -2360,14 +2375,14 @@ and use the **scaled** version $F(x,y) = 2(ax+by+c)$. The factor 2 is not cosmet
 
 The deck's sign convention is worth fixing in memory: **positive is below**, because $b = -\Delta x < 0$ and increasing $y$ makes $F$ decrease.
 
-### 7.3 The decision variable and its update
+### 8.3 The decision variable and its update
 
 $$ d_k = F(M) = F\!\left(x_k+1,\ y_k+\tfrac12\right) = 2\left[a(x_k+1) + b\left(y_k+\tfrac12\right) + c\right] $$
 
 > [!important] The decision rule
 > **$d_k > 0$** — the midpoint is below the line → choose **NE**.
 > **$d_k \le 0$** — the midpoint is on or above the line → choose **E**.
-> The tie $d_k = 0$ chooses **E**, exactly as in the clipping ties of §2. This is a convention, not a derivation, and the deck states it explicitly.
+> The tie $d_k = 0$ chooses **E**, exactly as in the clipping ties of §3. This is a convention, not a derivation, and the deck states it explicitly.
 
 The update comes from moving the *midpoint*, not the pixel. After E the next midpoint is one step right; after NE it is one step right and one up:
 
@@ -2387,7 +2402,7 @@ d_{k+1} &= F\!\left(x_k+2,\ y_k+1+\tfrac12\right) \\
 
 The reasoning in one line: the bracket is $F$ at the old midpoint, and the extra terms are the cost of moving one right ($2a$) and one up ($2b$). With $a = \Delta y$ and $b = -\Delta x$, $2(a+b)$ is usually negative — the decision variable drifts back toward zero after every upward step, which is why the line alternates between E and NE.
 
-### 7.4 The starting value
+### 8.4 The starting value
 
 The first midpoint is at $(x_0+1,\ y_0+\tfrac12)$, and $(x_0,y_0)$ lies on the line, so $f(x_0,y_0) = 0$:
 
@@ -2402,7 +2417,7 @@ $$ \boxed{\ d_0 = 2a + b = 2\Delta y - \Delta x\ } $$
 > [!note] Why $d_0$ can be negative
 > For a shallow line ($\Delta y < \Delta x/2$) the start value is negative and the first step is E; for a steep line inside the octant ($\Delta y > \Delta x/2$) it is positive and the first step is NE. Nothing is special about either case — the same update rules carry on from whatever sign $d_0$ has.
 
-### 7.5 The complete midpoint algorithm
+### 8.5 The complete midpoint algorithm
 
 > [!important] Midpoint line drawing — statement
 > ```text
@@ -2422,7 +2437,7 @@ $$ \boxed{\ d_0 = 2a + b = 2\Delta y - \Delta x\ } $$
 >
 > **Cost:** one comparison and one addition per column — $O(\Delta x)$, all integer arithmetic, no division and no floating point.
 
-### 7.6 Worked midpoint trace: from (0,0) to (8,5)
+### 8.6 Worked midpoint trace: from (0,0) to (8,5)
 
 Here $\Delta x = 8$, $\Delta y = 5$, so $a = 5$, $b = -8$, $d_0 = 2(5) - 8 = 2$, and the two constants are
 
@@ -2441,7 +2456,7 @@ $$ 2a = 10, \qquad 2(a+b) = 2(5-8) = -6 $$
 
 The pixel set is $(0,0),(1,1),(2,1),(3,2),(4,2),(5,3),(6,4),(7,4),(8,5)$. Check against the true line $y = 5x/8$: at $x=3$ the line is at $1.875$ and the chosen row is 2; at $x=4$ the line is exactly $2.5$ — the tie — and the rule takes the lower row 2. Both are the nearest choice; the tie is broken downwards by convention.
 
-### 7.7 Part 2 — from a vertical gap to a perpendicular distance
+### 8.7 Part 2 — from a vertical gap to a perpendicular distance
 
 The intensity must reflect **how much of the pixel the line covers**, which is governed by the perpendicular distance from the pixel centre to the line — not by the vertical gap. The two are related by the line's slope.
 
@@ -2492,7 +2507,7 @@ Three practical consequences, all stated by the deck:
 - Use $d$ **before** it is updated by the midpoint step — the distance describes the pixel about to be shaded, not the next decision.
 - Keep the **sign** of $s$: it tells which side of the line the pixel is on, and the neighbours' distances depend on it.
 
-### 7.8 The filter and the blend
+### 8.8 The filter and the blend
 
 The distance becomes a weight through a **filter**, and the weight becomes a colour through a linear blend:
 
@@ -2512,7 +2527,7 @@ $$ \text{Filter}(D) = \max(0,\ 1 - D) $$
 
 *Figure — the E case and the NE case: the same three pixels per column, only the identity of the middle one and the sign of $s$ change.*
 
-### 7.9 The two vertical neighbours
+### 8.9 The two vertical neighbours
 
 Selecting a pixel also shades the pixels directly above and below it in the same column, at distances $\Delta x/L$ apart in perpendicular terms.
 
@@ -2528,7 +2543,7 @@ The asymmetry in the coordinates is not a typo: when NE is selected, the "lower 
 > [!warning] Do not move the selected pixel to the neighbour's place
 > The three pixels are shaded **in the same column** $x_k+1$. The selected pixel gets $\alpha = \text{Filter}(|s|)$; the pixel above gets $\text{Filter}(D_{\text{upper}})$; the pixel below gets $\text{Filter}(D_{\text{lower}})$. When the selected pixel is NE, the pixel below it is E — it does **not** get the selected pixel's $\alpha$.
 
-### 7.10 Worked shading trace: the same line from (0,0) to (8,5)
+### 8.10 Worked shading trace: the same line from (0,0) to (8,5)
 
 With $\Delta x = 8$, $\Delta y = 5$: $L = \sqrt{89} = 9.4340$, $2L = 18.8680$, and $\Delta x/L = 0.8480$. The $\alpha$ column applies the cone filter $\max(0, 1-D)$.
 
@@ -2554,7 +2569,7 @@ The shaded band therefore spans three rows in every column, with the centre pixe
 > [!note] What the eye sees
 > Three gray levels per column, summing roughly to the coverage of the ideal line, look like a smooth stroke at viewing distance. This is *pre-filtering*: the weight is computed before sampling, from the geometry, instead of averaging samples afterwards. That is why the method needs no supersampling buffer — and why it is cheap, and why its quality is limited to the filter's three-pixel footprint.
 
-### 7.11 Gupta–Sproull — algorithm
+### 8.11 Gupta–Sproull — algorithm
 
 > [!important] Gupta–Sproull — statement
 > ```text
@@ -2586,9 +2601,9 @@ The shaded band therefore spans three rows in every column, with the centre pixe
 | neighbours | — | $D_u$, $D_l$ and two more blends |
 | update | $d \mathrel{+}= 2a$ or $2(a+b)$ | unchanged |
 
-### 7.12 Interactive dry run
+### 8.12 Interactive dry run
 
-The widget walks the eight columns of §7.10. Each step shades the selected pixel and its two vertical neighbours, and the table records $d$, the choice, $s$ and the three weights. Watch column 4 — the exact midpoint — where the pixel above and the pixel below receive the same $\alpha$.
+The widget walks the eight columns of §8.10. Each step shades the selected pixel and its two vertical neighbours, and the table records $d$, the choice, $s$ and the three weights. Watch column 4 — the exact midpoint — where the pixel above and the pixel below receive the same $\alpha$.
 
 ```html
 <div id="w-gs" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
@@ -2690,7 +2705,7 @@ The widget walks the eight columns of §7.10. Each step shades the selected pixe
 </script>
 ```
 
-### 7.13 Exam pointer
+### 8.13 Exam pointer
 
 > [!tip] Exam pointer — Gupta–Sproull
 > - State the two-part structure: **which pixel** (midpoint) then **how bright** (distance filter).
@@ -2702,11 +2717,11 @@ The widget walks the eight columns of §7.10. Each step shades the selected pixe
 
 ---
 
-## 8. Animation — The 2D Production Process
+## 9. Animation — The 2D Production Process
 
-*Deck: [[Post 8 - Animation - The 2D Production Process.pdf|Post 8 deck]] — 55 handwritten slides. The deck carries one exam question, quoted below; this topic answers it in the order the question implies, using the character jumping over a puddle as the running example.*
+*Deck: [[Post 9 - Animation - The 2D Production Process.pdf|Post 9 deck]] — 55 handwritten slides. The deck carries one exam question, quoted below; this topic answers it in the order the question implies, using the character jumping over a puddle as the running example.*
 
-### 8.1 The question
+### 9.1 The question
 
 > *Explain the 2D animation production process using a character jumping over a puddle as an example, with suitable illustrations.*
 
@@ -2716,7 +2731,7 @@ The question asks for three things at once, and the marks are distributed across
 2. **The worked example** — every stage instantiated on one jump: which drawings exist, at which frames, in which order.
 3. **Illustrations** — the pose sheet, the arc, and the timing chart, because a process described without drawings is not an animation answer.
 
-### 8.2 What a 2D animation is
+### 9.2 What a 2D animation is
 
 > [!important] Definitions
 > **Frame** — one still image. **Frame rate** — frames per second; at **24 fps** one second of motion is 24 frames.
@@ -2726,7 +2741,7 @@ The question asks for three things at once, and the marks are distributed across
 
 Two facts organise everything else. First, **motion is an illusion produced by discrete samples**: the character does not move, 24 drawings per second are shown and the eye integrates them. Second, **the number of drawings is a budget**. A one-second jump is 24 drawings at "full animation" (one drawing per frame, *on ones*), or 12 drawings if each is shot twice (*on twos*) — and the choice is visible: on twos looks steppier and is the standard for economical TV animation.
 
-### 8.3 The production pipeline
+### 9.3 The production pipeline
 
 ![[CG - 2D Animation Pipeline.excalidraw]]
 
@@ -2744,7 +2759,7 @@ The pipeline has three phases. **Pre-production** decides what will happen (stor
 > [!note] Why the order is not negotiable
 > Each stage consumes the previous stage's output as its *specification*. In-betweening requires finished keys — an in-between between two unresolved poses is wasted work. Clean-up requires a locked timing chart, because the number of drawings is decided there. Compositing requires painted cels and a background. Reordering the pipeline does not merely cost time; it makes the output undefined.
 
-### 8.4 Stage 1 — storyboard and beat sheet
+### 9.4 Stage 1 — storyboard and beat sheet
 
 A storyboard fixes **what happens** and **how long it takes**, before any drawing is animated. Each panel carries a beat and a duration in frames.
 
@@ -2758,14 +2773,14 @@ A storyboard fixes **what happens** and **how long it takes**, before any drawin
 
 The beat sheet is where the **frame budget** is spent. Two seconds of screen time is 48 frames at 24 fps; the storyboard decides that the jump gets 8 of them and the anticipation 4, and that decision constrains every later stage.
 
-### 8.5 Stage 2 — the model sheet
+### 9.5 Stage 2 — the model sheet
 
 The model sheet is the character's specification: proportions, construction shapes, the front/side/three-quarter views, and the colour palette. Its purpose is **consistency across drawings made by different people on different days**. For the jump it also fixes the *line of action* — the curve through the body that gives the pose its energy — and the character's height in heads, which the squash and stretch will preserve in volume.
 
 > [!important] Volume preservation
 > Squash and stretch change the character's *proportions*, not its *volume*. A crouch that is $1.2\times$ wider should be about $1/1.2 = 0.83\times$ shorter. This is the rule that keeps a squashed character from looking deflated, and it is why the model sheet fixes the construction shapes rather than only the silhouette.
 
-### 8.6 Stage 3 — the seven key poses
+### 9.6 Stage 3 — the seven key poses
 
 ![[CG - Jump Arc Keyframes.excalidraw]]
 
@@ -2781,7 +2796,7 @@ The model sheet is the character's specification: proportions, construction shap
 
 The keys are drawn as **extremes**: they are the poses where the action changes direction or meaning. Everything between them is interpolation, and interpolation is only as good as the extremes it connects.
 
-### 8.7 Stage 4 — timing, spacing and the in-betweens
+### 9.7 Stage 4 — timing, spacing and the in-betweens
 
 Between K1 and K2, and so on, the assistant draws the in-betweens. Two decisions are being made at once:
 
@@ -2805,15 +2820,15 @@ Heights follow $h(t) = 4H\,t(1-t)$ with $H = 180$ units over the 23-frame span, 
 > [!note] The arc is the path, the spacing is the speed
 > These are separate pieces of information and they are drawn separately. The **arc** is a curve through space that every drawing must lie on; the **timing chart** is a set of marks along that curve saying which drawing happens on which frame. A common beginner error is to space the drawings evenly along a correctly drawn arc, which produces a jump that floats: constant speed along a ballistic path looks weightless, because real gravity decelerates on the way up and accelerates on the way down.
 
-### 8.8 Stage 5 — clean-up, ink and paint
+### 9.8 Stage 5 — clean-up, ink and paint
 
 The animator's rough keys and in-betweens go to clean-up, where the lines are redrawn consistently, then to ink and paint, where each cel is filled with flat colour. The background is painted **once**, separately, and the character is composited over it — which is the economic reason 2D animation separates the layers at all: the background does not need to be redrawn for every frame.
 
-### 8.9 Stage 6 — compositing and post
+### 9.9 Stage 6 — compositing and post
 
 The painted cels are photographed or scanned over the background at the frame rate, with any camera move (a pan, a truck-in) applied at this stage rather than drawn. Effects — dust at the landing, splash from the puddle, motion smear on the fastest frames — are added here. The shot is exported at 24 fps for film or 25/30 fps for broadcast, and the timing chart is what guarantees that the exported frame count matches the board's intent.
 
-### 8.10 The principles the example forces
+### 9.10 The principles the example forces
 
 | Principle | Where it appears in the jump | What it fixes |
 | --- | --- | --- |
@@ -2828,7 +2843,7 @@ The painted cels are photographed or scanned over the background at the frame ra
 > [!warning] The jump fails if any one of these is missing
 > Remove the anticipation and the jump looks teleported. Remove the arc and it looks like an elevator. Space it evenly and it floats. Skip the squash and the character looks rigid. The exam answer should name each principle **and point at the frame where it is used** — the example is what earns the marks, not the list.
 
-### 8.11 Interpolation: the arithmetic of an in-between
+### 9.11 Interpolation: the arithmetic of an in-between
 
 An in-between can be computed rather than drawn, and the computation is the same linear interpolation used everywhere else in the course. For two keys $\mathbf{K}_1, \mathbf{K}_2$ and a parameter $t \in [0,1]$:
 
@@ -2868,7 +2883,7 @@ The middle in-between is identical in both columns — easing always pins the ha
 > **Output:** $n$ drawings, the first and last of which are the keys themselves.
 > **Cost:** $O(n)$ per gap, one interpolation and possibly one evaluation of the arc per frame.
 
-### 8.12 Interactive dry run
+### 9.12 Interactive dry run
 
 The widget tweens the character between the takeoff key and the landing key across 13 frames. Switch between **linear** and **eased** spacing and watch the dots on the timing track: linear spacing is uniform, eased spacing bunches at both ends. The panel shows $t$, $t'$ and the position actually drawn.
 
@@ -2978,7 +2993,7 @@ The widget tweens the character between the takeoff key and the landing key acro
 </script>
 ```
 
-### 8.13 Exam pointer
+### 9.13 Exam pointer
 
 > [!tip] Exam pointer — 2D animation
 > - Draw the pipeline in three phases with six stages, and say what each stage *produces* (not just its name).
@@ -3029,4 +3044,4 @@ The widget tweens the character between the takeoff key and the landing key acro
 | Outline area | $1\times7+5\times1-1=11$ units² | scales by $2^2=4$; area ≠ pixel count |
 
 > [!note] Source images
-> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result from [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]], the Weiler–Atherton crossings and the concave-subject split from [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]], the BSP traversal order from [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]], the E/NE case of Gupta–Sproull from [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]], and the bitmapped and outlined letter `L` from [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]].
+> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result from [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 5 deck]], the Weiler–Atherton crossings and the concave-subject split from [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|Post 4 deck]], the BSP traversal order from [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 6 deck]], the E/NE case of Gupta–Sproull from [[Post 8 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 8 deck]], and the bitmapped and outlined letter `L` from [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 7 deck]].
