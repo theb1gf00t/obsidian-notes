@@ -188,6 +188,19 @@ The deck closes the section with the question *how to derive the projection matr
 
 *Deck: [[Post 2 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 2 deck]] — 78 slides. Compiles the pipeline overview, the world-to-view transform, the canonical view volume, the projection matrices and the viewport transform.*
 
+> [!abstract] Roadmap of this topic — read it as one story
+> **The question:** a 3D scene is described in the world's coordinates; how does each point end up as a pixel position?
+> **The answer is a chain of matrices**, and this section builds it link by link:
+> 1. **§2.1 — the pipeline:** the six stages, so you know where each link sits.
+> 2. **§2.2 — view transform:** re-express the world from the camera's point of view (recap of topic 1).
+> 3. **§2.3–2.4 — view volume and canonical cube:** decide *what* the camera sees, then normalise it to one standard cube.
+> 4. **§2.5 — projection:** flatten 3D to 2D, either by parallel projectors (orthographic) or by converging ones (perspective), including the derivation of both matrices.
+> 5. **§2.6 — viewport:** stretch the 2D result onto actual device coordinates.
+>
+> In one line, for a column vector $P_{local}$:
+> $$ P_{screen}\;=\;M_{viewport}\;\cdot\;\big[\text{divide by }w\big]\;\cdot\;M_{proj}\;\cdot\;M_{view}\;\cdot\;M_{model}\;\cdot\;P_{local} $$
+> Every later topic (clipping, hidden surfaces, filling) operates on the output of some link in this chain.
+
 ### 2.1 The six stages in one picture
 
 The deck opens by fixing the vocabulary for everything that follows: a renderer is a fixed sequence of six stages, and each stage changes either *what an object is* or *which coordinate system it lives in*. It helps to think of the pipeline as an assembly line: the object starts as raw geometry in its own little world, gets placed into the shared scene, gets lit, gets seen through the camera, gets discretised into pixels, and finally gets displayed. Each stage hands off a cleaner, more "screen-ready" description of the same underlying object.
@@ -301,6 +314,41 @@ The fourth row is the whole trick: it sets $w=-z_{cam}$, so dividing by $w$ mult
 | Size vs depth | constant | $\propto 1/|z|$ |
 | Typical use | CAD, architectural, 2D-style views | realistic rendering, games |
 
+#### The deck's derivation with the view plane at $z=-d$
+
+The matrices above are the general (OpenGL-style) forms. The deck first derives the *simplest* version, with the camera at the origin looking along $-z$ and the **view plane at $z=-d$** ($d>0$). A point $P=(x,y,z)$ has $z<0$ (it is in front of the camera).
+
+**Parallel (orthographic) case.** The projectors are all parallel to the $z$-axis, so a point keeps its $x$ and $y$ and only its depth is overwritten by the plane's depth:
+
+$$ T_{par}=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&0&-d\\0&0&0&1\end{bmatrix},\qquad (x,y,z)\mapsto(x,\,y,\,-d) $$
+
+> [!example] Deck Example 6.2 — orthographic
+> The object centre in view coordinates is $(0,0,-1)$ and the view plane is $z=-0.5$ (so $d=0.5$). Then
+> $$ T_{par}P=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&0&-0.5\\0&0&0&1\end{bmatrix}\begin{bmatrix}0\\0\\-1\\1\end{bmatrix}=\begin{bmatrix}0\\0\\-0.5\\1\end{bmatrix} $$
+> The point is projected to $(0,0,-0.5)$ on the view plane. The view volume is assumed large enough to contain the whole transformed object.
+
+**Perspective case — similar triangles.** The eye is at the origin, $P$ is at distance $-z$ along the viewing axis, and its projection $P'$ is where the ray from the eye to $P$ pierces the view plane, at distance $d$. The two right triangles (eye–$P'$ and eye–$P$) share the angle at the eye, so they are similar:
+
+$$ \frac{y}{y'}=\frac{-z}{d}\;\Longrightarrow\;y'=\frac{-d\,y}{z},\qquad \text{and likewise}\qquad x'=\frac{-d\,x}{z},\qquad z'=-d $$
+
+Check: a point already on the view plane ($z=-d$) gives $x'=x$, $y'=y$ — it does not move, as it should.
+
+The division by $z$ cannot be a matrix entry, so the matrix builds a **homogeneous coordinate** $w$ and the divide happens afterwards:
+
+$$ \begin{bmatrix}x''\\y''\\z''\\w\end{bmatrix}=\underbrace{\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&-\tfrac1d&0\end{bmatrix}}_{T_{psp}}\begin{bmatrix}x\\y\\z\\1\end{bmatrix}=\begin{bmatrix}x\\y\\z\\-z/d\end{bmatrix}
+\;\xrightarrow{\ \div w\ }\;
+x'=\frac{x''}{w}=\frac{-dx}{z},\quad y'=\frac{-dy}{z},\quad z'=\frac{z}{-z/d}=-d $$
+
+So **$w=-z/d$**: the farther the point, the larger $w$ and the smaller its projected $x',y'$. This is exactly the foreshortening of §2.5.
+
+> [!example] Deck Example 6.3 — perspective
+> Same point $(0,0,-1)$, view plane $z=-0.5$ ($d=0.5$, so $-1/d=-2$):
+> $$ T_{psp}P=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&-2&0\end{bmatrix}\begin{bmatrix}0\\0\\-1\\1\end{bmatrix}=\begin{bmatrix}0\\0\\-1\\2\end{bmatrix}\;\xrightarrow{\ \div w=2\ }\;(0,\,0,\,-0.5) $$
+> The point on the viewing axis projects to the same place under both projections — which makes sense, because the axis is the one line whose points do not shift sideways. Differences between the two projections only appear for points **off** the axis: try $(1,0,-1)$ — orthographic keeps $x'=1$, perspective gives $x'=-d\,x/z=0.5$.
+
+> [!note] Parallel versus perspective in one sentence
+> Parallel projection **drops** $z$ (all projectors are parallel, no divide, $w$ stays 1); perspective **divides by** $-z/d$ (projectors meet at the eye, $w$ carries the depth).
+
 #### Why the matrix is not "just a divide"
 
 Writing $x_{ndc}=x_{cam}/(-z_{cam})$ directly would be a per-vertex division with no matrix. Packing it into the fourth row means the *same* pipeline — multiply by a $4\times4$, then divide by $w$ — handles both projections, and clipping can be done in homogeneous space *before* the divide. That ordering matters: clipping after the divide would need special handling for points at or behind the eye.
@@ -323,6 +371,19 @@ In matrix form, with the third column free for depth:
 $$ M_{wv} = \begin{bmatrix} s_x & 0 & 0 & t_x\\ 0 & s_y & 0 & t_y\\ 0&0&1&0\\ 0&0&0&1\end{bmatrix} $$
 
 **Worked example.** Map the window $[-1,1]^{2}$ onto a $640\times480$ viewport whose lower-left corner is the origin. Then $s_x=640/2=320$, $t_x=0-320(-1)=320$, and $s_y=480/2=240$, $t_y=240$. A point in the middle of the window, $(0,0)$, lands at $(320,240)$ — the centre of the screen; the window corner $(-1,-1)$ lands at $(0,0)$; and $(0.5,-0.5)$ lands at $(480,120)$. Because the map is affine, straight lines stay straight and the midpoint of a segment stays the midpoint — which is what makes the transform safe to apply to vertices only.
+
+**Second worked example (the deck's non-square case).** Map the window with corners $(-1,-1)$ and $(1,1)$ to the viewport with corners $(4,4)$ and $(6,8)$. The window is $2\times2$ but the viewport is $2$ wide and $4$ tall, so the two axes scale differently:
+
+$$ s_x=\frac{V_{x2}-V_{x1}}{W_{x2}-W_{x1}}=\frac{6-4}{1-(-1)}=1,\qquad t_x=V_{x1}-s_xW_{x1}=4-1\cdot(-1)=5 $$
+$$ s_y=\frac{8-4}{1-(-1)}=2,\qquad t_y=4-2\cdot(-1)=6 \qquad\Longrightarrow\qquad M_{vp}=\begin{bmatrix}1&0&5\\0&2&6\\0&0&1\end{bmatrix} $$
+
+*Width stays the same, height doubles.* Check with the window centre $(0,0)$:
+
+$$ \begin{bmatrix}1&0&5\\0&2&6\\0&0&1\end{bmatrix}\begin{bmatrix}0\\0\\1\end{bmatrix}=\begin{bmatrix}5\\6\\1\end{bmatrix} $$
+
+The centre lands at $(5,6)$, which is the viewport's own centre $\left(\tfrac{4+6}{2},\tfrac{4+8}{2}\right)$. Corner checks: $(-1,-1)\mapsto(4,4)$ and $(1,1)\mapsto(6,8)$. This is the best sanity test for any viewport matrix: *corners to corners, centre to centre.*
+
+The transformation is applied to the 2D point in homogeneous form $[x_w,\,y_w,\,1]^T$, and $x'=x''/w$, $y'=y''/w$ with $w=1$.
 
 > [!warning] The y-flip trap
 > Window coordinates grow **upward**, device coordinates usually grow **downward**. When the viewport's origin is top-left, the correct scale is
@@ -348,6 +409,16 @@ $$ M_{wv} = \begin{bmatrix} s_x & 0 & 0 & t_x\\ 0 & s_y & 0 & t_y\\ 0&0&1&0\\ 0&
 ## 3. Viewport Mapping and Cohen–Sutherland Clipping
 
 *Deck: [[Post 3 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 3 deck]] — 97 slides. Point clipping, the 4-bit region code, trivial accept/reject, iterative boundary intersection, then the same algorithm in 3D with six planes.*
+
+> [!abstract] Roadmap of this topic — from one point to a 3D line
+> **The problem:** after projection and viewport mapping, much of the geometry may lie outside the window. Drawing it wastes time, so we *clip* — keep only what is inside.
+> **The story grows in four steps:**
+> 1. **§3.1 — a point:** two range checks. Easy, but it sets the pattern.
+> 2. **§3.2–3.3 — a line, cheaply:** pack each endpoint's "where am I?" into a small bit code, so most lines are accepted or rejected with no arithmetic.
+> 3. **§3.4–3.5 — a line, when the shortcut fails:** trim one boundary at a time until a shortcut applies.
+> 4. **§3.6–3.9 — the same algorithm in 3D:** six planes, six bits, same logic; then one complete worked example and the algorithm statement.
+>
+> **The one idea to carry through:** *never solve the whole problem at once — decide what you can from the codes, trim one boundary, and re-ask the question.*
 
 ### 3.1 Point clipping
 
@@ -392,7 +463,24 @@ The AND test works because a shared set bit means both endpoints are on the oute
 > [!warning] AND = 0 is not a promise of visibility
 > $C_0\;\text{AND}\;C_1=0000$ only says the shortcut *cannot reject yet*. The two endpoints may still be outside on *different* sides, so the segment can miss the window entirely. A later pass can reject it. Never report "visible" from the AND test — only "not yet rejected".
 
+#### Worked 2D examples — the three outcomes
+
+Use a window $0\le x\le4$, $0\le y\le3$ (bit order Top Bottom Right Left). Four segments show every path through the algorithm:
+
+| Segment | $C_0$ | $C_1$ | OR | AND | Outcome |
+| --- | --- | --- | --- | --- | --- |
+| $(1,1)\to(3,2)$ | `0000` | `0000` | `0000` | `0000` | **trivial accept** — both inside |
+| $(-2,1)\to(-1,2)$ | `0001` | `0001` | `0001` | `0001` | **trivial reject** — both left of the window |
+| $(-1,1)\to(5,2)$ | `0001` | `0010` | `0011` | `0000` | **clip**, then accept (below) |
+| $(-2,2)\to(1,6)$ | `0001` | `1000` | `1001` | `0000` | **clip**, then reject (below) |
+
+**Clip then accept** — $P(t)=(-1+6t,\ 1+t)$. Take $P_0$ (Left): $x=0\Rightarrow t=\tfrac16$, $y=\tfrac76$; new code `0000`. Now $P_1$ (Right): $x=4\Rightarrow t=\tfrac56$, $y=\tfrac{11}{6}$; new code `0000`. OR $=0$ ⇒ accept the segment $(0,\tfrac76)\to(4,\tfrac{11}6)$.
+
+**Clip then reject** — this is the example that shows why AND $=0$ is *not* a promise of visibility. $P(t)=(-2+3t,\ 2+4t)$. The first AND is `0000`, so no trivial reject. Clip $P_0$ at Left: $x=0\Rightarrow t=\tfrac23$, $y=\tfrac{14}{3}\approx4.67$. The new point $(0,4.67)$ is above the window: code `1000`. Retest: $C_1=$ `1000`, so AND $=$ `1000`$\neq0$ ⇒ **reject**. The line enters the half-plane $x\ge0$ already above the window, and it never comes back down.
+
 ### 3.4 Clipping one boundary at a time
+
+*In plain words.* Think of the window as four fences. If a segment isn't obviously inside or obviously outside, pick an endpoint that is on the wrong side of some fence, slide that endpoint along the line until it touches the fence, and look again. Each slide cuts away a piece that is certainly invisible (it lies beyond a fence that the visible part cannot cross). After at most one slide per fence, the segment is either inside or has been thrown away.
 
 When neither shortcut applies, one outside endpoint is moved onto a boundary. The key insight is that you don't try to solve all four boundaries at once — you pick one, trim the segment to it, and retest. This is why it is called an *iterative* algorithm.
 
@@ -706,6 +794,20 @@ const $ = (id) => container.querySelector("#" + id);
 
 *Deck: [[Post 4 - Polygon and 3D Fill-Area Clipping.pdf|Post 4 deck]] — 89 slides. Fill-area clipping, Sutherland–Hodgman with its four cases and full numeric trace, Weiler–Atherton boundary traversal, 3D point/face clipping, and the visibility problem that the next two topics solve.*
 
+> [!abstract] Roadmap of this topic — clipping an *area*, then clipping in 3D
+> **Why it's a new problem.** Topic 3 clipped *lines*. A filled polygon is an *area*; the result of clipping it must itself be a filled polygon with a closed boundary, even though the window edge now forms part of that boundary.
+> **The topic has four parts:**
+> 1. **§4.1–4.9 — Sutherland–Hodgman:** clip against the four window edges one after another, feeding each pass's output into the next. Simple and fast, but wrong for concave polygons that split into pieces.
+> 2. **§4.10–4.11 — Weiler–Atherton:** walk along the polygon and the window boundaries, switching at crossings; correct for concave polygons.
+> 3. **§4.12–4.14 — 3D clipping:** the same half-space idea against the six faces of the canonical cube, with a bounding-box quick test first.
+> 4. **§4.15–4.16 — visibility:** clipping is *done*; what remains inside the volume may still be hidden by nearer surfaces. That is the bridge to topics 5 and 6.
+>
+> | Ask yourself | Answer |
+> | --- | --- |
+> | Is the subject convex? | Sutherland–Hodgman is enough |
+> | Could the clip leave several separate pieces? | use Weiler–Atherton |
+> | Is it 3D? | repeat the half-plane test for six planes, bounding box first |
+
 ### 4.1 Polygons as ordered, closed vertex lists
 
 Before clipping can begin, it is important to understand what a polygon actually is from the clipper's perspective. A polygon enters the clipper as an **ordered list**, not a set:
@@ -929,6 +1031,14 @@ Ordered down the window's left edge (anticlockwise ⇒ downward): $2'$ exit, $1'
 
 Together the two contours are exactly subject ∩ window. Sutherland–Hodgman on the same input gives $[2,2',3',4,5,6',1',1]$, whose edges $2'\to3'$ and $6'\to1'$ lie on the window boundary — the doubled connector again.
 
+#### Reading Weiler–Atherton step by step
+
+*Entry and exit, defined.* Walk along the subject polygon. When the walk goes from outside the window to inside, that crossing is an **entry**; from inside to outside, an **exit**. Because a closed curve has to come back, entries and exits alternate along the subject, and (for proper crossings) they also alternate when you list the crossings in order around the window boundary — the fact that makes the algorithm work. The recipe is "walk the subject while inside; at an exit, turn onto the window edge (staying in the same orientation) until you reach the next entry; there, turn back onto the subject; stop when you are back where you started." Each such loop is one output polygon. Any entry not yet used starts another loop, which is how a single concave subject can yield several separate polygons.
+
+*Why the window corners are included.* If, while walking along the window from an exit to the next entry, you pass a window corner, that corner is a vertex of the clipped area and must be output too (it is where the clipped region turns along the window outline). In the worked example the window's left edge is a straight side, so no corner is passed.
+
+*Worked-example prediction.* The notch at vertex 6 pushes the polygon outside the window between $5$ and $1$, so the visible region splits into exactly **two** lobes. The four crossings confirm it: two exits, two entries → two loops. Sutherland–Hodgman on the same polygon yields a single list whose edges $2'\to3'$ and $6'\to1'$ lie along the window and fake a connection between the two lobes.
+
 ### 4.11 Comparison
 
 | Aspect | Sutherland–Hodgman | Weiler–Atherton |
@@ -1139,6 +1249,14 @@ const $ = (id) => container.querySelector("#" + id);
 
 *Deck: [[Post 5 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 5 deck]] — 106 slides. The two first-line defences: throw away faces that point away from the eye, then resolve the rest pixel by pixel with a depth buffer.*
 
+> [!abstract] Roadmap of this topic — two defences, in order of cost
+> **The problem (carried over from topic 4):** clipping leaves everything inside the view volume, but some of it is hidden behind nearer surfaces. Which parts are really seen?
+> 1. **§5.1–5.3 — back-face elimination (cheap, per face):** discard faces that point away from the eye. One cross product and one dot product each. Removes about half the faces of a closed solid, but cannot handle one object hiding another.
+> 2. **§5.4–5.8 — the depth (z) buffer (general, per pixel):** for every pixel keep the nearest depth seen so far. Handles any scene in any order, at the cost of two extra full-screen buffers.
+> 3. **§5.7a — the deck's two-surface worked example and its limits** (transparency, the A-buffer).
+>
+> **Typical use:** cull back faces first (a cheap 50 % saving), then z-buffer what is left.
+
 ### 5.1 Back-face elimination
 
 **The big picture.** After clipping, we know which geometry lies inside the view volume, but not which of it is actually *visible*. A solid cube viewed from the front is a good example: the clipping stage happily passes all six faces, yet the eye sees at most three of them, because the rest are on the far side of the cube and are hidden by the cube's own body. Hidden-surface removal (HSR) is the family of methods that decides, for every part of the scene, "is anything nearer to the eye in front of this?". This section opens with the cheapest HSR trick there is — it needs no comparison between objects at all.
@@ -1217,6 +1335,19 @@ Two independent checks the deck performs:
 
 - $\mathbf{N}\cdot(\text{opposite vertex} - \text{face vertex}) = -44 < 0$ for **every** face — the normals are outward, consistently.
 - $\mathbf{N}_{ABC}+\mathbf{N}_{ADB}+\mathbf{N}_{DCB}+\mathbf{N}_{ACD}=(0,0,0)$ — the normals of a closed surface sum to zero.
+
+#### A two-surface warm-up (the deck's opening example)
+
+Before the tetrahedron, the deck uses two parallel triangles to show the test in its simplest form, with viewing vector $\mathbf v=(0,0,-1)$:
+
+| Surface | Vertices | Edge vectors | $\mathbf N=\mathbf e_1\times\mathbf e_2$ | $\mathbf N\cdot\mathbf v$ | Result |
+| --- | --- | --- | --- | --- | --- |
+| Surface 1 | $A(1,1,1),\,B(2,1,1),\,C(1,2,1)$ | $AB=(1,0,0)$, $AC=(0,1,0)$ | $(0,0,1)$ | $-1<0$ | **front-facing — retain** |
+| Surface 2 | $D(1,1,-1),\,E(1,2,-1),\,F(2,1,-1)$ | $DE=(0,1,0)$, $DF=(1,0,0)$ | $(0,0,-1)$ | $+1>0$ | **back-facing — eliminate** |
+
+The two triangles lie in horizontal planes with the *same* shape; the only difference is the vertex order (counter-clockwise versus clockwise as seen from $+z$), and that single difference flips the sign of the normal. This is the cleanest demonstration that **the vertex order encodes which side is "outside"**.
+
+*Reading the sign.* With $\mathbf v=(0,0,-1)$, $\mathbf N\cdot\mathbf v=-N_z$: a face is kept exactly when $N_z>0$, i.e. when its normal has a component pointing back towards the viewer. The deck also notes that on screen a retained face is wound counter-clockwise and an eliminated one clockwise — useful as a visual check.
 
 ### 5.3 Why back-face elimination is not enough
 
@@ -1336,6 +1467,45 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 > - **Divide by zero.** $C=0$ means a surface parallel to the view plane's depth axis — the plane equation must be solved for $z$ from a different coefficient, or the surface rejected.
 > - **Depth precision.** $z$ is interpolated after the perspective divide, so its spacing in screen space is non-linear; a small far plane range and a deep scene still collide in the buffer (z-fighting).
 
+### 5.7a The deck's worked example: two surfaces, one pixel
+
+The deck follows two planar surfaces through the algorithm and tracks a single pixel of interest, $(3,1)$, where they overlap. It is the best single exercise for the incremental depth rule, so it is reproduced in full.
+
+**Surface $s_1$.** Its plane is $x+y+z=6$. (The deck derives it from a normal $(36,36,36)$ and the point $(0,0,6)$: $36(x-0)+36(y-0)+36(z-6)=0\Rightarrow x+y+z=6$.) So $a=b=c=1$, giving $z=6-x-y$.
+
+1. *Topmost scan line.* The only point on the top line is the pixel $(0,6)$: $z=\dfrac{-D-Ax-By}{C}=\dfrac{6-0-6}{1}=0$ (with $A=B=C=1$ and $D=-6$; the deck's slide shows the same substitution).
+2. *Next scan line.* Moving down to $y=5$, the leftmost pixel is $(0,5)$. With the edge vertical in $x$ ($m=\infty$, so $a/m=0$): $z'=z+\dfrac{b}{c}=0+1=1$. Direct check: $0+5+z=6\Rightarrow z=1$ ✓.
+3. *The deck skips ahead to $y=1$* (the scan line of interest). At the leftmost pixel $(0,1)$: $0+1+z=6\Rightarrow z=5$.
+4. *Across the line.* Each step right decreases $z$ by $a/c=1$:
+
+| Pixel | $(0,1)$ | $(1,1)$ | $(2,1)$ | $(3,1)$ |
+| --- | --- | --- | --- | --- |
+| $z$ from $s_1$ | 5 | 4 | 3 | **2** |
+
+5. Because $DB[3][1]=\infty$ initially, $2<\infty$, so the algorithm sets **$DB[3][1]=2$** and $FB[3][1]=cl_1$ (the colour of $s_1$).
+
+**Surface $s_2$.** The deck takes three vertices, $(2,0,6)$, $(6,0,6)$ and $(4,4,0)$, and derives its plane in the three steps of §5.5:
+
+- Two vectors in the plane: $\mathbf v_1=(6-2,\,0-0,\,6-6)=(4,0,0)$ and $\mathbf v_2=(4-2,\,4-0,\,0-6)=(2,4,-6)$.
+- Normal: $\mathbf v_1\times\mathbf v_2=(0\cdot(-6)-0\cdot4,\;0\cdot2-4\cdot(-6),\;4\cdot4-0\cdot2)=(0,24,16)$.
+- Plane through $(2,0,6)$: $0(x-2)+24(y-0)+16(z-6)=0\Rightarrow 24y+16z-96=0\Rightarrow$ **$3y+2z=12$**.
+
+Here $a=0$, so depth does not change along a scan line; it depends on $y$ only: $z=\dfrac{12-3y}{2}$.
+
+1. *Topmost scan line:* the apex $(4,4)$ has $z=\dfrac{12-12}{2}=0$.
+2. *Move down to $y=1$:* $3(1)+2z=12\Rightarrow 2z=9\Rightarrow z=4.5$. The leftmost point is $(2.5,1)$ with $z=4.5$, and since $a=0$ every pixel on the line, including $(3,1)$, has $z=4.5$.
+
+**Comparison at $(3,1)$.** $z_{s_2}=4.5$ but $DB[3][1]=2$. Because depth grows with distance and $4.5>2$, **$s_2$ is behind $s_1$**: the depth buffer is *not* updated. The final values are $DB[3][1]=2$ and $FB[3][1]=cl_1$, so the pixel shows the colour of $s_1$. Processing the surfaces in the opposite order gives the same result — $s_2$ would be written first, then overwritten by $s_1$ because $2<4.5$.
+
+> [!note] What this example teaches
+> - The incremental rule really is "subtract $a/c$ per pixel, add $b/c$ per line"; the deck's direct check $x+y+z=6$ agrees every time.
+> - A surface whose plane has $a=0$ ($s_2$) has constant depth along each scan line; one with $b=0$ would be constant down each column.
+> - The pixel colour depends only on the *nearest* surface at that pixel; the fact that $s_2$ is behind $s_1$ is discovered by a single comparison, with no knowledge of the other surface's geometry.
+
+### 5.7b Transparency, and the A-buffer
+
+The z-buffer stores **one** depth and **one** colour per pixel. This is correct for opaque surfaces, where from any viewing position only one surface is visible at each pixel. It breaks for transparent surfaces: the pixel's colour should be a *combination* of the nearest surface's colour and the contribution of the surfaces behind it, but those surfaces have already been discarded because only one depth value is stored. The deck's note names the remedy: the **A-buffer method** was developed to overcome this limitation, by keeping a list of the surfaces that contribute to each pixel instead of a single value.
+
 ### 5.8 Interactive dry run
 
 > [!tip] How to use the widget
@@ -1442,6 +1612,16 @@ const $ = (id) => container.querySelector("#" + id);
 ## 6. Hidden Surface Removal II — Painter's Algorithm and BSP Trees
 
 *Deck: [[Post 6 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 6 deck]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
+
+> [!abstract] Roadmap of this topic — ordering whole polygons
+> **The problem:** the z-buffer (§5) solves visibility pixel by pixel. Here we solve it *polygon by polygon* by finding a drawing order in which "last drawn wins" gives the right picture.
+> 1. **§6.1–6.3 — painter's algorithm:** sort back to front, certify each neighbouring pair with four tests, and see exactly where it breaks (cyclic overlap, intersecting polygons).
+> 2. **§6.4 — the plane function $f(\mathbf r)$:** the one tool that tells which side of a plane a point is on.
+> 3. **§6.5–6.6 — build a BSP tree:** pick a polygon, split space by its plane, recurse; split any polygon that straddles a plane.
+> 4. **§6.7–6.8 — render with the BSP tree:** the eye's side of each plane gives the order; follow the full 12-step trace.
+> 5. **§6.9 — comparison** with the sort-based painter's algorithm, and a three-way comparison with the methods of §5.
+>
+> **One-sentence summary:** *the painter's algorithm re-sorts every frame and can fail; the BSP tree pre-sorts once for all viewpoints and cannot fail, but may chop polygons into pieces.*
 
 ### 6.1 Painting back to front
 
@@ -1691,6 +1871,16 @@ $$ \text{draw order} = 2,\ 3,\ 4,\ 1,\ 8,\ 9b,\ 5,\ 6,\ 7,\ 9a,\ 10,\ 11 $$
 
 *Figure — the deck's annotated traversal: the tree with each node's eye side marked and the polygons numbered in the order they are painted, ending at $2,3,4,1,8,9b,5,6,7,9a,10,11$.*
 
+**The same trace as nested calls.** The deck's last slide writes the recursion as three expansions, which is the compact way to remember the whole order:
+
+$$ \text{Render}(1)=\text{Render}(2),\ 1,\ \text{Render}(5)\qquad(\text{eye OUT at }1:\ \text{IN}\to1\to\text{OUT}) $$
+$$ \text{Render}(5)=\text{Render}(8),\ 5,\ \text{Render}(6)\qquad(\text{eye IN at }5:\ \text{OUT}\to5\to\text{IN}) $$
+$$ \text{Render}(2)=2,3,4\qquad \text{Render}(8)=8,\,9b\qquad \text{Render}(6)=6,7,9a,10,11 $$
+
+Substituting the last line into the first two gives $2,3,4,\ 1,\ 8,9b,\ 5,\ 6,7,9a,10,11$ — the draw order above.
+
+**Why the order depends on the eye (the two-case picture).** At node 1 the same tree gives two different orders for two eyes: eye on the positive (OUT) side draws IN → 1 → OUT; eye on the negative (IN) side draws OUT → 1 → IN. "IN" and "OUT" stand for *whole subtrees*, and the same rule is applied recursively inside each. The structure of the tree never changes; only the eye's answers do.
+
 Two observations that make the order memorable:
 
 - **1 is drawn fourth, not first.** Entering the root does not mean drawing it — the whole IN subtree must be finished first, and that subtree is where the near polygons 2, 3, 4 live.
@@ -1708,6 +1898,18 @@ Two observations that make the order memorable:
 | Geometry cost | none | splits add polygons; build is $O(n\log n)$ to $O(n^2)$ |
 | Static scenes | fine | ideal (walls, rooms, terrain) |
 | Degenerate/coincident planes | fragile | fragile — choose splitting planes carefully |
+
+**Three hidden-surface methods side by side** (topics 5 and 6):
+
+| | Back-face elimination | Z-buffer | Painter's / BSP |
+| --- | --- | --- | --- |
+| Works on | each face vs the eye | each pixel | whole polygons |
+| Space | object | image | object |
+| Memory | none | depth + frame buffer | none (BSP: tree) |
+| Handles inter-object hiding? | no | yes | yes |
+| Handles cyclic overlap? | n/a | yes | painter's: no; BSP: yes (by splitting) |
+| Transparency | n/a | no | possible, back-to-front blending |
+| Typical role | cheap pre-filter | general-purpose, hardware | static scenes (BSP), simple scenes (painter's) |
 
 > [!note] Where the depth ordering went
 > Notice that no z-buffer is involved and no pixel is ever compared. The BSP tree *precomputes* the visibility order for **all** viewpoints at once, because the order only depends on which side of each plane the eye happens to be — a finite amount of information. That is why a BSP renderer is cheap per frame and why the structure must be rebuilt whenever the geometry moves.
@@ -1863,6 +2065,16 @@ const $ = (id) => container.querySelector("#" + id);
 
 *Deck: [[Post 7 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 7 deck]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
 
+> [!abstract] Roadmap of this topic — from the pipeline to filled pixels and letters
+> 1. **§7.1–7.1a — the pipeline, stage by stage:** a map of where we are, with the deck's reasoning for each stage.
+> 2. **§7.2–7.3 — colour:** lighting (computed at points) versus shading (interpolated across surfaces), and the three shading models.
+> 3. **§7.4 — why rasterisation produces jaggies** (the bridge to topic 8).
+> 4. **§7.5–7.9 — filling a polygon by geometry:** decide what "inside" means (even–odd, nonzero winding), then fill row by row with the edge table and active edge table.
+> 5. **§7.10–7.13 — filling a region by pixels:** seed, boundary and flood fill; 4- versus 8-connectivity; stack traces.
+> 6. **§7.14–7.15 — characters:** stored as bitmaps or as outlines.
+>
+> **Two families of fill algorithms** — remember this split: *scan-line* works from the polygon's **vertices** (geometry known); *seed/flood fill* works from a **starting pixel** (only the pixels are known).
+
 ### 7.1 The six stages
 
 **Where this section fits.** The earlier sections dealt with *geometry*: where things are, what the camera sees, and which surfaces are visible. This section deals with *pixels*: once we know which polygons are visible, how do we actually colour the screen cells inside them? It opens by restating the whole pipeline (as a map of where we are), then covers colouring a surface (lighting and shading), deciding which pixels are inside a polygon, the main fill algorithms, and finally how letters are stored and drawn.
@@ -1885,6 +2097,29 @@ Two stage-level facts the deck states outright:
 
 - **Stage 4 is the largest.** It contains **three transformations** — world → camera, camera → view plane (projection), window → viewport — and **two operations** — clipping and hidden-surface removal.
 - **Stage 5 is where quality is lost.** Device coordinates are continuous, the display is a grid, and the conversion introduces *alias* — visible as jagged edges. Anti-aliasing is applied here, which is exactly the subject of §8.
+
+### 7.1a Each stage in the deck's own reasoning
+
+The deck gives each stage a slide with a one-line takeaway. Reading them in order tells the whole story:
+
+**Stage 1 — Represent.** Defines *what objects exist*: polygon meshes, implicit surfaces, particle systems and so on. This description is passed through every later stage. Efficient representation is essential for interactive manipulation and is independent of where the object will sit — that is decided next. *Takeaway: representation says what an object is; modelling decides where it sits.*
+
+**Stage 2 — Model.** Each object is defined independently in its own **local (object) coordinate system**. Modelling (also called geometric transformation) places every object in **one shared world coordinate system**, assembling a single scene. It is the first major coordinate change: local → world. *Takeaway: every object now shares one frame of reference.*
+
+**Stage 3 — Illuminate.** Once the scene exists in world coordinates, the surfaces still need colours. Colour assignment simulates how light physically interacts with objects and materials. Colour is a psychological phenomenon linked to the laws of optics, and this stage implements methods that mimic those laws. (The detailed lighting models — reflection and Phong illumination — are a separate lecture.)
+
+**Stage 4 — View.** Decides *what part of the scene the camera sees*, much like taking a snapshot. It begins the transition from a 3D scene to a 2D image, and must not be confused with lighting and shading, which decide *appearance*, not *visibility*. Taking the snapshot involves a small pipeline of its own:
+
+$$ \text{camera setup}\;\to\;\text{view volume, clipping and hidden-surface removal}\;\to\;\text{projection}\;\to\;\text{window-to-viewport} $$
+
+- *View volume and clipping.* A camera coordinate system is set up and the scene transformed into it. A **view volume** then defines the region of space considered for projection — a **parallelepiped** for parallel projection, a **frustum** for perspective. Objects inside are candidates for projection; those outside are discarded. That removal is **clipping**, and it improves efficiency by cutting redundant work in every later stage.
+- *Hidden-surface removal.* Even inside the volume, from the viewer's position some objects are fully visible, some partially, some entirely hidden. HSR (visible-surface detection) removes the surfaces that should not be seen — a surface of object A blocked by object B, or the back faces of A. It is essential for realistic renderings. *Together, clipping and HSR decide exactly what the camera should see.*
+- *Window-to-viewport.* The **window** is the (normalised) clipping region onto which world-coordinate objects are projected; the **viewport** is the rectangle on the screen where the window's content is actually drawn. Transferring the 2D projected scene from one to the other is the window-to-viewport transformation (topic 2).
+- *Count for the exam:* stage 4 = **3 transformations** (world→camera, camera→view plane = projection, window→viewport) + **2 operations** (clipping, hidden-surface removal).
+
+**Stage 5 — Rasterize.** Device coordinates are a *continuous* space but the display is a *discrete* grid of pixels. Scan conversion (rasterisation) transfers the viewport from continuous device coordinates to discrete screen coordinates. That continuous-to-discrete step introduces distortion — **aliasing**, seen as jagged edges — and anti-aliasing is applied here to reduce it. *Takeaway: rasterisation completes the journey; object data has become a 2D array of displayable pixels.* Everything in the rest of this topic (filling, characters) happens at this stage.
+
+**Stage 6 — Display.** The finished frame buffer is sent to the output device.
 
 ### 7.2 Lighting versus shading
 
