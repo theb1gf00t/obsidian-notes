@@ -45,31 +45,31 @@ WHERE file.path = this.file.path
 
 ## Pre-Midsem — 8 topics
 
-- [ ] **1 · Introduction to Computer Graphics** — [[Lect-1_30_July.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **2 · Digital Information and Digital Images** — [[Lect-2_CG-3_Aug.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **3 · Line Drawing Algorithms** — [[Lect-3_CG-6_Aug.pdf|PDF]], [[CG-10_Aug.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **4 · Object Representation** — [[CG-lect-13Aug_to_20_Aug.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **5 · B-Splines** — [[CG-24_August.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **6 · 2D Modelling and Composite Transformations** — [[CG_31_Aug.pdf|PDF]], [[CG_3_Sep.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **7 · Reflection Models and Phong Illumination** — [[CG_7_Sep.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
-- [ ] **8 · Practice Problems** — [[CG_10_Sep.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **1 · Introduction to Computer Graphics** — [[Pre 1 - Introduction to Computer Graphics.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **2 · Digital Information and Digital Images** — [[Pre 2 - Digital Information and Digital Images.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **3 · Line Drawing Algorithms** — [[Pre 3 - Line Drawing Algorithms (6 Aug).pdf|PDF (6 Aug)]], [[Pre 3 - Line Drawing Algorithms (10 Aug).pdf|PDF (10 Aug)]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **4 · Object Representation** — [[Pre 4 - Object Representation.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **5 · B-Splines** — [[Pre 5 - B-Splines.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **6 · 2D Modelling and Composite Transformations** — [[Pre 6 - 2D Modelling and Composite Transformations (31 Aug).pdf|PDF (31 Aug)]], [[Pre 6 - 2D Modelling and Composite Transformations (3 Sep).pdf|PDF (3 Sep)]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **7 · Reflection Models and Phong Illumination** — [[Pre 7 - Reflection Models and Phong Illumination.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
+- [ ] **8 · Practice Problems** — [[Pre 8 - Practice Problems.pdf|PDF]] · [[CG_Midsem_notes|Notes]] (not yet written)
 
 > [!note] Between the blocks
-> - [[CG_17_Sep.pdf|CG_17_Sep]] — **intensity quantization**: how a continuous intensity is mapped onto the finite grey levels of a display. Dates between the two blocks, so it belongs to neither list; it is the bridge from the pre-midsem image model to the post-midsem raster stage. Not yet written.
-> - [[CG_28_Sep.pdf|CG_28_Sep]] — a 76-page deck that **repeats the viewing fundamentals** of [[CG_29_Sep.pdf|CG_29_Sep]] (topic 1 below). Treat it as an alternate copy of topic 1, not as a ninth topic.
+> - [[Between - Intensity Quantization (17 Sep).pdf|Intensity Quantization (17 Sep)]] — **intensity quantization**: how a continuous intensity is mapped onto the finite grey levels of a display. Dates between the two blocks, so it belongs to neither list; it is the bridge from the pre-midsem image model to the post-midsem raster stage. Not yet written.
+> - [[Post 1 - 3D Viewing, Camera and Projection Fundamentals (28 Sep alt).pdf|28 Sep duplicate]] — a 76-page deck that **repeats the viewing fundamentals** of [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1]] (topic 1 below). Treat it as an alternate copy of topic 1, not as a ninth topic. Its content (camera analogy, VC set-up, the numeric worked example, why projection) is written up in [[CG_Endsem_Notes#1.7 The 28 September lecture: viewing as taking a photograph|§1.7–§1.9]].
 
 ---
 
 ## Post-Midsem — 8 topics
 
-- [x] **1 · 3D Viewing, Camera and Projection Fundamentals** — [[CG_29_Sep.pdf|PDF]] · [[CG_Endsem_Notes#1. 3D Viewing, Camera and Projection Fundamentals|Notes → §1]] (7 sections)
-- [x] **2 · Viewport Mapping and Cohen–Sutherland Clipping** — [[CG_Oct_1.pdf|PDF]] · [[CG_Endsem_Notes#2. Viewport Mapping and Cohen–Sutherland Clipping|Notes → §2]] (11 sections) · widget `#w-cs`
-- [x] **3 · Polygon and 3D Fill-Area Clipping** — [[CG_Oct_5.pdf|PDF]] · [[CG_Endsem_Notes#3. Polygon and 3D Fill-Area Clipping|Notes → §3]] (17 sections) · widget `#w-sh`
-- [x] **4 · Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer** — [[CG_Oct_8.pdf|PDF]] · [[CG_Endsem_Notes#4. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer|Notes → §4]] (9 sections) · widget `#w-zb`
-- [x] **5 · Hidden Surface Removal II — Painter's Algorithm and BSP Trees** — [[CG_26_Oct.pdf|PDF]] · [[CG_Endsem_Notes#5. Hidden Surface Removal II — Painter's Algorithm and BSP Trees|Notes → §5]] (11 sections) · widget `#w-bsp`
-- [x] **6 · Fill-Area Algorithms, Scan Conversion and the 3D Pipeline** — [[CG-29th_Oct.pdf|PDF]] · [[CG_Endsem_Notes#6. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline|Notes → §6]] (16 sections) · widgets `#w-sl`, `#w-ff`
-- [x] **7 · Anti-Aliasing I — The Gupta–Sproull Algorithm** — [[CG_Nov-2.pdf|PDF]] · [[CG_Endsem_Notes#7. Anti-Aliasing I — The Gupta–Sproull Algorithm|Notes → §7]] (13 sections) · widget `#w-gs`
-- [x] **8 · Animation — The 2D Production Process** — [[CG_Nov_Animation.pdf|PDF]] · [[CG_Endsem_Notes#8. Animation — The 2D Production Process|Notes → §8]] (13 sections) · widget `#w-tween`
+- [x] **1 · 3D Viewing, Camera and Projection Fundamentals** — [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|PDF]] · [[CG_Endsem_Notes#1. 3D Viewing, Camera and Projection Fundamentals|Notes → §1]] (10 sections, incl. the 28 Sep lecture in §1.7–§1.9)
+- [x] **2 · Viewport Mapping and Cohen–Sutherland Clipping** — [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|PDF]] · [[CG_Endsem_Notes#2. Viewport Mapping and Cohen–Sutherland Clipping|Notes → §2]] (11 sections) · widget `#w-cs`
+- [x] **3 · Polygon and 3D Fill-Area Clipping** — [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|PDF]] · [[CG_Endsem_Notes#3. Polygon and 3D Fill-Area Clipping|Notes → §3]] (17 sections) · widget `#w-sh`
+- [x] **4 · Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer** — [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|PDF]] · [[CG_Endsem_Notes#4. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer|Notes → §4]] (9 sections) · widget `#w-zb`
+- [x] **5 · Hidden Surface Removal II — Painter's Algorithm and BSP Trees** — [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|PDF]] · [[CG_Endsem_Notes#5. Hidden Surface Removal II — Painter's Algorithm and BSP Trees|Notes → §5]] (11 sections) · widget `#w-bsp`
+- [x] **6 · Fill-Area Algorithms, Scan Conversion and the 3D Pipeline** — [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|PDF]] · [[CG_Endsem_Notes#6. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline|Notes → §6]] (16 sections) · widgets `#w-sl`, `#w-ff`
+- [x] **7 · Anti-Aliasing I — The Gupta–Sproull Algorithm** — [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|PDF]] · [[CG_Endsem_Notes#7. Anti-Aliasing I — The Gupta–Sproull Algorithm|Notes → §7]] (13 sections) · widget `#w-gs`
+- [x] **8 · Animation — The 2D Production Process** — [[Post 8 - Animation - The 2D Production Process.pdf|PDF]] · [[CG_Endsem_Notes#8. Animation — The 2D Production Process|Notes → §8]] (13 sections) · widget `#w-tween`
 
 > [!tip] Exam pointer
 > The marks in this block sit on the **traces, not the definitions**: project a point through the camera frame and the canonical cube (§1.2–§1.5), an outcode-by-outcode line clip (§2.4, §2.8), the four-case Sutherland–Hodgman walk (§3.4–§3.8), the tetrahedron normal test (§4.2) and the incremental z recursion (§4.6), the full BSP draw order with the split of polygon 9 (§5.6–§5.8), a row-by-row scan-line trace (§6.7) and a seed-fill stack trace (§6.11), the Gupta–Sproull decision variable together with its eight coverage values (§7.6, §7.10), and the in-between arithmetic $h(t)=4Ht(1-t)$ (§8.11).
@@ -90,7 +90,10 @@ Every written section of [[CG_Endsem_Notes]], grouped by topic, so a topic can b
 | 1.4 | [[CG_Endsem_Notes#1.4 Why normalise the volume to a canonical cube\|Why normalise the volume to a canonical cube]] |
 | 1.5 | [[CG_Endsem_Notes#1.5 The projection matrices\|The projection matrices]] |
 | 1.6 | [[CG_Endsem_Notes#1.6 Viewport mapping\|Viewport mapping]] |
-| 1.7 | [[CG_Endsem_Notes#1.7 Exam pointer\|Exam pointer]] |
+| 1.7 | [[CG_Endsem_Notes#1.7 The 28 September lecture: viewing as taking a photograph\|The 28 September lecture]] |
+| 1.8 | [[CG_Endsem_Notes#1.8 Worked example from the 28 September lecture\|Worked example (28 Sep)]] |
+| 1.9 | [[CG_Endsem_Notes#1.9 Why projection is needed\|Why projection is needed]] |
+| 1.10 | [[CG_Endsem_Notes#1.10 Exam pointer\|Exam pointer]] |
 
 ### §2 · Viewport Mapping and Cohen–Sutherland Clipping
 
@@ -271,10 +274,10 @@ Page renders lifted from the decks (every one is embedded with a width and an it
 
 > [!warning] What is still missing
 > - **The whole pre-midsem block (topics 1–8)** has no written note yet — [[CG_Midsem_notes]] is empty. The checkboxes above are the work list.
-> - [[CG_17_Sep.pdf|CG_17_Sep]] (intensity quantization) is unwritten and sits between the two blocks, so it appears in neither list.
-> - [[CG-29th_Oct.pdf|CG-29th_Oct]] pages 35–57 and 64–74 export as **mojibake** (embedded fonts with no glyphs). Those sections of §6 were reconstructed from the readable neighbouring pages and from the standard formulation of each algorithm; no number in them is invented, but the deck's own wording for those pages is lost.
-> - [[CG_26_Oct.pdf|CG_26_Oct]] is 80 slides but only about 20 of them are unique — the rest are annotation repeats of the same BSP example. Read the unique pages, not the count.
-> - [[CG_Nov_Animation.pdf|CG_Nov_Animation]] is handwritten and extracts almost no text (≈186 bytes over 55 pages). §8 answers the one question the deck poses, but nothing else in the deck could be recovered.
+> - [[Between - Intensity Quantization (17 Sep).pdf|Intensity Quantization (17 Sep)]] (intensity quantization) is unwritten and sits between the two blocks, so it appears in neither list.
+> - [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6]] pages 35–57 and 64–74 export as **mojibake** (embedded fonts with no glyphs). Those sections of §6 were reconstructed from the readable neighbouring pages and from the standard formulation of each algorithm; no number in them is invented, but the deck's own wording for those pages is lost.
+> - [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5]] is 80 slides but only about 20 of them are unique — the rest are annotation repeats of the same BSP example. Read the unique pages, not the count.
+> - [[Post 8 - Animation - The 2D Production Process.pdf|Post 8]] is handwritten and extracts almost no text (≈186 bytes over 55 pages). §8 answers the one question the deck poses, but nothing else in the deck could be recovered.
 
 > [!question] Self-check before you tick a topic
 > - Can you state the topic's **key formula** from memory and say what it assumes — a right-handed frame, the viewer on $-z$, ties counted as inside?

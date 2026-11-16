@@ -18,14 +18,14 @@ This block carries the course from a scene described in three dimensions to the 
 > [!info] How the block is organised
 > | Topic | Deck | Slides | Question it answers |
 > | --- | --- | --- | --- |
-> | 1 | [[CG_29_Sep.pdf]] | 78 | Where is the camera, what can it see, and how does 3D become a 2D coordinate? |
-> | 2 | [[CG_Oct_1.pdf]] | 97 | How is the 2D image placed on the screen, and how is a line trimmed to the window? |
-> | 3 | [[CG_Oct_5.pdf]] | 89 | How is a *filled* polygon clipped, and how is a 3D face clipped? |
-> | 4 | [[CG_Oct_8.pdf]] | 106 | Which faces point away, and which surface is nearest at each pixel? |
-> | 5 | [[CG_26_Oct.pdf]] | 80 | How do we order whole polygons, and what if no order exists? |
-> | 6 | [[CG-29th_Oct.pdf]] | 116 | How is the interior of a polygon filled, and how are characters drawn? |
-> | 7 | [[CG_Nov-2.pdf]] | 70 | How is a jagged line made smooth? |
-> | 8 | [[CG_Nov_Animation.pdf]] | 55 | How is motion produced from still drawings? |
+> | 1 | [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]] | 78 | Where is the camera, what can it see, and how does 3D become a 2D coordinate? |
+> | 2 | [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 2 deck]] | 97 | How is the 2D image placed on the screen, and how is a line trimmed to the window? |
+> | 3 | [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]] | 89 | How is a *filled* polygon clipped, and how is a 3D face clipped? |
+> | 4 | [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]] | 106 | Which faces point away, and which surface is nearest at each pixel? |
+> | 5 | [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]] | 80 | How do we order whole polygons, and what if no order exists? |
+> | 6 | [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]] | 116 | How is the interior of a polygon filled, and how are characters drawn? |
+> | 7 | [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]] | 70 | How is a jagged line made smooth? |
+> | 8 | [[Post 8 - Animation - The 2D Production Process.pdf|Post 8 deck]] | 55 | How is motion produced from still drawings? |
 
 > [!warning] The four conventions this block uses everywhere
 > - **Right-handed** coordinates; **the viewer looks along $-z$** in the camera frame, so visible points have $z<0$.
@@ -37,7 +37,7 @@ This block carries the course from a scene described in three dimensions to the 
 
 ## 1. 3D Viewing, Camera and Projection Fundamentals
 
-*Deck: [[CG_29_Sep.pdf]] — 78 slides. Compiles the pipeline overview, the world-to-view transform, the canonical view volume, the projection matrices and the viewport transform.*
+*Deck: [[Post 1 - 3D Viewing, Camera and Projection Fundamentals.pdf|Post 1 deck]] — 78 slides, plus the 28 September lecture [[Post 1 - 3D Viewing, Camera and Projection Fundamentals (28 Sep alt).pdf|alt deck]] — 76 pages (§1.7–§1.9). Compiles the pipeline overview, the world-to-view transform, the canonical view volume, the projection matrices and the viewport transform.*
 
 ### 1.1 The six stages in one picture
 
@@ -183,7 +183,138 @@ $$ M_{wv} = \begin{bmatrix} s_x & 0 & 0 & t_x\\ 0 & s_y & 0 & t_y\\ 0&0&1&0\\ 0&
 > [!warning] Aspect-ratio distortion
 > $s_x$ and $s_y$ are independent, so a square window mapped onto a non-square viewport becomes a rectangle. A circle becomes an ellipse. Guard against it by choosing the viewport aspect to equal the window aspect, or by scaling both axes with the same factor and letter-boxing the remainder.
 
-### 1.7 Exam pointer
+### 1.7 The 28 September lecture: viewing as taking a photograph
+
+The 28 September deck ([[Post 1 - 3D Viewing, Camera and Projection Fundamentals (28 Sep alt).pdf|Post 1 alt deck]], 76 pages) covers the same viewing ground as the main deck but from the beginning, using a camera analogy and a fully numeric example. It opens with the whole chain on one slide:
+
+![[CG - Object to Screen Space Pipeline.png|760]]
+*Object space → world space → camera space → canonical view volume → screen space (alt deck, p. 59). Transformations change the coordinate description; the scene geometry stays the same until projection.*
+
+| Space | Meaning | Obtained by |
+| --- | --- | --- |
+| **Object space** | the object's local coordinates | — |
+| **World space** | objects positioned in the shared scene | model transform |
+| **Camera / view space** | coordinates relative to the camera's position and orientation (camera at origin) | view (camera) transformation |
+| **Canonical view volume** | normalised cube $-1\le x,y,z\le 1$ after projection and clipping | projection transformation (perspective or orthographic) |
+| **Screen space** | final 2D pixel coordinates | viewport transformation |
+
+#### Why a viewing transformation exists
+
+The deck argues from photography. To take a photograph we point the camera in a direction with an orientation, set the focus, and click. We never look at the scene directly — we look **through the camera**, and focusing tells us the quality and coverage of the picture.
+
+- **First case — looking directly at the scene:** we see it in the **world coordinate system**.
+- **Second case — looking through the camera:** we see a *different scene*, one that is **changed** by the arrangement of lenses in the camera, to aid our estimation.
+- So taking a photograph means **transforming the 3D world-coordinate scene into a description in another coordinate system**, characterised by the camera parameters (position and orientation).
+- That new system is called the **view coordinate system (VC)**; the transformation is the **viewing transformation**.
+- To simulate it: first define the view coordinate system, then perform the transformation.
+
+#### Setting up the view coordinate system
+
+![[CG - View Coordinate Setup.png|520]]
+*The camera basis, the view-up vector and the view plane (alt deck, p. 27).*
+
+The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather than $x,y,z$ — the deck says it uses this notation from here on). The deck determines them in this order:
+
+1. **Origin.** The camera is represented as a point in the 3D world coordinate system; that point is the origin of VC, denoted $\mathbf{o}$.
+2. **$\hat{\mathbf{n}}$.** With a *look-at point* $\mathbf{p}$ (the centre of interest), simple vector algebra gives $\mathbf{n}=\mathbf{o}-\mathbf{p}$, normalised: $\hat{\mathbf{n}}=\mathbf{n}/\lVert\mathbf{n}\rVert$. So $\hat{\mathbf n}$ points **opposite to the looking direction**.
+3. **$\hat{\mathbf{v}}$.** Specify an arbitrary point $\mathbf{p}_{up}$ in the direction of the head while looking through the camera — the **view-up** direction. Then $\vec V_{up}=\mathbf{p}_{up}-\mathbf{o}$ and $\hat{\mathbf v}=\vec V_{up}/\lVert\vec V_{up}\rVert$.
+4. **$\hat{\mathbf{u}}$.** $\mathbf u$ is perpendicular to the plane spanned by $\mathbf n$ and $\mathbf v$, hence $\mathbf u=\mathbf v\times\mathbf n$. Since $\mathbf n$ and $\mathbf v$ are unit vectors, **no further normalisation is required**.
+
+> [!important] Summary of the VC construction (deck's summary slide)
+> Given the camera position $\bar o$ (origin of the coordinate system), the view-up point $\bar p_{up}$ and the centre of interest / look-at point $\bar p$:
+> 1. $\hat n$ — unit basis vector opposite to the looking direction: $\bar n=\bar o-\bar p$, $\hat n=\bar n/|\bar n|$.
+> 2. $\hat v$ — unit basis vector along the view-up direction: $\vec V_{up}=\bar p_{up}-\bar o$, $\hat v=\vec V_{up}/|\vec V_{up}|$.
+> 3. $\hat u$ — the third unit basis vector: $\hat u=\hat v\times\hat n$.
+
+> [!warning] Two conventions for the same frame
+> §1.2 writes $\mathbf u=\mathbf v_{up}\times\mathbf n$ and $\mathbf v=\mathbf n\times\mathbf u$, which *re-orthogonalises* $\mathbf v$ and so works for any up-vector. The 28 September deck takes $\hat{\mathbf v}$ directly from the view-up vector and then $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}$; this is exact only when the view-up vector is already perpendicular to $\mathbf n$, which is true in its example. Both give the same frame in that case — use the deck's form when solving its numericals.
+
+#### The transformation $M_{w2v}$
+
+Let $P$ be an arbitrary point in world coordinates. We need a matrix $M_{w2v}$ such that $P'=M_{w2v}\,P$ is the point in VC. Assume the VC origin (the camera position) is $(o_{vx},o_{vy},o_{vz})$ and the three basis vectors are $\mathbf u(u_x,u_y,u_z)$, $\mathbf v(v_x,v_y,v_z)$, $\mathbf n(n_x,n_y,n_z)$. To align VC with WC we need a **sequence of transformations**, achieved by two operations — **translation** and **rotation**.
+
+The deck builds the matrix in four named steps (translate, rotate, compose, transform), with the translation written out as
+
+$$ T=\begin{bmatrix}1&0&0&-o_{vx}\\0&1&0&-o_{vy}\\0&0&1&-o_{vz}\\0&0&0&1\end{bmatrix},\qquad
+R=\begin{bmatrix}u_x&u_y&u_z&0\\v_x&v_y&v_z&0\\n_x&n_y&n_z&0\\0&0&0&1\end{bmatrix},\qquad M_{w2v}=R\,T $$
+
+- **Step 1 — translation.** Subtract the camera position from each point; the camera maps to the origin; orientation does not change.
+- **Step 2 — rotation.** Rows are the camera basis vectors; each row gives one view coordinate. *Why this is correct:* each row computes one dot product with $\mathbf u$, $\mathbf v$ or $\mathbf n$, and orthonormal rows preserve lengths and angles.
+- **Step 3 — compose.** Translation acts first for column vectors, so $M_{w2v}=RT$, applied once to every point.
+- **Compact form.** Each translation term is the *negative projection of the camera position onto one camera axis* ($-\mathbf u\cdot\mathbf o$, $-\mathbf v\cdot\mathbf o$, $-\mathbf n\cdot\mathbf o$); rows 1–3 give the camera-axis coordinates, the last column accounts for the camera position, the last row preserves homogeneous form (this is the matrix of §1.2).
+- The camera is **not projected yet**; projection is a separate transformation applied after points are expressed in view coordinates.
+
+### 1.8 Worked example from the 28 September lecture
+
+![[CG - Camera Basis Example Scene.png|520]]
+*The scene (alt deck, p. 46): square object with $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$; camera at $(1,2,2)$ looking at the object centre $(2,2,2)$.*
+
+> *We are looking at the square object with vertices $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$. The camera is located at the point $(1,2,2)$. The look-at point is the centre of the object $(2,2,2)$. The up direction is parallel to the positive $z$ direction. What is the coordinate of the centre of the object, after its transformation to the viewing coordinate system?*
+
+**Step 1 — the three basis vectors.**
+
+- Camera position $\mathbf o=(1,2,2)$, look-at point $\mathbf p=(2,2,2)$.
+- $\mathbf n=\mathbf o-\mathbf p=(-1,0,0)$, already unit length, so $\hat{\mathbf n}=(-1,0,0)$.
+- The up direction is parallel to $+z$, so directly $\hat{\mathbf v}=(0,0,1)$ without any further calculation. (Another way of specifying the up vector, instead of a point in the up direction, is to give the direction itself.)
+- $\hat{\mathbf u}=\hat{\mathbf v}\times\hat{\mathbf n}=(0,0,1)\times(-1,0,0)=(0,-1,0)$.
+
+So the deck's basis is $\hat n(-1,0,0)$, $\hat u(0,-1,0)$, $\hat v(0,0,1)$ — this follows the same cross-product order as the main deck's worked example.
+
+**Step 2 — the matrices.** With the basis vectors as rows and the camera position negated:
+
+$$ R=\begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix},\qquad
+T=\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix} $$
+
+**Step 3 — compose** $M_{W2V}=RT$:
+
+$$ \begin{bmatrix}0&-1&0&0\\0&0&1&0\\-1&0&0&0\\0&0&0&1\end{bmatrix}
+\begin{bmatrix}1&0&0&-1\\0&1&0&-2\\0&0&1&-2\\0&0&0&1\end{bmatrix}
+=\begin{bmatrix}0&-1&0&2\\0&0&1&-2\\-1&0&0&1\\0&0&0&1\end{bmatrix} $$
+
+![[CG - Composite View Matrix Example.png|560]]
+*The composite view matrix as printed in the deck (alt deck, p. 56).*
+
+Check of the last column with the compact form: $-\mathbf u\cdot\mathbf o=-(0\cdot1-1\cdot2+0)=2$; $-\mathbf v\cdot\mathbf o=-(2)=-2$; $-\mathbf n\cdot\mathbf o=-(-1)=1$. ✓
+
+**Step 4 — transform the look-at point / object centre.** $P_{world}=[2,2,2,1]^{T}$:
+
+$$ P_{view}=M_{W2V}P_{world}=\begin{bmatrix}-2+2\\2-2\\-2+1\\1\end{bmatrix}=[0,\,0,\,-1,\,1]^{T} $$
+
+![[CG - Look-at Point Transform.png|560]]
+*The look-at point lands at $P(0,0,-1)$ (alt deck, p. 58).*
+
+> [!note] Reading the answer
+> The object centre is at $(0,0,-1)$: **one unit in front of the camera along $-\mathbf n$**. The camera is at the origin looking down the viewing axis, as required.
+
+> [!note] Camera space, after the camera transformation
+> **Input:** coordinates in world space. **Operation:** apply the view (camera) transformation so the camera is at the origin looking down its viewing axis. **Output:** coordinates in camera space (eye space). At this stage objects are still in 3D coordinates relative to the camera — they still have perspective depth, with no "squashing" yet.
+
+### 1.9 Why projection is needed
+
+The deck then re-enters the chain at the *projection* box, marking it "why projection needed" (alt deck, p. 59).
+
+- **The scene in the view coordinate system is 3D.** To get a 2D image we need a way to **transform** a 3D scene into a 2D one; the technique is **projection**.
+- In general, projection transforms objects from $n$ dimensions to $(n-1)$ dimensions; the discussion is restricted to 3D → 2D.
+- **Basic idea:** project a 3D object onto a 2D **view plane**. From each point of the surface we generate **straight lines towards the view plane**, known as **projectors**; the intersection points of the projectors with the view plane together give the projected image.
+- A usually rectangular area on the view plane that contains the projected objects is the **clipping window**.
+- A 3D **view volume** is also defined in the scene: objects inside it are projected onto the view plane; others are discarded through **clipping** (discussed later). The entire scene is *not* projected — only the portion enclosed by the view volume — which gives flexibility to synthesise images as we want.
+- We therefore must choose an **appropriate view volume**, which requires an understanding of the different projection types.
+
+| Projection | Projectors | Size vs depth | Typical use |
+| --- | --- | --- | --- |
+| **Parallel** | remain parallel | does not change with depth | measurement and CAD |
+| **Perspective** | meet at the camera | distant objects appear smaller | realistic depth cues |
+
+![[CG - Perspective Foreshortening.png|560]]
+*Discussion slide "Why does perspective look natural?" — perspective foreshortening: apparent size decreases with distance (alt deck, p. 75).*
+
+The deck closes the section with the question *how to derive the projection matrix?*, and promises to derive each transformation separately before comparing their equations — that derivation is §1.5.
+
+> [!note] Coverage of the alt deck
+> The deck's final slides about the projection types (p. 62) are exported with unreadable fonts (mojibake); the table above was taken from the readable slide 74 and the figures. Slides 1–10 are blank title slides.
+
+### 1.10 Exam pointer
+
 
 > [!tip] Exam pointer — viewing and projection
 > - Write $M_{view}=\mathbf{R}\,T(-\mathbf{o})$ and say what each factor does; be ready to explain why translation comes first.
@@ -197,7 +328,7 @@ $$ M_{wv} = \begin{bmatrix} s_x & 0 & 0 & t_x\\ 0 & s_y & 0 & t_y\\ 0&0&1&0\\ 0&
 
 ## 2. Viewport Mapping and Cohen–Sutherland Clipping
 
-*Deck: [[CG_Oct_1.pdf]] — 97 slides. Point clipping, the 4-bit region code, trivial accept/reject, iterative boundary intersection, then the same algorithm in 3D with six planes.*
+*Deck: [[Post 2 - Viewport Mapping and Cohen-Sutherland Clipping.pdf|Post 2 deck]] — 97 slides. Point clipping, the 4-bit region code, trivial accept/reject, iterative boundary intersection, then the same algorithm in 3D with six planes.*
 
 ### 2.1 Point clipping
 
@@ -552,7 +683,7 @@ Check the result: $0\le4\le6$, $0\le6\le6$, $0\le6\le8$ for $A'$; and $0\le4\le6
 
 ## 3. Polygon and 3D Fill-Area Clipping
 
-*Deck: [[CG_Oct_5.pdf]] — 89 slides. Fill-area clipping, Sutherland–Hodgman with its four cases and full numeric trace, Weiler–Atherton boundary traversal, 3D point/face clipping, and the visibility problem that the next two topics solve.*
+*Deck: [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]] — 89 slides. Fill-area clipping, Sutherland–Hodgman with its four cases and full numeric trace, Weiler–Atherton boundary traversal, 3D point/face clipping, and the visibility problem that the next two topics solve.*
 
 ### 3.1 Polygons as ordered, closed vertex lists
 
@@ -981,7 +1112,7 @@ Two consequences:
 
 ## 4. Hidden Surface Removal I — Back-Face Elimination and the Z-Buffer
 
-*Deck: [[CG_Oct_8.pdf]] — 106 slides. The two first-line defences: throw away faces that point away from the eye, then resolve the rest pixel by pixel with a depth buffer.*
+*Deck: [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]] — 106 slides. The two first-line defences: throw away faces that point away from the eye, then resolve the rest pixel by pixel with a depth buffer.*
 
 ### 4.1 Back-face elimination
 
@@ -1259,7 +1390,7 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 
 ## 5. Hidden Surface Removal II — Painter's Algorithm and BSP Trees
 
-*Deck: [[CG_26_Oct.pdf]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
+*Deck: [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]] — 80 slides. Compiles the depth-sort (painter's) algorithm, the cyclic overlap that breaks it, the plane function $f(\mathbf{r})$, and the BSP tree that replaces a per-frame sort with a precomputed partition.*
 
 ### 5.1 Painting back to front
 
@@ -1655,7 +1786,7 @@ The widget below walks the deck's twelve-step trace on the deck's tree. Watch th
 
 ## 6. Fill-Area Algorithms, Scan Conversion and the 3D Pipeline
 
-*Deck: [[CG-29th_Oct.pdf]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
+*Deck: [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]] — 116 slides. Compiles the six-stage pipeline in the deck's own words, lighting versus shading, the inside–outside tests, scan-line polygon fill, seed/boundary/flood fill with the deck's stack traces, and the two ways of storing a character.*
 
 ### 6.1 The six stages
 
@@ -2186,7 +2317,7 @@ An **outlined font** stores the character as geometry: points and line segments 
 
 ## 7. Anti-Aliasing I — The Gupta–Sproull Algorithm
 
-*Deck: [[CG_Nov-2.pdf]] — 70 slides. Two parts: the midpoint line algorithm that decides **which** pixel, then the Gupta–Sproull extension that decides **how bright** each of the three pixels in the column should be.*
+*Deck: [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]] — 70 slides. Two parts: the midpoint line algorithm that decides **which** pixel, then the Gupta–Sproull extension that decides **how bright** each of the three pixels in the column should be.*
 
 ### 7.1 What the algorithm is
 
@@ -2573,7 +2704,7 @@ The widget walks the eight columns of §7.10. Each step shades the selected pixe
 
 ## 8. Animation — The 2D Production Process
 
-*Deck: [[CG_Nov_Animation.pdf]] — 55 handwritten slides. The deck carries one exam question, quoted below; this topic answers it in the order the question implies, using the character jumping over a puddle as the running example.*
+*Deck: [[Post 8 - Animation - The 2D Production Process.pdf|Post 8 deck]] — 55 handwritten slides. The deck carries one exam question, quoted below; this topic answers it in the order the question implies, using the character jumping over a puddle as the running example.*
 
 ### 8.1 The question
 
@@ -2898,4 +3029,4 @@ The widget tweens the character between the takeoff key and the landing key acro
 | Outline area | $1\times7+5\times1-1=11$ units² | scales by $2^2=4$; area ≠ pixel count |
 
 > [!note] Source images
-> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result from [[CG_Oct_8.pdf]], the Weiler–Atherton crossings and the concave-subject split from [[CG_Oct_5.pdf]], the BSP traversal order from [[CG_26_Oct.pdf]], the E/NE case of Gupta–Sproull from [[CG_Nov-2.pdf]], and the bitmapped and outlined letter `L` from [[CG-29th_Oct.pdf]].
+> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result from [[Post 4 - Hidden Surface Removal I - Back-Face Elimination and the Z-Buffer.pdf|Post 4 deck]], the Weiler–Atherton crossings and the concave-subject split from [[Post 3 - Polygon and 3D Fill-Area Clipping.pdf|Post 3 deck]], the BSP traversal order from [[Post 5 - Hidden Surface Removal II - Painter's Algorithm and BSP Trees.pdf|Post 5 deck]], the E/NE case of Gupta–Sproull from [[Post 7 - Anti-Aliasing I - The Gupta-Sproull Algorithm.pdf|Post 7 deck]], and the bitmapped and outlined letter `L` from [[Post 6 - Fill-Area Algorithms, Scan Conversion and the 3D Pipeline.pdf|Post 6 deck]].
