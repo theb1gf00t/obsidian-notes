@@ -65,17 +65,19 @@ The deck argues from photography. To take a photograph we point the camera in a 
 - That new system is called the **view coordinate system (VC)**; the transformation is the **viewing transformation**.
 - To simulate it: first define the view coordinate system, then perform the transformation.
 
+Think of it this way: the same scene looks different depending on where you stand. The viewing transformation is just the mathematical equivalent of "walk to the camera's position and tilt your head in the camera's direction" — after which every object's coordinates are expressed relative to *you*, not relative to the world's fixed origin. That is what makes projection, lighting, and clipping simple to compute: they all work in the camera frame.
+
 #### Setting up the view coordinate system
 
 ![[CG - View Coordinate Setup.png|520]]
 *The camera basis, the view-up vector and the view plane (Post 1 deck, p. 27).*
 
-The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather than $x,y,z$ — the deck says it uses this notation from here on). The deck determines them in this order:
+The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather than $x,y,z$ — the deck says it uses this notation from here on). Think of $\mathbf{n}$ as the "depth axis" (pointing away from what you're looking at), $\mathbf{v}$ as "up", and $\mathbf{u}$ as "right". The deck determines them in this order:
 
 1. **Origin.** The camera is represented as a point in the 3D world coordinate system; that point is the origin of VC, denoted $\mathbf{o}$.
-2. **$\hat{\mathbf{n}}$.** With a *look-at point* $\mathbf{p}$ (the centre of interest), simple vector algebra gives $\mathbf{n}=\mathbf{o}-\mathbf{p}$, normalised: $\hat{\mathbf{n}}=\mathbf{n}/\lVert\mathbf{n}\rVert$. So $\hat{\mathbf n}$ points **opposite to the looking direction**.
-3. **$\hat{\mathbf{v}}$.** Specify an arbitrary point $\mathbf{p}_{up}$ in the direction of the head while looking through the camera — the **view-up** direction. Then $\vec V_{up}=\mathbf{p}_{up}-\mathbf{o}$ and $\hat{\mathbf v}=\vec V_{up}/\lVert\vec V_{up}\rVert$.
-4. **$\hat{\mathbf{u}}$.** $\mathbf u$ is perpendicular to the plane spanned by $\mathbf n$ and $\mathbf v$, hence $\mathbf u=\mathbf v\times\mathbf n$. Since $\mathbf n$ and $\mathbf v$ are unit vectors, **no further normalisation is required**.
+2. **$\hat{\mathbf{n}}$.** With a *look-at point* $\mathbf{p}$ (the centre of interest), simple vector algebra gives $\mathbf{n}=\mathbf{o}-\mathbf{p}$, normalised: $\hat{\mathbf{n}}=\mathbf{n}/\lVert\mathbf{n}\rVert$. So $\hat{\mathbf n}$ points **opposite to the looking direction** — it sticks out of the back of the camera, so to speak.
+3. **$\hat{\mathbf{v}}$.** Specify an arbitrary point $\mathbf{p}_{up}$ in the direction of the head while looking through the camera — the **view-up** direction. This prevents the camera from rolling: tilting your head changes $\hat{\mathbf v}$. Then $\vec V_{up}=\mathbf{p}_{up}-\mathbf{o}$ and $\hat{\mathbf v}=\vec V_{up}/\lVert\vec V_{up}\rVert$.
+4. **$\hat{\mathbf{u}}$.** $\mathbf u$ is perpendicular to the plane spanned by $\mathbf n$ and $\mathbf v$, hence $\mathbf u=\mathbf v\times\mathbf n$. The cross product of two unit vectors is already unit-length, so **no further normalisation is required**. This also guarantees $\mathbf u$, $\mathbf v$, $\mathbf n$ are mutually orthogonal, which is exactly what we need for a proper coordinate frame.
 
 > [!important] Summary of the VC construction (deck's summary slide)
 > Given the camera position $\bar o$ (origin of the coordinate system), the view-up point $\bar p_{up}$ and the centre of interest / look-at point $\bar p$:
@@ -90,13 +92,15 @@ The basis vectors of VC are written $\mathbf{u},\mathbf{v},\mathbf{n}$ (rather t
 
 Let $P$ be an arbitrary point in world coordinates. We need a matrix $M_{w2v}$ such that $P'=M_{w2v}\,P$ is the point in VC. Assume the VC origin (the camera position) is $(o_{vx},o_{vy},o_{vz})$ and the three basis vectors are $\mathbf u(u_x,u_y,u_z)$, $\mathbf v(v_x,v_y,v_z)$, $\mathbf n(n_x,n_y,n_z)$. To align VC with WC we need a **sequence of transformations**, achieved by two operations — **translation** and **rotation**.
 
+The intuition is: first slide the whole world so the camera ends up at the origin (translation), then rotate the world until the camera's axes align with the global $x,y,z$ axes (rotation). After both steps, the camera is "at rest" at the origin — and every other object has moved accordingly.
+
 The deck builds the matrix in four named steps (translate, rotate, compose, transform), with the translation written out as
 
 $$ T=\begin{bmatrix}1&0&0&-o_{vx}\\0&1&0&-o_{vy}\\0&0&1&-o_{vz}\\0&0&0&1\end{bmatrix},\qquad
 R=\begin{bmatrix}u_x&u_y&u_z&0\\v_x&v_y&v_z&0\\n_x&n_y&n_z&0\\0&0&0&1\end{bmatrix},\qquad M_{w2v}=R\,T $$
 
 - **Step 1 — translation.** Subtract the camera position from each point; the camera maps to the origin; orientation does not change.
-- **Step 2 — rotation.** Rows are the camera basis vectors; each row gives one view coordinate. *Why this is correct:* each row computes one dot product with $\mathbf u$, $\mathbf v$ or $\mathbf n$, and orthonormal rows preserve lengths and angles.
+- **Step 2 — rotation.** Rows are the camera basis vectors; each row gives one view coordinate. *Why this is correct:* each row computes one dot product with $\mathbf u$, $\mathbf v$ or $\mathbf n$, and orthonormal rows preserve lengths and angles. Put simply: the dot product of a world point with $\hat{\mathbf u}$ tells you "how far along the camera's right direction" that point sits — which is exactly its $u$-coordinate in VC.
 - **Step 3 — compose.** Translation acts first for column vectors, so $M_{w2v}=RT$, applied once to every point.
 - **Compact form.** Each translation term is the *negative projection of the camera position onto one camera axis* ($-\mathbf u\cdot\mathbf o$, $-\mathbf v\cdot\mathbf o$, $-\mathbf n\cdot\mathbf o$); rows 1–3 give the camera-axis coordinates, the last column accounts for the camera position, the last row preserves homogeneous form (this is the matrix of §2.2).
 - The camera is **not projected yet**; projection is a separate transformation applied after points are expressed in view coordinates.
@@ -152,8 +156,8 @@ The deck then re-enters the chain at the *projection* box, marking it "why proje
 
 - **The scene in the view coordinate system is 3D.** To get a 2D image we need a way to **transform** a 3D scene into a 2D one; the technique is **projection**.
 - In general, projection transforms objects from $n$ dimensions to $(n-1)$ dimensions; the discussion is restricted to 3D → 2D.
-- **Basic idea:** project a 3D object onto a 2D **view plane**. From each point of the surface we generate **straight lines towards the view plane**, known as **projectors**; the intersection points of the projectors with the view plane together give the projected image.
-- A usually rectangular area on the view plane that contains the projected objects is the **clipping window**.
+- **Basic idea:** project a 3D object onto a 2D **view plane**. Imagine holding a torch and shining rays from each point on a 3D object towards a flat screen — the shadows they cast on the screen are the projected image. These rays are called **projectors**; the intersection points of the projectors with the view plane together give the projected image.
+- A usually rectangular area on the view plane that contains the projected objects is the **clipping window**. Anything outside this rectangle is irrelevant — just like the frame of a photograph.
 - A 3D **view volume** is also defined in the scene: objects inside it are projected onto the view plane; others are discarded through **clipping** (discussed later). The entire scene is *not* projected — only the portion enclosed by the view volume — which gives flexibility to synthesise images as we want.
 - We therefore must choose an **appropriate view volume**, which requires an understanding of the different projection types.
 
@@ -186,7 +190,7 @@ The deck closes the section with the question *how to derive the projection matr
 
 ### 2.1 The six stages in one picture
 
-The deck opens by fixing the vocabulary for everything that follows: a renderer is a fixed sequence of six stages, and each stage changes either *what an object is* or *which coordinate system it lives in*.
+The deck opens by fixing the vocabulary for everything that follows: a renderer is a fixed sequence of six stages, and each stage changes either *what an object is* or *which coordinate system it lives in*. It helps to think of the pipeline as an assembly line: the object starts as raw geometry in its own little world, gets placed into the shared scene, gets lit, gets seen through the camera, gets discretised into pixels, and finally gets displayed. Each stage hands off a cleaner, more "screen-ready" description of the same underlying object.
 
 ![[CG - 3D Graphics Pipeline.excalidraw]]
 
@@ -206,7 +210,7 @@ Two clarifications the deck insists on:
 
 ### 2.2 World-to-view: building the camera frame
 
-The camera is specified in world coordinates by its position $\mathbf{o}$ and the direction it looks along. The viewing transform moves the world so that the camera sits at the origin looking down $-z$ — it changes the **coordinate frame**, and nothing else.
+The camera is specified in world coordinates by its position $\mathbf{o}$ and the direction it looks along. The viewing transform moves the world so that the camera sits at the origin looking down $-z$ — it changes the **coordinate frame**, and nothing else. A helpful way to remember it: nothing in the scene physically moves; we just redescribe every point using a new ruler whose origin is the camera and whose axes point along the camera's own right, up, and forward directions.
 
 $$ \mathbf{n} = \frac{\mathbf{o}-\mathbf{l}}{\lVert \mathbf{o}-\mathbf{l}\rVert}, \qquad
    \mathbf{u} = \frac{\mathbf{v}_{up}\times\mathbf{n}}{\lVert \mathbf{v}_{up}\times\mathbf{n}\rVert}, \qquad
@@ -231,7 +235,7 @@ n_x & n_y & n_z & -\mathbf{n}\cdot\mathbf{o}\\
 
 ### 2.3 The view volume
 
-After the viewing transform, the part of space the camera can record is a **view volume** bounded by six planes $x_{\min},x_{\max},y_{\min},y_{\max},z_{near},z_{far}$.
+After the viewing transform, the part of space the camera can record is a **view volume** bounded by six planes $x_{\min},x_{\max},y_{\min},y_{\max},z_{near},z_{far}$. Think of it as the camera's "field of vision" carved out in 3D space — only geometry that falls inside this volume will ever appear in the final image.
 
 ![[CG - Camera Frame and View Volume.excalidraw]]
 
@@ -259,7 +263,7 @@ The cost is a **non-uniform scale**: normalising a wide, shallow frustum squeeze
 
 Both projections are $4\times4$ matrices applied to homogeneous points $[x\;y\;z\;1]^{T}$; they differ only in what happens to $w$.
 
-**Orthographic (parallel) projection** maps the box $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times[z_{near},z_{far}]$ onto $[-1,1]^{3}$ by scaling and translating each axis independently:
+**Orthographic (parallel) projection** maps the box $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times[z_{near},z_{far}]$ onto $[-1,1]^{3}$ by scaling and translating each axis independently. Because the projectors are parallel (not converging), every $z$-slice of the box maps to the same $xy$ footprint — there is no "getting smaller with distance", which is why architectural and engineering drawings favour it.
 
 $$ M_{ortho} =
 \begin{bmatrix}
@@ -271,7 +275,7 @@ $$ M_{ortho} =
 
 The third row carries the minus sign because the camera looks along $-z$: the near plane has the *larger* (less negative) $z$, and it must land on $-1$.
 
-**Perspective projection** cannot be affine — equal world lengths must project to unequal screen lengths — so the matrix keeps $w$ alive and lets the homogeneous divide do the work:
+**Perspective projection** cannot be affine — equal world lengths must project to unequal screen lengths (a road shrinks towards the horizon) — so the matrix keeps $w$ alive and lets the homogeneous divide do the work. The key trick: by writing $w = -z_{cam}$ in the fourth row, dividing the final coordinates by $w$ automatically scales $x$ and $y$ by $1/|z|$, achieving the foreshortening effect without any special-case code.
 
 $$ M_{persp} =
 \begin{bmatrix}
@@ -303,7 +307,7 @@ Writing $x_{ndc}=x_{cam}/(-z_{cam})$ directly would be a per-vertex division wit
 
 ### 2.6 Viewport mapping
 
-The canonical cube (or the 2D window that survives clipping) is dimensionless. The **viewport** is the rectangle on the actual display, in device coordinates, where the image is drawn. Window-to-viewport mapping is the affine map between the two, and the deck derives it by solving one equation per axis.
+The canonical cube (or the 2D window that survives clipping) is dimensionless — it has no physical size or pixel count. The **viewport** is the rectangle on the actual display, in device coordinates, where the image is drawn. Window-to-viewport mapping is the affine map between the two, and the deck derives it by solving one equation per axis. The idea is simply a proportional stretch: a point that sits 30% of the way across the window should land 30% of the way across the viewport.
 
 > [!important] The viewport transformation, derived
 > Match the two intervals proportionally — the window edge $W_{x1}$ must land on the viewport edge $V_{x1}$, and $W_{x2}$ on $V_{x2}$:
@@ -351,11 +355,11 @@ A point $(x,y)$ is inside the window exactly when both intervals hold:
 
 $$ x_{\min}\le x\le x_{\max} \quad\text{AND}\quad y_{\min}\le y\le y_{\max} $$
 
-Equality counts as inside — a point on the boundary is retained. One violated interval is enough to reject.
+Equality counts as inside — a point on the boundary is retained. One violated interval is enough to reject. This is the simplest possible clipping test: two range checks, four comparisons, done.
 
 ### 3.2 Region codes
 
-Instead of testing four inequalities per endpoint, the four results are packed into a single **4-bit region code** (outcode).
+Instead of testing four inequalities per endpoint, the four results are packed into a single **4-bit region code** (outcode). The motivation is speed: a bit-vector is cheaper to combine than four separate boolean flags, and the bitwise AND/OR operations in §3.3 become a single CPU instruction. Each bit answers one yes/no question: "is this endpoint outside this particular boundary?"
 
 | Bit | Meaning | Set to 1 when | Computed as |
 | --- | --- | --- | --- |
@@ -375,7 +379,7 @@ The nine regions of the plane therefore carry the codes $1001,1000,1010$ (top ro
 
 ### 3.3 Trivial accept and trivial reject
 
-Compute $C_0$ for $P_0$ and $C_1$ for $P_1$, then combine the two codes bitwise.
+The great power of region codes is that they let you dispose of the majority of segments instantly, without computing a single intersection. Compute $C_0$ for $P_0$ and $C_1$ for $P_1$, then combine the two codes bitwise.
 
 | Test | Result | Meaning |
 | --- | --- | --- |
@@ -390,14 +394,14 @@ The AND test works because a shared set bit means both endpoints are on the oute
 
 ### 3.4 Clipping one boundary at a time
 
-When neither shortcut applies, one outside endpoint is moved onto a boundary:
+When neither shortcut applies, one outside endpoint is moved onto a boundary. The key insight is that you don't try to solve all four boundaries at once — you pick one, trim the segment to it, and retest. This is why it is called an *iterative* algorithm.
 
 1. **Choose the endpoint.** Take the first endpoint whose code is nonzero; a code of `0000` is never clipped.
 2. **Choose the plane.** Any set bit works and the answer is the same; the deck takes the **lowest set bit**, in the fixed order Left, Right, Bottom, Top, Near, Far.
 3. **Solve for the intersection**, set that coordinate exactly to the boundary value.
 4. **Recode** the new endpoint and **retest** from step 1.
 
-The segment is parameterised once, $P(t)=P_0+t(P_1-P_0)$ with $0\le t\le 1$, and every clipped endpoint remains a point of the same line. The working interval therefore only ever shrinks: $[t_{start},t_{end}]\subseteq[0,1]$, with each pass moving one end inward. That is why the algorithm terminates — each pass strictly removes a piece of the segment.
+The segment is parameterised once, $P(t)=P_0+t(P_1-P_0)$ with $0\le t\le 1$, and every clipped endpoint remains a point of the same line. The working interval therefore only ever shrinks: $[t_{start},t_{end}]\subseteq[0,1]$, with each pass moving one end inward. That is why the algorithm terminates — each pass strictly removes a piece of the segment, so it cannot loop forever.
 
 ### 3.5 The line-equation view
 
@@ -417,7 +421,7 @@ With $x+2y-9=0$ and a left boundary $x=0$, the intersection is $y=9/2$; with a t
 
 ### 3.6 The three-dimensional extension
 
-The window becomes a **box** $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times[z_{\min},z_{\max}]$ — six boundary planes instead of four — so each endpoint needs a **6-bit** code.
+Extending to 3D is conceptually straightforward: the window becomes a **box** $[x_{\min},x_{\max}]\times[y_{\min},y_{\max}]\times[z_{\min},z_{\max}]$ — six boundary planes instead of four — so each endpoint needs a **6-bit** code. All the same logic (trivial accept via OR, trivial reject via AND, iterative clipping) carries over unchanged; only the number of bits and the intersection formulas expand.
 
 | Bit | Plane | Set to 1 when | Mask |
 | --- | --- | --- | --- |
@@ -704,7 +708,7 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 4.1 Polygons as ordered, closed vertex lists
 
-A polygon enters the clipper as an **ordered list**, not a set:
+Before clipping can begin, it is important to understand what a polygon actually is from the clipper's perspective. A polygon enters the clipper as an **ordered list**, not a set:
 
 $$ V=[v_1,v_2,\dots,v_n] $$
 
@@ -723,7 +727,7 @@ $$ V=[v_1,v_2,\dots,v_n] $$
 
 ### 4.3 The window as four half-planes
 
-A rectangular window is the intersection of four half-planes, so a polygon can be clipped by four independent half-plane passes. Each pass needs only one test:
+A rectangular window is the intersection of four half-planes, so a polygon can be clipped by four independent half-plane passes. This is the key decomposition that makes the algorithm tractable: instead of solving a complicated "clip against a rectangle" problem all at once, you solve four much simpler "clip against one infinite line" problems in sequence. Each pass needs only one test:
 
 | Clipper | Inside test | Outside test |
 | --- | --- | --- |
@@ -734,7 +738,7 @@ A rectangular window is the intersection of four half-planes, so a polygon can b
 
 ### 4.4 The four edge cases
 
-For one clip boundary, classify the current vertex $S$ and the next vertex $E$. There are exactly four combinations, and each dictates what enters the output list.
+For one clip boundary, classify the current vertex $S$ and the next vertex $E$. There are exactly four combinations — and this exhaustive enumeration is the heart of Sutherland–Hodgman. Each case dictates what enters the output list:
 
 ![[CG - Sutherland Hodgman Four Cases.excalidraw]]
 
@@ -750,7 +754,7 @@ For one clip boundary, classify the current vertex $S$ and the next vertex $E$. 
 
 ### 4.5 Computing the intersection
 
-Parameterise the edge and solve for the crossing:
+Parameterise the edge and solve for the crossing. The parameter $t$ tells you *where along the edge* the crossing occurs: $t=0$ means the crossing is at $S$, $t=1$ means it is at $E$, and anything in between is a genuine interior crossing.
 
 $$ P(t)=S+t(E-S),\qquad 0\le t\le 1 $$
 
