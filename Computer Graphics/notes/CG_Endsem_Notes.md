@@ -1141,7 +1141,13 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 5.1 Back-face elimination
 
+**The big picture.** After clipping, we know which geometry lies inside the view volume, but not which of it is actually *visible*. A solid cube viewed from the front is a good example: the clipping stage happily passes all six faces, yet the eye sees at most three of them, because the rest are on the far side of the cube and are hidden by the cube's own body. Hidden-surface removal (HSR) is the family of methods that decides, for every part of the scene, "is anything nearer to the eye in front of this?". This section opens with the cheapest HSR trick there is — it needs no comparison between objects at all.
+
 For a closed polyhedron, every face has an **outward normal**. A face whose normal turns away from the viewer cannot be seen from this viewpoint, so it can be discarded before any pixel work.
+
+*In plain words:* picture holding a cardboard box. The faces whose "outside" is turned towards your eyes are the ones you can see; the faces whose "outside" is turned away from you are on the back of the box. If every face has an arrow sticking out of it (the normal), then a face is visible exactly when its arrow points at least partly *towards you*. Since a typical closed object has roughly half its faces turned away at any moment, this one cheap test removes about **50 % of the polygons** before the expensive stages ever see them.
+
+The test is a **dot product**, which measures how much two vectors point the same way: positive means "roughly the same direction", negative means "roughly opposite", zero means "perpendicular". Comparing the face normal with the direction the viewer looks along tells us whether the face looks back at us (normal opposite to view direction → front-facing) or away from us (normal along the view direction → back-facing).
 
 The normal is obtained from the vertex order by a cross product — the order encodes the orientation:
 
@@ -1165,6 +1171,8 @@ $$ \mathbf{N}\cdot\mathbf{v} = -N_z \qquad
 > The right-hand rule ties the cross product to the vertex order: reversing the order reverses $\mathbf{N}$. A consistent outward convention therefore turns a purely combinatorial fact (the order the vertices were stored in) into a geometric one (which side is outside). Get the convention backwards and the algorithm culls exactly the visible faces.
 
 ### 5.2 Worked example: a tetrahedron viewed along the negative z-axis
+
+*How to read this example.* The recipe is the same for every face: (1) pick one vertex of the face and form two edge vectors leaving it, (2) cross them to get the normal, (3) dot the normal with the view vector and read off the sign. Because $\mathbf v=(0,0,-1)$, step 3 collapses to "look at the sign of $N_z$" — a face is retained when $N_z>0$ (its normal has a component pointing back towards the camera at $+z$). Work through the four faces below with this recipe in mind, and notice that exactly two come out retained and two eliminated, as expected for a closed solid seen from one side.
 
 Given $A=(4,5,4)$, $B=(2,3,6)$, $C=(6,1,4)$, $D=(3,2,2)$, viewing vector $\mathbf{v}=(0,0,-1)$, and the outward face list $ABC$, $ADB$, $DCB$, $ACD$.
 
@@ -1221,9 +1229,15 @@ Back-face elimination compares a face with **its own** solid only. It cannot ans
 
 What survives culling still needs a depth comparison per pixel or per object. That is the job of the next two methods.
 
+*Intuition for the limits.* Back-face elimination asks only "does this face look towards me?" — a question about **one face and the eye**. Visibility, however, is a question about **a face and everything between it and the eye**. Imagine two cars parked one behind the other: both have front-facing sides towards you, so both pass the test, yet the nearer car hides most of the farther one. Back-face elimination can't see that, because it never compares one object with another. Think of it as a *pre-filter* that halves the workload; the real hidden-surface decision is still to come. Also note that the test is meaningless for a thin open sheet such as a flag, since both of its sides can be seen and neither is "the inside".
+
 ### 5.4 The depth (z) buffer: the idea
 
 The z-buffer is an **image-space** method: two buffers of the same size as the screen, one storing the nearest depth found so far at each pixel, one storing the colour that produced it.
+
+*The core idea in everyday terms.* Think of the screen as a grid of tiny windows, and each window keeps a small notebook that says "the closest thing I have seen so far is this far away, and it was this colour". Each time a new surface wants to paint a window, it states its own distance. If it is **closer** than what is in the notebook, it overwrites both the distance and the colour; if it is **farther**, it is politely ignored. After every surface has had its turn, each window shows precisely the nearest thing that ever covered it — which is the definition of "visible". Because each pixel makes its own independent decision, nobody needs to sort the surfaces or reason about which object is in front of which.
+
+*Object-space vs image-space.* Object-space methods (such as the painter's algorithm in §6) compare whole polygons with each other in 3D; their cost grows with the number of polygons. Image-space methods (such as the z-buffer) decide visibility separately at every pixel; their cost grows with the number of pixels covered. The z-buffer trades extra memory (a second buffer) for an extremely simple, order-independent algorithm — which is why it is the one that graphics hardware implements.
 
 | Buffer | Symbol | Content | Initial value |
 | --- | --- | --- | --- |
@@ -1240,6 +1254,8 @@ Because the comparison is per pixel, the surfaces may be processed in **any orde
 
 ### 5.5 Depth from the plane equation
 
+*Why we need this.* The z-buffer needs a depth value **at every pixel** a surface covers, but a polygon is only defined by its corner vertices. We therefore need a formula that says "given the screen position $(x,y)$, how far away is this surface at that spot?". For a flat polygon the answer is simply the equation of the plane it lies in, solved for $z$. Once the plane's four constants $A,B,C,D$ are known, any pixel's depth is one cheap formula away.
+
 Every planar surface satisfies
 
 $$ Ax+By+Cz+D=0 \quad\Longrightarrow\quad z=\frac{-D-Ax-By}{C},\qquad C\neq0 $$
@@ -1254,6 +1270,8 @@ $$ \mathbf{N}=(A,B,C)=(P_2-P_1)\times(P_3-P_1),\qquad D=-Ax_1-By_1-Cz_1 $$
 > 3. **Form the equation:** substitute $\mathbf{N}$ and any one vertex into $Ax+By+Cz+D=0$ and solve for $D$.
 
 ### 5.6 Incremental depth: never evaluate the plane twice
+
+*The idea.* Computing $z$ from scratch for every pixel is wasteful, because neighbouring pixels on a flat surface have almost the same depth — and the *difference* between them is always the same fixed amount. Think of walking up a ramp of constant slope: each step up the ramp raises your height by the same increment, so you don't need a tape measure at every step, you just add the increment to your previous height. The same applies here: moving one pixel to the right always changes $z$ by $-A/C$, and moving one scan line down always changes $z$ by $+B/C$. This exploitation of "neighbours are similar" is called **coherence**, and it is the reason scan-conversion algorithms are fast.
 
 Evaluating $z=(-D-Ax-By)/C$ at every pixel costs a multiply and a divide per pixel. Because $z$ is linear in $x$ and $y$, each step across a scan line changes $z$ by a **constant**:
 
@@ -1284,6 +1302,8 @@ The two terms account, respectively, for the change of $y$ between the scan line
 
 ### 5.7 The algorithm
 
+*Reading the pseudocode.* The outer structure is "for each surface, for each scan line, for each pixel". The only things the inner loop does are one comparison and one addition, so the work per pixel is tiny. The only "expensive" step — deriving $A,B,C,D$ and the starting depth — happens once per surface, outside the pixel loop. Notice also what is *absent*: no sorting, no tests between pairs of surfaces, and no need to know in advance which surface is nearest. That absence is the whole attraction of the method.
+
 > [!important] Depth-buffer algorithm — statement
 > ```text
 > 1: for every pixel: DB[x][y] = 1 (far), FB[x][y] = background
@@ -1306,6 +1326,10 @@ The deck's simplified form states the same loop with the buffers named $DV[\;][\
 > - Set the constants $\Delta z_x=-A/C$ (change along the scan line) and $\Delta z_y=B/C$ (change between scan lines).
 > - For each pixel across the scan line: store $z$ in $DV[x][y]$, then $z\mathrel{+}=\Delta z_x$.
 > - At the end of a scan line: move the edge by $-1/m$ in $x$, add $\Delta z_y=B/C$ for the drop to the next line, and add $\Delta z_x$ once per unit the edge moved.
+
+> [!note] Strengths and weaknesses at a glance
+> - **Strengths:** very simple; handles any scene complexity, interpenetrating and cyclically overlapping surfaces; no sorting; processing order is irrelevant; easy to build in hardware.
+> - **Weaknesses:** needs memory for a second full-screen buffer; every covered pixel is tested even if it is later overwritten (wasted work, called *overdraw*); cannot handle transparency directly, because each pixel remembers only one depth; limited depth precision causes **z-fighting** where two surfaces are nearly coplanar.
 
 > [!warning] The three classic z-buffer errors
 > - **Wrong depth direction.** If depth grows *inward*, the test is $z<DB$, and initialisation is the far value. Flip the convention without flipping the test and the farthest surface wins.
@@ -1421,6 +1445,8 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 6.1 Painting back to front
 
+**Where this section fits.** §5 solved visibility *per pixel* (the z-buffer). This section solves it *per polygon*: instead of asking "what is nearest at this pixel?", it asks "in what order should I draw whole polygons so that the right ones end up on top?". Two methods follow — the **painter's algorithm**, which sorts the polygons afresh for each frame, and the **BSP tree**, which does the hard thinking once in advance and then yields a correct order for *any* viewpoint almost for free. Keep one question in mind throughout: *when does a correct drawing order exist, and what do we do when it doesn't?*
+
 The painter's algorithm is the oldest hidden-surface method and the one that matches intuition: an artist paints the distant hills first and the near tree last, and the tree simply covers part of the hills. Nothing is tested per pixel — **the drawing order itself is the visibility computation**. If every polygon is painted in order of *decreasing* distance from the eye, each new polygon overwrites only what should be hidden behind it, and the final frame buffer holds the visible surface of every pixel.
 
 The whole method therefore reduces to one question: *can the polygons be put in a total order by depth?* The naive answer — sort by the $z$ of the centroid, or by the farthest vertex — is a heuristic, not a proof, and the deck spends most of its slides on the cases where the heuristic has no correct answer.
@@ -1446,6 +1472,8 @@ The whole method therefore reduces to one question: *can the polygons be put in 
 
 ### 6.2 The four tests that decide a pair
 
+*Why tests are needed at all.* Sorting by a single depth number is only a guess about the correct order. Two polygons can overlap in depth — one may have a vertex nearer than any vertex of the other, and also a vertex farther — so "which is nearer?" has no single answer from one number. The four tests are a checklist for answering the question properly for two neighbouring polygons $P$ (currently planned to be drawn first) and $Q$ (planned second). They are ordered from the cheapest, which usually settles the matter, to the most expensive. As soon as any one test succeeds, the pair is confirmed safe and you move on; only if all four fail do you have a real problem.
+
 Sorting produces a candidate order; the tests certify that a *particular adjacent pair* $P$ (farther) and $Q$ (nearer) is safe. They go from cheapest and most decisive to most expensive.
 
 | # | Test | If it succeeds | Cost |
@@ -1459,6 +1487,8 @@ Sorting produces a candidate order; the tests certify that a *particular adjacen
 The deck's slides are titled **"Step 4 passes"** and **"Step 4 fails"**: the first shows a configuration where the plane test certifies the order, the second the configuration where it cannot, and the caption on the failing slide is the sentence to remember —
 
 > *Cyclic overlap makes each polygon hide another, so no single drawing order works.*
+
+*A way to remember the four tests.* Tests 1 and 2 ask "do they even **overlap on the screen**?" — if one polygon is entirely to the left of, or entirely above, the other, they can never cover each other, so drawing order is irrelevant. Tests 3 and 4 ask "if they do overlap, is one **clearly on one side of the other's plane**?" — imagine slicing space with the infinite sheet that contains $Q$; if all of $P$ sits on the far side of that sheet, then $P$ is certainly behind $Q$ and can be painted first. Test 4 mirrors this the other way round, using $P$'s plane. The first pair of tests proves "order doesn't matter"; the second pair proves "this particular order is right".
 
 Test 4 is the load-bearing one because tests 1–2 only prove *irrelevance*: two polygons whose screen rectangles are disjoint can be painted in any order. Tests 3–4 are the only ones that prove an *order*, and they are exactly the tests that a cycle defeats.
 
@@ -1485,6 +1515,8 @@ Three pairwise truths, no global order. The relation "nearer than" is not transi
 
 ### 6.4 The plane function
 
+*The motivation.* Both the failing cases above and the BSP tree rest on one simple question: "on which side of this flat sheet does a given point lie?". Imagine an infinite sheet of glass slicing through the room. Every point in the room is either on the front of the glass (the side its normal arrow points to), on the back, or exactly in the glass. The plane function $f$ is a number that tells you this at once: positive for front, negative for back, zero for "in the glass". No geometry diagrams or angle calculations are needed — just one subtraction and one dot product.
+
 Everything that follows — building the tree, splitting a polygon, choosing the traversal — uses one scalar function.
 
 $$ f(\mathbf{r}) = (\mathbf{r} - \mathbf{p}) \cdot \mathbf{n} $$
@@ -1505,6 +1537,10 @@ The deck's convention is fixed by the sentence: *the arrow $\mathbf{n}_i$ points
 > Building asks $f(\text{vertex})$ for every polygon vertex; rendering asks $f(\text{eye})$ once per node. The build answer is fixed forever; the render answer changes with the camera. This is the whole economy of a BSP tree: the expensive geometric work (classification and splitting) is done once, and each new frame costs only one dot product per node.
 
 ### 6.5 Building the tree
+
+*The core idea of a BSP (Binary Space Partitioning) tree.* Pick one polygon and extend its plane out to infinity. That plane cuts the whole scene into two halves: everything on its front side and everything on its back side. Crucially, **a viewer can never be on both sides at once**, so for that viewer one half is entirely "behind the plane" (farther) and the other entirely "in front of it" (nearer) — the order between the two halves is settled without looking at any individual polygon inside them. Now repeat the same trick *inside each half*: choose another polygon, cut that half in two, and so on until each region holds at most one polygon. The result is a binary tree: each node stores one polygon (and therefore one plane), with an IN subtree for the back half and an OUT subtree for the front half. If a polygon is cut by the chosen plane, it is **split** into two pieces, one per side — this is exactly how cyclic overlaps get dissolved.
+
+Think of it as repeatedly slicing a block of cake with knife cuts along the walls of the polygons: after enough cuts every piece of cake lies cleanly on one side of every earlier cut, and a visitor standing anywhere can tell from the cuts alone which pieces are nearer.
 
 > [!important] BSP construction — statement
 > ```text
@@ -1556,6 +1592,8 @@ Read the shape, not the x-positions: **2 and 3 are chains of single-child nodes*
 
 ### 6.6 Splitting a polygon: cutting 9 into 9a and 9b
 
+*Why splitting is allowed.* A polygon that straddles a dividing plane cannot be assigned to either side, because part of it is "in front" and part "behind". The fix is to cut it along the plane into two smaller polygons that together cover exactly the same surface; visually nothing changes, but each piece now lies wholly on one side and can be placed in the matching subtree. The only real work is finding where the polygon's edge crosses the plane — a "where does this segment change sign?" problem, solved by simple linear interpolation between the two endpoint values of $f$.
+
 The deck's split is the one place where a polygon is created rather than merely classified. Polygon 9 straddles the plane of polygon 5, so one copy of 9 goes to each side under new names:
 
 > *"The plane of polygon 5 cuts polygon 9 into two pieces. Different signs at the endpoints mean that polygon 9 crosses the plane. Split at $s$, where $f_5(s) = 0$. Place each piece in its corresponding subtree."*
@@ -1576,6 +1614,10 @@ Take an edge with $f(\mathbf{u}) = -2$ and $f(\mathbf{v}) = +6$. Then $t = (-2)/
 > Each split adds vertices and polygons, so a scene built from many mutually crossing polygons can grow substantially, and the tree's memory is proportional to the *split* polygon count, not the input count. The deck's example happens to split exactly one polygon; in the worst case every polygon crosses every plane it meets.
 
 ### 6.7 Rendering: the eye selects the traversal order
+
+*The key insight.* The tree already tells us, for each plane, which polygons lie on each side. At display time we only have to find out **which side the eye is on**. The side the eye is on is "near"; the opposite side is "far". The painter's rule says far things go first, so at each node we (1) recurse into the far subtree, (2) draw the node's own polygon, (3) recurse into the near subtree. It is like walking through a house: at each wall, whatever lies on the other side of the wall from you is farther, so you paint it first and let the nearer rooms cover it.
+
+Importantly, if the eye moves, the tree is **unchanged** — only the answers to the "which side?" question change at some nodes, so the same tree gives a correct order for every camera position. That is why BSP is so well suited to walkthroughs of static scenes.
 
 > [!important] BSP rendering — statement
 > ```text
@@ -1624,6 +1666,8 @@ The row that always causes trouble in the deck is **node 7**: the eye is *below*
 
 ### 6.8 The complete trace
 
+*How to follow it.* Use the recursion as a to-do list. At each node, look at the eye side to decide which child is "far"; go down the far child *first* and put the node's own polygon on hold ("pending"). When the far subtree is finished, draw the held polygon, then go down the near child. A node's polygon therefore appears in the draw order only *after* everything on its far side has been completed — that is why the root, polygon 1, is not drawn first in the list below.
+
 Walking the recursion with the eye fixed gives the deck's annotated trace (slides 1/8 → 8/8). The pending nodes form a call stack; a node is drawn only when its far subtree has returned.
 
 | Step | At node | Eye side | Action | Drawn so far |
@@ -1653,6 +1697,8 @@ Two observations that make the order memorable:
 - **5 is drawn after 8 and 9b but before 6, 7, 9a, 10, 11.** The eye is on 5's IN side, so its OUT side (8, 9b) is far and goes first, and its IN side (6, 7, 9a, 10, 11) is near and goes last.
 
 ### 6.9 Why a BSP tree is worth the build
+
+*Summary in one sentence.* The painter's algorithm redoes its thinking every frame, whereas the BSP tree does the thinking once and reuses it forever (as long as the geometry doesn't move); in exchange it may cut polygons into more pieces and uses more memory. The comparison table below spells out that trade-off.
 
 | Property | Painter's with sort | BSP tree |
 | --- | --- | --- |
