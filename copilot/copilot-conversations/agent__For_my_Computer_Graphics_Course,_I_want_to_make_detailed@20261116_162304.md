@@ -31,5 +31,5 @@ for any more doubts on how to do all this you may refer to [[context]] [[syllabu
 Now do all this and make in depth notes for post midsen syllabus according to [[CG_Syllabus]]
 [Timestamp: 2026/11/16 16:23:04]
 
-**ai**: I'll start by exploring the relevant files and folders to understand the current state.Now I have the full source picture. Let me write the rulebook first.Now the main note. Writing it in blocks, topic by topic.
+**ai**: I'll start by exploring the relevant files and folders to understand the current state.Now I have the full source picture. Let me write the rulebook first.Now the main note. Writing it in blocks, topic by topic.I'll pick up where I left off. Let me first re-read the current state of the notes file and my rulebook.
 [Timestamp: 2026/11/16 16:23:04]
