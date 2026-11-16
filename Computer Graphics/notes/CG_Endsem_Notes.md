@@ -1891,7 +1891,7 @@ The widget fills the triangle of §6.7 one scan line at a time. The left panel i
       ? act.map(e => e.name + "  x = " + e.x.toFixed(2) + "  (" + (e.dx >= 0 ? "+" : "") + e.dx.toFixed(2) + "/line)").join("<br>")
       : "empty";
     const xs = act.map(e => e.x);
-    document.getElementById("sl-xs").textContent = xs.length ? xs.map(v => v.toFixed(2)).join("  ");
+    document.getElementById("sl-xs").textContent = xs.length ? xs.map(v => v.toFixed(2)).join("  ") : "—";
 
     const ln = el("line", { x1: px(0), y1: py(y), x2: px(70), y2: py(y), stroke: "var(--color-red,#e03131)", "stroke-width": 1.5, "stroke-dasharray": "4 3" });
     lineLayer.appendChild(ln);
@@ -2176,4 +2176,718 @@ An **outlined font** stores the character as geometry: points and line segments 
 
 ---
 
-<!-- §NEXT§ -->
+## 7. Anti-Aliasing I — The Gupta–Sproull Algorithm
+
+*Deck: [[CG_Nov-2.pdf]] — 70 slides. Two parts: the midpoint line algorithm that decides **which** pixel, then the Gupta–Sproull extension that decides **how bright** each of the three pixels in the column should be.*
+
+### 7.1 What the algorithm is
+
+The midpoint algorithm answers one question per step and answers it with a sign: E or NE. That produces the nearest pixel but says nothing about *how much* of the pixel the line actually covers — the staircase survives. Gupta–Sproull keeps the midpoint choice untouched and adds a **pre-filtering** step: the chosen pixel and its two vertical neighbours in the same column are all shaded, with weights taken from their perpendicular distance to the line.
+
+| What it is | How it works | What it builds on |
+| --- | --- | --- |
+| a **pre-filtering** technique for anti-aliased line drawing | the weight of a pixel depends on the perpendicular distance from the pixel centre to the line's centreline | the **midpoint** line-drawing algorithm |
+
+The deck fixes the working octant once and never revisits it:
+
+> [!warning] Assumptions for the whole topic
+> Integer endpoints · $x_0 < x_1$ · $0 \le \Delta y \le \Delta x$ · $y$ increases upward · $a = \Delta y$, $b = -\Delta x$.
+> **Other octants are handled by coordinate transformations** (swap $x$ and $y$, or negate an axis) applied before and after the algorithm — never by changing the decision rule.
+
+![[CG - Gupta Sproull Coverage.excalidraw]]
+
+### 7.2 Part 1 — two candidates and a midpoint
+
+Having just chosen $(x_k, y_k)$, the next pixel is one of two, because $x$ always advances by exactly one:
+
+| Candidate | Position | Meaning |
+| --- | --- | --- |
+| **E** | $(x_k+1,\ y_k)$ | same row — "east" |
+| **NE** | $(x_k+1,\ y_k+1)$ | one row up — "north-east" |
+
+The decision is made at the **midpoint** $M(x_k+1,\ y_k+\tfrac12)$. If $M$ lies below the line, the line passes above the midpoint and NE is closer; if $M$ lies on or above the line, E is at least as close.
+
+Represent the line by
+
+$$ f(x,y) = ax + by + c = 0, \qquad a = \Delta y,\quad b = -\Delta x,\quad c = \Delta x\,y_0 - \Delta y\,x_0 $$
+
+and use the **scaled** version $F(x,y) = 2(ax+by+c)$. The factor 2 is not cosmetic: the midpoint has a $\tfrac12$ in it, and doubling clears the fraction so that every value in the algorithm stays an integer.
+
+| $F$ at a point | Meaning |
+| --- | --- |
+| $F > 0$ | below the line |
+| $F = 0$ | on the line |
+| $F < 0$ | above the line |
+
+The deck's sign convention is worth fixing in memory: **positive is below**, because $b = -\Delta x < 0$ and increasing $y$ makes $F$ decrease.
+
+### 7.3 The decision variable and its update
+
+$$ d_k = F(M) = F\!\left(x_k+1,\ y_k+\tfrac12\right) = 2\left[a(x_k+1) + b\left(y_k+\tfrac12\right) + c\right] $$
+
+> [!important] The decision rule
+> **$d_k > 0$** — the midpoint is below the line → choose **NE**.
+> **$d_k \le 0$** — the midpoint is on or above the line → choose **E**.
+> The tie $d_k = 0$ chooses **E**, exactly as in the clipping ties of §2. This is a convention, not a derivation, and the deck states it explicitly.
+
+The update comes from moving the *midpoint*, not the pixel. After E the next midpoint is one step right; after NE it is one step right and one up:
+
+$$ \begin{aligned}
+\text{after E: } & d_{k+1} = d_k + 2a \\
+\text{after NE: } & d_{k+1} = d_k + 2(a+b)
+\end{aligned} $$
+
+Both constants are computed once. The derivation of the NE case in full, as the deck writes it:
+
+$$ \begin{aligned}
+d_{k+1} &= F\!\left(x_k+2,\ y_k+1+\tfrac12\right) \\
+&= 2\left[a(x_k+2) + b\left(y_k+\tfrac32\right) + c\right] \\
+&= 2\left[a(x_k+1) + b\left(y_k+\tfrac12\right) + c\right] + 2(a+b) \\
+&= d_k + 2(a+b)
+\end{aligned} $$
+
+The reasoning in one line: the bracket is $F$ at the old midpoint, and the extra terms are the cost of moving one right ($2a$) and one up ($2b$). With $a = \Delta y$ and $b = -\Delta x$, $2(a+b)$ is usually negative — the decision variable drifts back toward zero after every upward step, which is why the line alternates between E and NE.
+
+### 7.4 The starting value
+
+The first midpoint is at $(x_0+1,\ y_0+\tfrac12)$, and $(x_0,y_0)$ lies on the line, so $f(x_0,y_0) = 0$:
+
+$$ \begin{aligned}
+d_0 &= F\!\left(x_0+1,\ y_0+\tfrac12\right) \\
+&= 2(ax_0 + by_0 + c) + 2a + b \\
+&= 2a + b \qquad\text{since } f(x_0,y_0)=0
+\end{aligned} $$
+
+$$ \boxed{\ d_0 = 2a + b = 2\Delta y - \Delta x\ } $$
+
+> [!note] Why $d_0$ can be negative
+> For a shallow line ($\Delta y < \Delta x/2$) the start value is negative and the first step is E; for a steep line inside the octant ($\Delta y > \Delta x/2$) it is positive and the first step is NE. Nothing is special about either case — the same update rules carry on from whatever sign $d_0$ has.
+
+### 7.5 The complete midpoint algorithm
+
+> [!important] Midpoint line drawing — statement
+> ```text
+> 1: input integer endpoints (x0,y0), (x1,y1)
+> 2: require x0 < x1 and 0 ≤ Δy ≤ Δx
+> 3: Δx = x1 − x0;  Δy = y1 − y0
+> 4: a = Δy;  b = −Δx;  c = Δx·y0 − Δy·x0
+> 5: d = 2a + b                       // = 2Δy − Δx
+> 6: x = x0;  y = y0;  P = {(x,y)}
+> 7: while x < x1 do
+> 8:     if d > 0 then  y = y + 1;  d = d + 2(a+b)
+> 9:     else          d = d + 2a
+> 10:    x = x + 1;  add (x,y) to P
+> 11: end while
+> 12: return P
+> ```
+>
+> **Cost:** one comparison and one addition per column — $O(\Delta x)$, all integer arithmetic, no division and no floating point.
+
+### 7.6 Worked midpoint trace: $(0,0)$ to $(8,5)$
+
+Here $\Delta x = 8$, $\Delta y = 5$, so $a = 5$, $b = -8$, $d_0 = 2(5) - 8 = 2$, and the two constants are
+
+$$ 2a = 10, \qquad 2(a+b) = 2(5-8) = -6 $$
+
+| Step | $d$ before | Test | Pixel chosen | $d$ after | $x$ |
+| --- | --- | --- | --- | --- | --- |
+| 0 | $2$ | $>0$ → NE | $(1,1)$ | $2-6=-4$ | 1 |
+| 1 | $-4$ | $\le 0$ → E | $(2,1)$ | $-4+10=6$ | 2 |
+| 2 | $6$ | $>0$ → NE | $(3,2)$ | $6-6=0$ | 3 |
+| 3 | $0$ | tie → E | $(4,2)$ | $0+10=10$ | 4 |
+| 4 | $10$ | $>0$ → NE | $(5,3)$ | $10-6=4$ | 5 |
+| 5 | $4$ | $>0$ → NE | $(6,4)$ | $4-6=-2$ | 6 |
+| 6 | $-2$ | $\le 0$ → E | $(7,4)$ | $-2+10=8$ | 7 |
+| 7 | $8$ | $>0$ → NE | $(8,5)$ | $8-6=2$ | 8 |
+
+The pixel set is $(0,0),(1,1),(2,1),(3,2),(4,2),(5,3),(6,4),(7,4),(8,5)$. Check against the true line $y = 5x/8$: at $x=3$ the line is at $1.875$ and the chosen row is 2; at $x=4$ the line is exactly $2.5$ — the tie — and the rule takes the lower row 2. Both are the nearest choice; the tie is broken downwards by convention.
+
+### 7.7 Part 2 — from a vertical gap to a perpendicular distance
+
+The intensity must reflect **how much of the pixel the line covers**, which is governed by the perpendicular distance from the pixel centre to the line — not by the vertical gap. The two are related by the line's slope.
+
+Let $v$ be the vertical offset of the line from the selected pixel centre in that column:
+
+$$ v = y_{\text{line}}(x_{\text{selected}}) - y_{\text{selected}}, \qquad -\tfrac12 \le v \le \tfrac12 $$
+
+because the selected pixel is the nearest one. Consider the small right triangle with vertical side $v$ and perpendicular side $s$, and the slope triangle of the line with sides $\Delta x$, $\Delta y$ and hypotenuse $L = \sqrt{\Delta x^2 + \Delta y^2}$. The two triangles are similar (both right-angled and tilted by the line's slope), so
+
+$$ \frac{s}{v} = \frac{\Delta x}{L} \quad\Longrightarrow\quad \boxed{\ s = v\,\frac{\Delta x}{L}\ } $$
+
+> [!note] The factor is a constant for the whole line
+> $\Delta x / L = \cos\theta$, where $\theta$ is the angle between the line and the $x$-axis. It is computed once and reused for every pixel: the perpendicular distance is always the vertical distance times the same cosine. This is why the algorithm needs no trigonometry per pixel.
+
+The algorithm never computes $v$ or $s$ geometrically; it converts the decision variable instead, in three short steps.
+
+**Step 5a — $F$ measures the vertical gap.** Pick $Q$ on the line directly above or below $P$ (same $x$), so $F(Q) = 0$, and let $v_P = y_Q - y_P$. Only $y$ changes between $P$ and $Q$:
+
+$$ F(P) - F(Q) = 2b\,(y_P - y_Q) = 2(-\Delta x)(-v_P) = 2\Delta x\,v_P $$
+
+so $F(P) = 2\Delta x\,v_P$ — the signed vertical gap scaled by $2\Delta x$, positive below the line and negative above it.
+
+**Step 5b — $F$ also measures the perpendicular distance.** Substituting $v_P = (L/\Delta x)s_P$ from the similarity above gives
+
+$$ F(P) = 2\Delta x \cdot \frac{L}{\Delta x}s_P = 2L\,s_P \quad\Longrightarrow\quad \boxed{\ s_P = \frac{F(P)}{2L}\ } $$
+
+In particular, at the midpoint, $d = F(M) = 2L\,s_M$, so the decision variable *is* the midpoint's signed distance up to the constant $2L$.
+
+**Step 5c — half a pixel up or down.** Within one column only the $2by$ term changes, so moving half a pixel up subtracts $\Delta x$ and half a pixel down adds it:
+
+$$ F(x, y+\tfrac12) = F(x,y) + 2b\cdot\tfrac12 = F(x,y) - \Delta x $$
+
+$E$ is half a pixel *below* $M$, and $NE$ is half a pixel *above* it:
+
+$$ F(E) = F(M) + \Delta x = d + \Delta x, \qquad F(NE) = F(M) - \Delta x = d - \Delta x $$
+
+**Step 5d — the signed distance of the selected pixel.**
+
+$$ \boxed{\ s = \frac{F(\text{selected})}{2L} =
+\begin{cases}
+\dfrac{d + \Delta x}{2L}, & \text{E chosen } (d \le 0)\\[6pt]
+\dfrac{d - \Delta x}{2L}, & \text{NE chosen } (d > 0)
+\end{cases}\ } $$
+
+Three practical consequences, all stated by the deck:
+
+- $L = \sqrt{\Delta x^2 + \Delta y^2}$ is fixed for the whole line and computed **once**.
+- Use $d$ **before** it is updated by the midpoint step — the distance describes the pixel about to be shaded, not the next decision.
+- Keep the **sign** of $s$: it tells which side of the line the pixel is on, and the neighbours' distances depend on it.
+
+### 7.8 The filter and the blend
+
+The distance becomes a weight through a **filter**, and the weight becomes a colour through a linear blend:
+
+$$ \alpha = \text{Filter}(|s|), \qquad C = \alpha\,C_{\text{line}} + (1-\alpha)\,C_{\text{background}} $$
+
+| $\alpha$ | Result |
+| --- | --- |
+| $\alpha \to 1$ | the pixel is fully the line colour |
+| $\alpha \to 0$ | the pixel is unchanged background |
+| black background | $C = \alpha\,C_{\text{line}}$ — intensity is proportional to $\alpha$ |
+
+The deck's filter curve rises to a peak $\alpha(0)$ at zero distance and falls to zero at a distance of one pixel, which is the standard **cone** filter:
+
+$$ \text{Filter}(D) = \max(0,\ 1 - D) $$
+
+![[CG - Gupta Sproull E vs NE Case.png|440]]
+
+*Figure — the E case and the NE case: the same three pixels per column, only the identity of the middle one and the sign of $s$ change.*
+
+### 7.9 The two vertical neighbours
+
+Selecting a pixel also shades the pixels directly above and below it in the same column, at distances $\Delta x/L$ apart in perpendicular terms.
+
+| | E chosen ($d \le 0$) | NE chosen ($d > 0$) |
+| --- | --- | --- |
+| Signed distance $s$ | $(d + \Delta x)/(2L)$ | $(d - \Delta x)/(2L)$ |
+| Upper neighbour | $(x_k+1,\ y_k+1)$, distance $D_{\text{upper}}$ | $(x_k+1,\ y_k+2)$, distance $D_{\text{upper}}$ |
+| Lower neighbour | $(x_k+1,\ y_k-1)$, distance $D_{\text{lower}}$ | $E = (x_k+1,\ y_k)$, distance $D_{\text{lower}}$ |
+| Both cases | $D_{\text{upper}} = \left|s - \Delta x/L\right|$ | $D_{\text{lower}} = \left|s + \Delta x/L\right|$ |
+
+The asymmetry in the coordinates is not a typo: when NE is selected, the "lower neighbour" *is* E, the pixel just below NE. The neighbour formulas themselves never change — only $s$ does, by $+\Delta x$ for E and $-\Delta x$ for NE.
+
+> [!warning] Do not move the selected pixel to the neighbour's place
+> The three pixels are shaded **in the same column** $x_k+1$. The selected pixel gets $\alpha = \text{Filter}(|s|)$; the pixel above gets $\text{Filter}(D_{\text{upper}})$; the pixel below gets $\text{Filter}(D_{\text{lower}})$. When the selected pixel is NE, the pixel below it is E — it does **not** get the selected pixel's $\alpha$.
+
+### 7.10 Worked shading trace: the same line $(0,0)$–$(8,5)$
+
+With $\Delta x = 8$, $\Delta y = 5$: $L = \sqrt{89} = 9.4340$, $2L = 18.8680$, and $\Delta x/L = 0.8480$. The $\alpha$ column applies the cone filter $\max(0, 1-D)$.
+
+| Column $x$ | $d$ before | Pixel | $s$ | $\alpha$ | $D_{\text{upper}}$ | $\alpha_{\text{upper}}$ | $D_{\text{lower}}$ | $\alpha_{\text{lower}}$ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 2 | NE | $-0.318$ | 0.682 | 1.166 | 0 | 0.530 | 0.470 |
+| 2 | $-4$ | E | $0.212$ | 0.788 | 0.636 | 0.364 | 1.060 | 0 |
+| 3 | 6 | NE | $-0.106$ | 0.894 | 0.954 | 0.046 | 0.742 | 0.258 |
+| 4 | 0 | E | $0.424$ | 0.576 | 0.424 | 0.576 | 1.272 | 0 |
+| 5 | 10 | NE | $0.106$ | 0.894 | 0.742 | 0.258 | 0.954 | 0.046 |
+| 6 | 4 | NE | $-0.212$ | 0.788 | 1.060 | 0 | 0.636 | 0.364 |
+| 7 | $-2$ | E | $0.318$ | 0.682 | 0.530 | 0.470 | 1.166 | 0 |
+| 8 | 8 | NE | $0.000$ | 1.000 | 0.848 | 0.152 | 0.848 | 0.152 |
+
+Check column 3 by hand. The choice is NE because $d = 6 > 0$, so
+
+$$ s = \frac{6 - 8}{18.868} = -0.1060, \qquad \alpha = 1 - 0.1060 = 0.894 $$
+$$ D_{\text{upper}} = \left|-0.1060 - 0.8480\right| = 0.9540 \Rightarrow \alpha = 0.046, \qquad
+   D_{\text{lower}} = \left|-0.1060 + 0.8480\right| = 0.7420 \Rightarrow \alpha = 0.258 $$
+
+The shaded band therefore spans three rows in every column, with the centre pixel darkest. The trace also shows the symmetry of the line: columns 1 and 7, 2 and 6, 3 and 5 have mirror-image values, and column 4 — the exact midpoint of the line — is shaded symmetrically above and below.
+
+> [!note] What the eye sees
+> Three gray levels per column, summing roughly to the coverage of the ideal line, look like a smooth stroke at viewing distance. This is *pre-filtering*: the weight is computed before sampling, from the geometry, instead of averaging samples afterwards. That is why the method needs no supersampling buffer — and why it is cheap, and why its quality is limited to the filter's three-pixel footprint.
+
+### 7.11 Gupta–Sproull — algorithm
+
+> [!important] Gupta–Sproull — statement
+> ```text
+> 1: input (x0,y0),(x1,y1); require x0<x1 and 0 ≤ Δy ≤ Δx
+> 2: Δx = x1−x0;  Δy = y1−y0;  a = Δy;  b = −Δx
+> 3: d = 2a + b;  x = x0;  y = y0
+> 4: L = sqrt(Δx² + Δy²);  k = Δx/L
+> 5: plot(x,y)                                  // first pixel, full intensity
+> 6: while x < x1 do
+> 7:     if d > 0 then  s = (d − Δx)/(2L);  x' = x+1;  y' = y+1
+> 8:     else          s = (d + Δx)/(2L);  x' = x+1;  y' = y
+> 9:     α = Filter(|s|);  blend(x', y', α)
+> 10:    Du = |s − k|;  Dl = |s + k|
+> 11:    blend(x', y'+1, Filter(Du));  blend(x', y'−1, Filter(Dl))
+> 12:    if d > 0 then  y = y+1;  d = d + 2(a+b)
+> 13:    else          d = d + 2a
+> 14:    x = x + 1
+> ```
+>
+> **Input:** integer endpoints in the working octant, a line colour, a background colour, and a filter.
+> **Output:** a line drawn with three shaded pixels per column.
+> **Cost:** $O(\Delta x)$ — the same integer loop as midpoint plus three blends and two absolute values per column; $O(1)$ extra memory. No division inside the loop ($k$ and $2L$ are computed once), no trigonometry.
+
+| Step in the loop | Midpoint alone | Gupta–Sproull adds |
+| --- | --- | --- |
+| decide the pixel | $d > 0$ → NE, else E | unchanged |
+| distance | — | $s = (d \pm \Delta x)/(2L)$, using $d$ **before** the update |
+| shade | one pixel, full intensity | $\alpha = \text{Filter}(|s|)$ and a blend |
+| neighbours | — | $D_u$, $D_l$ and two more blends |
+| update | $d \mathrel{+}= 2a$ or $2(a+b)$ | unchanged |
+
+### 7.12 Interactive dry run
+
+The widget walks the eight columns of §7.10. Each step shades the selected pixel and its two vertical neighbours, and the table records $d$, the choice, $s$ and the three weights. Watch column 4 — the exact midpoint — where the pixel above and the pixel below receive the same $\alpha$.
+
+```html
+<div id="w-gs" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <button id="gs-play">▶ Play</button>
+    <button id="gs-pause">⏸ Pause</button>
+    <button id="gs-next">⏭ Next Step</button>
+    <button id="gs-reset">↺ Reset</button>
+  </div>
+  <div id="gs-say" style="min-height:40px;color:var(--text-muted,#555);margin-bottom:8px">Ready · line (0,0) → (8,5) · L = √89 = 9.434 · press Next Step</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start">
+    <svg id="gs-stage" viewBox="0 0 430 330" style="flex:1 1 300px;min-width:270px;height:auto;display:block;background:var(--background-secondary,#f8f9fa);border-radius:8px"></svg>
+    <div style="flex:1 1 230px;min-width:210px">
+      <div style="font-size:13px;color:var(--text-faint,#777);margin-bottom:4px">Shaded columns</div>
+      <div id="gs-table" style="font-family:var(--font-monospace,monospace);font-size:12px;line-height:1.7"></div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const CELL = 40, OX = 20, OY = 20, XMAX = 9, YMAX = 7;
+  const DX = 8, DY = 5, L = Math.sqrt(DX * DX + DY * DY), TWOL = 2 * L, K = DX / L;
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("gs-stage");
+  const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const px = x => OX + x * CELL, py = y => OY + (YMAX - y) * CELL;
+  const pixelLayer = el("g", {}), gridLayer = el("g", {}), markLayer = el("g", {});
+
+  for (let y = 0; y < YMAX; y++) for (let x = 0; x < XMAX; x++) {
+    gridLayer.appendChild(el("rect", { x: px(x) + 1, y: py(y) + 1, width: CELL - 2, height: CELL - 2, fill: "none", stroke: "var(--background-modifier-border,#dee2e6)", "stroke-width": 0.7 }));
+  }
+  svg.appendChild(pixelLayer);
+  svg.appendChild(gridLayer);
+  svg.appendChild(el("line", { x1: px(0), y1: py(0), x2: px(8), y2: py(5), stroke: "var(--color-red,#e03131)", "stroke-width": 1.5, "stroke-dasharray": "5 4", opacity: 0.85 }));
+  for (let x = 0; x < XMAX; x++) {
+    const t = el("text", { x: px(x) + CELL / 2, y: py(0) + CELL + 12, "text-anchor": "middle", "font-size": 10, fill: "var(--text-faint,#888)" });
+    t.textContent = x; svg.appendChild(t);
+  }
+  for (let y = 0; y < YMAX; y++) {
+    const t = el("text", { x: OX - 6, y: py(y) + CELL / 2 + 4, "text-anchor": "end", "font-size": 10, fill: "var(--text-faint,#888)" });
+    t.textContent = y; svg.appendChild(t);
+  }
+  svg.appendChild(markLayer);
+
+  const a_const = DY, b_const = -DX;
+  let x, y, d, cur, timer, rows;
+  const say = document.getElementById("gs-say");
+  const table = document.getElementById("gs-table");
+
+  function reset() {
+    if (timer) { clearInterval(timer); timer = null; }
+    x = 0; y = 0; d = 2 * a_const + b_const; cur = 0; rows = [];
+    pixelLayer.innerHTML = ""; markLayer.innerHTML = "";
+    pixelLayer.appendChild(el("rect", { x: px(0) + 1, y: py(0) + 1, width: CELL - 2, height: CELL - 2, fill: "var(--interactive-accent,#4c6ef5)" }));
+    table.innerHTML = "<span style='color:var(--text-faint,#888)'>—</span>";
+    say.textContent = "Ready · pixel (0,0) drawn at full intensity · d₀ = 2Δy − Δx = 2 · press Next Step";
+  }
+  function shade(cx, cy, alpha) {
+    if (cx >= XMAX || cy < 0 || cy >= YMAX) return;
+    pixelLayer.appendChild(el("rect", { x: px(cx) + 1, y: py(cy) + 1, width: CELL - 2, height: CELL - 2, fill: "var(--interactive-accent,#4c6ef5)", opacity: Math.max(0.04, alpha) }));
+  }
+  function step() {
+    if (cur >= 8) { if (timer) { clearInterval(timer); timer = null; } return; }
+    const dBefore = d;
+    const ne = d > 0;
+    const s = ne ? (d - DX) / TWOL : (d + DX) / TWOL;
+    const aSel = Math.max(0, 1 - Math.abs(s));
+    const du = Math.abs(s - K), dl = Math.abs(s + K);
+    const au = Math.max(0, 1 - du), al = Math.max(0, 1 - dl);
+    const nx = x + 1, ny = ne ? y + 1 : y;
+
+    pixelLayer.innerHTML = "";
+    pixelLayer.appendChild(el("rect", { x: px(0) + 1, y: py(0) + 1, width: CELL - 2, height: CELL - 2, fill: "var(--interactive-accent,#4c6ef5)" }));
+    rows.forEach(r => {
+      shade(r.nx, r.ny, r.aSel); shade(r.nx, r.ny + 1, r.au); shade(r.nx, r.ny - 1, r.al);
+    });
+    shade(nx, ny, aSel); shade(nx, ny + 1, au); shade(nx, ny - 1, al);
+    markLayer.innerHTML = "";
+    markLayer.appendChild(el("rect", { x: px(nx), y: py(ny), width: CELL, height: CELL, fill: "none", stroke: "var(--color-blue,#1971c2)", "stroke-width": 2.5 }));
+
+    rows.push({ nx, ny, aSel, au, al, x: nx, d: dBefore, choice: ne ? "NE" : "E", s });
+    d = ne ? d + 2 * (a_const + b_const) : d + 2 * a_const;
+    x = nx; y = ny; cur++;
+
+    table.innerHTML = rows.map(r =>
+      "x=" + r.x + "  d=" + r.d + "  " + r.choice + "<br>&nbsp;&nbsp;s=" + r.s.toFixed(3) +
+      "  α=" + r.aSel.toFixed(3) + "<br>&nbsp;&nbsp;αu=" + r.au.toFixed(3) + "  αl=" + r.al.toFixed(3)
+    ).join("<br>");
+    say.textContent = "Column " + nx + " · d = " + dBefore + " → " + (dBefore > 0 ? "NE" : "E") +
+      " · s = (" + dBefore + (dBefore > 0 ? " − 8" : " + 8") + ")/18.868 = " + s.toFixed(3) +
+      " · α = " + aSel.toFixed(3) + " · αu = " + au.toFixed(3) + " · αl = " + al.toFixed(3);
+  }
+  document.getElementById("gs-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  document.getElementById("gs-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 900); };
+  document.getElementById("gs-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  document.getElementById("gs-reset").onclick = reset;
+  reset();
+})();
+</script>
+```
+
+### 7.13 Exam pointer
+
+> [!tip] Exam pointer — Gupta–Sproull
+> - State the two-part structure: **which pixel** (midpoint) then **how bright** (distance filter).
+> - Write $f = ax+by+c$, $F = 2f$, and the sign table ($F>0$ below, $F<0$ above); justify the factor 2 by the midpoint's $\tfrac12$.
+> - Derive $d_0 = 2a+b = 2\Delta y - \Delta x$ and the two updates $2a$, $2(a+b)$; reproduce the $(0,0)$–$(8,5)$ trace with $d = 2, -4, 6, 0, 10, 4, -2, 8$.
+> - Derive $s = v\Delta x/L$ from similar triangles, then $s = F/(2L)$, then $s = (d \pm \Delta x)/(2L)$ — plus for E, minus for NE, using $d$ **before** the update.
+> - Neighbours: $D_u = |s - \Delta x/L|$, $D_l = |s + \Delta x/L|$; the blend $C = \alpha C_{\text{line}} + (1-\alpha)C_{\text{bg}}$.
+> - Say why it is $O(\Delta x)$ with integer arithmetic, and why it is a *pre*-filter rather than supersampling.
+
+---
+
+## 8. Animation — The 2D Production Process
+
+*Deck: [[CG_Nov_Animation.pdf]] — 55 handwritten slides. The deck carries one exam question, quoted below; this topic answers it in the order the question implies, using the character jumping over a puddle as the running example.*
+
+### 8.1 The question
+
+> *Explain the 2D animation production process using a character jumping over a puddle as an example, with suitable illustrations.*
+
+The question asks for three things at once, and the marks are distributed across them:
+
+1. **The process** — the ordered stages from an idea to a finished shot, with what each stage produces.
+2. **The worked example** — every stage instantiated on one jump: which drawings exist, at which frames, in which order.
+3. **Illustrations** — the pose sheet, the arc, and the timing chart, because a process described without drawings is not an animation answer.
+
+### 8.2 What a 2D animation is
+
+> [!important] Definitions
+> **Frame** — one still image. **Frame rate** — frames per second; at **24 fps** one second of motion is 24 frames.
+> **Keyframe (extreme)** — a drawing made by the animator that defines a pose the action must pass through.
+> **In-between** — a drawing produced between two keys, either by an assistant or by interpolation, that carries the pose from one key to the next.
+> **Timing** — the number of frames between keys. **Spacing** — where the in-betweens sit inside that interval.
+
+Two facts organise everything else. First, **motion is an illusion produced by discrete samples**: the character does not move, 24 drawings per second are shown and the eye integrates them. Second, **the number of drawings is a budget**. A one-second jump is 24 drawings at "full animation" (one drawing per frame, *on ones*), or 12 drawings if each is shot twice (*on twos*) — and the choice is visible: on twos looks steppier and is the standard for economical TV animation.
+
+### 8.3 The production pipeline
+
+![[CG - 2D Animation Pipeline.excalidraw]]
+
+The pipeline has three phases. **Pre-production** decides what will happen (story, timing, design); **production** makes the drawings; **post-production** assembles them with the background, camera and effects.
+
+| Stage | Produces | For the puddle jump |
+| --- | --- | --- |
+| 1 · **Story & storyboard** | beat sheet, thumbnails, shot timing | "character walks, sees puddle, jumps, lands, walks on" — 2 seconds of screen time |
+| 2 · **Character design** | model sheet: proportions, views, palette, construction | the character's height in heads, limb lengths, the shape language |
+| 3 · **Keyframes (extremes)** | the poses the action must hit | crouch, push-off, rise, apex, fall, contact, recover |
+| 4 · **In-betweens & timing** | the drawings between keys, plus the timing chart | 6 in-betweens per gap, spaced by the arc and the easing |
+| 5 · **Clean-up & colour** | clean line, ink and paint, background layer | consistent line weight, flat colours, the puddle painted once |
+| 6 · **Compositing** | camera move, effects, render and export | the character layer over the background, exported at 24 fps |
+
+> [!note] Why the order is not negotiable
+> Each stage consumes the previous stage's output as its *specification*. In-betweening requires finished keys — an in-between between two unresolved poses is wasted work. Clean-up requires a locked timing chart, because the number of drawings is decided there. Compositing requires painted cels and a background. Reordering the pipeline does not merely cost time; it makes the output undefined.
+
+### 8.4 Stage 1 — storyboard and beat sheet
+
+A storyboard fixes **what happens** and **how long it takes**, before any drawing is animated. Each panel carries a beat and a duration in frames.
+
+| Beat | Frames | Content |
+| --- | --- | --- |
+| 1 | 1–4 | the character walks in from the left, head down |
+| 2 | 5–8 | sees the puddle, stops, looks down |
+| 3 | 9–12 | anticipation: crouch, arms back |
+| 4 | 13–20 | the jump: push-off → apex → descent |
+| 5 | 21–24 | landing, squash, recover, walk on |
+
+The beat sheet is where the **frame budget** is spent. Two seconds of screen time is 48 frames at 24 fps; the storyboard decides that the jump gets 8 of them and the anticipation 4, and that decision constrains every later stage.
+
+### 8.5 Stage 2 — the model sheet
+
+The model sheet is the character's specification: proportions, construction shapes, the front/side/three-quarter views, and the colour palette. Its purpose is **consistency across drawings made by different people on different days**. For the jump it also fixes the *line of action* — the curve through the body that gives the pose its energy — and the character's height in heads, which the squash and stretch will preserve in volume.
+
+> [!important] Volume preservation
+> Squash and stretch change the character's *proportions*, not its *volume*. A crouch that is $1.2\times$ wider should be about $1/1.2 = 0.83\times$ shorter. This is the rule that keeps a squashed character from looking deflated, and it is why the model sheet fixes the construction shapes rather than only the silhouette.
+
+### 8.6 Stage 3 — the seven key poses
+
+![[CG - Jump Arc Keyframes.excalidraw]]
+
+| Key | Frame | Pose | What it establishes |
+| --- | --- | --- | --- |
+| **K1** | 1 | standing at the edge, weight forward | the start of the action |
+| **K2** | 5 | crouch: knees bent, arms back, body compressed (**squash**) | **anticipation** — the audience reads the jump before it happens |
+| **K3** | 9 | push-off: legs extended, arms up, body elongated (**stretch**) | the impulse; the fastest part of the motion |
+| **K4** | 13 | apex: body gathered, legs tucked, arms out | the top of the arc, where motion is slowest |
+| **K5** | 17 | descent: legs reaching down, arms forward | preparation for contact |
+| **K6** | 21 | contact: knees absorb, body compressed again (**squash**) | impact and weight |
+| **K7** | 24 | recover: back to standing, settle | the action ends, ready to walk on |
+
+The keys are drawn as **extremes**: they are the poses where the action changes direction or meaning. Everything between them is interpolation, and interpolation is only as good as the extremes it connects.
+
+### 8.7 Stage 4 — timing, spacing and the in-betweens
+
+Between K1 and K2, and so on, the assistant draws the in-betweens. Two decisions are being made at once:
+
+- **Timing** — how many frames the gap gets. A short gap is fast, a long gap is slow.
+- **Spacing** — where inside the gap each in-between sits. Even spacing gives constant speed; bunched spacing near a key gives **slow in / slow out** around that key.
+
+For the jump, the arc is a parabola, and the speed along it is not constant: the character lingers near the apex and moves fastest near the ground. The timing chart encodes exactly that.
+
+| Key | Frame | Height above ground $h$ (units) | Gap to next key |
+| --- | --- | --- | --- |
+| K1 | 1 | 0 | 4 frames — slow start (anticipation holds) |
+| K2 | 5 | 0 (crouched) | 4 frames — explosive, wide spacing |
+| K3 | 9 | 163 | 4 frames — decelerating toward the apex |
+| K4 | 13 | 180 | 4 frames — accelerating away from the apex |
+| K5 | 17 | 152 | 4 frames |
+| K6 | 21 | 0 (compressed) | 3 frames — the shortest gap, the snap of recovery |
+| K7 | 24 | 0 | — |
+
+Heights follow $h(t) = 4H\,t(1-t)$ with $H = 180$ units over the 23-frame span, which is why the apex sits at $t = 0.522$ and $h = 179.6$ rather than exactly 180: the apex falls between two frames, and the drawing at frame 13 is one frame off the mathematical peak.
+
+> [!note] The arc is the path, the spacing is the speed
+> These are separate pieces of information and they are drawn separately. The **arc** is a curve through space that every drawing must lie on; the **timing chart** is a set of marks along that curve saying which drawing happens on which frame. A common beginner error is to space the drawings evenly along a correctly drawn arc, which produces a jump that floats: constant speed along a ballistic path looks weightless, because real gravity decelerates on the way up and accelerates on the way down.
+
+### 8.8 Stage 5 — clean-up, ink and paint
+
+The animator's rough keys and in-betweens go to clean-up, where the lines are redrawn consistently, then to ink and paint, where each cel is filled with flat colour. The background is painted **once**, separately, and the character is composited over it — which is the economic reason 2D animation separates the layers at all: the background does not need to be redrawn for every frame.
+
+### 8.9 Stage 6 — compositing and post
+
+The painted cels are photographed or scanned over the background at the frame rate, with any camera move (a pan, a truck-in) applied at this stage rather than drawn. Effects — dust at the landing, splash from the puddle, motion smear on the fastest frames — are added here. The shot is exported at 24 fps for film or 25/30 fps for broadcast, and the timing chart is what guarantees that the exported frame count matches the board's intent.
+
+### 8.10 The principles the example forces
+
+| Principle | Where it appears in the jump | What it fixes |
+| --- | --- | --- |
+| **Squash and stretch** | K2 and K6 compressed, K3 elongated | weight and elasticity; preserves volume |
+| **Anticipation** | K2 crouch before the push-off | the audience reads the action before it happens |
+| **Arcs** | the parabolic path K1 → K7 | natural motion; nothing in nature moves in a straight line |
+| **Slow in / slow out** | bunched spacing near K4 apex, wide spacing near K3 | the effect of gravity and inertia |
+| **Follow-through** | arms and head continue after the body stops at K6 | the body is a chain, not a rigid block |
+| **Secondary action** | the puddle splash, the dust | supports the main action without competing with it |
+| **Staging** | the silhouette of each key reads clearly | the pose is legible at a glance |
+
+> [!warning] The jump fails if any one of these is missing
+> Remove the anticipation and the jump looks teleported. Remove the arc and it looks like an elevator. Space it evenly and it floats. Skip the squash and the character looks rigid. The exam answer should name each principle **and point at the frame where it is used** — the example is what earns the marks, not the list.
+
+### 8.11 Interpolation: the arithmetic of an in-between
+
+An in-between can be computed rather than drawn, and the computation is the same linear interpolation used everywhere else in the course. For two keys $\mathbf{K}_1, \mathbf{K}_2$ and a parameter $t \in [0,1]$:
+
+$$ \mathbf{P}(t) = (1-t)\,\mathbf{K}_1 + t\,\mathbf{K}_2 $$
+
+With a jump the keys are only two of the seven poses; between any two consecutive keys the same formula applies, and the *path* (the arc) is a separate constraint that the interpolated positions must satisfy.
+
+Linear interpolation gives constant speed. To get slow-in/slow-out, the parameter is eased before it is used:
+
+$$ t' = 3t^2 - 2t^3 \qquad\text{(smoothstep)}, \qquad \mathbf{P}(t') = (1-t')\mathbf{K}_1 + t'\mathbf{K}_2 $$
+
+Easing changes **where** the in-betweens sit, not the path: at $t = 0.25$ the eased parameter is $t' = 0.156$, so the drawing is closer to the first key than a linear in-between would be — it leaves slowly. At $t = 0.75$, $t' = 0.844$ — it arrives slowly.
+
+Worked numbers for a gap of four frames from $x = 100$ to $x = 260$ ($\Delta x = 160$):
+
+| In-between | $t$ | linear $x$ | eased $t'$ | eased $x$ |
+| --- | --- | --- | --- | --- |
+| 1st | 0.25 | 140 | 0.156 | 125.0 |
+| 2nd | 0.50 | 180 | 0.500 | 180.0 |
+| 3rd | 0.75 | 220 | 0.844 | 235.0 |
+
+The middle in-between is identical in both columns — easing always pins the halfway point — while the outer two move toward the keys. The spacing is now **wide in the middle, narrow at the ends**, which is exactly the spacing chart an animator would draw by hand.
+
+> [!important] In-betweening — statement
+> ```text
+> 1: input two keys K1, K2 and the number of frames n in the gap
+> 2: for f = 1 to n:
+> 3:     t  = (f − 1) / (n − 1)
+> 4:     t' = ease(t)                  // identity for linear, 3t² − 2t³ for smooth
+> 5:     P  = (1 − t')·K1 + t'·K2
+> 6:     if the action is a jump: project P onto the arc, i.e. use P.x and
+> 7:        set P.y = 4H·t'·(1 − t')
+> 8:     draw P
+> ```
+>
+> **Input:** two key poses, the frame count, and the easing function.
+> **Output:** $n$ drawings, the first and last of which are the keys themselves.
+> **Cost:** $O(n)$ per gap, one interpolation and possibly one evaluation of the arc per frame.
+
+### 8.12 Interactive dry run
+
+The widget tweens the character between the takeoff key and the landing key across 13 frames. Switch between **linear** and **eased** spacing and watch the dots on the timing track: linear spacing is uniform, eased spacing bunches at both ends. The panel shows $t$, $t'$ and the position actually drawn.
+
+```html
+<div id="w-tween" style="border:1px solid var(--background-modifier-border,#ccc);border-radius:10px;padding:12px;background:var(--background-primary,#fff);color:var(--text-normal,#222);font:14px/1.45 var(--font-interface,system-ui)">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
+    <button id="tw-play">▶ Play</button>
+    <button id="tw-pause">⏸ Pause</button>
+    <button id="tw-next">⏭ Next Step</button>
+    <button id="tw-reset">↺ Reset</button>
+    <label style="margin-left:6px;font-size:13px;color:var(--text-muted,#555)">
+      <input type="radio" name="twe" id="tw-linear" checked> linear
+    </label>
+    <label style="font-size:13px;color:var(--text-muted,#555)">
+      <input type="radio" name="twe" id="tw-ease"> smoothstep
+    </label>
+  </div>
+  <div id="tw-say" style="min-height:40px;color:var(--text-muted,#555);margin-bottom:8px">Ready · 13 frames from takeoff to landing · linear spacing · press Next Step</div>
+  <svg id="tw-stage" viewBox="0 0 560 300" style="width:100%;height:auto;display:block;background:var(--background-secondary,#f8f9fa);border-radius:8px"></svg>
+  <div id="tw-table" style="margin-top:8px;font-family:var(--font-monospace,monospace);font-size:12px;line-height:1.6;max-height:110px;overflow:auto"></div>
+</div>
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("tw-stage");
+  const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const GROUND = 226, X0 = 60, X1 = 500, H = 130, N = 13;
+  const say = document.getElementById("tw-say");
+  let frame = 0, timer = null, eased = false, drawn = [];
+
+  // static scene
+  svg.appendChild(el("rect", { x: 0, y: GROUND, width: 560, height: 300 - GROUND, fill: "var(--background-modifier-border,#e9ecef)" }));
+  svg.appendChild(el("line", { x1: 0, y1: GROUND, x2: 560, y2: GROUND, stroke: "var(--text-faint,#868e96)", "stroke-width": 2 }));
+  svg.appendChild(el("ellipse", { cx: 280, cy: GROUND + 6, rx: 70, ry: 8, fill: "var(--color-blue,#a5d8ff)", opacity: 0.55 }));
+  const pl = el("text", { x: 252, y: GROUND + 26, "font-size": 11, fill: "var(--color-blue,#1971c2)" });
+  pl.textContent = "puddle"; svg.appendChild(pl);
+  const dots = el("g", {}); svg.appendChild(dots);
+  const ghosts = el("g", {}); svg.appendChild(ghosts);
+  const figure = el("g", {}); svg.appendChild(figure);
+  const frameLabel = el("text", { x: 14, y: 24, "font-size": 13, fill: "var(--text-muted,#666)" });
+  svg.appendChild(frameLabel);
+  const axisLabel = el("text", { x: 14, y: 44, "font-size": 11, fill: "var(--text-faint,#888)" });
+  axisLabel.textContent = "frames 1 → 13   (keys at 1 and 13)";
+  svg.appendChild(axisLabel);
+
+  // timing track
+  const TRACK_Y = 258;
+  svg.appendChild(el("line", { x1: X0, y1: TRACK_Y, x2: X1, y2: TRACK_Y, stroke: "var(--background-modifier-border,#ced4da)", "stroke-width": 2 }));
+
+  function pose(t) {
+    const tt = eased ? (3 * t * t - 2 * t * t * t) : t;
+    const x = X0 + (X1 - X0) * tt;
+    const y = GROUND - 4 * H * tt * (1 - tt);
+    return { x, y, tt };
+  }
+  function drawFigure(g, x, y, scale) {
+    g.innerHTML = "";
+    const s = scale || 1;
+    g.appendChild(el("circle", { cx: x, cy: y - 34 * s, r: 7 * s, fill: "none", stroke: "var(--text-normal,#222)", "stroke-width": 2 }));
+    g.appendChild(el("line", { x1: x, y1: y - 27 * s, x2: x, y2: y - 12 * s, stroke: "var(--text-normal,#222)", "stroke-width": 2.5 }));
+    g.appendChild(el("line", { x1: x, y1: y - 12 * s, x2: x - 7 * s, y2: y, stroke: "var(--text-normal,#222)", "stroke-width": 2.5 }));
+    g.appendChild(el("line", { x1: x, y1: y - 12 * s, x2: x + 7 * s, y2: y, stroke: "var(--text-normal,#222)", "stroke-width": 2.5 }));
+    g.appendChild(el("line", { x1: x - 8 * s, y1: y - 22 * s, x2: x + 8 * s, y2: y - 18 * s, stroke: "var(--text-normal,#222)", "stroke-width": 2 }));
+  }
+  function reset() {
+    if (timer) { clearInterval(timer); timer = null; }
+    frame = 0; drawn = [];
+    dots.innerHTML = ""; ghosts.innerHTML = "";
+    const p = pose(0);
+    drawFigure(figure, p.x, p.y, 1);
+    frameLabel.textContent = "frame 1 / 13";
+    document.getElementById("tw-table").innerHTML = "<span style='color:var(--text-faint,#888)'>—</span>";
+    say.textContent = "Ready · 13 frames from takeoff to landing · " + (eased ? "smoothstep" : "linear") + " spacing · press Next Step";
+  }
+  function step() {
+    if (frame >= N - 1) { if (timer) { clearInterval(timer); timer = null; } return; }
+    frame++;
+    const t = frame / (N - 1);
+    const p = pose(t);
+    ghosts.innerHTML = "";
+    drawn.slice(-3).forEach((q, i) => {
+      const g = el("g", { opacity: 0.25 + i * 0.15 });
+      ghosts.appendChild(g);
+      drawFigure(g, q.x, q.y, 1);
+    });
+    drawFigure(figure, p.x, p.y, 1);
+    dots.appendChild(el("circle", { cx: p.x, cy: TRACK_Y, r: 4, fill: "var(--interactive-accent,#4c6ef5)" }));
+    drawn.push(p);
+    frameLabel.textContent = "frame " + (frame + 1) + " / 13";
+    const gap = drawn.length > 1 ? Math.abs(drawn[drawn.length - 1].x - drawn[drawn.length - 2].x).toFixed(1) : "—";
+    say.textContent = "frame " + (frame + 1) + " · t = " + t.toFixed(3) + " · t′ = " + p.tt.toFixed(3) +
+      " · x = " + p.x.toFixed(1) + " · height = " + (GROUND - p.y).toFixed(0) + " · spacing from previous = " + gap;
+    const rows = drawn.map((q, i) => {
+      const tt = (i + 1) / (N - 1);
+      return "f" + (i + 2) + "  t=" + tt.toFixed(2) + "  t′=" + q.tt.toFixed(3) + "  x=" + q.x.toFixed(0) + "  h=" + (GROUND - q.y).toFixed(0);
+    });
+    document.getElementById("tw-table").innerHTML = rows.join("<br>");
+  }
+  document.getElementById("tw-next").onclick = () => { if (timer) { clearInterval(timer); timer = null; } step(); };
+  document.getElementById("tw-play").onclick = () => { if (timer) clearInterval(timer); timer = setInterval(step, 420); };
+  document.getElementById("tw-pause").onclick = () => { if (timer) { clearInterval(timer); timer = null; } };
+  document.getElementById("tw-reset").onclick = reset;
+  document.getElementById("tw-linear").onchange = () => { eased = false; reset(); };
+  document.getElementById("tw-ease").onchange = () => { eased = true; reset(); };
+  reset();
+})();
+</script>
+```
+
+### 8.13 Exam pointer
+
+> [!tip] Exam pointer — 2D animation
+> - Draw the pipeline in three phases with six stages, and say what each stage *produces* (not just its name).
+> - Answer the question's example explicitly: **seven keys** (K1 crouch … K7 recover), the frame numbers 1, 5, 9, 13, 17, 21, 24, and the arc through them.
+> - Draw the arc and the timing chart **separately**, and say that the arc is the path while the timing chart is the speed.
+> - Name the principles against specific frames: anticipation at K2, squash at K2/K6, stretch at K3, slow in/out at K4, follow-through after K6.
+> - Give the in-between formula $\mathbf{P}(t) = (1-t)\mathbf{K}_1 + t\mathbf{K}_2$ and the eased version $t' = 3t^2 - 2t^3$; the four-frame gap example (125 / 180 / 235 against 140 / 180 / 220) shows the spacing change numerically.
+> - Close with the frame budget: 24 fps, one second = 24 drawings, on ones versus on twos.
+
+---
+
+## Formula Summary
+
+| Quantity | Expression | Notes |
+| --- | --- | --- |
+| Camera basis | $\mathbf{n}=\dfrac{\mathbf{o}-\mathbf{l}}{\lVert\mathbf{o}-\mathbf{l}\rVert},\ \mathbf{u}=\dfrac{\mathbf{v}_{up}\times\mathbf{n}}{\lVert\cdot\rVert},\ \mathbf{v}=\mathbf{n}\times\mathbf{u}$ | right-handed; $\mathbf{n}$ points *behind* the camera |
+| View matrix | $M_{view}=\mathbf{R}\,T(-\mathbf{o})$ | translation first for column vectors |
+| Orthographic matrix | $M_{ortho}$ with $2/(x_{\max}-x_{\min})$ and $-2/(z_{far}-z_{near})$ | $z$ row negated because the camera looks down $-z$ |
+| Perspective matrix | $M_{persp}$, fourth row $(0,0,-1,0)$ | sets $w=-z_{cam}$; requires $z<0$ |
+| Viewport map | $V_x=s_xW_x+t_x,\ V_y=s_yW_y+t_y$ | $s=\Delta V/\Delta W$; $y$-flip needs $s_y<0$ |
+| Point inside window | $x_{\min}\le x\le x_{\max}$ AND $y_{\min}\le y\le y_{\max}$ | ties count as inside |
+| Line parametric form | $P(t)=P_0+t(P_1-P_0),\ 0\le t\le 1$ | all clipping solves for $t$ |
+| Intersection with $x=x_{\min}$ | $t=\dfrac{x_{\min}-x_0}{x_1-x_0}$ | denominator $0$ ⇒ parallel to the plane |
+| Outcode order | `Far Near Top Bottom Right Left` | bit 5 … bit 0 |
+| Trivial decisions | OR $=0$ accept · AND $\neq0$ reject | otherwise clip |
+| Face normal | $\mathbf{N}=(B-A)\times(C-A)$ | outward if vertices are counterclockwise when seen from outside |
+| Front/back test | $\mathbf{N}\cdot\mathbf{v}<0$ front, $>0$ back | for $\mathbf{v}=(0,0,-1)$: $\mathbf{N}\cdot\mathbf{v}=-N_z$ |
+| Plane from a face | $Ax+By+Cz+D=0$, $\mathbf{N}=(A,B,C)$, $D=-Ax_1-By_1-Cz_1$ | $C\neq0$ required for the depth solve |
+| Depth from the plane | $z=\dfrac{-D-Ax-By}{C}$ | $z$ grows inward (farther) |
+| Incremental depth | $\Delta z_x=-\dfrac{A}{C},\quad \Delta z_y=+\dfrac{B}{C}$ | one add per pixel |
+| Plane side function | $f(\mathbf{r})=(\mathbf{r}-\mathbf{p})\cdot\mathbf{n}$ | $>0$ OUT, $<0$ IN, $=0$ on the plane |
+| Split parameter | $t=\dfrac{f(\mathbf{u})}{f(\mathbf{u})-f(\mathbf{v})}$ | requires opposite signs, so $t\in(0,1)$ |
+| BSP traversal | eye OUT: IN → node → OUT; eye IN: OUT → node → IN | one dot product per node |
+| Edge slope reciprocal | $\dfrac{1}{m}=\dfrac{\Delta x}{\Delta y}=\dfrac{x_2-x_1}{y_2-y_1}$ | horizontal edges never enter the AET |
+| Scan-line update | $x\leftarrow x+\dfrac{1}{m}$ | edge active for $y\in[y_{\min},y_{\max})$ |
+| Span fill | fill $\lceil x_1\rceil \ldots \lfloor x_2\rfloor$ for sorted pairs | pairs 1–2, 3–4, … |
+| Fill test | boundary fill: colour ≠ boundary AND ≠ fill; flood fill: colour = interior | mark on **push** |
+| Midpoint start | $d_0=2a+b=2\Delta y-\Delta x$ | $a=\Delta y$, $b=-\Delta x$ |
+| Midpoint updates | E: $d\mathrel{+}=2a$ · NE: $d\mathrel{+}=2(a+b)$ | $d>0$ ⇒ NE; $d\le0$ ⇒ E |
+| Line length | $L=\sqrt{\Delta x^2+\Delta y^2}$ | computed once per line |
+| Signed distance | $s=\dfrac{d+\Delta x}{2L}$ (E), $s=\dfrac{d-\Delta x}{2L}$ (NE) | use $d$ **before** the update |
+| Neighbour distances | $D_{upper}=\left|s-\dfrac{\Delta x}{L}\right|,\ D_{lower}=\left|s+\dfrac{\Delta x}{L}\right|$ | same for E and NE; only $s$ changes |
+| Blend | $C=\alpha C_{line}+(1-\alpha)C_{bg}$ | $\alpha=\mathrm{Filter}(|s|)$, cone $=1-D$ |
+| In-between | $\mathbf{P}(t)=(1-t)\mathbf{K}_1+t\mathbf{K}_2$ | two keys, $t\in[0,1]$ |
+| Eased in-between | $t'=3t^2-2t^3$ | pins $t'=0.5$ at $t=0.5$ |
+| Jump height | $h(t)=4H\,t(1-t)$ | symmetric arc; apex at $t=0.5$ |
+| Bitmap storage | $5\times7=35$ bits → $10\times14=140$ at $\times2$ | on-pixels $11\to44$ |
+| Outline area | $1\times7+5\times1-1=11$ units² | scales by $2^2=4$; area ≠ pixel count |
+
+> [!note] Source images
+> All `CG - …excalidraw` drawings are original reconstructions of the hand-drawn diagrams in the decks; they live in the vault-root `Excalidraw/` folder. The PNG figures are page renders from the corresponding deck, stored in `Computer Graphics/images/` with the `CG - ` prefix: the tetrahedron back-face result and the depth-buffer frames from [[CG_Oct_8.pdf]], the Weiler–Atherton crossings and concave-subject split from [[CG_Oct_5.pdf]], the BSP traversal order from [[CG_26_Oct.pdf]], the E/NE case of Gupta–Sproull from [[CG_Nov-2.pdf]], and the bitmapped and outlined letter `L` from [[CG-29th_Oct.pdf]].
