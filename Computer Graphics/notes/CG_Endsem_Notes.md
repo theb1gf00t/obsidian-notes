@@ -13,6 +13,8 @@ tags:
 
 This block carries the course from a scene described in three dimensions to the pixels that finally appear on the screen. Every deck in it is one **stage of the viewing pipeline**: build the camera frame and the view volume (§1), clip what falls outside it — lines first, then filled polygons and 3D faces (§2–§3), decide which of the surviving surfaces is actually seen (§4–§5), convert the surviving areas into pixels (§6), and then repair the damage that discretisation does to those pixels (§7). The last deck leaves the geometry behind and animates it (§8).
 
+*Topic list and progress: [[CG_Syllabus]] · formatting rules: [[CG_context]] · the earlier block: [[CG_Midsem_notes]].*
+
 > [!info] How the block is organised
 > | Topic | Deck | Slides | Question it answers |
 > | --- | --- | --- | --- |
@@ -1004,7 +1006,7 @@ $$ \mathbf{N}\cdot\mathbf{v} = -N_z \qquad
 > [!note] Why counter-clockwise seen from outside
 > The right-hand rule ties the cross product to the vertex order: reversing the order reverses $\mathbf{N}$. A consistent outward convention therefore turns a purely combinatorial fact (the order the vertices were stored in) into a geometric one (which side is outside). Get the convention backwards and the algorithm culls exactly the visible faces.
 
-### 4.2 Worked example: a tetrahedron viewed along $-z$
+### 4.2 Worked example: a tetrahedron viewed along the negative z-axis
 
 Given $A=(4,5,4)$, $B=(2,3,6)$, $C=(6,1,4)$, $D=(3,2,2)$, viewing vector $\mathbf{v}=(0,0,-1)$, and the outward face list $ABC$, $ADB$, $DCB$, $ACD$.
 
@@ -2283,7 +2285,7 @@ $$ \boxed{\ d_0 = 2a + b = 2\Delta y - \Delta x\ } $$
 >
 > **Cost:** one comparison and one addition per column — $O(\Delta x)$, all integer arithmetic, no division and no floating point.
 
-### 7.6 Worked midpoint trace: $(0,0)$ to $(8,5)$
+### 7.6 Worked midpoint trace: from (0,0) to (8,5)
 
 Here $\Delta x = 8$, $\Delta y = 5$, so $a = 5$, $b = -8$, $d_0 = 2(5) - 8 = 2$, and the two constants are
 
@@ -2389,7 +2391,7 @@ The asymmetry in the coordinates is not a typo: when NE is selected, the "lower 
 > [!warning] Do not move the selected pixel to the neighbour's place
 > The three pixels are shaded **in the same column** $x_k+1$. The selected pixel gets $\alpha = \text{Filter}(|s|)$; the pixel above gets $\text{Filter}(D_{\text{upper}})$; the pixel below gets $\text{Filter}(D_{\text{lower}})$. When the selected pixel is NE, the pixel below it is E — it does **not** get the selected pixel's $\alpha$.
 
-### 7.10 Worked shading trace: the same line $(0,0)$–$(8,5)$
+### 7.10 Worked shading trace: the same line from (0,0) to (8,5)
 
 With $\Delta x = 8$, $\Delta y = 5$: $L = \sqrt{89} = 9.4340$, $2L = 18.8680$, and $\Delta x/L = 0.8480$. The $\alpha$ column applies the cone filter $\max(0, 1-D)$.
 
