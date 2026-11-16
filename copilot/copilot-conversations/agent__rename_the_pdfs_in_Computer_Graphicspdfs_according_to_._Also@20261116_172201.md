@@ -31,3 +31,11 @@ Also makes notes for the 28th september pdfs according to [[CG_context]] and [[C
 - **View-up vector.** The slide never states it. I took it as (0,0,1) because the printed basis and matrix only work out that way.
 - **Unreadable slide.** The deck's projection-types slide (p. 62) exports as unreadable text, so I used the readable slide 74 and the figures instead.
 [Timestamp: 2026/11/16 17:22:01]
+
+**user**: there are total 9 pdfs right post midsem?
+28th september forward(including 28th september)
+but in the [[CG_Endsem_Notes]] and [[CG_Syllabus]] I only see 8 sections.
+[Timestamp: 2026/11/16 17:43:50]
+
+**ai**: You're right. The 28 Sep deck is a separate lecture, not a duplicate. It covers the viewing transformation and the intro to projection, while the 29 Sep deck starts from a recap and goes on to the projection matrices and viewport mapping. That makes 9 post-midsem decks, so I'll restructure to match. First I'm checking how the syllabus and the context file number things.
+[Timestamp: 2026/11/16 17:43:50]
