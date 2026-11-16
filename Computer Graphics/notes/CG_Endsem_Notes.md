@@ -106,7 +106,7 @@ R=\begin{bmatrix}u_x&u_y&u_z&0\\v_x&v_y&v_z&0\\n_x&n_y&n_z&0\\0&0&0&1\end{bmatri
 - The camera is **not projected yet**; projection is a separate transformation applied after points are expressed in view coordinates.
 
 ### 1.2 Worked example: the square object
-
+	
 ![[CG - Camera Basis Example Scene.png|520]]
 *The scene (Post 1 deck, p. 46): square object with $A(2,1,0)$, $B(2,3,0)$, $C(2,3,3)$, $D(2,1,3)$; camera at $(1,2,2)$ looking at the object centre $(2,2,2)$.*
 
@@ -1865,6 +1865,8 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 7.1 The six stages
 
+**Where this section fits.** The earlier sections dealt with *geometry*: where things are, what the camera sees, and which surfaces are visible. This section deals with *pixels*: once we know which polygons are visible, how do we actually colour the screen cells inside them? It opens by restating the whole pipeline (as a map of where we are), then covers colouring a surface (lighting and shading), deciding which pixels are inside a polygon, the main fill algorithms, and finally how letters are stored and drawn.
+
 The deck restates the pipeline that §2.1 introduced, but this time stage by stage and with the vocabulary that the rest of the lecture uses. Each stage either changes **what an object is** or **which coordinate system it lives in**.
 
 | Stage | Operation | Coordinate change | The deck's own description |
@@ -1888,6 +1890,8 @@ Two stage-level facts the deck states outright:
 
 The deck separates two words that are routinely conflated, and the separation is examinable as a two-column comparison.
 
+*An analogy.* Imagine painting a curved vase. **Lighting** is the careful work of deciding exactly what colour a few chosen spots on the vase should be, by thinking hard about the lamp, the glaze and the angle you are looking from. **Shading** is the quick brushwork of blending between those chosen spots so the rest of the vase looks smooth. Doing the careful calculation at every pixel would be correct but very slow, so graphics does the careful calculation sparingly and *interpolates* (blends) in between.
+
 | | **Lighting** | **Shading** |
 | --- | --- | --- |
 | Computes | colour / intensity **at a point** | how those values **vary across a surface** |
@@ -1902,6 +1906,14 @@ The deck separates two words that are routinely conflated, and the separation is
 
 ### 7.3 The three shading models
 
+*Three answers to "how often do we compute lighting?"* The models differ only in *how much* lighting work they do and therefore *what* they blend:
+
+- **Flat shading** computes lighting once per polygon and paints the whole polygon one colour. It is fast, but a sphere built from flat triangles looks like a cut gemstone, because each facet has a visible, constant tone and the edges between them stand out.
+- **Gouraud shading** computes lighting at each *vertex* and blends the resulting **colours** across the polygon. Neighbouring polygons share vertices, so their colours meet smoothly at the edges and the facets disappear. It is a good compromise, but it only "knows" the lighting at the corners.
+- **Phong shading** blends the **normals** (the surface directions) across the polygon and then runs the lighting calculation at every pixel using the blended normal. Since the surface direction is what lighting really depends on, this reproduces curved-surface effects — especially shiny highlights — much more faithfully, at the cost of far more computation.
+
+A handy memory aid: Flat = one colour per polygon, Gouraud = interpolate *colour*, Phong = interpolate *normal*. (Do not confuse the Phong *shading* model with the Phong *lighting* equation; the first is about interpolation, the second about how to compute a colour from a normal.)
+
 | Model | What is interpolated | Look | Cost |
 | --- | --- | --- | --- |
 | **Flat** | nothing — one colour per polygon | faceted; each facet a constant tone | cheapest; one lighting evaluation per polygon |
@@ -1915,6 +1927,8 @@ The deck's summary line is the one to quote: all three models solve the same pro
 
 ### 7.4 Aliasing at the raster stage
 
+Think of drawing a diagonal line on graph paper, where you may only fully colour whole squares. The true line passes through squares only partially, but you must either colour a square completely or not at all. Colouring the squares nearest to the line gives a stepped, saw-tooth pattern — that visible stepping is **aliasing**, and the fact that the true line is smooth while the grid is coarse is the root cause.
+
 Scan conversion maps a continuous viewport onto a discrete grid. A line that is one pixel wide in continuous space has no exact pixel representation: at each column the rasterizer must choose one row, and the chosen rows step, producing the **staircase**. That staircase is aliasing, and it is not an error in the line algorithm — it is the unavoidable consequence of sampling.
 
 > [!warning] Aliasing is not a bug in Bresenham
@@ -1922,7 +1936,9 @@ Scan conversion maps a continuous viewport onto a discrete grid. A line that is 
 
 ### 7.5 Inside–outside tests
 
-Filling a polygon requires deciding, for every pixel, whether it is inside. The deck presents the two standard rules.
+Filling a polygon requires deciding, for every pixel, whether it is inside. For a simple shape like a triangle this is obvious to the eye, but a program needs a precise rule — and the rule matters most for odd shapes such as a five-pointed star drawn in a single stroke, where the central pentagon is enclosed by the outline *twice*. The deck presents the two standard rules.
+
+*The ray idea.* Both rules work the same way: from the pixel you are testing, imagine shooting a straight ray off to infinity (any direction works). Every time the ray crosses the polygon's outline you take note. A point deep inside has to cross the outline to escape; a point outside either never crosses it or enters and leaves it in matching pairs. The two rules differ only in how they tally the crossings: **even–odd** simply counts them (odd = inside), while **nonzero winding** counts them with a direction (up-crossing $+1$, down-crossing $-1$) and calls the point inside whenever the tally is not zero.
 
 > [!important] Definitions
 > **Even–odd (parity) rule** — cast a ray from the test point to infinity and count the polygon edges it crosses; the point is inside if the count is odd. Equivalently, sort the scan line's crossings by $x$ and fill between pairs: 1–2, 3–4, …
@@ -1951,6 +1967,8 @@ The four orthogonal offsets define **4-connectivity**; all eight define **8-conn
 
 ### 7.6 The scan-line idea
 
+*The idea in plain words.* Instead of testing every pixel against the whole polygon, sweep a horizontal line from the bottom of the polygon to the top, one pixel row at a time. On each row, find where the line crosses the polygon's edges, sort those crossing positions from left to right, and colour the stretch between the 1st and 2nd crossing, then between the 3rd and 4th, and so on. The reasoning is the even–odd rule applied along a single row: after crossing one edge you are inside, after crossing the next you are outside again. Because adjacent rows look very alike, we never recompute crossings from scratch — we just slide each one along by a fixed amount (its slope reciprocal) when we move up one row.
+
 A scan-line fill turns the two-dimensional inside test into a one-dimensional one, once per row of pixels. For a fixed $y$, the polygon's boundary is crossed at a finite set of $x$ values; sorting them and filling between alternate pairs fills the row exactly.
 
 ![[CG - Scan Line Fill.excalidraw]]
@@ -1974,6 +1992,8 @@ $$ x_{y+1} = x_y + \frac{1}{m} = x_y + \frac{\Delta x}{\Delta y} $$
 ### 7.7 Worked trace: a triangle, row by row
 
 Take the triangle $A(10,10)$, $B(50,20)$, $C(30,60)$ in a coordinate system with $y$ increasing upward, and fill it by scan lines.
+
+*How to read the tables.* The first table is the **edge table**: for each edge it records where the edge starts (lowest $y$), where it ends, the $x$ at its start, and how far $x$ moves for each row ($1/m$). The second table follows the sweep upward, listing which edges are currently "active", their $x$ position on that row, and the resulting span of pixels to fill. Notice that the edge $AB$ is short and shallow, so it is active for only the first ten rows and moves quickly sideways ($+4$ per row), while $AC$ is long and steep and moves slowly ($+0.4$ per row).
 
 | Edge | $y_{\min}$ | $y_{\max}$ | $x$ at $y_{\min}$ | $1/m = \Delta x/\Delta y$ |
 | --- | --- | --- | --- | --- |
@@ -2147,6 +2167,8 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 7.10 Seed fill, boundary fill, flood fill
 
+Scan-line fill needs the polygon's mathematical outline. Often, though, all you have is a picture — an outlined shape on the screen — and you want to colour its inside, exactly like the **paint-bucket** tool in a drawing program. You click on a pixel inside the shape (the **seed**), and the program spreads colour outwards from there, like water poured onto a floor and spreading until it meets walls. The algorithms below differ only in what counts as a "wall".
+
 The scan-line algorithm fills *one polygon* whose vertices are known. The seed-fill family fills *a connected region of pixels* whose extent is discovered as it goes — the natural method for interactive paint programs and for regions defined by their colour rather than by geometry.
 
 > [!important] Definitions
@@ -2165,6 +2187,8 @@ The scan-line algorithm fills *one polygon* whose vertices are known. The seed-f
 
 #### 4- versus 8-connectivity
 
+*What "connected" means.* When the fill spreads from a pixel, it must decide which neighbours it is allowed to step to. In **4-connected** mode it moves only up, down, left and right, like a rook in chess. In **8-connected** mode it may also step diagonally, like a king. The extra diagonal moves let the fill squeeze through a place where two boundary pixels touch only at their corners — a gap that is invisible to a rook but wide open to a king.
+
 The choice is not cosmetic. A boundary that is **8-connected** (its pixels touch only at corners in places) is *impermeable to a 4-connected fill* but *permeable to an 8-connected fill*, because the diagonal step is exactly the move that slips through the corner contact.
 
 | Fill | Boundary 4-connected | Boundary 8-connected |
@@ -2175,6 +2199,8 @@ The choice is not cosmetic. A boundary that is **8-connected** (its pixels touch
 So the safe pairing for a closed region is *8-connected boundary with 4-connected fill*, or *4-connected boundary with 8-connected fill*. This is why paint programs expose the connectivity as a fill option: the wrong pair floods the whole canvas.
 
 ### 7.11 The deck's stack traces
+
+*What the stack is doing.* The stack is the algorithm's "to-do list" of pixels that have been discovered but not yet coloured. Each cycle takes the most recently added pixel off the list (a **pop**), colours it, and adds any of its neighbours that still need colouring (a **push**). When the list is empty, there is nothing left to visit and the region is full. So the stack size after each pop is a compact record of how the fill is progressing: it rises when a pixel reveals new neighbours and falls when a pixel's neighbours have all been seen already.
 
 The deck runs the same stack-based pseudo-code three times and prints the stack size after every pop. The numbers are the algorithm's fingerprint: a pop either pushes some new neighbours or pushes none.
 
@@ -2333,6 +2359,8 @@ const $ = (id) => container.querySelector("#" + id);
 
 ### 7.14 Character generation: the bitmapped font
 
+Every letter on screen has to be turned into pixels, and there are two very different philosophies for storing a letter. One is to store **a picture of it** (a bitmapped font — a tiny grid of on/off dots, like a letter on a scoreboard). The other is to store **instructions for drawing it** (an outlined font — the corner points of its outline, which are then filled like any polygon using the scan-line method above). The first is simple and fast but fixed in size; the second is flexible and scales cleanly but needs more work to draw.
+
 There are two ways to put a character on a raster, and the deck builds the same letter $L$ both ways.
 
 A **bitmapped font** stores the character as a small binary image: one bit per pixel, $1$ = on, $0$ = off. For the deck's $5\times7$ letter:
@@ -2354,6 +2382,8 @@ A **bitmapped font** stores the character as a small binary image: one bit per p
 > Nearest-neighbour replication replaces every original pixel by a $2\times2$ block, so area (and the count of on-pixels) scales by $2^2 = 4$ while the *pattern* is unchanged. The deck's conclusion is the important part: *replication preserves the block pattern; it does not recover a smoother character outline.* A magnified bitmap is a blocky bitmap, not a better letter.
 
 ### 7.15 Character generation: the outlined font
+
+*Why this scales better.* Because the outline is just a list of coordinates, making the letter twice as big simply means multiplying every coordinate by 2 and then filling the larger outline afresh — the computer gets to choose the pixels at the *new* size instead of stretching old ones, so edges stay as crisp as the grid allows. Rotating or slanting the letter works the same way: transform the points, then fill.
 
 An **outlined font** stores the character as geometry: points and line segments that describe the boundary. The deck's `L` is a six-vertex counterclockwise polygon.
 
