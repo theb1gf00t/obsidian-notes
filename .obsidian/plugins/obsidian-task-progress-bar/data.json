@@ -963,7 +963,7 @@
       "ws_1794922305504_3w6o201g2": {
         "id": "ws_1794922305504_3w6o201g2",
         "name": "Default",
-        "updatedAt": 1794933254839,
+        "updatedAt": 1794934008008,
         "settings": {
           "fluentFilterState": {
             "inbox": {
@@ -1001,9 +1001,30 @@
               "filters": {},
               "advancedFilter": null,
               "viewMode": "list"
+            },
+            "tags": {
+              "filters": {},
+              "advancedFilter": {
+                "rootCondition": "any",
+                "filterGroups": [
+                  {
+                    "id": "id-1794922361844-z31l8i228",
+                    "groupCondition": "all",
+                    "filters": [
+                      {
+                        "id": "id-1794922361849-tcqrcb292",
+                        "property": "content",
+                        "condition": "contains",
+                        "value": ""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "viewMode": "list"
             }
           },
-          "fluentActiveViewId": "inbox"
+          "fluentActiveViewId": "tags"
         }
       }
     }

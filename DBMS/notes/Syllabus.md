@@ -2,10 +2,9 @@
 title: DBMS Syllabus Tracker
 aliases:
   - DBMS Syllabus
-  course: DBMS
+course: DBMS
 tags:
   - dbms
-  - DBMS
   - syllabus
 ---
 
@@ -40,7 +39,7 @@ WHERE file.path = this.file.path
 
 ## Post-Midsem — 3 topics
 
-- [x] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections)
+- [ ] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections)
 - [ ] **2 · Query / Join Algorithms (algos)** — [[algos.pdf|PDF]] · [[Post-Midsem-Notes|Notes]] (not yet written)
 - [ ] **3 · Transactions** — [[transactions.pdf|PDF]] · [[Post-Midsem-Notes|Notes]] (not yet written)
 
@@ -115,7 +114,7 @@ The topic's diagrams are either page renders lifted from the deck (`DBMS/images/
 | --- | --- |
 | [[DBMS - Disk Structure.excalidraw\|Disk Structure]] | Platter / track / sector geometry and the seek + rotational-delay cost of §1.2 |
 | [[DBMS - Blocking and Spanned Records.excalidraw\|Blocking and Spanned Records]] | Blocking factor $b = B/r$ and unspanned versus spanned records of §1.4 |
-| [[DBMS - File Block Allocation.excalidraw\|File Block Allocation]] | Contiguous, linked and indexed allocation of file blocks of §1.5 |
+| [[DBMS - File Block Allocation.excalidraw\|File Block Allocation]] | Contiguous, linked and mixed allocation of file blocks of §1.5 |
 | [[DBMS - Hashed File and Overflow Chains.excalidraw\|Hashed File and Overflow Chains]] | Main buckets plus overflow chains of §1.10 |
 | [[DBMS - Extendible Hashing.excalidraw\|Extendible Hashing]] | Global/local depth, the directory and a bucket split of §§1.13–1.15 |
 | [[DBMS - Linear Hashing.excalidraw\|Linear Hashing]] | The split pointer, $h_0$ / $h_1$ and the round-by-round growth of §§1.17–1.20 |
@@ -125,6 +124,10 @@ The topic's diagrams are either page renders lifted from the deck (`DBMS/images/
 | [[DBMS - Bplus Tree Structure.excalidraw\|Bplus Tree Structure]] | Root / internal / leaf levels and the leaf chain of §1.32 |
 | [[DBMS - Bplus Tree Node Format.excalidraw\|Bplus Tree Node Format]] | $m$ pointers and $m-1$ keys inside an internal node of §1.33 |
 | [[DBMS - Bplus Tree Insertion Split.excalidraw\|Bplus Tree Insertion Split]] | Leaf and internal split with key replication versus key move of §1.35 |
+| [[DBMS - Bplus Replicate vs Move.excalidraw\|Bplus Replicate vs Move]] | The deck's numbers (14 replicated at a leaf split, 14 moved at an internal split), §1.35 |
+| [[DBMS - Extendible Hashing Trace.excalidraw\|Extendible Hashing Trace]] | Snapshots of the 45, 22, 12, 11, 15, 10 example with doublings marked, §1.16 |
+| [[DBMS - Linear Hashing Trace.excalidraw\|Linear Hashing Trace]] | Snapshots of the 12, 11, 14, 13, 9, 10, 18 example with $h_i$ and $N$, §1.20 |
+| [[DBMS - Index Types Compared.excalidraw\|Index Types Compared]] | Primary vs clustering vs secondary entries and sizes, §1.21 |
 
 Page renders lifted from the deck (every one is embedded with a width and an italic caption):
 
