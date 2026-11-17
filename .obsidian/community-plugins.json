@@ -1,7 +1,6 @@
 [
   "pdf-plus",
   "copilot",
-  "star-notebooklm",
   "obsidian-excalidraw-plugin",
   "obsidian-image-toolkit",
   "quick-latex",
@@ -20,5 +19,6 @@
   "vimium",
   "obsidian-task-progress-bar",
   "obsidian-tasks-plugin",
-  "omnisearch"
+  "omnisearch",
+  "star-notebooklm"
 ]
