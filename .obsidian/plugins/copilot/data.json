@@ -971,15 +971,6 @@
       "configuredAt": 1794301387467
     },
     {
-      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
-      "info": {
-        "id": "opencode/minimax-m3.1-flash-free",
-        "displayName": "opencode/MiniMax M3.1 Flash Free"
-      },
-      "configuredModelId": "9cbc13ee-9b1c-475a-99e0-a201932c1a5a",
-      "configuredAt": 1794301387468
-    },
-    {
       "providerId": "c70166c4-bf9a-457d-9907-0e84ed2fc383",
       "info": {
         "id": "claude-fable-5-2",

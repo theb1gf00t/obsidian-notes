@@ -14,7 +14,7 @@ tags:
 This block carries the course from a scene described in three dimensions to the pixels that finally appear on the screen. Every deck in it is one **stage of the viewing pipeline**: re-describe the scene from the camera (§1), build the view volume and the projection (§2), clip what falls outside it — lines first, then filled polygons and 3D faces (§3–§4), decide which of the surviving surfaces is actually seen (§5–§6), convert the surviving areas into pixels (§7), and then repair the damage that discretisation does to those pixels (§8). The last deck leaves the geometry behind and animates it (§9).
 
 *Topic list and progress: [[CG_Syllabus]] · formatting rules: [[CG_context]] · the earlier block: [[CG_Midsem_notes]].*
-
+CaA
 > [!info] How the block is organised
 > | Topic | Deck | Slides | Question it answers |
 > | --- | --- | --- | --- |
