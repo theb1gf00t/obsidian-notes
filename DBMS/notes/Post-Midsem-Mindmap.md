@@ -1,0 +1,195 @@
+---
+mindmap-plugin: basic
+---
+
+# DBMS Post-Midsem — File Organization, Indexing & Query
+
+## 1. File Organization and Indexing
+- 1.1 Disk Space Management
+    - DBMS manages disk itself (preferred)
+        - Needs complete control over buffer flush order
+        - Required for crash recovery and write-ahead log
+    - OS file services: OS decides flush timing (not acceptable)
+- 1.2 Disk Structure & Access Cost
+    - Platters on a spindle (7000–10000 rpm)
+    - One read/write head per surface
+    - Block = unit of data transfer
+    - Access time = seek time + rotational delay
+        - Seek: 12–14 ms
+        - Rotational delay: 3–4 ms avg
+    - Cylinder = track $i$ on all platters (no seek between surfaces)
+    - Contiguous blocks on same cylinder → cheap to read
+- 1.3 Fixed vs Variable Length Records
+    - Fixed-length
+        - Every record = same byte size
+        - Record located by arithmetic (record number × length)
+        - File header stores count and field lengths
+    - Variable-length
+        - Causes: missing fields, repeating fields, variable fields
+        - Separator symbols mark field and record boundaries
+        - File header records separator symbols used
+- 1.4 Blocking Factor & Spanned Records
+    - Blocking factor $b = B / r$
+        - $B$ = block size (bytes), $r$ = record length
+        - Max whole records per block; discard fraction
+    - Unspanned (normal): record fits entirely in one block
+    - Spanned: record > block size; continues into next block (extra access cost)
+- 1.5 File Block Allocation on Disk
+    - Contiguous allocation
+        - Consecutive file blocks → consecutive disk blocks
+        - Fast scanning, supports double buffering
+        - Hard to insert block in middle
+    - Linked allocation
+        - Each disk block carries pointer to next
+        - Easy to expand; slow to scan (random I/O)
+    - Mixed allocation
+        - Runs of contiguous blocks, chained together
+- 1.6 File Operations
+    - Insert new record
+    - Delete a record
+    - Update field(s) = delete + insert
+    - Search by key or non-key field
+    - Range search
+- 1.7 Three Primary File Organizations
+    - Primary file organization = how records are placed into blocks
+    - **Heap** — insert fast, search slow
+    - **Sorted** — search/range fast, insert costly
+    - **Hashed** — search by key fast, range queries weak
+- 1.8 Heap Files
+    - Records appended in insertion order
+    - Insert: cheap (append to last block)
+    - Lookup: full file scan required
+- 1.9 Sorted (Sequential) Files
+    - Ordering field (OF) / Ordering Key Field (OKF)
+    - Search: binary search → $O(\log N)$ block accesses
+    - Range search: efficient (adjacent blocks)
+    - Insert: costly — use auxiliary file; periodic merge
+    - Delete: deletion markers
+- 1.10 Hashed Files
+    - Hashing field → bucket number via hash function $h$
+    - Buckets $0, 1, \ldots, M-1$
+    - Overflow chains when bucket is full
+    - Search: compute $h(k)$, fetch bucket, follow chain if needed
+- 1.11 Static Hashing Performance
+    - Ideal: 1 block access per lookup
+    - Capacity $C = r \cdot M$
+    - Disadvantages
+        - Actual records ≪ $C$ → space wastage
+        - Actual records ≫ $C$ → long overflow chains
+- 1.12 Dynamic File Organization
+    - Static hashing fails for growing/shrinking files
+    - Two schemes: Extendible Hashing, Linear Hashing
+- 1.13–1.16 Extendible Hashing
+    - Global depth $d$: trailing bits used; directory has $2^d$ entries
+    - Local depth: common suffix bits of records in a bucket
+    - Lookup: match $d$-bit suffix → directory → bucket
+    - **Insertion**
+        - Bucket not full → insert, no directory change
+        - Bucket full → split
+            - Local depth < global depth → re-point directory entries only
+            - Local depth = global depth → **double the directory** ($d \leftarrow d+1$)
+    - **Deletion**
+        - Matching pair < half full → try to merge
+        - All local depths = $d-1$ → halve directory
+    - Key rule: **local = global → double**; **local < global → split only**
+- 1.17–1.20 Linear Hashing
+    - No directory structure needed
+    - Hash function family: $h_i(x) = x \bmod 2^i M$
+    - Split pointer $N$: next bucket to be split (sequential order)
+    - **Insertion**
+        - Overflow in any bucket → insert into overflow chain
+        - Split bucket at $N$ (not the overflowing bucket)
+        - $N$ advances: $0, 1, 2, \ldots, M-1$; then reset with new $h_i, h_{i+1}$
+        - If $h_i(x) < N$ → use $h_{i+1}(x)$ (bucket already split)
+    - Split record destinations: original bucket $k$ or $k + M'$
+- 1.21 Index Structures — Three Kinds
+    - Primary index: on ordering key field (OKF); file must be ordered on key
+    - Clustering index: on ordering non-key field; one entry per distinct value
+    - Secondary index: on any non-ordering field; works on any file
+- 1.22–1.24 Primary Index
+    - One entry per data block: $\langle \text{first OKF value of block}, \text{disk address} \rangle$
+    - Blocking factor: $\mathrm{BF}_i = B / (V+P)$; index blocks $b_i = b / \mathrm{BF}_i$
+    - Search: $\lceil \log_2 b_i \rceil + 1$ block accesses
+    - Example (9500-block file): index = 49 blocks; accesses ≈ 7 (vs 14 without)
+- 1.25 Multilevel Index
+    - Build another index level on top of the index file
+    - Block accesses = height + 1 (no binary search needed)
+    - Example: 3 accesses (top + first level + data) vs 14 without index
+- 1.26 Range / Insert / Delete on Primary Index
+    - Range search: locate $x_1$, read successively until $> x_2$
+    - Insert: keep 25% space free per block, or use overflow chains
+    - Delete: use deletion markers
+    - Principle: **avoid changes to the index**
+- 1.27 Clustering Index
+    - One entry per distinct value of the ordering (non-key) field
+    - Entry: $\langle V_i, \text{address of first block with } V_i \rangle$
+- 1.28–1.30 Secondary Index
+    - Case I (NOF is key): one entry per record; entry = $\langle V_i, \text{record pointer} \rangle$
+    - Case II (NOF not a key)
+        - Option 1: variable-length entry with list of record pointers
+        - Option 2: fixed-length entry pointing to a bucket of record pointers (extra indirection)
+    - Blocking factor: $\mathrm{BF}_i = B / (V + P_r)$; blocks $= \lceil r / \mathrm{BF}_i \rceil$
+    - Example (90k records): 10 accesses with index vs 1125 without
+    - Multilevel secondary index: 4 accesses
+- 1.31 ISAM Files
+    - Ordered file with multilevel primary/clustering index
+    - Insertions → overflow chains; Deletions → deletion markers
+    - Best for relatively static files
+- 1.32–1.34 B⁺ Trees — Structure & Order
+    - Balanced: all leaves at same level
+    - Leaves chain together → sequential access
+    - Internal nodes hold only keys (higher fan-out than B-tree)
+    - Blocks always at least half full
+    - Order $m$ (internal): max tree pointers; holds $m-1$ keys
+    - Order $m_{leaf}$ (leaf): max record pointers = number of keys
+    - Order formula
+        - Internal: $mP + (m-1)V \le B$
+        - Leaf: $m_{leaf}(P_r + V) + P \le B$
+- 1.35–1.36 B⁺ Tree Insertion
+    - Insert at leaf level
+    - Leaf overflow: split at $j = \lceil (m_{leaf}+1)/2 \rceil$; **replicate** $j$-th key to parent
+    - Internal overflow: split at $j = \lceil (m+1)/2 \rceil$; **move** $j$-th key up (removed from both halves)
+    - Key rule: **leaf → replicate; internal → move**
+- 1.37–1.38 B⁺ Tree Deletion
+    - Delete from leaf node
+    - If key is a separator in internal node: delete and replace with entry to its left
+    - Underflow repair (in order)
+        - 1. Distribute from left sibling
+        - 2. Distribute from right sibling
+        - 3. Merge with sibling
+    - Level drop: root disappears when it has no children
+- 1.39 B⁺ Tree Advantages & Disadvantages
+    - Advantages
+        - Equal disk accesses for any record (balanced)
+        - Range queries: follow leaf chain
+        - High fan-out → shorter height
+        - Supports random and sequential access
+    - Disadvantages
+        - Insert/delete operations complex (splits, merges, level changes)
+        - Root is a hotspot (every lookup starts there)
+
+## Formula Summary
+- Disk
+    - Access time = seek + rotational delay
+    - Seek: 12–14 ms; Rotation: 3–4 ms
+- Records & Blocks
+    - Blocking factor $b = B/r$
+- Static Hashing
+    - Capacity $C = r \cdot M$
+- Extendible Hashing
+    - Directory size $= 2^d$
+    - Double if local depth = global depth
+- Linear Hashing
+    - $h_i(x) = x \bmod 2^i M$
+    - Split goes to $k$ (r even) or $k + M'$ (r odd)
+- Primary Index
+    - $\mathrm{BF}_i = B/(V+P)$; $b_i = b/\mathrm{BF}_i$
+    - Search = $\lceil \log_2 b_i \rceil + 1$
+- Multilevel
+    - Accesses = height + 1
+- Secondary Index
+    - $\mathrm{BF}_i = B/(V+P_r)$; blocks $= \lceil r/\mathrm{BF}_i \rceil$
+- B⁺ Tree
+    - Internal: $mP + (m-1)V \le B$
+    - Leaf: $m_{leaf}(P_r+V) + P \le B$
+    - Leaf split $j = \lceil(m_{leaf}+1)/2\rceil$; Internal split $j = \lceil(m+1)/2\rceil$
