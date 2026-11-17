@@ -18,5 +18,7 @@
   "js-engine",
   "terminal",
   "vimium",
-  "obsidian-task-progress-bar"
+  "obsidian-task-progress-bar",
+  "obsidian-tasks-plugin",
+  "omnisearch"
 ]
