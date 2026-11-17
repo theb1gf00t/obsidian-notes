@@ -23,12 +23,12 @@ Strict Output Rules:
 
 above are the rules for making the widget.
 
-the syllabus is in the [[CG_Syllabus]] format the syllabus file like the [[syllabus]] file.
+the syllabus is in the [[CG_Syllabus]] format the syllabus file like the [[Phase Diagrams/Syllabus]] file.
 the pdfs for refernce is in teh folder {Computer Graphics/pdfs} and the post midsem notes should be made in [[Post Midsem Notes]] and pre midsem notes should be make in .
 
 I want the [[CG_context]] file to contain in depth instructions for making notes so I dont have to mention the instructions every time.
 
-for any more doubts on how to do all this you may refer to [[context]] [[syllabus]] and the notes should be formatted like the [[notes]] along with the extra things ive mentioned.
+for any more doubts on how to do all this you may refer to [[Phase Diagrams/context]] [[Phase Diagrams/Syllabus]] and the notes should be formatted like the [[notes]] along with the extra things ive mentioned.
 
 Now do all this and make in depth notes for post midsen syllabus according to [[CG_Syllabus]]
 [Timestamp: 2026/11/16 16:23:04]
