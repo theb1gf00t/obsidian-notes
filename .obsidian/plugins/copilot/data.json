@@ -564,15 +564,6 @@
     {
       "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
       "info": {
-        "id": "opencode/glm-5.3-flash-free",
-        "displayName": "opencode/GLM-5.3-Flash Free"
-      },
-      "configuredModelId": "0f34ab32-99a7-4a80-81a2-31d9e9fe96a9",
-      "configuredAt": 1793458716913
-    },
-    {
-      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
-      "info": {
         "id": "opencode/mimo-v2.6-flash-free",
         "displayName": "opencode/MiMo-V2.6-Flash Free"
       },
@@ -1042,7 +1033,6 @@
         "2684249f-784b-4366-9973-609bac1297d8",
         "47f5755f-9a55-4082-a2b8-8b6dd89df517",
         "eec9d658-707b-45f4-b942-3c3cfc1622a5",
-        "0f34ab32-99a7-4a80-81a2-31d9e9fe96a9",
         "ec534592-92be-4c4a-b4e2-b5107804fcb9",
         "eb844d31-2f4d-4159-b726-7d7da7da8f53",
         "55e195d0-486c-4f68-9c4c-e69e397cc72e",
