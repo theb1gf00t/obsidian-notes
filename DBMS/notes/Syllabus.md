@@ -17,7 +17,7 @@ This file is the **authority** for the topic list, the topic order and the post-
 | Post-midsem / end-sem | 1–3 | [[Post-Midsem-Notes]] |
 
 > [!warning] Scope of the examination
-> This block covers all three post-midsem topics — file management, query algorithms and transactions. **Topics 1 and 3 are written** so far; topic 2 is still open.
+> This block covers all three post-midsem topics — file management, query algorithms and transactions. **All three topics are written**; topic 1's checkbox is still open for revision.
 
 > [!info] How to use this tracker
 > - Tick the box on a topic line when the topic is **revised and recallable**, not merely read once. Untick it if a revision pass exposes a hole.
@@ -40,11 +40,11 @@ WHERE file.path = this.file.path
 ## Post-Midsem — 3 topics
 
 - [ ] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections)
-- [ ] **2 · Query / Join Algorithms (algos)** — [[algos.pdf|PDF]] · [[Post-Midsem-Notes|Notes]] (not yet written)
+- [x] **2 · Query / Join Algorithms (algos)** — [[algos.pdf|PDF]] · [[Post-Midsem-Notes#2. Query / Join Algorithms (algos)|Notes → §2]] (22 sections)
 - [x] **3 · Transactions** — [[transactions.pdf|PDF]] · [[Post-Midsem-Notes#3. Transactions|Notes → §3]] (16 sections)
 
 > [!tip] Exam pointer
-> Topic 1's marks sit on the **numbers and traces**, not the definitions: block-access arithmetic and $b = B/r$, the 9500-record primary index giving 49 blocks and $\lceil\log_2 49\rceil + 1 = 7$ accesses, the extendible-hashing directory doubling on a full local depth, the linear-hashing split deciding between $k$ and $k + M'$ from the parity of $r$, and the $B^+$ tree order $m$ / $m_{\text{leaf}}$ with the leaf-key-replicated-versus-internal-key-moved split rule. Topic 3's marks sit on **applying the rules to schedules**: ACID via the fund-transfer example, state transitions (including restart/kill from Aborted), conflict identification and precedence-graph acyclicity, recoverable vs cascadeless commit/read ordering, and the SQL-92 isolation levels with the snapshot-isolation warning.
+> Topic 1's marks sit on the **numbers and traces**, not the definitions: block-access arithmetic and $b = B/r$, the 9500-record primary index giving 49 blocks and $\lceil\log_2 49\rceil + 1 = 7$ accesses, the extendible-hashing directory doubling on a full local depth, the linear-hashing split deciding between $k$ and $k + M'$ from the parity of $r$, and the $B^+$ tree order $m$ / $m_{\text{leaf}}$ with the leaf-key-replicated-versus-internal-key-moved split rule. Topic 2's marks sit on **block-access cost formulas**: selectivity (450/8000 = 0.056), the external-sort cost $2n+2n\lceil\log_d r\rceil$, nested loop join (19040 with $R$ outer vs 16920 with $S$ outer), single loop join with the join selection factor, partition hash join $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$, and the five-step rewrite of the professor–teaching–enrollment query. Topic 3's marks sit on **applying the rules to schedules**: ACID via the fund-transfer example, state transitions (including restart/kill from Aborted), conflict identification and precedence-graph acyclicity, recoverable vs cascadeless commit/read ordering, and the SQL-92 isolation levels with the snapshot-isolation warning.
 
 ---
 
@@ -98,7 +98,30 @@ Every written section of [[Post-Midsem-Notes]], grouped by topic, so a topic can
 
 ### §2 · Query / Join Algorithms (algos)
 
-Not yet written — see the open deck [[algos.pdf]].
+| § | Section |
+| --- | --- |
+| 2.1 | [[Post-Midsem-Notes#2.1 Relational query evaluation — the operators\|Relational query evaluation — the operators]] |
+| 2.2 | [[Post-Midsem-Notes#2.2 Selection with equality conditions\|Selection with equality conditions]] |
+| 2.3 | [[Post-Midsem-Notes#2.3 Predicate selectivity\|Predicate selectivity]] |
+| 2.4 | [[Post-Midsem-Notes#2.4 Selectivity estimation\|Selectivity estimation]] |
+| 2.5 | [[Post-Midsem-Notes#2.5 Project operation\|Project operation]] |
+| 2.6 | [[Post-Midsem-Notes#2.6 External sorting — the idea\|External sorting — the idea]] |
+| 2.7 | [[Post-Midsem-Notes#2.7 Algorithm — sort phase\|Algorithm — sort phase]] |
+| 2.8 | [[Post-Midsem-Notes#2.8 Algorithm — merge phase\|Algorithm — merge phase]] |
+| 2.9 | [[Post-Midsem-Notes#2.9 Join processing\|Join processing]] |
+| 2.10 | [[Post-Midsem-Notes#2.10 Nested loop join (block nested loop join)\|Nested loop join]] |
+| 2.11 | [[Post-Midsem-Notes#2.11 Nested loop join — time taken\|Nested loop join — time taken]] |
+| 2.12 | [[Post-Midsem-Notes#2.12 Nested loop join — worked example\|Nested loop join — worked example]] |
+| 2.13 | [[Post-Midsem-Notes#2.13 Single loop join (index loop join)\|Single loop join]] |
+| 2.14 | [[Post-Midsem-Notes#2.14 Join selection factor\|Join selection factor]] |
+| 2.15 | [[Post-Midsem-Notes#2.15 Hash join\|Hash join]] |
+| 2.16 | [[Post-Midsem-Notes#2.16 Partition hash join\|Partition hash join]] |
+| 2.17 | [[Post-Midsem-Notes#2.17 Sort-merge join\|Sort-merge join]] |
+| 2.18 | [[Post-Midsem-Notes#2.18 Set operations\|Set operations]] |
+| 2.19 | [[Post-Midsem-Notes#2.19 Query optimization — overview\|Query optimization — overview]] |
+| 2.20 | [[Post-Midsem-Notes#2.20 Heuristic optimization\|Heuristic optimization]] |
+| 2.21 | [[Post-Midsem-Notes#2.21 Cost-based optimization\|Cost-based optimization]] |
+| 2.22 | [[Post-Midsem-Notes#2.22 Query optimization — worked example\|Query optimization — worked example]] |
 
 ### §3 · Transactions
 
@@ -163,7 +186,7 @@ Page renders lifted from the deck (every one is embedded with a width and an ita
 ## Open gaps
 
 > [!warning] What is still missing
-> - **Topic 2 (query / join algorithms)** — [[algos.pdf]] is not yet mined and [[Post-Midsem-Notes]] has no §2.
+> - **Topic 2 diagrams** — [[algos.pdf]] is written as [[Post-Midsem-Notes#2. Query / Join Algorithms (algos)|§2]]; only the merge-phase figure (deck p. 10) is embedded as a page render. The deck leaves set-operation details to the student (slide 22), so §2.18 records only what the slide states.
 > - **Topic 3 diagrams** — the [[transactions.pdf]] deck presents several schedules, the transaction-state diagram and precedence-graph examples as slide graphics; where text extraction did not recover the exact step layout, [[Post-Midsem-Notes#3. Transactions|§3]] records the deck's stated definitions, facts and outcomes rather than inventing diagram bodies.
 > - The Silberschatz textbook ([[silberschatz_dbms.pdf]]) was used only to explain topic 1; the worked numbers and conventions in the notes come from the respective decks ([[file-management.pdf]], [[transactions.pdf]]), not the book.
 

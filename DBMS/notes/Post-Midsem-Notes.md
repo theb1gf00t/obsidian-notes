@@ -6,12 +6,14 @@ tags:
   - file-management
   - indexing
   - transactions
+  - query-algorithms
+  - joins
   - post-midsem
 ---
 	
 # Post-Midsem — File Organization and Indexing · Query Algorithms · Transactions
 
-This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms) is listed in [[Syllabus]] and will be appended here in syllabus order; topic 3 (transactions) is written below as §3.
+This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms — selection, external sorting, joins, optimization) is written below as §2; topic 3 (transactions) is written below as §3.
 
 *Topic list and progress: [[Syllabus]] · formatting rules: [[context]] · book: [[silberschatz_dbms.pdf]] (Ch. 13 "Data Storage Structures", Ch. 14 "Indexing", §24.5 "Hash Indices").*
 
@@ -19,10 +21,10 @@ This block is the storage-and-retrieval half of the DBMS course. It starts at th
 > | Topic | Deck | Slides | Question it answers |
 > | --- | --- | --- | --- |
 > | 1 | [[file-management.pdf\|file-management deck]] | 60 | How are records placed on disk, and how do indexes make them findable? |
-> | 2 | [[algos.pdf\|algos deck]] | — | How does the DBMS execute a query (sorting, joining, selecting)? |
+> | 2 | [[algos.pdf\|algos deck]] | 32 | How does the DBMS execute a query (sorting, joining, selecting)? |
 > | 3 | [[transactions.pdf\|transactions deck]] | 36 | How are concurrent, failure-prone updates kept correct? |
 >
-> Only topics 1 and 3 are written so far; topic 2 remains a placeholder in [[Syllabus]].
+> All three topics are now written; progress is tracked in [[Syllabus]].
 
 > [!warning] The conventions this topic uses everywhere
 > - $B$ = **block size** (bytes); $r$ = **record length**; $b$ = **blocking factor** $= B/r$; $b$ is also reused for the *number of data-file blocks* in the index section — the deck does this, so read the local definition each time.
@@ -891,6 +893,368 @@ Continuing from §1.36 (deck p. 57–59):
 
 ---
 
+## 2. Query / Join Algorithms (algos)
+
+*Deck: [[algos.pdf|algos deck]] — 32 slides, "Algorithms for Relational Algebra Operators and Query Evaluation", Dr P Sreenivasa Kumar, IIT Madras. Every definition, formula and number below comes from the deck; the book was not needed.*
+
+> [!abstract] Roadmap of this topic — read it as one story
+> **The question:** an SQL query is turned into relational-algebra (RA) operators. How does the DBMS actually *execute* each operator on files of blocks, and how does it choose the cheapest way?
+> 1. **§2.1–§2.5 — selection and projection:** scan or use an index; **selectivity** decides which condition to use first.
+> 2. **§2.6–§2.8 — external sorting:** a sort phase that builds *runs* and a merge phase that combines them; the cost is counted in block accesses. Sorting feeds duplicate elimination, grouping and joins.
+> 3. **§2.9–§2.17 — joins:** nested loop, single loop (index), hash, partition hash and sort-merge — each with its block-access cost and the conditions under which it wins.
+> 4. **§2.18 — set operations:** adapted from the hash and sort-merge methods.
+> 5. **§2.19–§2.22 — query optimization:** rewrite the RA tree with heuristics (algebraic optimization), then pick methods by estimated cost (cost-based optimization), shown on one running example.
+>
+> **The idea to carry through:** as in topic 1, cost = **number of block accesses**. Every algorithm is a different way of paying fewer of them, given the file sizes, the buffer size $m$, the available indexes and the selectivity.
+
+> [!warning] Notation used in this topic
+> - $n$, $b_1$, $b_2$ = number of **blocks** of a file; $m$ = number of **buffer blocks** in memory.
+> - $r$ = number of **runs** (external sort); $d$ = **degree of merging**; $h_B(S)$ = block accesses of the index on $B$ for $S$.
+> - $\lvert R\rvert$, $\lvert S\rvert$, $\lvert result\rvert$ = sizes **in blocks** in the hash-join costs.
+> - $\lceil\ \rceil$ is a ceiling; the deck writes it as $\lceil x\rceil$ around every division in a cost formula.
+
+### 2.1 Relational query evaluation — the operators
+
+The operators whose implementation the deck studies are:
+
+- **Select, Project, Join**
+- **Union, Intersect, Difference**
+
+The deck's agenda for the topic is: *how to implement these*, **sorting**, **grouping and aggregation**, *how do indexes help?*, and *any other information that is helpful* (selectivity, file sizes, organization). Each of the following sections answers one of these questions.
+
+### 2.2 Selection with equality conditions
+
+| Condition | Index available? | Method |
+| --- | --- | --- |
+| Single condition $X = c_1$ | Index on $X$ | **Use the index** |
+| Single condition $X = c_1$ | No index on $X$ | **File scan** |
+| Conjunction $X_1=c_1$ and $X_2=c_2$ and … and $X_k=c_k$ | Index on **any** $X_i$ | Get the records through that index and **check the other conditions** |
+| Conjunction | No index on any $X_i$ | **File scan** |
+| Disjunction (several conditions joined by *or*) | Index on any *single* $X_i$ | **Not helpful** — a record may satisfy another disjunct, so the other disjuncts still need a full scan |
+
+> [!note] Why disjunction is harder
+> In a conjunction, one indexed condition already narrows the candidates to a superset of the answer, and the rest are filters. In a disjunction, an index on one $X_i$ finds only the records satisfying *that* disjunct; records satisfying the others are missed. The deck's summary: *difficult compared to the conjunctive case*.
+
+### 2.3 Predicate selectivity
+
+> [!important] Definition — selectivity
+> **Selectivity $s$ of a condition $C$**, with $0 \le s \le 1$:
+>
+> $$ \boxed{\ s = \frac{\text{No. of records satisfying } C}{\text{Total no. of records}}\ } $$
+
+The deck's three examples on a student file of $8000$ records:
+
+| Condition | Records satisfying | Selectivity |
+| --- | --- | --- |
+| $C_1$: `student.dept = "CSE"` | $450$ | $450/8000 = 0.056$ |
+| $C_2$: `student.sex = "female"` | $1200$ | $1200/8000 = 0.15$ |
+| $C_3$: `student.rollNo = "CS10B032"` | $1$ | $1/8000 = 0.000125$ |
+
+- A **highly selective predicate** has a very *low* selectivity value — $C_3$ is the most selective of the three.
+- **Conjunction of conditions:** choose the one that is *most* selective (lowest $s$), get its records, and check the other conditions on them.
+- Selectivity values are **estimates, collected offline**.
+
+> [!warning] Low number = highly selective
+> The wording is a classic slip: "highly selective" means **small** $s$ (few records survive). In a conjunction, you pick the condition with the *smallest* selectivity value, not the largest.
+
+### 2.4 Selectivity estimation
+
+Selectivity estimates are **maintained in the DB catalog** and **used by the query optimizer**.
+
+| Condition type | Estimate |
+| --- | --- |
+| Equality on a **key** attribute | $\text{Selectivity} = \dfrac{1}{\text{Total no. of records}}$ |
+| Equality on a **non-key** attribute | $\text{Selectivity} = \dfrac{1}{\text{Distinct values of the attribute}}$ |
+
+Sometimes **histograms** are also maintained: for each distinct value or value range, the **number of records**.
+
+> [!example] Illustrative example (not from the deck) — applying the two formulas
+> On the 8000-record student file, `rollNo` is a key, so $s = 1/8000 = 0.000125$ — which is exactly the deck's $C_3$. If `dept` has $10$ distinct values, the non-key formula estimates $s = 1/10 = 0.1$ ≈ $800$ records; the *actual* $450/8000 = 0.056$ for CSE differs because values are not uniformly distributed — that gap is what a histogram corrects.
+
+### 2.5 Project operation
+
+For every record in the operand: **access it, take the required attribute values, and construct the result record**.
+
+- **Duplicate elimination** is **costly**; **sort-based or hash-based** methods are used (§2.6–§2.8 for sorting).
+- A **file scan becomes essential** — every record must be visited.
+- **Apply project after selection, if possible**, to reduce the input to project.
+
+> [!tip] Exam pointer — selection and projection
+> Know the three selection cases (single, conjunctive, disjunctive) and why an index helps only the first two; define selectivity with the 450/8000, 1200/8000, 1/8000 numbers; state the two catalog estimates; and say why project follows select.
+
+### 2.6 External sorting — the idea
+
+**Sorting a file** is an often-required operation: duplicate elimination, grouping of records, join, etc. A file is too large for memory, so the **merge-sort principle** is used, with $O(n\log n)$ worst-case complexity for $n$ items. There are **two phases**:
+
+| Phase | What is repeated | Result |
+| --- | --- | --- |
+| **Sort phase** | read part of the data, sort it, write it | many sorted files called **runs** |
+| **Merge phase** | merge some sorted files and write | repeat **till only one sorted file is left** |
+
+### 2.7 Algorithm — sort phase
+
+**Given:** a file of $n$ blocks and buffer memory of $m$ blocks.
+
+1. Repeat the following $\lceil n/m\rceil$ times: **read the next $m$ blocks; sort them in memory; write them to disk as a single file, called a *run*.**
+2. The **number of runs** is
+
+$$ \boxed{\ r = \lceil n/m\rceil\ } $$
+
+3. **Complexity:** $n$ block reads and $n$ block writes, i.e. $\boxed{\ 2n \text{ block accesses}\ }$.
+
+### 2.8 Algorithm — merge phase
+
+**Given:** a file of $n$ blocks, memory buffers $m\ (\ge 3)$ blocks, and $r$ runs. The **degree of merging** $d$ is the number of runs merged at a time:
+
+$$ 2 \le d \le (m-1) $$
+
+**Merge phase:** repeat the following $\lceil \log_d r\rceil$ times — **reduce $j$ runs to $\lceil j/d\rceil$ runs** (initially $j = r$) by repeatedly merging $d$ runs at a time into one run:
+
+- use **$d$ buffers, one for each of the next $d$ runs, and one buffer for the result**;
+- **get one block at a time** from each run;
+- **merge and write** the result to disk, **one block at a time**.
+
+**Complexity.** Each sub-phase reads and writes the entire file, so the merge phase costs $2n\lceil \log_d r\rceil$, and
+
+$$ \boxed{\ \text{Overall} = 2n + 2n\left\lceil \log_d r \right\rceil \text{ block accesses}\ } $$
+
+![[DBMS - External Sort Merge Phase (deck p10).png|520]]
+
+*Figure — the deck's merge-phase picture (deck p. 10): runs $1,2,\dots,d$ merge into one, runs $d+1,\dots,2d$ into the next, and so on, reducing $j$ runs to $\lceil j/d\rceil$; at the bottom, $d$ input buffers (green) each fed from one run file (pink), and one output buffer feeding the merged run.*
+
+> [!note] Why $d \le m-1$
+> One buffer per input run plus one for the output needs $d+1 \le m$ buffers, which is the bound $d \le m-1$. The largest allowed $d = m-1$ minimises the number of merge sub-phases $\lceil\log_d r\rceil$, hence the cost.
+
+> [!example] Illustrative example (not from the deck) — a full count
+> Take $n = 1000$ blocks and $m = 5$ buffers. **Sort phase:** $r = \lceil 1000/5\rceil = 200$ runs, cost $2n = 2000$. **Merge phase** with $d = m-1 = 4$: $\lceil \log_4 200\rceil = 4$ (since $4^3 = 64 < 200 \le 256 = 4^4$) sub-phases, runs go $200 \to 50 \to 13 \to 4 \to 1$, cost $2n\cdot 4 = 8000$. **Overall** $= 2000 + 8000 = 10000$ block accesses.
+
+> [!tip] Exam pointer — external sorting
+> State the two phases, $r=\lceil n/m\rceil$, $2\le d\le m-1$, and the overall cost $2n + 2n\lceil\log_d r\rceil$; remember that every merge sub-phase reads *and* writes the whole file.
+
+### 2.9 Join processing
+
+**Join** is a very important operation. A **2-way join** takes two files of records and a given join condition; a **multi-way join** involves more files. The **choice of algorithm** depends on:
+
+- the **sizes of the files**,
+- the **primary organization** of the files,
+- the **availability of indices**,
+- the **selectivity of the join condition**, etc.
+
+### 2.10 Nested loop join (block nested loop join)
+
+The **brute-force join**:
+
+```
+for each record x in R do
+   for each record y in S do
+      check if x, y join ...
+```
+
+**Setup:** two data files $R$ ($b_1$ blocks) and $S$ ($b_2$ blocks), buffer of $m$ blocks.
+
+**Buffer usage:** **one block for the result** of the join; **one for the inner file** (say $S$); **$(m-2)$ for the outer file** ($R$).
+
+For each set of $(m-2)$ blocks of $R$ read in: for each block of $S$, read it in, compute the join and write to the result block; **write the result block to disk whenever it fills up.**
+
+### 2.11 Nested loop join — time taken
+
+- The **outer file** is read once: $b_1$ block accesses.
+- The **inner file's blocks are read** $\left\lceil \dfrac{b_1}{m-2}\right\rceil$ times (once per group of $m-2$ outer blocks).
+
+$$ \boxed{\ \text{Overall} = b_1 + \left\lceil \frac{b_1}{m-2}\right\rceil b_2\ } \qquad \text{or, symmetrically,}\quad b_2 + \left\lceil \frac{b_2}{m-2}\right\rceil b_1 $$
+
+the second form when $S$ is in the outer loop and $R$ inside.
+
+> [!important] Which file goes in the outer loop?
+> **The one with fewer blocks.**
+
+### 2.12 Nested loop join — worked example
+
+**Setup:** $R$: $b_1 = 5600$ blocks; $S$: $b_2 = 120$ blocks; buffer $m = 52$ blocks, so $m-2 = 50$.
+
+| Outer file | Arithmetic | Disk operations |
+| --- | --- | --- |
+| $R$ outer | $5600 + \lceil 5600/50\rceil \times 120 = 5600 + 112\times120 = 5600 + 13440$ | $\mathbf{19040}$ |
+| $S$ outer | $120 + \lceil 120/50\rceil \times 5600 = 120 + 3\times 5600 = 120 + 16800$ | $\mathbf{16920}$ |
+
+Assuming **10 ms per disk operation**: $19040 \times 10\ \text{ms}\approx 190$ s versus $16920\times10\ \text{ms}\approx 169$ s.
+
+> [!warning] The trap — ceiling, not division
+> $\lceil 120/50\rceil = \lceil 2.4\rceil = 3$, not $2.4$. The smaller file in the outer loop wins ($16920 < 19040$), confirming the rule of §2.11 — the saving is $\approx 21$ s here.
+
+### 2.13 Single loop join (index loop join)
+
+**Setup:** files $R$ ($b_1$ blocks) and $S$ ($b_2$ blocks); compute the **equi-join** $R.A = S.B$. We have an **index on one of them**, say on $B$ of $S$.
+
+**Algorithm:** for each record $x$ of $R$ read in, use the index on $B$ of $S$ to get all the matching records (having $B = x.A$).
+
+$$ \boxed{\ \text{Time taken} = b_1 \cdot h_B(S)\ } $$
+
+where $h_B(S)$ is the number of block accesses of the index on $B$ for $S$.
+
+### 2.14 Join selection factor
+
+> [!important] Definition — join selection factor
+> **Join selection factor** — the **fraction of records in a file that join with records of the other file** for the given condition.
+
+Consider $\text{professor} \bowtie_{\text{empId} = \text{hod}} \text{department}$: **only 5% of professor rows join** with department rows, while **100% of department rows join** with professor rows.
+
+It impacts the performance of single loop join **when indexes are available on both files**: **loop over the records of the file with the high join selection factor.**
+
+**Deck's example.** Two options:
+
+| Option | Loop over | Probe using | Result |
+| --- | --- | --- | --- |
+| 1 | professor records | index on `hod` of department | **95% of probes don't give a match** |
+| 2 | department records | index on `empId` of professor | **all probes give a match** |
+
+**Option 2 is the right choice.**
+
+### 2.15 Hash join
+
+Consider a 2-way equi-join $R \bowtie_{R.A = S.B} S$ and **assume that $S$ fits into memory.**
+
+1. Use a hash function $h$; **hash the records of $S$ into $M$ buckets using the $B$-values** — called the **partitioning** of $S$.
+2. To compute the join result, **hash the records of $R$ one by one using the $A$-values**, with **the same $M$ buckets and the same hash function $h$**.
+3. **Matching pairs of records hash to the same bucket**, so each $R$ record is compared only with the records of one bucket.
+
+### 2.16 Partition hash join
+
+Consider $R \bowtie_{R.A=S.B} S$ when **neither $R$ nor $S$ fits into memory**.
+
+**Partition phase** — use a hash function $h$:
+
+- hash the records of $R$ into $m$ buckets using the $A$-values, giving $R_1, R_2,\dots,R_m$ — **written to files**;
+- hash the records of $S$ into $m$ buckets using the $B$-values, giving $S_1, S_2,\dots,S_m$ — **written to files**.
+
+**Goals:** the distribution should be **uniform**, and **at least one of $R_i$ or $S_i$ should fit into memory**. To compute the join result, **join $R_i$ with $S_i$ only** — a record of $R_i$ can never match a record of $S_j$, $j\neq i$.
+
+**Probe phase** — join $R_i$ with $S_i$ for all $i$:
+
+| Case | Method | Overall cost |
+| --- | --- | --- |
+| One of $R_i$, $S_i$ fits into memory | Use the hash-join idea again: **hash the smaller of the two into memory using a different hash function $h_2$**, read the other file, probe and produce result records | $\boxed{\ 3(\lvert R\rvert + \lvert S\rvert) + \lvert result\rvert\ }$ block accesses |
+| Neither fits | Use **nested loops join** on the pair | $2(\lvert R\rvert + \lvert S\rvert)$ + cost of the nested loop joins |
+
+> [!note] Where the 3 comes from
+> Partitioning reads and writes both files: $2(\lvert R\rvert+\lvert S\rvert)$. The probe phase reads every partition once more: $+(\lvert R\rvert+\lvert S\rvert)$. Writing the result adds $\lvert result\rvert$. Total $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$. In the "neither fits" case the $2(\lvert R\rvert+\lvert S\rvert)$ is the partitioning cost and the nested loops replace the single probe read.
+
+> [!warning] Use a *different* hash function in the probe
+> The partition uses $h$, so all records of $R_i$ already agree on $h$. Rehashing the in-memory partition with $h$ would put them all in one bucket; hence the deck's $h_2$.
+
+### 2.17 Sort-merge join
+
+Consider $R \bowtie_{R.A=S.B} S$.
+
+- If **$R$ is sorted on $A$ and $S$ is sorted on $B$**: **merge $R$ and $S$** to get the join results — called **merge join**, *very efficient, linear*.
+- If **only one of them is sorted** on the join attribute: **sorting the other and merging may be cost-effective**.
+- Of course, we can **sort $R$ on $A$, sort $S$ on $B$ and use merge** — but the **cost might be high** (the external sort of §2.8 is added).
+
+### 2.18 Set operations
+
+**Union, Intersect and Difference** can be computed by adapting:
+
+- the **hash-based join method**, and
+- the **sort-merge method**.
+
+The deck leaves the details to the student: *"Please study the details!"*
+
+> [!tip] Exam pointer — joins and set operations
+> Be able to write the four cost formulas: nested loop $b_1+\lceil b_1/(m-2)\rceil b_2$ (smaller file outside), single loop $b_1\cdot h_B(S)$ (loop over the file with the high join selection factor), partition hash $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$, and sort-merge (linear after sorting). Reproduce the 19040 vs 16920 example.
+
+### 2.19 Query optimization — overview
+
+An **SQL query is converted to an RA expression tree.** Two stages follow:
+
+1. The initial RA expression is **rewritten using heuristic and algebraic transformation rules**; the final RA expression tree is generated. This is called **algebraic optimization**.
+2. **Cost-based query optimization:** the **cost estimates of the methods for the RA operators are computed**, and the **execution plan with the least estimated cost is chosen**.
+
+### 2.20 Heuristic optimization
+
+**Main heuristic rule: apply select and project before other operations.** This
+
+- **reduces the size** of intermediate results, and
+- **reduces the number of fields** in the intermediate results.
+
+The optimizer makes use of **relational algebraic laws**:
+
+| Law | Operators |
+| --- | --- |
+| **Commutative** | select, project, join, union, intersect |
+| **Associative** | join, union, intersect |
+
+and there are many more.
+
+### 2.21 Cost-based optimization
+
+The initial expression tree is rebuilt using heuristics and algebraic laws. Then, for each operator:
+
+- it **can be carried out using many methods**;
+- for a method, a **cost function gives the estimated cost**, taking **file sizes, access-path costs, etc.** into account;
+- the **choice made at a node may affect the choices at others**.
+
+**Evaluate different plans based on estimated costs and choose the plan with least cost.**
+
+### 2.22 Query optimization — worked example
+
+**Query:** obtain the name and phone details of professors who taught the courses taken by the student with roll number `CS08B027` in the even semester of 2010.
+
+```sql
+select p.empId, p.name, p.phone
+from professor p, teaching t, enrollment e
+where e.rollNo = "CS08B027" and e.courseId = t.courseId
+      and e.sem = "even" and e.year = 2010
+      and t.sem = "even" and t.year = 2010
+      and p.empId = t.empId
+```
+
+Notation: $p$ = professor, $t$ = teaching, $e$ = enrollment.
+
+**Step 0 — initial RA expression.**
+
+$$ \Pi_{p.empId,\,p.name,\,p.phone}\big(\sigma_\theta(p \times t \times e)\big) $$
+
+$$ \theta = \big(e.rollNo=\text{"CS08B027"} \wedge e.courseId = t.courseId \wedge e.sem=\text{"even"} \wedge e.year = 2010 \wedge t.sem=\text{"even"} \wedge t.year=2010 \wedge p.empId = t.empId\big) $$
+
+**Step 1 — push the single-relation selections down.**
+
+$$ \equiv \Pi_{p.empId,\,p.name,\,p.phone}\big(\sigma_{\theta_3}(p \times \sigma_{\theta_2}(t) \times \sigma_{\theta_1}(e))\big) $$
+
+- $\theta_1 = (e.rollNo=\text{"CS08B027"} \wedge e.sem=\text{"even"} \wedge e.year=2010)$
+- $\theta_2 = (t.sem=\text{"even"} \wedge t.year=2010)$
+- $\theta_3 = (p.empId=t.empId \wedge e.courseId=t.courseId)$
+
+**Step 2 — split the join conditions between the two products.**
+
+$$ \equiv \Pi_{p.empId,\,p.name,\,p.phone}\big(\sigma_{\theta_3}(p \times \sigma_{\theta_4}(\sigma_{\theta_2}(t) \times \sigma_{\theta_1}(e)))\big) $$
+
+with $\theta_3 = (p.empId = t.empId)$ and $\theta_4 = (e.courseId = t.courseId)$.
+
+**Step 3 — turn selection-over-product into joins.**
+
+$$ \equiv \Pi_{p.empId,\,p.name,\,p.phone}\big(p \bowtie_{\theta_3} (\sigma_{\theta_2}(t) \bowtie_{\theta_4} \sigma_{\theta_1}(e))\big) $$
+
+**Step 4 — push projections down** (keep only the fields needed above each node).
+
+$$ \equiv \Big(\Pi_{empId,name,phone}(p) \bowtie_{\theta_3} \Pi_{empId}\big(\Pi_{courseId,\,empId}\,\sigma_{\theta_2}(t) \bowtie_{\theta_4} \Pi_{courseId}\,\sigma_{\theta_1}(e)\big)\Big) $$
+
+with $\theta_3 = (p.empId = empId)$ and $\theta_4 = (t.courseId = e.courseId)$ in the deck's final slide.
+
+**Step 5 — cost-based choice.** Evaluate the costs of using different methods for the **two selections and the two joins**, and **choose the least-cost plan**.
+
+| Step | What was done | Heuristic used |
+| --- | --- | --- |
+| 0 → 1 | single-relation conditions $\theta_1,\theta_2$ moved onto $e$ and $t$ | apply select early |
+| 1 → 2 | join conditions $\theta_3,\theta_4$ separated | algebraic laws |
+| 2 → 3 | $\sigma\ \text{over}\ \times$ replaced by $\bowtie$ | join instead of product |
+| 3 → 4 | projections on $p$, $t$, $e$ and on the join result | apply project early |
+| 4 → 5 | pick method per selection/join using §2.2–§2.17 costs | cost-based |
+
+> [!tip] Exam pointer — query optimization
+> Name the two stages (algebraic = heuristic, then cost-based); state the main heuristic (select and project first) and the commutative/associative laws; reproduce the five-line rewrite of the professor–teaching–enrollment query, and say that the last step compares methods for the two selections and two joins.
+
+---
+
 ## 3. Transactions
 
 *Deck: [[transactions.pdf|transactions deck]] — 36 slides, Silberschatz, Korth and Sudarshan (*Database System Concepts*, 6th ed., Chapter 14). All definitions, properties, examples and schedule facts below come from the deck.*
@@ -1297,8 +1661,16 @@ The deck gives a schedule (slide diagram) that produces the same outcome as the 
 | $B^+$ internal order | $mP + (m-1)V \le B$ | max $m$ pointers, $m-1$ keys |
 | $B^+$ leaf order | $m_{leaf}(P_r+V) + P \le B$ | plus one next-leaf pointer |
 | $B^+$ split point | $j=\lceil(m_{leaf}+1)/2\rceil$ (leaf), $j=\lceil(m+1)/2\rceil$ (internal) | leaf key replicated, internal key moved |
+| Selectivity | $s = \dfrac{\text{records satisfying } C}{\text{total records}}$ | $0\le s\le1$; low $s$ = highly selective |
+| Selectivity estimate | key: $1/\text{(total records)}$; non-key: $1/\text{(distinct values)}$ | uniform-distribution estimate kept in the catalog |
+| External sort — runs | $r=\lceil n/m\rceil$ | $n$ file blocks, $m$ buffer blocks |
+| External sort — cost | $2n + 2n\lceil\log_d r\rceil$ | $2\le d\le m-1$; sort phase $2n$, each merge sub-phase $2n$ |
+| Nested loop join | $b_1 + \lceil b_1/(m-2)\rceil\, b_2$ | $R$ outer; put the file with fewer blocks outside |
+| Single loop join | $b_1\cdot h_B(S)$ | index on $B$ of $S$; loop over the file with high join selection factor |
+| Partition hash join | $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$ | one of $R_i,S_i$ fits in memory; else $2(\lvert R\rvert+\lvert S\rvert)$ + nested loop cost |
 
 > [!note] Source material and figures
 > **Topic 1.** All `DBMS - …excalidraw` drawings are original schematic reconstructions of the deck's diagrams and live in the vault-root `Excalidraw/` folder. The explanatory drawings *Index Types Compared*, *Extendible Hashing Trace*, *Linear Hashing Trace* and *Bplus Replicate vs Move* are teaching aids built from the deck's own numbers. Callouts titled "Illustrative example (not from the deck)" and the "Intuition" subsections in §1 are explanatory additions and are not lecture content. The `DBMS - … (deck pN).png` figures are page renders of [[file-management.pdf]], stored in `DBMS/images/`, and each is captioned with the slide it came from.
+> **Topic 2.** Content is compiled from [[algos.pdf]] (32 slides). The merge-phase figure *DBMS - External Sort Merge Phase (deck p10).png* is a page render of the deck stored in `DBMS/images/`. The "Illustrative example (not from the deck)" callouts in §2.4 and §2.8 are explanatory additions; all other numbers (8000-record selectivities, 5600/120/52-block join, the query-rewrite chain) come from the deck.
 > **Topic 3.** Content is compiled from [[transactions.pdf]] (Silberschatz, Korth and Sudarshan, *Database System Concepts*, 6th ed., Chapter 14). Where the deck presents schedules, state diagrams or graphs as slide diagrams, the notes record every fact, definition, property and result stated on the slides; diagram-only step layouts that were not recoverable from text extraction are described by the deck's stated outcomes and constraints rather than invented.
 > **General.** All numbers, conventions and worked traces come from the respective decks; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 13–14 and §24.5) was used for explanation only in topic 1.

@@ -99,7 +99,7 @@
   "convertedDocOutputFolder": "",
   "agentMode": {
     "byok": {},
-    "activeBackend": "opencode",
+    "activeBackend": "claude",
     "backends": {
       "codex": {
         "defaultModel": {
