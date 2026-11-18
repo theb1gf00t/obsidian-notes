@@ -10,5 +10,5 @@ tags:
 **user**: make detailed notes for the topic [[algos.pdf]] through [[Syllabus]] and [[context]] in [[Post-Midsem-Notes]] .
 [Timestamp: 2026/11/18 21:37:54]
 
-**ai**: 
+**ai**: **Error:** Internal error: Timed out waiting for response headers
 [Timestamp: 2026/11/18 21:37:54]
