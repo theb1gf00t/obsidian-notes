@@ -905,7 +905,7 @@
           "output": 12,
           "cacheRead": 0.2
         },
-        "description": "Older balanced model for straightforward work."
+        "description": "Legacy balanced model for agentic coding."
       },
       "configuredModelId": "9618f85c-2eba-4515-ae0a-e6f35603a019",
       "configuredAt": 1793459911775
@@ -938,7 +938,7 @@
           "output": 1.2,
           "cacheRead": 0.02
         },
-        "description": "Older fast and efficient model."
+        "description": "Legacy fast model for simpler tasks."
       },
       "configuredModelId": "f8a0a19a-0b09-4086-a761-e361faae14b9",
       "configuredAt": 1793459911775
