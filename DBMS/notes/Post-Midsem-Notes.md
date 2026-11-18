@@ -8,7 +8,7 @@ tags:
   - transactions
   - post-midsem
 ---
-
+	
 # Post-Midsem — File Organization and Indexing · Query Algorithms · Transactions
 
 This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms) is listed in [[Syllabus]] and will be appended here in syllabus order; topic 3 (transactions) is written below as §3.
