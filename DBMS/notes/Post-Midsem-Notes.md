@@ -5,12 +5,13 @@ tags:
   - DBMS
   - file-management
   - indexing
+  - transactions
   - post-midsem
 ---
 
 # Post-Midsem — File Organization and Indexing · Query Algorithms · Transactions
 
-This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topics 2 (query algorithms) and 3 (transactions) are listed in [[Syllabus]] and will be appended here in syllabus order.
+This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms) is listed in [[Syllabus]] and will be appended here in syllabus order; topic 3 (transactions) is written below as §3.
 
 *Topic list and progress: [[Syllabus]] · formatting rules: [[context]] · book: [[silberschatz_dbms.pdf]] (Ch. 13 "Data Storage Structures", Ch. 14 "Indexing", §24.5 "Hash Indices").*
 
@@ -19,9 +20,9 @@ This block is the storage-and-retrieval half of the DBMS course. It starts at th
 > | --- | --- | --- | --- |
 > | 1 | [[file-management.pdf\|file-management deck]] | 60 | How are records placed on disk, and how do indexes make them findable? |
 > | 2 | [[algos.pdf\|algos deck]] | — | How does the DBMS execute a query (sorting, joining, selecting)? |
-> | 3 | [[transactions.pdf\|transactions deck]] | — | How are concurrent, failure-prone updates kept correct? |
+> | 3 | [[transactions.pdf\|transactions deck]] | 36 | How are concurrent, failure-prone updates kept correct? |
 >
-> Only topic 1 is written so far; the other two rows are placeholders in [[Syllabus]].
+> Only topics 1 and 3 are written so far; topic 2 remains a placeholder in [[Syllabus]].
 
 > [!warning] The conventions this topic uses everywhere
 > - $B$ = **block size** (bytes); $r$ = **record length**; $b$ = **blocking factor** $= B/r$; $b$ is also reused for the *number of data-file blocks* in the index section — the deck does this, so read the local definition each time.
@@ -890,6 +891,393 @@ Continuing from §1.36 (deck p. 57–59):
 
 ---
 
+## 3. Transactions
+
+*Deck: [[transactions.pdf|transactions deck]] — 36 slides, Silberschatz, Korth and Sudarshan (*Database System Concepts*, 6th ed., Chapter 14). All definitions, properties, examples and schedule facts below come from the deck.*
+
+> [!abstract] Roadmap of this topic — read it as one story
+> **The question:** when many programs read and update the same database, and when hardware or software can fail in the middle, how does the DBMS keep the data correct?
+> **The answer is a contract and a theory of interleaving**, built in layers:
+> 1. **§3.1–§3.2 — the transaction and ACID:** a transaction is the unit of work the DBMS promises to treat as indivisible, consistent, isolated and durable; the fund-transfer example shows exactly what breaks when each property is missing.
+> 2. **§3.3 — the life cycle:** a transaction moves through Active, Partially committed, Committed, Failed and Aborted; commit, abort, restart and kill are the control actions.
+> 3. **§3.4–§3.5 — concurrency and schedules:** running transactions together improves throughput and response time, but a schedule (an interleaving of their instructions) must preserve the order inside each transaction and must not destroy correctness.
+> 4. **§3.6–§3.9 — serializability:** a concurrent schedule is acceptable if it is equivalent to some serial one; conflict serializability tests this by swapping non-conflicting instructions and, algorithmically, by checking the precedence graph for cycles.
+> 5. **§3.10–§3.11 — recoverability:** correctness after failures requires that a transaction not commit after reading uncommitted data (recoverable), and preferably not read uncommitted data at all (cascadeless).
+> 6. **§3.12–§3.14 — control and SQL:** the DBMS needs concurrency-control protocols; applications can trade strictness for performance through SQL isolation levels and explicit transaction boundaries.
+> 7. **§3.15–§3.16 — beyond conflict serializability:** view serializability is weaker but hard to test; some schedules are correct only when the meaning of operations beyond reads and writes is considered.
+>
+> **The idea to carry through:** concurrency is valuable, but every relaxation of serial execution must be justified by an equivalence that preserves consistency and by a recovery rule that can undo the right work after a failure.
+
+### 3.1 Transaction concept and the fund-transfer example
+
+A **transaction** is a unit of program execution that accesses and possibly updates various data items.
+
+> [!example] Example (deck) — transfer $50$ from account $A$ to account $B$
+> Transaction $T_1$:
+> 1. $\texttt{read}(A)$
+> 2. $A := A - 50$
+> 3. $\texttt{write}(A)$
+> 4. $\texttt{read}(B)$
+> 5. $B := B + 50$
+> 6. $\texttt{write}(B)$
+
+Two main issues must be dealt with:
+
+- **Failures** of various kinds, such as hardware failures and system crashes.
+- **Concurrent execution** of multiple transactions.
+
+> [!note] Why a transaction is the right unit
+> The database is consistent before $T_1$ starts and must be consistent after $T_1$ finishes, but in the middle (after debiting $A$ and before crediting $B$) the database is temporarily wrong. The DBMS must therefore treat steps 1–6 as one indivisible unit: either all of them take effect, or none do.
+
+### 3.2 The ACID properties
+
+To preserve the integrity of data, the database system must ensure four properties for every transaction.
+
+#### Atomicity
+
+> [!important] **Atomicity** — either all operations of the transaction are properly reflected in the database, or none are.
+
+For the transfer transaction:
+
+- If the transaction fails after step 3 and before step 6, money will be "lost", leading to an inconsistent database state.
+- Failure could be due to software or hardware.
+- The system should ensure that updates of a partially executed transaction are not reflected in the database.
+
+#### Consistency
+
+> [!important] **Consistency** — execution of a transaction in isolation preserves the consistency of the database.
+
+Consistency requirements for the transfer example:
+
+- The sum $A + B$ is unchanged by the execution of the transaction.
+
+In general, consistency requirements include:
+
+- **Explicitly specified integrity constraints**, such as primary keys and foreign keys.
+- **Implicit integrity constraints** — e.g. the sum of balances of all accounts minus the sum of loan amounts must equal the value of cash-in-hand.
+
+A transaction, when starting to execute, must see a consistent database. During transaction execution the database may be temporarily inconsistent. When the transaction completes successfully the database must be consistent.
+
+> [!warning] Erroneous logic
+> Erroneous transaction logic can lead to inconsistency. The DBMS can enforce declared constraints, but it cannot make a badly written transaction logically correct.
+
+#### Isolation
+
+> [!important] **Isolation** — although multiple transactions may execute concurrently, each transaction must be unaware of other concurrently executing transactions. Intermediate transaction results must be hidden from other concurrently executed transactions.
+
+That is, for every pair of transactions $T_i$ and $T_j$, it appears to $T_i$ that either $T_j$ finished execution before $T_i$ started, or $T_j$ started execution after $T_i$ finished.
+
+If, between steps 3 and 6 of the fund-transfer transaction $T_1$, another transaction $T_2$ is allowed to access the partially updated database, it will see an inconsistent database (the sum $A + B$ will be less than it should be):
+
+| $T_1$ | $T_2$ |
+| --- | --- |
+| 1. $\texttt{read}(A)$ | |
+| 2. $A := A - 50$ | |
+| 3. $\texttt{write}(A)$ | |
+| | $\texttt{read}(A),\ \texttt{read}(B),\ \texttt{print}(A+B)$ |
+| 4. $\texttt{read}(B)$ | |
+| 5. $B := B + 50$ | |
+| 6. $\texttt{write}(B)$ | |
+
+Isolation can be ensured trivially by running transactions **serially** — that is, one after the other. However, executing multiple transactions concurrently has significant benefits, as discussed in §3.4.
+
+#### Durability
+
+> [!important] **Durability** — after a transaction completes successfully, the changes it has made to the database persist, even if there are system failures.
+
+Once the user has been notified that the transaction has completed (i.e. the transfer of the $50$ has taken place), the updates to the database by the transaction must persist even if there are software or hardware failures.
+
+> [!note] ACID as one contract
+> Atomicity and durability protect against **failures** (nothing half-done survives, and everything committed survives). Isolation protects against **concurrency** (concurrent transactions do not see each other's half-done work). Consistency is the correctness condition the whole contract is meant to preserve.
+
+> [!tip] Exam pointer — ACID
+> Be able to state each property precisely, attach it to the fund-transfer example (lost money → atomicity, wrong sum seen by another transaction → isolation, $A+B$ preserved → consistency, completed transfer surviving a crash → durability), and explain why serial execution gives isolation trivially but at a performance cost.
+
+### 3.3 Transaction states
+
+A transaction moves through a fixed set of states during its lifetime.
+
+> [!important] Transaction states
+> - **Active** — the initial state; the transaction stays in this state while it is executing.
+> - **Partially committed** — after the final statement has been executed.
+> - **Failed** — after the discovery that normal execution can no longer proceed.
+> - **Aborted** — after the transaction has been rolled back and the database restored to its state prior to the start of the transaction.
+> - **Committed** — after successful completion.
+
+After a transaction has been aborted, there are two options:
+
+- **Restart the transaction** — can be done only if there is no internal logical error.
+- **Kill the transaction**.
+
+#### State transitions (as shown on the deck's state diagram)
+
+| From | To | Event / condition |
+| --- | --- | --- |
+| — | Active | Transaction begins |
+| Active | Partially committed | Final statement has been executed |
+| Partially committed | Committed | Successful completion |
+| Active | Failed | Normal execution can no longer proceed |
+| Partially committed | Failed | Failure discovered after final statement but before commit completes |
+| Failed | Aborted | Transaction rolled back; database restored to pre-transaction state |
+| Aborted | Active | Restart (only if no internal logical error) |
+| Aborted | — | Kill the transaction |
+
+> [!note] Why Partially committed is distinct from Committed
+> After the last statement executes, the transaction's intended updates are known but may not yet be safely durable on stable storage. A failure in this window can still force the transaction to Failed and then Aborted. Only the Committed state carries the durability guarantee.
+
+### 3.4 Concurrent executions
+
+Multiple transactions are allowed to run concurrently in the system.
+
+**Advantages:**
+
+- **Increased processor and disk utilization, leading to better transaction throughput** — e.g. one transaction can be using the CPU while another is reading from or writing to the disk.
+- **Reduced average response time for transactions** — short transactions need not wait behind long ones.
+
+**Concurrency control schemes** are mechanisms to achieve isolation — that is, to control the interaction among the concurrent transactions in order to prevent them from destroying the consistency of the database. (The deck notes these are studied in Chapter 15, after the notion of correctness of concurrent executions.)
+
+### 3.5 Schedules and the serial/concurrent examples
+
+> [!important] **Schedule** — a sequence of instructions that specifies the chronological order in which instructions of concurrent transactions are executed.
+
+- A schedule for a set of transactions must consist of **all instructions** of those transactions.
+- It must **preserve the order** in which the instructions appear in each individual transaction.
+- A transaction that successfully completes its execution will have a **commit** instruction as the last statement (by default a transaction is assumed to execute a commit instruction as its last step).
+- A transaction that fails to successfully complete its execution will have an **abort** instruction as the last statement.
+
+#### Running example for schedules: $T_1$ and $T_2$
+
+The deck uses the following pair throughout Schedules 1–4:
+
+- $T_1$: transfer $50$ from $A$ to $B$.
+  1. $\texttt{read}(A)$
+  2. $A := A - 50$
+  3. $\texttt{write}(A)$
+  4. $\texttt{read}(B)$
+  5. $B := B + 50$
+  6. $\texttt{write}(B)$
+- $T_2$: transfer $10\%$ of the balance from $A$ to $B$ (as stated by the deck).
+
+#### Schedule 1 — serial, $T_1$ followed by $T_2$
+
+An example of a serial schedule in which $T_1$ is followed by $T_2$. The deck presents this schedule as a slide diagram.
+
+#### Schedule 2 — serial, $T_2$ followed by $T_1$
+
+A serial schedule in which $T_2$ is followed by $T_1$. The deck presents this schedule as a slide diagram.
+
+#### Schedule 3 — concurrent, equivalent to a serial schedule
+
+Let $T_1$ and $T_2$ be the transactions defined previously. The following schedule is not a serial schedule, but it is equivalent to Schedule 1 (as stated on the deck slide introducing Schedule 3). The deck presents the schedule as a slide diagram.
+
+> [!note] Preservation of $A+B$
+> In Schedules 1, 2 and 3, the sum $A + B$ is preserved (deck).
+
+#### Schedule 4 — concurrent, incorrect
+
+The following concurrent schedule does not preserve the sum of $A + B$. The deck presents the schedule as a slide diagram.
+
+> [!warning] Serial is safe; concurrent is not automatically safe
+> Schedules 1 and 2 are serial, so each sees a consistent database and leaves one behind. Schedule 3 interleaves instructions but still preserves $A+B$; Schedule 4 interleaves in a way that destroys $A+B$. The purpose of serializability theory (§3.6 onward) is to tell Schedule 3 from Schedule 4 without relying on intuition about one example.
+
+### 3.6 Serializability
+
+> [!important] Basic assumption and definition
+> **Basic assumption** — each transaction preserves database consistency. Thus, serial execution of a set of transactions preserves database consistency.
+>
+> A (possibly concurrent) schedule is **serializable** if it is equivalent to a serial schedule.
+
+Different forms of schedule equivalence give rise to different notions:
+
+1. **Conflict serializability**
+2. **View serializability**
+
+#### Simplified view of transactions
+
+- We ignore operations other than **read** and **write** instructions.
+- We assume that transactions may perform arbitrary computations on data in local buffers in between reads and writes.
+- Our simplified schedules consist of only read and write instructions.
+
+### 3.7 Conflicting instructions and conflict equivalence
+
+> [!important] **Conflicting instructions**
+> Let $l_i$ and $l_j$ be two instructions of transactions $T_i$ and $T_j$ respectively. Instructions $l_i$ and $l_j$ **conflict** if and only if there exists some item $Q$ accessed by both $l_i$ and $l_j$, and at least one of these instructions wrote $Q$.
+
+| $l_i$ | $l_j$ | Conflict? |
+| --- | --- | --- |
+| $\texttt{read}(Q)$ | $\texttt{read}(Q)$ | No — $l_i$ and $l_j$ don't conflict |
+| $\texttt{read}(Q)$ | $\texttt{write}(Q)$ | Yes — they conflict |
+| $\texttt{write}(Q)$ | $\texttt{read}(Q)$ | Yes — they conflict |
+| $\texttt{write}(Q)$ | $\texttt{write}(Q)$ | Yes — they conflict |
+
+Intuitively, a conflict between $l_i$ and $l_j$ forces a (logical) temporal order between them. If $l_i$ and $l_j$ are consecutive in a schedule and they do **not** conflict, their results would remain the same even if they had been interchanged in the schedule.
+
+> [!important] **Conflict equivalence and conflict serializability**
+> If a schedule $S$ can be transformed into a schedule $S'$ by a series of swaps of non-conflicting instructions, we say that $S$ and $S'$ are **conflict equivalent**.
+>
+> We say that a schedule $S$ is **conflict serializable** if it is conflict equivalent to a serial schedule.
+
+### 3.8 Conflict serializability — examples
+
+#### Schedule 3 is conflict serializable
+
+Schedule 3 can be transformed into Schedule 6 — a serial schedule where $T_2$ follows $T_1$ — by a series of swaps of non-conflicting instructions. Therefore, Schedule 3 is conflict serializable. (The deck shows Schedule 3 and Schedule 6 side by side as slide diagrams.)
+
+#### A schedule that is not conflict serializable
+
+The deck gives an example involving transactions $T_3$ and $T_4$ (shown as a slide diagram) and states: we are unable to swap instructions in that schedule to obtain either the serial schedule $\langle T_3, T_4 \rangle$ or the serial schedule $\langle T_4, T_3 \rangle$.
+
+> [!note] Why non-conflicting swaps matter
+> Swapping non-conflicting instructions does not change the value any transaction reads or writes, so it does not change the final database state. If a concurrent schedule can be "straightened" into a serial order by such swaps, it is behaviourally indistinguishable (with respect to reads/writes) from that serial order.
+
+### 3.9 Testing for conflict serializability — the precedence graph
+
+> [!important] **Precedence graph**
+> Consider some schedule of a set of transactions $T_1, T_2, \ldots, T_n$.
+> - **Precedence graph** — a directed graph where the vertices are the transactions (names).
+> - Draw an arc from $T_i$ to $T_j$ if the two transactions conflict, and $T_i$ accessed the data item on which the conflict arose earlier.
+> - We may label the arc by the item that was accessed.
+
+> [!important] **Serializability test**
+> A schedule is conflict serializable **if and only if** its precedence graph is **acyclic**.
+
+- **Cycle-detection algorithms** exist which take order $n^2$ time, where $n$ is the number of vertices in the graph.
+  - (Better algorithms take order $n + e$ where $e$ is the number of edges.)
+- If the precedence graph is acyclic, the serializability order can be obtained by a **topological sorting** of the graph.
+  - That is, a linear order consistent with the partial order of the graph.
+  - For example, a serializability order for the schedule (a) would be one of either (b) or (c) (as shown on the deck's diagram).
+
+> [!tip] Exam pointer — precedence graph
+> To test a schedule: find every pair of conflicting operations on the same item by different transactions, draw an edge from the earlier accessor to the later one (labelled by the item), then check for cycles. No cycle ⇒ conflict serializable, and any topological order is a valid equivalent serial schedule. A cycle ⇒ not conflict serializable.
+
+### 3.10 Recoverable schedules
+
+> [!important] **Recoverable schedule** — if a transaction $T_j$ reads a data item previously written by a transaction $T_i$, then the commit operation of $T_i$ must appear before the commit operation of $T_j$.
+
+The deck gives the following example: the schedule shown is not recoverable if $T_9$ commits immediately after the $\texttt{read}(A)$ operation (schedule diagram on the deck). If $T_8$ should abort, $T_9$ would have read (and possibly shown to the user) an inconsistent database state. Hence, the database must ensure that schedules are recoverable.
+
+> [!warning] Why "commit after read-from" is dangerous
+> If $T_9$ commits after reading a value written by uncommitted $T_8$, then $T_8$'s later abort cannot be undone from $T_9$'s point of view — a committed transaction cannot be rolled back. The only safe order is: $T_8$ commits (or aborts) first, and $T_9$ commits only after that.
+
+### 3.11 Cascading rollbacks and cascadeless schedules
+
+#### Cascading rollbacks
+
+> [!important] **Cascading rollback** — a single transaction failure leads to a series of transaction rollbacks.
+
+The deck gives the following example: consider the schedule shown where none of the transactions has yet committed (so the schedule is recoverable). If $T_{10}$ fails, $T_{11}$ and $T_{12}$ must also be rolled back. Cascading rollback can lead to the undoing of a significant amount of work.
+
+#### Cascadeless schedules
+
+> [!important] **Cascadeless schedules** — for each pair of transactions $T_i$ and $T_j$ such that $T_j$ reads a data item previously written by $T_i$, the commit operation of $T_i$ appears before the read operation of $T_j$.
+
+- Every cascadeless schedule is also recoverable.
+- It is desirable to restrict the schedules to those that are cascadeless.
+
+The deck includes an example of a schedule that is **not** cascadeless (shown as a slide diagram).
+
+> [!note] Recoverable vs cascadeless
+> **Recoverable** allows $T_j$ to read $T_i$'s uncommitted write, but delays $T_j$'s commit until $T_i$ commits/aborts. **Cascadeless** is stricter: $T_j$ cannot even *read* $T_i$'s uncommitted write until $T_i$ has committed, so an abort of $T_i$ can never force $T_j$ to roll back. Every cascadeless schedule is recoverable, but not every recoverable schedule is cascadeless.
+
+### 3.12 Concurrency control
+
+A database must provide a mechanism that will ensure that all possible schedules are both:
+
+- **Conflict serializable.**
+- **Recoverable and preferably cascadeless.**
+
+Additional points from the deck:
+
+- A policy in which only one transaction can execute at a time generates serial schedules, but provides a poor degree of concurrency.
+- **Concurrency-control schemes** trade off between the amount of concurrency they allow and the amount of overhead that they incur.
+- Testing a schedule for serializability after it has executed is a little too late!
+  - Tests for serializability help us understand why a concurrency control protocol is correct.
+- **Goal** — to develop concurrency control protocols that will assure serializability.
+
+### 3.13 Weak levels of consistency and SQL isolation levels
+
+#### Weak levels of consistency
+
+Some applications are willing to live with weak levels of consistency, allowing schedules that are not serializable:
+
+- E.g. a read-only transaction that wants to get an approximate total balance of all accounts.
+- E.g. database statistics computed for query optimization can be approximate (why? — they are used for cost estimation, not for user-visible correctness).
+- Such transactions need not be serializable with respect to other transactions.
+
+This is a **tradeoff of accuracy for performance**.
+
+#### Levels of consistency in SQL-92
+
+| Level | Guarantee (deck) |
+| --- | --- |
+| **Serializable** | Default |
+| **Repeatable read** | Only committed records to be read; repeated reads of the same record must return the same value. However, a transaction may not be serializable — it may find some records inserted by a transaction but not find others. |
+| **Read committed** | Only committed records can be read, but successive reads of a record may return different (but committed) values. |
+| **Read uncommitted** | Even uncommitted records may be read. |
+
+- Lower degrees of consistency are useful for gathering approximate information about the database.
+- **Warning:** some database systems do not ensure serializable schedules by default.
+  - E.g. Oracle and PostgreSQL by default support a level of consistency called **snapshot isolation** (not part of the SQL standard).
+
+> [!warning] "Serializable" in SQL vs in the system
+> The SQL-92 level named *Serializable* is the strongest in that standard, but the deck warns that some systems default to weaker behaviour (e.g. snapshot isolation). Do not assume a system's default matches the SQL-92 serializable guarantee without checking.
+
+### 3.14 Transaction definition in SQL
+
+- Data manipulation language must include a construct for specifying the set of actions that comprise a transaction.
+- In SQL, a transaction begins implicitly.
+- A transaction in SQL ends by:
+  - **`Commit work`** — commits current transaction and begins a new one.
+  - **`Rollback work`** — causes current transaction to abort.
+- In almost all database systems, by default, every SQL statement also commits implicitly if it executes successfully.
+  - Implicit commit can be turned off by a database directive.
+  - E.g. in JDBC, `connection.setAutoCommit(false);`
+
+### 3.15 View serializability
+
+> [!important] **View equivalence**
+> Let $S$ and $S'$ be two schedules with the same set of transactions. $S$ and $S'$ are **view equivalent** if the following three conditions are met, for each data item $Q$:
+> 1. If in schedule $S$, transaction $T_i$ reads the initial value of $Q$, then in schedule $S'$ also transaction $T_i$ must read the initial value of $Q$.
+> 2. If in schedule $S$ transaction $T_i$ executes $\texttt{read}(Q)$, and that value was produced by transaction $T_j$ (if any), then in schedule $S'$ also transaction $T_i$ must read the value of $Q$ that was produced by the same $\texttt{write}(Q)$ operation of transaction $T_j$.
+> 3. The transaction (if any) that performs the final $\texttt{write}(Q)$ operation in schedule $S$ must also perform the final $\texttt{write}(Q)$ operation in schedule $S'$.
+
+As can be seen, view equivalence is also based purely on reads and writes alone.
+
+> [!important] **View serializability**
+> A schedule $S$ is **view serializable** if it is view equivalent to a serial schedule.
+
+Key facts:
+
+- Every conflict serializable schedule is also view serializable.
+- The deck shows a schedule which is view-serializable but not conflict serializable (slide diagram) and asks: what serial schedule is it equivalent to?
+- Every view serializable schedule that is not conflict serializable has **blind writes**.
+
+#### Testing for view serializability
+
+- The precedence graph test for conflict serializability cannot be used directly to test for view serializability.
+  - Extension to test for view serializability has cost **exponential** in the size of the precedence graph.
+- The problem of checking if a schedule is view serializable falls in the class of **NP-complete** problems.
+  - Thus, existence of an efficient algorithm is extremely unlikely.
+- However, practical algorithms that just check some sufficient conditions for view serializability can still be used.
+
+> [!note] Conflict vs view serializability
+> Conflict serializability is a sufficient, efficiently testable condition (acyclic precedence graph). View serializability is a more general notion (allows some schedules conflict serializability rejects, typically due to blind writes), but testing it is NP-complete. In practice, concurrency-control protocols target conflict serializability.
+
+### 3.16 More complex notions of serializability
+
+The deck gives a schedule (slide diagram) that produces the same outcome as the serial schedule $\langle T_1, T_5 \rangle$, yet is not conflict equivalent or view equivalent to it.
+
+- If we start with $A = 1000$ and $B = 2000$, the final result is $960$ and $2040$.
+- Determining such equivalence requires analysis of operations other than read and write.
+
+> [!note] Beyond reads and writes
+> Conflict and view serializability treat transactions as sequences of reads and writes on data items. When the *meaning* of operations matters (e.g. two increments commute even though they both read and write the same item), schedules can be correct in a stronger semantic sense without being conflict- or view-equivalent to a serial schedule. The deck uses this example to show the limits of the read/write model.
+
+> [!tip] Exam pointer — transactions
+> Know ACID with the fund-transfer example; draw/trace the state diagram and name the restart/kill options from Aborted; distinguish serial, conflict-serializable and non-serializable schedules; apply the conflict rules and the precedence-graph acyclicity test; distinguish recoverable, cascadeless and cascading rollback with the commit/read ordering; and recall the SQL-92 isolation levels in order with what each allows, plus the warning that some systems default to snapshot isolation.
+
+---
+
 ## Formula Summary
 
 | Quantity | Expression | Notes / validity |
@@ -910,5 +1298,7 @@ Continuing from §1.36 (deck p. 57–59):
 | $B^+$ leaf order | $m_{leaf}(P_r+V) + P \le B$ | plus one next-leaf pointer |
 | $B^+$ split point | $j=\lceil(m_{leaf}+1)/2\rceil$ (leaf), $j=\lceil(m+1)/2\rceil$ (internal) | leaf key replicated, internal key moved |
 
-> [!note] Source images
-> All `DBMS - …excalidraw` drawings are original schematic reconstructions of the deck's diagrams and live in the vault-root `Excalidraw/` folder. The explanatory drawings *Index Types Compared*, *Extendible Hashing Trace*, *Linear Hashing Trace* and *Bplus Replicate vs Move* are teaching aids built from the deck's own numbers. Callouts titled "Illustrative example (not from the deck)" and the "Intuition" subsections are explanatory additions and are not lecture content. The `DBMS - … (deck pN).png` figures are page renders of [[file-management.pdf]], stored in `DBMS/images/`, and each is captioned with the slide it came from. All numbers, conventions and worked traces come from the deck; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 13–14 and §24.5) was used for explanation only.
+> [!note] Source material and figures
+> **Topic 1.** All `DBMS - …excalidraw` drawings are original schematic reconstructions of the deck's diagrams and live in the vault-root `Excalidraw/` folder. The explanatory drawings *Index Types Compared*, *Extendible Hashing Trace*, *Linear Hashing Trace* and *Bplus Replicate vs Move* are teaching aids built from the deck's own numbers. Callouts titled "Illustrative example (not from the deck)" and the "Intuition" subsections in §1 are explanatory additions and are not lecture content. The `DBMS - … (deck pN).png` figures are page renders of [[file-management.pdf]], stored in `DBMS/images/`, and each is captioned with the slide it came from.
+> **Topic 3.** Content is compiled from [[transactions.pdf]] (Silberschatz, Korth and Sudarshan, *Database System Concepts*, 6th ed., Chapter 14). Where the deck presents schedules, state diagrams or graphs as slide diagrams, the notes record every fact, definition, property and result stated on the slides; diagram-only step layouts that were not recoverable from text extraction are described by the deck's stated outcomes and constraints rather than invented.
+> **General.** All numbers, conventions and worked traces come from the respective decks; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 13–14 and §24.5) was used for explanation only in topic 1.

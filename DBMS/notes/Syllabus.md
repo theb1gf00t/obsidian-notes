@@ -17,7 +17,7 @@ This file is the **authority** for the topic list, the topic order and the post-
 | Post-midsem / end-sem | 1–3 | [[Post-Midsem-Notes]] |
 
 > [!warning] Scope of the examination
-> This block covers all three post-midsem topics — file management, query algorithms and transactions. Only **topic 1 is written** so far; topics 2 and 3 are still open.
+> This block covers all three post-midsem topics — file management, query algorithms and transactions. **Topics 1 and 3 are written** so far; topic 2 is still open.
 
 > [!info] How to use this tracker
 > - Tick the box on a topic line when the topic is **revised and recallable**, not merely read once. Untick it if a revision pass exposes a hole.
@@ -41,10 +41,10 @@ WHERE file.path = this.file.path
 
 - [ ] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections)
 - [ ] **2 · Query / Join Algorithms (algos)** — [[algos.pdf|PDF]] · [[Post-Midsem-Notes|Notes]] (not yet written)
-- [ ] **3 · Transactions** — [[transactions.pdf|PDF]] · [[Post-Midsem-Notes|Notes]] (not yet written)
+- [x] **3 · Transactions** — [[transactions.pdf|PDF]] · [[Post-Midsem-Notes#3. Transactions|Notes → §3]] (16 sections)
 
 > [!tip] Exam pointer
-> Topic 1's marks sit on the **numbers and traces**, not the definitions: block-access arithmetic and $b = B/r$, the 9500-record primary index giving 49 blocks and $\lceil\log_2 49\rceil + 1 = 7$ accesses, the extendible-hashing directory doubling on a full local depth, the linear-hashing split deciding between $k$ and $k + M'$ from the parity of $r$, and the $B^+$ tree order $m$ / $m_{\text{leaf}}$ with the leaf-key-replicated-versus-internal-key-moved split rule.
+> Topic 1's marks sit on the **numbers and traces**, not the definitions: block-access arithmetic and $b = B/r$, the 9500-record primary index giving 49 blocks and $\lceil\log_2 49\rceil + 1 = 7$ accesses, the extendible-hashing directory doubling on a full local depth, the linear-hashing split deciding between $k$ and $k + M'$ from the parity of $r$, and the $B^+$ tree order $m$ / $m_{\text{leaf}}$ with the leaf-key-replicated-versus-internal-key-moved split rule. Topic 3's marks sit on **applying the rules to schedules**: ACID via the fund-transfer example, state transitions (including restart/kill from Aborted), conflict identification and precedence-graph acyclicity, recoverable vs cascadeless commit/read ordering, and the SQL-92 isolation levels with the snapshot-isolation warning.
 
 ---
 
@@ -102,7 +102,24 @@ Not yet written — see the open deck [[algos.pdf]].
 
 ### §3 · Transactions
 
-Not yet written — see the open deck [[transactions.pdf]].
+| § | Section |
+| --- | --- |
+| 3.1 | [[Post-Midsem-Notes#3.1 Transaction concept and the fund-transfer example\|Transaction concept and the fund-transfer example]] |
+| 3.2 | [[Post-Midsem-Notes#3.2 The ACID properties\|The ACID properties]] |
+| 3.3 | [[Post-Midsem-Notes#3.3 Transaction states\|Transaction states]] |
+| 3.4 | [[Post-Midsem-Notes#3.4 Concurrent executions\|Concurrent executions]] |
+| 3.5 | [[Post-Midsem-Notes#3.5 Schedules and the serial/concurrent examples\|Schedules and the serial/concurrent examples]] |
+| 3.6 | [[Post-Midsem-Notes#3.6 Serializability\|Serializability]] |
+| 3.7 | [[Post-Midsem-Notes#3.7 Conflicting instructions and conflict equivalence\|Conflicting instructions and conflict equivalence]] |
+| 3.8 | [[Post-Midsem-Notes#3.8 Conflict serializability — examples\|Conflict serializability — examples]] |
+| 3.9 | [[Post-Midsem-Notes#3.9 Testing for conflict serializability — the precedence graph\|Testing for conflict serializability — the precedence graph]] |
+| 3.10 | [[Post-Midsem-Notes#3.10 Recoverable schedules\|Recoverable schedules]] |
+| 3.11 | [[Post-Midsem-Notes#3.11 Cascading rollbacks and cascadeless schedules\|Cascading rollbacks and cascadeless schedules]] |
+| 3.12 | [[Post-Midsem-Notes#3.12 Concurrency control\|Concurrency control]] |
+| 3.13 | [[Post-Midsem-Notes#3.13 Weak levels of consistency and SQL isolation levels\|Weak levels of consistency and SQL isolation levels]] |
+| 3.14 | [[Post-Midsem-Notes#3.14 Transaction definition in SQL\|Transaction definition in SQL]] |
+| 3.15 | [[Post-Midsem-Notes#3.15 View serializability\|View serializability]] |
+| 3.16 | [[Post-Midsem-Notes#3.16 More complex notions of serializability\|More complex notions of serializability]] |
 
 ---
 
@@ -147,10 +164,11 @@ Page renders lifted from the deck (every one is embedded with a width and an ita
 
 > [!warning] What is still missing
 > - **Topic 2 (query / join algorithms)** — [[algos.pdf]] is not yet mined and [[Post-Midsem-Notes]] has no §2.
-> - **Topic 3 (transactions)** — [[transactions.pdf]] is not yet mined and [[Post-Midsem-Notes]] has no §3.
-> - The Silberschatz textbook ([[silberschatz_dbms.pdf]]) was used only to explain topic 1; the worked numbers and conventions in the note come from [[file-management.pdf]], not the book.
+> - **Topic 3 diagrams** — the [[transactions.pdf]] deck presents several schedules, the transaction-state diagram and precedence-graph examples as slide graphics; where text extraction did not recover the exact step layout, [[Post-Midsem-Notes#3. Transactions|§3]] records the deck's stated definitions, facts and outcomes rather than inventing diagram bodies.
+> - The Silberschatz textbook ([[silberschatz_dbms.pdf]]) was used only to explain topic 1; the worked numbers and conventions in the notes come from the respective decks ([[file-management.pdf]], [[transactions.pdf]]), not the book.
 
 > [!question] Self-check before you tick a topic
 > - Can you state the topic's **key formula** from memory and say what it assumes — $b = B/r$, $\mathrm{BF}_i = B/(V+P)$, the $B^+$ internal and leaf order inequalities?
 > - Can you draw the **figure** that carries the topic — the disk geometry, the overflow chain, the extendible-hashing directory, the linear split pointer, the primary index, the $B^+$ tree?
 > - Can you run the **trace** end to end with the deck's own numbers, and name the **one trap** the lecturer flagged (trailing bits, local-depth doubling, leaf-key replication)?
+> - For topic 3, can you state **ACID** with the fund-transfer example, trace the **transaction states** (including restart/kill from Aborted), test a schedule for **conflict serializability** with the precedence graph, and distinguish **recoverable**, **cascadeless** and **cascading rollback** by their commit/read ordering? Can you order the SQL-92 isolation levels and recall the snapshot-isolation warning?
