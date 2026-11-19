@@ -14,7 +14,7 @@ This file is the **authority** for the topic list, the topic order and the post-
 
 | Block | Topics | Note file |
 | --- | --- | --- |
-| Pre-midsem | 1, 2, 3, 3.1, 4, 6 | *(not yet written)* |
+| Pre-midsem | 1, 2, 3, 3.1, 4, 6 | [[DBMS_Notes]] (topic 6 only so far) |
 | Post-midsem / end-sem | 1–3 | [[DBMS_Notes]] |
 
 > [!warning] Scope of the examination
@@ -48,10 +48,10 @@ WHERE file.path = this.file.path
 - [ ] **3 · Relational Model** — [[3_Relational_Model.pdf|PDF]] · *(Notes not yet written)* (62 slides)
 - [ ] **3.1 · Tuple Relational Calculus (TRC)** — [[3.1_Tuple_Relational_Calculus.pdf|PDF]] · *(Notes not yet written)* (14 slides)
 - [ ] **4 · The SQL Standard** — [[4_The_SQL_Standard.pdf|PDF]] · *(Notes not yet written)* (73 slides)
-- [ ] **6 · Database Design and Normal Forms (Relational Schema Design)** — [[6_Relational_Schema_Design.pdf|PDF]] · *(Notes not yet written)* (52 slides)
+- [x] **6 · Database Design and Normal Forms (Relational Schema Design)** — [[6_Relational_Schema_Design.pdf|PDF]] · [[DBMS_Notes#6. Database Design and Normal Forms|Notes → §6]] (19 sections) ✅ 2026-11-19
 
-> [!note] No note file yet
-> None of the pre-midsem topics have a compiled study note yet — only the syllabus row exists. When a pre-midsem note file is created (one file for the whole block, per [[context]] §3), link its heading here in place of each *(Notes not yet written)* placeholder and add a `§` section index for it below, mirroring the post-midsem section below.
+> [!note] Note file now shared with post-midsem
+> Topic 6 is written into [[DBMS_Notes]] — the same file as the post-midsem block — rather than a separate pre-midsem file, so that all DBMS study notes accumulate in one place. Topics 1, 2, 3, 3.1 and 4 still have no compiled note; when they are written, add them to [[DBMS_Notes]] as further `##` topics and link them here in place of each *(Notes not yet written)* placeholder, with a `§` section index below mirroring §6's.
 
 ---
 
@@ -69,6 +69,30 @@ WHERE file.path = this.file.path
 ## Section index of the notes
 
 Every written section of [[DBMS_Notes]], grouped by topic, so a topic can be opened at the exact sub-heading.
+
+### §6 · Database Design and Normal Forms
+
+| § | Section |
+| --- | --- |
+| 6.1 | [[DBMS_Notes#6.1 Why schema design matters — the motivating example\|Why schema design matters — the motivating example]] |
+| 6.2 | [[DBMS_Notes#6.2 First Normal Form (1NF) and the five normal forms overview\|First Normal Form (1NF) and the five normal forms overview]] |
+| 6.3 | [[DBMS_Notes#6.3 Functional dependencies — the formal definition\|Functional dependencies — the formal definition]] |
+| 6.4 | [[DBMS_Notes#6.4 Deriving new FDs — the entailment relation and closure\|Deriving new FDs — the entailment relation and closure]] |
+| 6.5 | [[DBMS_Notes#6.5 Armstrong's inference rules\|Armstrong's inference rules]] |
+| 6.6 | [[DBMS_Notes#6.6 Computing closures — why attribute closure, not full F⁺\|Computing closures — why attribute closure, not full F⁺]] |
+| 6.7 | [[DBMS_Notes#6.7 Second Normal Form (2NF)\|Second Normal Form (2NF)]] |
+| 6.8 | [[DBMS_Notes#6.8 Transitive dependencies and Third Normal Form (3NF)\|Transitive dependencies and Third Normal Form (3NF)]] |
+| 6.9 | [[DBMS_Notes#6.9 The motivation for Boyce–Codd Normal Form (BCNF)\|The motivation for Boyce–Codd Normal Form (BCNF)]] |
+| 6.10 | [[DBMS_Notes#6.10 Decomposition — definition and the two desirable properties\|Decomposition — definition and the two desirable properties]] |
+| 6.11 | [[DBMS_Notes#6.11 Lossless join property — formal definition and the lossy example\|Lossless join property — formal definition and the lossy example]] |
+| 6.12 | [[DBMS_Notes#6.12 Dependency preserving decompositions — formal definition\|Dependency preserving decompositions — formal definition]] |
+| 6.13 | [[DBMS_Notes#6.13 Testing for lossless decomposition — the tableau (chase) method\|Testing for lossless decomposition — the tableau (chase) method]] |
+| 6.14 | [[DBMS_Notes#6.14 Algorithm for BCNF decomposition\|Algorithm for BCNF decomposition]] |
+| 6.15 | [[DBMS_Notes#6.15 Dependency preservation can fail under BCNF — two worked counterexamples\|Dependency preservation can fail under BCNF — two worked counterexamples]] |
+| 6.16 | [[DBMS_Notes#6.16 Equivalent FD sets and canonical (minimal) covers\|Equivalent FD sets and canonical (minimal) covers]] |
+| 6.17 | [[DBMS_Notes#6.17 3NF decomposition algorithm — synthesis guaranteeing both properties\|3NF decomposition algorithm — synthesis guaranteeing both properties]] |
+| 6.18 | [[DBMS_Notes#6.18 Multivalued dependencies (MVDs)\|Multivalued dependencies (MVDs)]] |
+| 6.19 | [[DBMS_Notes#6.19 Fourth Normal Form (4NF)\|Fourth Normal Form (4NF)]] |
 
 ### §1 · File Organization and Indexing
 
@@ -204,13 +228,15 @@ Page renders lifted from the deck (every one is embedded with a width and an ita
 ## Open gaps
 
 > [!warning] What is still missing
-> - **The entire pre-midsem block has no note file yet** — topics 1, 2, 3, 3.1, 4 and 6 above have only a syllabus row and a PDF link. No figures, section index or formula summary exist for them until that note is written.
+> - **Four pre-midsem topics still have no note file** — topics 1, 2, 3, 3.1 and 4 above have only a syllabus row and a PDF link; only topic 6 is written. No figures, section index or formula summary exist for the missing ones until that content is written.
+> - **Topic 6 has no figures** — [[6_Relational_Schema_Design.pdf]] is a purely textual deck (definitions, inference rules, proofs, symbolic/numeric examples); there are no slide diagrams to extract or schematics worth reconstructing, so [[DBMS_Notes#6. Database Design and Normal Forms|§6]] has no figure table, unlike §1.
 > - **Topic 2 diagrams** — [[algos.pdf]] is written as [[DBMS_Notes#2. Query / Join Algorithms (algos)|§2]]; only the merge-phase figure (deck p. 10) is embedded as a page render. The deck leaves set-operation details to the student (slide 22), so §2.18 records only what the slide states.
 > - **Topic 3 diagrams** — the [[transactions.pdf]] deck presents several schedules, the transaction-state diagram and precedence-graph examples as slide graphics; where text extraction did not recover the exact step layout, [[DBMS_Notes#3. Transactions|§3]] records the deck's stated definitions, facts and outcomes rather than inventing diagram bodies.
-> - The Silberschatz textbook ([[silberschatz_dbms.pdf]]) was used only to explain topic 1; the worked numbers and conventions in the notes come from the respective decks ([[file-management.pdf]], [[transactions.pdf]]), not the book.
+> - The Silberschatz textbook ([[silberschatz_dbms.pdf]]) was used only to explain topics 1 and 6; the worked numbers and conventions in the notes come from the respective decks ([[file-management.pdf]], [[transactions.pdf]], [[6_Relational_Schema_Design.pdf]]), not the book.
 
 > [!question] Self-check before you tick a topic
 > - Can you state the topic's **key formula** from memory and say what it assumes — $b = B/r$, $\mathrm{BF}_i = B/(V+P)$, the $B^+$ internal and leaf order inequalities?
 > - Can you draw the **figure** that carries the topic — the disk geometry, the overflow chain, the extendible-hashing directory, the linear split pointer, the primary index, the $B^+$ tree?
 > - Can you run the **trace** end to end with the deck's own numbers, and name the **one trap** the lecturer flagged (trailing bits, local-depth doubling, leaf-key replication)?
 > - For topic 3, can you state **ACID** with the fund-transfer example, trace the **transaction states** (including restart/kill from Aborted), test a schedule for **conflict serializability** with the precedence graph, and distinguish **recoverable**, **cascadeless** and **cascading rollback** by their commit/read ordering? Can you order the SQL-92 isolation levels and recall the snapshot-isolation warning?
+> - For topic 6, can you name the **three update anomalies** from a bad-schema example, state **Armstrong's three sound-and-complete axioms**, compute an **attribute closure** by hand, test a schema for **2NF / 3NF / BCNF** and cite the violating FD, run the **tableau test** for losslessness, apply the **BCNF decomposition algorithm**, and reproduce **both counterexamples** where BCNF breaks dependency preservation?

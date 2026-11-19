@@ -29,11 +29,12 @@ Act as an expert database tutor and technical writer for an engineering undergra
 > [!important] The note is not a reformatted deck
 > Reproducing the deck's text with nicer headings, bold terms and tables is **not sufficient** — it only satisfies "faithful", not "explained". Every H3 section needs a layer of plain-language understanding on top of the deck's facts: say in your own words why the thing exists, what breaks without it, or what everyday situation it resembles, before or alongside the formal statement. The deck's wording, the book's wording, or genuinely original phrasing are all fair game for this layer — what matters is that the reader finishes the section *understanding* the idea, not merely having read a tidier version of the slide. See §5a for the required shape.
 
-One note file holds the whole block:
+One note file holds every block written so far:
 
 | File | Block | Source decks |
 | --- | --- | --- |
 | [[DBMS_Notes]] | **Post-midsem / end-sem** — file management, query algorithms, transactions | [[file-management.pdf]], [[algos.pdf]], [[transactions.pdf]] |
+| [[DBMS_Notes]] | **Pre-midsem** — database design and normal forms (topic 6 only so far) | [[6_Relational_Schema_Design.pdf]] |
 
 > [!warning] Naming trap
 > The DBMS note is **[[DBMS_Notes]]** in `DBMS/notes/`. Do not write DBMS material into the Computer Graphics, Phase Diagrams or Graph Theory folders. The rulebook is **[[context]]** here, not [[CG_context]].

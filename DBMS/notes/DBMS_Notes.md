@@ -1,5 +1,5 @@
 ---
-title: DBMS — Post-Midsem Notes (File Organization, Query Algorithms, Transactions)
+title: DBMS — Notes (Database Design, File Organization, Query Algorithms, Transactions)
 tags:
   - dbms
   - DBMS
@@ -9,22 +9,26 @@ tags:
   - query-algorithms
   - joins
   - post-midsem
+  - database-design
+  - normal-forms
+  - pre-midsem
 ---
 		
-# Post-Midsem — File Organization and Indexing · Query Algorithms · Transactions
+# DBMS Notes — Database Design and Normal Forms · File Organization and Indexing · Query Algorithms · Transactions
 
-This block is the storage-and-retrieval half of the DBMS course. It starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of the story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms — selection, external sorting, joins, optimization) is written below as §2; topic 3 (transactions) is written below as §3.
+This file accumulates the course's study notes across both the pre-midsem and post-midsem blocks (see [[Syllabus]] for the block split). §6 (database design and normal forms) is **pre-midsem**; §§1–3 are the **post-midsem / end-sem** block and form a continuous story of their own: it starts at the physical bottom — a disk is a stack of spinning platters, and the only unit it can move is a **block** — and works upward: records must be packed into those blocks (§1.1–§1.6), a **file organization** decides how the records are placed (§1.7–§1.11), and when the file grows or shrinks the placement must change without breaking access (§1.12–§1.20). The other half of that story is the **index**: an auxiliary structure that turns a full-file scan into a handful of block reads, first as a simple ordered file (§1.21–§1.31) and finally as a self-balancing $B^+$ tree (§1.32–§1.39). Topic 2 (query algorithms — selection, external sorting, joins, optimization) is written below as §2; topic 3 (transactions) is written below as §3.
 
-*Topic list and progress: [[Syllabus]] · formatting rules: [[context]] · book: [[silberschatz_dbms.pdf]] (Ch. 13 "Data Storage Structures", Ch. 14 "Indexing", §24.5 "Hash Indices").*
+*Topic list and progress: [[Syllabus]] · formatting rules: [[context]] · book: [[silberschatz_dbms.pdf]] (Ch. 7 "Relational Database Design", Ch. 13 "Data Storage Structures", Ch. 14 "Indexing", §24.5 "Hash Indices").*
 
 > [!info] How the block is organised
-> | Topic | Deck | Slides | Question it answers |
-> | --- | --- | --- | --- |
-> | 1 | [[file-management.pdf\|file-management deck]] | 60 | How are records placed on disk, and how do indexes make them findable? |
-> | 2 | [[algos.pdf\|algos deck]] | 32 | How does the DBMS execute a query (sorting, joining, selecting)? |
-> | 3 | [[transactions.pdf\|transactions deck]] | 36 | How are concurrent, failure-prone updates kept correct? |
+> | Topic | Block | Deck | Slides | Question it answers |
+> | --- | --- | --- | --- | --- |
+> | 6 | Pre-midsem | [[6_Relational_Schema_Design.pdf\|schema design deck]] | 52 | What makes a schema "good", and how do normal forms and decomposition fix a bad one? |
+> | 1 | Post-midsem | [[file-management.pdf\|file-management deck]] | 60 | How are records placed on disk, and how do indexes make them findable? |
+> | 2 | Post-midsem | [[algos.pdf\|algos deck]] | 32 | How does the DBMS execute a query (sorting, joining, selecting)? |
+> | 3 | Post-midsem | [[transactions.pdf\|transactions deck]] | 36 | How are concurrent, failure-prone updates kept correct? |
 >
-> All three topics are now written; progress is tracked in [[Syllabus]].
+> Topics 1, 2, 3 and 6 are now written; progress is tracked in [[Syllabus]]. The remaining pre-midsem topics (2, 3, 3.1, 4) are not yet written.
 
 > [!warning] The conventions this topic uses everywhere
 > - $B$ = **block size** (bytes); $r$ = **record length**; $b$ = **blocking factor** $= B/r$; $b$ is also reused for the *number of data-file blocks* in the index section — the deck does this, so read the local definition each time.
@@ -1888,7 +1892,521 @@ The deck gives a schedule (slide diagram) that produces the same outcome as the 
 
 ---
 
-## Formula Summary
+## 6. Database Design and Normal Forms
+
+*Deck: [[6_Relational_Schema_Design.pdf|Relational Schema Design deck]] — 52 slides, Prof. P. Sreenivasa Kumar, IIT Madras. This is a **pre-midsem** topic (see [[Syllabus]]'s Pre-Midsem block); it is written here because this file is where DBMS study notes accumulate. The Silberschatz textbook (Ch. 7, "Relational Database Design") is used only to explain the deck's ideas more clearly; every definition, rule, algorithm and worked example below comes from the deck.*
+
+> [!abstract] Roadmap of this topic — read it as one story
+> **The question:** given a relation schema, how do we tell if it is *good*, and if it isn't, how do we fix it?
+> **The answer is a stack of increasingly strict conditions**, each one removing a specific kind of redundancy:
+> 1. **§6.1–§6.2 — the motivation:** a badly-grouped schema causes redundant storage and three concrete update anomalies (insertion, deletion, update). This is the problem every normal form exists to solve.
+> 2. **§6.3–§6.10 — functional dependency theory:** FDs formalize "bad grouping" as a constraint; Armstrong's Axioms give a sound and complete proof system for deriving every FD a schema implies; attribute closure makes that computation practical.
+> 3. **§6.11–§6.14 — 2NF, 3NF, BCNF:** each normal form outlaws one more flavour of redundancy — partial dependency (2NF), transitive dependency (3NF), then *any* dependency whose left side isn't a superkey (BCNF).
+> 4. **§6.15–§6.21 — decomposition:** splitting a bad schema into smaller ones must satisfy two independent properties (lossless join, dependency preservation); the tableau test checks losslessness mechanically; the BCNF algorithm and the 3NF synthesis algorithm turn the theory into a procedure.
+> 5. **§6.22 — beyond functional dependencies:** multivalued dependencies catch a kind of redundancy FDs cannot see, leading to 4NF.
+>
+> **The idea to carry through:** every normal form is a precise answer to "what redundancy am I disallowing, and what does that cost me?" — 2NF ⊂ 3NF ⊂ BCNF in strictness, and BCNF can cost you dependency preservation, which 3NF never does.
+
+### 6.1 Why schema design matters — the motivating example
+
+Coming up with a "good" relational schema is not a cosmetic choice — a bad one causes real, measurable problems. The deck poses three questions that frame the whole topic: how do we characterize the "goodness" of a schema, how do we compare two alternative schemas, and what exactly goes wrong with a bad one? **Normal forms** are the deck's answer: each normal form specifies certain conditions, and if a schema satisfies them, certain kinds of problems are provably avoided.
+
+> [!important] Setup — the deck's running example
+> Two correct, separate relations:
+> `Student(studName, rollNo, sex, studDept)` and `Department(deptName, officePhone, HOD)` — every student belongs to a department, and `studDept` names it.
+>
+> The **incorrect** (bad) schema merges them into one relation:
+> `StudentDept(studName, rollNo, sex, deptName, officePhone, HOD)`
+
+#### Intuition — why merging two "related" ideas into one table backfires
+
+It feels natural to combine "a student" and "their department" into one row, since every student *has* a department. But a department is a fact about a *group* of students, not about one student — cramming it into the student row means the same departmental fact (its phone number, its HOD) gets typed out again for every student in that department. The schema is lying about the shape of the data: it pretends "department info" is a property of a student, when it is really a property of a *set* of students.
+
+> [!warning] Problems with the bad schema — redundant storage
+> `officePhone` and `HOD` are stored **redundantly**, once with every student in that department — **wastage of disk space**. A program that updates a department's office phone must change it at **several places** — more running time, and **error-prone** (miss one tuple, and the data is now inconsistent). Since transactions must run as fast as possible to maximize throughput, this redundant update work is a direct cost.
+
+> [!important] Update anomalies — the three named problems
+> **Insertion anomaly** — there is no way to insert information about a *new* department unless we also enter the details of a (dummy) student in that department, since department facts only exist attached to a student row.
+> **Deletion anomaly** — if all students of a department leave and their tuples are deleted, information about the department itself is **lost entirely**, even though the department may still exist.
+> **Update anomaly** — updating a department's `officePhone` requires changing the value in **several tuples**; if even one tuple is missed, the data becomes **inconsistent**.
+
+> [!note] Book connection — the same three anomalies, a different example
+> Silberschatz's Ch. 7 example merges `instructor` and `department` into one relation `in_dep(ID, name, salary, dept_name, building, budget)`. Every instructor in the Comp. Sci. department repeats `(Taylor, 100000)` for `building, budget` — if an update changes the budget in one instructor's tuple but not another's, the database becomes **inconsistent as to what the department's actual budget is**. The book adds a sharper warning about decomposition itself: splitting `employee(ID, name, street, city, salary)` into `employee1(ID, name)` and `employee2(name, street, city, salary)` *looks* reasonable, but if two different employees happen to share the same `name` (e.g. two employees both named "Kim"), rejoining the two pieces produces **spurious tuples** that mix one Kim's address with the other Kim's salary — the join can no longer tell them apart. This is exactly the **lossy decomposition** problem of §6.15: not every decomposition is safe, and the fix is never "just split it up," but "split it up correctly."
+
+### 6.2 First Normal Form (1NF) and the five normal forms overview
+
+The deck names the full hierarchy before developing each one in detail:
+
+| Normal form | Defined using |
+| --- | --- |
+| **First Normal Form (1NF)** | included in the very definition of a relation |
+| **Second Normal Form (2NF)** | functional dependencies |
+| **Third Normal Form (3NF)** | functional dependencies |
+| **Boyce–Codd Normal Form (BCNF)** | functional dependencies |
+| **Fourth Normal Form (4NF)** | multivalued dependencies |
+| **Fifth Normal Form (5NF)** / Project-Join Normal Form (PJNF) | join dependencies |
+
+> [!note] Why 1NF needs no separate derivation
+> The deck states 1NF is "included in the definition of a relation" — i.e. the relational model itself assumes every attribute value is a single, indivisible (**atomic**) value, so any table that actually qualifies as a *relation* is automatically in 1NF. Silberschatz §7.8 makes the mechanism explicit: a domain is **atomic** if its elements are indivisible units; a relation schema is in 1NF iff the domains of all its attributes are atomic. A `children` attribute whose values are *sets* of names is non-atomic (violates 1NF); a composite attribute like `address = (street, city, state)` is also non-atomic until its components become separate attributes. The book's subtlety worth keeping: atomicity is about *how the application uses* a value, not some absolute property of the data type — an identifier like `"CS001"` (department code + number) is non-atomic *if* code ever splits it apart to extract the department, but atomic if the department is instead stored as its own separate attribute and the identifier is never parsed.
+
+### 6.3 Functional dependencies — the formal definition
+
+> [!important] Definition — functional dependency (FD)
+> A **functional dependency (FD)** $X \to Y$ (read "$X$ determines $Y$", where $X \subseteq R$, $Y \subseteq R$) is said to **hold** on a schema $R$ if, in any instance $r$ of $R$: for every pair of tuples $t_1, t_2$ with $t_1 \ne t_2$, $t_1 \in r$, $t_2 \in r$ — if they agree on $X$ (i.e. $t_1[X] = t_2[X]$), then they must also agree on $Y$ (i.e. $t_1[Y] = t_2[Y]$).
+
+> [!note] A key always implies every FD trivially
+> If $K \subset R$ is a key for $R$, then for any attribute $A \in R$, $K \to A$ holds automatically — because no two distinct tuples can ever agree on a key value in the first place, so the "if … then" condition of the FD definition is **vacuously true**. This is why "the key determines everything" is not a special theorem; it falls straight out of what a key *is*.
+
+#### Intuition — an FD is a promise about what can never collide
+
+An FD $X \to Y$ is a promise the schema designer makes: "no two rows will ever share the same $X$-value while disagreeing on $Y$." It is not discovered by looking at *one* instance of the data; it is a constraint the designer asserts should hold for *every* legal instance, forever. If you find two real tuples that agree on $X$ but disagree on $Y$, either the FD was wrong, or the data is corrupt.
+
+> [!example] The deck's FD examples
+> Schema: `Student(studName, rollNo, sex, dept, hostelName, roomNo)`.
+> - Since `rollNo` is a key: $\texttt{rollNo} \to \{\texttt{studName, sex, dept, hostelName, roomNo}\}$ (the vacuous-key case above).
+> - If each student is given a hostel room *exclusively* (no two students share one room): $\texttt{hostelName, roomNo} \to \texttt{rollNo}$.
+> - If boys and girls are housed in separate hostels: $\texttt{hostelName} \to \texttt{sex}$.
+>
+> FDs are **additional constraints** a designer chooses to specify — they are not automatically derivable from the attribute names; they come from knowledge of the real-world enterprise the schema models.
+
+> [!important] Trivial, non-trivial and completely non-trivial FDs
+> An FD $X \to Y$ where $Y \subseteq X$ is a **trivial FD** — it always holds, for any relation whatsoever (since agreeing on $X$ already forces agreement on any subset of $X$).
+> An FD $X \to Y$ where $Y \not\subseteq X$ is **non-trivial**.
+> An FD $X \to Y$ where $X \cap Y = \varnothing$ is **completely non-trivial**.
+
+### 6.4 Deriving new FDs — the entailment relation and closure
+
+Given that a set of FDs $F$ holds on $R$, we can often infer that some *new* FD must also hold, even though it was never explicitly stated. For instance, given $X \to Y$ and $Y \to Z$ hold on $R$, we can infer $X \to Z$ must also hold. The deck's question: how do we **systematically** obtain all such new FDs — because unless *every* FD implied by the stated ones is known, the relation schema is not fully specified.
+
+> [!important] Definition — entailment and closure
+> We say a set of FDs $F$ **entails** $X \to Y$, written $F \models \{X \to Y\}$ (also read "$F$ logically implies $X \to Y$"), if $X \to Y$ holds in **every** instance $r$ of $R$ on which the FDs of $F$ hold.
+> $$ F^+ = \{\, X \to Y \mid F \models X \to Y \,\} $$
+> $F^+$ is called the **closure of $F$**.
+
+Armstrong devised several **inference rules** for mechanically deriving new FDs from a given set — this is what makes computing $F^+$ possible rather than just an abstract definition.
+
+### 6.5 Armstrong's inference rules
+
+> [!important] Armstrong's inference rules (all six, as given by the deck)
+> 1. **Reflexive rule**: $F \models \{X \to Y \mid Y \subseteq X\}$ for any $X$ — produces exactly the trivial FDs.
+> 2. **Augmentation rule**: $\{X \to Y\} \models \{XZ \to YZ\}$ for any $Z \subseteq R$ (here $XZ$ denotes $X \cup Z$).
+> 3. **Transitive rule**: $\{X \to Y,\ Y \to Z\} \models \{X \to Z\}$.
+> 4. **Decomposition (Projective) rule**: $\{X \to YZ\} \models \{X \to Y\}$.
+> 5. **Union (Additive) rule**: $\{X \to Y,\ X \to Z\} \models \{X \to YZ\}$.
+> 6. **Pseudo-transitive rule**: $\{X \to Y,\ WY \to Z\} \models \{WX \to Z\}$.
+
+**Rules 4, 5 and 6 are not strictly necessary** — they are shortcuts. The deck proves rule 5 (union) from rules 1, 2, 3 alone:
+
+$$
+\begin{aligned}
+1)\quad & X \to Y && \text{given} \\
+2)\quad & X \to Z && \text{given} \\
+3)\quad & X \to XY && \text{augmentation rule on (1)} \\
+4)\quad & XY \to ZY && \text{augmentation rule on (2)} \\
+5)\quad & X \to ZY && \text{transitive rule on (3), (4)}
+\end{aligned}
+$$
+
+Rules 4 and 6 can similarly be shown unnecessary, but it is **useful to keep them as shortcut rules** for faster derivations in practice.
+
+> [!important] Soundness and completeness — Armstrong's Axioms
+> Rules (1), (2) and (3) alone are **sound and complete** — together they are called **Armstrong's Axioms (AA)**.
+> **Soundness**: every new FD $X \to Y$ derived from $F$ using AA genuinely satisfies $F \models \{X \to Y\}$ — the rules never produce a *wrong* FD.
+> **Completeness**: every FD $X \to Y$ that is logically implied by $F$ (i.e. $F \models \{X \to Y\}$) **can** be derived from $F$ using AA — the rules never *miss* a true FD.
+
+#### Why soundness holds — the deck's proof sketch
+
+Suppose $X \to Y$ is derived from $F$ using AA in $n$ steps; if every individual step is correct, the whole derivation is correct. A single step applies rule (1), (2) or (3):
+
+- **Rule (1)** trivially produces correct FDs, by definition of a trivial FD.
+- **Rule (2)**, $\{X \to Y\} \models \{XZ \to YZ\}$: suppose $t_1, t_2 \in r$ agree on $XZ$. Then they agree on $X$ (since $X \subseteq XZ$) $\Rightarrow$ they agree on $Y$ (since $X \to Y$ holds on $r$) $\Rightarrow$ they agree on $YZ$ (they already agreed on $Z$, and now also on $Y$). So rule (2) gives correct FDs.
+- **Rule (3)**, $\{X \to Y,\ Y \to Z\} \models X \to Z$: suppose $t_1, t_2 \in r$ agree on $X$. Then they agree on $Y$ (since $X \to Y$ holds) $\Rightarrow$ they agree on $Z$ (since $Y \to Z$ holds). So rule (3) gives correct FDs.
+
+#### Why completeness holds — the deck's four-part proof
+
+> [!important] Step 1 — attribute closure and Claim 1
+> Define $X^+_F$ (the **closure of $X$ with respect to $F$**) as $\{A \mid X \to A \text{ can be derived from } F \text{ using AA}\}$, $A \in R$.
+>
+> **Claim 1**: $X \to Y$ can be derived from $F$ using AA **iff** $Y \subseteq X^+$.
+> *(If)* Let $Y = \{A_1, \dots, A_n\} \subseteq X^+$. By definition of $X^+$, each $X \to A_i$ can be derived $(1 \le i \le n)$. By the union rule, $X \to Y$ can then be derived from $F$.
+> *(Only if)* If $X \to Y$ can be derived from $F$ using AA, then by the projective rule $X \to A_i$ for each $A_i \in Y$, so by definition of $X^+$, each $A_i \in X^+$, hence $Y \subseteq X^+$.
+
+> [!important] Step 2 — proof by contrapositive, the two-tuple instance
+> To prove completeness ($F \models \{X \to Y\} \Rightarrow X \to Y$ follows from $F$ using AA), the deck proves the **contrapositive**: if $X \to Y$ **cannot** be derived from $F$ using AA, then $F \not\models \{X \to Y\}$ — i.e. there exists a relation instance $r$ on $R$ where all FDs of $F$ hold, but $X \to Y$ itself does **not** hold.
+>
+> Construct $r$ with exactly **two tuples**, split across the attribute set $X^+$ (call these the "$X^+$ attributes") versus the remaining attributes ("other attributes", i.e. $R - X^+$):
+>
+> | | $X^+$ attributes | Other attributes ($R - X^+$) |
+> | --- | --- | --- |
+> | tuple 1 | 1 1 1 … 1 | 1 1 1 … 1 |
+> | tuple 2 | 1 1 1 … 1 | 0 0 0 … 0 |
+>
+> Both tuples agree on every attribute in $X^+$ and disagree on every attribute outside it.
+
+> [!important] Step 3 — Claim 2: every FD of F is satisfied by r
+> Suppose not — let $W \to Z \in F$ be an FD **not** satisfied by $r$. Since $r$'s two tuples differ only outside $X^+$, a violated FD $W \to Z$ must have $W \subseteq X^+$ (so both tuples agree on $W$) but $Z \not\subseteq X^+$ (so they disagree on some attribute of $Z$). Let $A \in Z - X^+$.
+> - $X \to W$ follows from $F$ using AA, since $W \subseteq X^+$ (by Claim 1).
+> - $X \to Z$ follows from $F$ using AA, by the **transitive rule** on $X \to W$ and $W \to Z$ (the latter is given, in $F$).
+> - $Z \to A$ follows from $F$ using AA, by the **reflexive rule**, since $A \in Z$.
+> - $X \to A$ follows from $F$ using AA, by the **transitive rule** on $X \to Z$ and $Z \to A$.
+>
+> But then, by definition of closure, $A$ must belong to $X^+$ — **contradicting** $A \in Z - X^+$. Hence Claim 2 holds: every FD of $F$ is indeed satisfied by $r$.
+
+> [!important] Step 4 — Claim 3: X → Y is not satisfied by r
+> Suppose $X \to Y$ **were** satisfied by $r$. Because of $r$'s structure (the two tuples agree exactly on $X^+$ and disagree exactly outside it), this would force $Y \subseteq X^+$. But $Y \subseteq X^+$ would mean (by Claim 1) that $X \to Y$ **can** be derived from $F$ using AA — directly contradicting the starting assumption that it cannot. Hence $X \to Y$ is **not** satisfied by $r$.
+>
+> Putting the four steps together: whenever $X \to Y$ does not follow from $F$ using AA, there exists a legal instance $r$ (satisfying all of $F$) on which $X \to Y$ fails — so $F \not\models \{X \to Y\}$. This proves the contrapositive, and therefore **Armstrong's Axioms are complete**.
+
+> [!note] The payoff of completeness
+> Completeness lets us **equate** the semantic definition of closure with the syntactic, derivable one:
+> $$ X^+ = \{A \mid X \to A \text{ follows from } F \text{ using AA}\} = \{A \mid F \models X \to A\} $$
+> $$ F^+ = \{X \to Y \mid F \models X \to Y\} = \{X \to Y \mid X \to Y \text{ follows from } F \text{ using AA}\} $$
+> In other words, "logically implied" and "mechanically derivable" are exactly the same set — this is precisely why Armstrong's Axioms are the right tool to compute with.
+
+### 6.6 Computing closures — why attribute closure, not full F⁺
+
+> [!warning] F⁺ can be exponential in the size of F
+> For $F = \{A \to B_1,\ A \to B_2,\ \dots,\ A \to B_n\}$, the closure $F^+$ contains an FD $A \to X$ for **every** subset $X \subseteq \{B_1,\dots,B_n\}$, so $|F^+| = 2^n$. **Computing $F^+$ explicitly is computationally expensive** — potentially exponential — and should be avoided.
+
+Fortunately, we rarely need the *whole* of $F^+$: checking whether a specific FD $X \to Y \in F^+$ can be done simply by checking whether $Y \subseteq X^+_F$ — and **computing a single attribute closure $X^+_F$ is easy** (polynomial time), unlike computing all of $F^+$.
+
+> [!important] Algorithm — computing $X^+_F$
+> Compute a sequence of sets $X_0, X_1, X_2, \dots$ as follows:
+> $$ X_0 := X \qquad (X \text{ is the given set of attributes}) $$
+> $$ X_{i+1} := X_i \cup \{A \mid \text{there is an FD } Y \to Z \text{ in } F \text{ and } A \in Z \text{ and } Y \subseteq X_i\} $$
+> Since $X_0 \subseteq X_1 \subseteq X_2 \subseteq \dots \subseteq R$ and $R$ is finite, the sequence must stabilize: there is some integer $i$ such that $X_i = X_{i+1} = X_{i+2} = \dots$, and $X^+_F$ equals this stable $X_i$.
+
+#### Intuition — attribute closure is a breadth-first "infection" of attributes
+
+Start with the attributes of $X$ already "known." At every round, scan every FD $Y \to Z$ in $F$: if every attribute of $Y$ is already known, then every attribute of $Z$ becomes known too — "infect" $Z$'s attributes into the known set. Keep going until a full round adds nothing new. The set of attributes you end up with is exactly $X^+_F$ — everything $X$ can be shown to functionally determine. This is directly analogous to computing reachability in a graph: each FD $Y \to Z$ is an edge usable only once all of $Y$'s "nodes" are reachable.
+
+### 6.7 Second Normal Form (2NF)
+
+> [!important] Definitions — full functional dependency, prime/non-prime attribute
+> A **full functional dependency** is an FD $X \to A$ for which there is **no** proper subset $Y$ of $X$ such that $Y \to A$ also holds — i.e. $A$ genuinely needs *all* of $X$, not just part of it, to be determined. ($A$ is said to be **fully functionally dependent** on $X$.)
+> A **prime attribute** is an attribute that is part of **some** key of $R$.
+> A **non-prime attribute** is an attribute that is **not** part of any key.
+>
+> **2NF**: a relation schema $R$ is in **second normal form** if every **non-prime** attribute is **fully functionally dependent** on any key of $R$.
+
+> [!example] The deck's two 2NF violations
+> **1) `Book(authorName, title, authorAffiliation, ISBN, publisher, pubYear)`**, keys: `(authorName, title)` and `ISBN`. **Not** in 2NF, because $\texttt{authorName} \to \texttt{authorAffiliation}$ — `authorAffiliation` is not *fully* functionally dependent on the key `(authorName, title)`, since the smaller set `{authorName}` alone already determines it.
+>
+> **2) `Student(rollNo, name, dept, sex, hostelName, roomNo, admitYear)`**, keys: `rollNo` and `(hostelName, roomNo)`. **Not** in 2NF, because $\texttt{hostelName} \to \texttt{sex}$ — `sex` is a non-prime attribute, and it depends on only part of the key `(hostelName, roomNo)`.
+>
+> **Fix**: decompose into `student(rollNo, name, dept, hostelName, roomNo, admitYear)` and `hostelDetail(hostelName, sex)` — both are now in 2NF.
+
+#### Intuition — 2NF forbids "partial" dependence on a composite key
+
+2NF only bites when a key is **composite** (more than one attribute). If a non-prime attribute only needs *part* of that composite key to be pinned down, storing it under the full key wastes space: the same `hostelName → sex` fact gets repeated for every `roomNo` combination that hostel has. 2NF forces such "partially determined" facts out into their own relation, keyed on just the part of the key that actually determines them.
+
+### 6.8 Transitive dependencies and Third Normal Form (3NF)
+
+> [!important] Definition — transitive dependency
+> A **transitive dependency** is an FD $X \to Y$ in schema $R$ for which there exists a set of attributes $Z \subseteq R$ such that $X \to Z$ **and** $Z \to Y$ hold, **and** $Z$ is **not** a subset of any key of $R$.
+
+> [!example] The deck's motivating case — 2NF is not enough
+> `student(rollNo, name, dept, hostelName, roomNo, headDept)`, keys: `rollNo` and `(hostelName, roomNo)`. Here $\texttt{rollNo} \to \texttt{dept}$ and $\texttt{dept} \to \texttt{headDept}$ both hold, so $\texttt{rollNo} \to \texttt{headDept}$ is a **transitive dependency** (since `dept` is not a subset of any key). The head of a department is stored redundantly in every tuple where that department appears. **This relation is already in 2NF, yet redundancy still exists** — which is exactly the gap 3NF closes.
+
+> [!important] Definition — Third Normal Form (3NF)
+> A relation schema $R$ is in **3NF** if it is in 2NF **and** no non-prime attribute of $R$ is **transitively dependent** on any key of $R$.
+>
+> Decomposing the example above: `student(rollNo, name, dept, hostelName, roomNo)` and `deptInfo(dept, headDept)` — both now in 3NF, and the redundancy is removed.
+
+> [!important] An equivalent, more operational definition of 3NF
+> A relation schema $R$ is in 3NF if, for **every** non-trivial FD $X \to A$ in $F$: **either** (i) $X$ is a superkey of $R$, **or** (ii) $A$ is a prime attribute.
+>
+> **Why the two definitions agree**: suppose some $R$ violates this definition — there is an FD $X \to A$ where both (i) and (ii) are false, i.e. $X$ is not a superkey and $A$ is non-prime. Two cases arise:
+> - $X$ is contained in some key $K$: since $X$ isn't a superkey, $X \subsetneq K$, so $A$ (non-prime, by assumption) is not fully functionally dependent on $K$ — this is exactly a **2NF violation**.
+> - $X$ is not contained in any key: then $K \to X$ and $X \to A$ together form a **transitive dependency** of $A$ on $K$ (for any key $K$ of $R$) — a **3NF (transitivity) violation**.
+>
+> So any schema violating the operational definition also violates the structural one, and vice versa — the two definitions characterize exactly the same set of schemas.
+
+### 6.9 The motivation for Boyce–Codd Normal Form (BCNF)
+
+3NF is not the end of the story — the deck gives an example that is already in 3NF yet still redundant.
+
+> [!example] The gradeInfo motivating example (deck's own)
+> `gradeInfo(rollNo, studName, course, grade)` with FDs:
+> 1. $\texttt{rollNo, course} \to \texttt{grade}$
+> 2. $\texttt{studName, course} \to \texttt{grade}$
+> 3. $\texttt{rollNo} \to \texttt{studName}$
+> 4. $\texttt{studName} \to \texttt{rollNo}$
+>
+> Keys: `(rollNo, course)` and `(studName, course)`.
+>
+> Checking the operational 3NF test on every FD: for FDs (1) and (2), the left-hand side is already a key — condition (i) satisfied. For FDs (3) and (4), the right-hand side (`studName`, respectively `rollNo`) is a **prime** attribute (part of a key) — condition (ii) satisfied. **So `gradeInfo` is in 3NF.**
+>
+> **Yet** `studName` is stored **redundantly** alongside every course the student is enrolled in — the exact kind of waste normal forms are supposed to eliminate. 3NF's "or $A$ is prime" escape clause is precisely what lets this redundancy slip through.
+
+> [!important] Definition — Boyce–Codd Normal Form (BCNF)
+> A relation schema $R$ is in **BCNF** if, for **every** non-trivial FD $X \to A$ in $F$, $X$ is a **superkey** of $R$ — full stop, with **no** "or $A$ is prime" exception.
+>
+> In `gradeInfo`, FDs (3) and (4) are non-trivial, but their left-hand sides (`studName`, `rollNo` individually) are **not** superkeys — so `gradeInfo` is **not** in BCNF.
+>
+> **Decompose**: `gradeInfo(rollNo, course, grade)` and `studInfo(rollNo, studName)`. The redundancy that 3NF *allowed* is **disallowed** by BCNF.
+
+> [!important] The strictness ordering
+> **BCNF is stricter than 3NF; 3NF is stricter than 2NF.** Every schema in BCNF is automatically in 3NF (and therefore in 2NF); the converse is not true, as the `gradeInfo` example shows.
+
+#### Intuition — why BCNF is the "no exceptions" version of 3NF
+
+3NF's escape clause ("…or $A$ is prime") exists because enforcing BCNF everywhere can break dependency preservation (§6.17 shows a concrete case where this happens). 3NF is a compromise: it tolerates a narrow category of redundancy (when the determined attribute happens to be part of some key) in exchange for guaranteeing you can always decompose losslessly *and* keep every FD enforceable without a join. BCNF refuses that compromise — it wants **zero** redundancy from functional dependencies, even if that means some FDs become unenforceable except by joining tables back together.
+
+### 6.10 Decomposition — definition and the two desirable properties
+
+> [!important] Definition — decomposition
+> Given schema $R = (A_1, A_2, \dots, A_n)$, a **decomposition** is a set $D = (R_1, R_2, \dots, R_k)$ such that each $R_i \subseteq R$ and $R = R_1 \cup R_2 \cup \dots \cup R_k$ (the $R_i$'s **need not be disjoint**). Replacing $R$ by $R_1, \dots, R_k$ is the **process of decomposing** $R$.
+>
+> Example: `gradeInfo(rollNo, studName, course, grade)` decomposed into $R_1$: `gradeInfo(rollNo, course, grade)` and $R_2$: `studInfo(rollNo, studName)`.
+
+**Not all decompositions are useful.** The deck requires **two** independent properties to be satisfied:
+
+> [!important] The two desirable properties
+> **(i) Lossless join property** — the information in any instance $r$ of $R$ must be **preserved** in the projected instances $r_1, r_2, \dots, r_k$, where $r_i = \pi_{R_i}(r)$. Joining the pieces back together must recover exactly the original data, no more and no less.
+> **(ii) Dependency preserving property** — if a set $F$ of dependencies holds on $R$, it must be possible to **enforce** $F$ by enforcing appropriate dependencies on each $R_i$ **individually**, without needing to join the pieces to check a constraint.
+
+#### Intuition — losslessness is about information, dependency preservation is about enforcement cost
+
+These two properties answer two *different* questions. Losslessness asks: "if I split the table and later rejoin it, do I get back exactly what I started with?" Dependency preservation asks a completely separate question: "can I check that my business rules (the FDs) still hold *without* having to perform an expensive join every time I insert or update a row?" A decomposition can have either property without the other — §6.17 gives the deck's own example of a schema where **no** decomposition has both.
+
+### 6.11 Lossless join property — formal definition and the lossy example
+
+> [!important] Definition — lossless join (also called non-additive join)
+> Let $F$ be the set of FDs on $R$, and $R$ decomposed into $R_1, \dots, R_k$. The decomposition is **lossless with respect to $F$** if, for **every** relation instance $r$ on $R$ satisfying $F$:
+> $$ r = \pi_{R_1}(r) \Join \pi_{R_2}(r) \Join \dots \Join \pi_{R_k}(r) $$
+
+> [!warning] The deck's own lossy example
+> $R = (A, B, C)$; $R_1 = (A, B)$; $R_2 = (B, C)$.
+>
+> | $r$: | $A$ | $B$ | $C$ |
+> | --- | --- | --- | --- |
+> | | $a_1$ | $b_1$ | $c_1$ |
+> | | $a_2$ | $b_2$ | $c_2$ |
+> | | $a_3$ | $b_1$ | $c_3$ |
+>
+> | $r_1 = \pi_{AB}(r)$: | $A$ | $B$ |
+> | --- | --- | --- |
+> | | $a_1$ | $b_1$ |
+> | | $a_2$ | $b_2$ |
+> | | $a_3$ | $b_1$ |
+>
+> | $r_2 = \pi_{BC}(r)$: | $B$ | $C$ |
+> | --- | --- | --- |
+> | | $b_1$ | $c_1$ |
+> | | $b_2$ | $c_2$ |
+> | | $b_1$ | $c_3$ |
+>
+> | $r_1 \Join r_2$: | $A$ | $B$ | $C$ |
+> | --- | --- | --- |
+> | | $a_1$ | $b_1$ | $c_1$ |
+> | | $a_1$ | $b_1$ | $c_3$ |
+> | | $a_2$ | $b_2$ | $c_2$ |
+> | | $a_3$ | $b_1$ | $c_1$ |
+> | | $a_3$ | $b_1$ | $c_3$ |
+>
+> The join has **5 rows** where the original had only **3** — because $b_1$ repeats in $r_1$ (for $a_1$ and $a_3$), rejoining produces every combination of $a_1/a_3$ with every $c$-value that ever paired with $b_1$ ($c_1$ and $c_3$), including the **spurious** tuple $(a_3, b_1, c_1)$ that never existed in the original data. This is a **lossy join** — original information is distorted, not recovered.
+
+### 6.12 Dependency preserving decompositions — formal definition
+
+> [!important] Definition — dependency preservation
+> A decomposition $D = (R_1, \dots, R_k)$ of schema $R$ **preserves** a set of dependencies $F$ if:
+> $$ (\pi_{R_1}(F) \cup \pi_{R_2}(F) \cup \dots \cup \pi_{R_k}(F))^+ = F^+ $$
+> where $\pi_{R_i}(F) = \{(X \to Y) \in F^+ \mid X \subseteq R_i,\ Y \subseteq R_i\}$ is the **projection of $F$ onto $R_i$**.
+>
+> Informally: any FD that logically follows from $F$ must **also** logically follow from the union of the FDs projected onto the individual $R_i$'s. If that holds, $D$ is **dependency preserving**.
+
+> [!example] The deck's dependency-preserving example
+> $R = (A, B, C)$, $F = \{A \to B,\ B \to C,\ C \to A\}$. Decomposition $D = (R_1 = \{A,B\},\ R_2 = \{B,C\})$.
+>
+> $\pi_{R_1}(F) = \{A \to B,\ B \to A\}$ (note $B \to A$ follows from $F$ via $B\to C \to A$, restricted to attributes of $R_1$).
+> $\pi_{R_2}(F) = \{B \to C,\ C \to B\}$ (similarly, $C \to B$ follows via $C \to A \to B$).
+>
+> $(\pi_{R_1}(F) \cup \pi_{R_2}(F))^+ = \{A\to B,\ B\to A,\ B\to C,\ C\to B,\ A\to C,\ C\to A\} = F^+$.
+>
+> Hence **dependency preserving**.
+
+### 6.13 Testing for lossless decomposition — the tableau (chase) method
+
+The lossless-join test for a **general** (not just binary) decomposition needs a mechanical procedure, since eyeballing it (as in the §6.11 example) does not scale.
+
+> [!important] The tableau construction
+> Given schema $R$ with attributes $A_1, \dots, A_n$, FD set $F$, and decomposition $D = \{R_1, \dots, R_m\}$:
+> 1. Create an $m \times n$ matrix $S$, columns labeled $A_1, \dots, A_n$, rows labeled $R_1, \dots, R_m$.
+> 2. **Initialize**: set every cell $S(i,j) := b_{ij}$ by default. If attribute $A_j$ is in the scheme $R_i$, set $S(i,j) := a_j$ instead (the "$a$" symbol marks "this row genuinely has this attribute").
+> 3. **Repeat** until no further changes: for each FD $U \to V$ in $F$, find all rows that agree on every $U$-attribute column, and make the symbols in every $V$-attribute column **the same** across those rows — if any of those rows already has an "$a$" symbol in that column, set **all** of them to that same "$a$" symbol; otherwise, pick any one of the existing "$b$" symbols among those rows and set them all to it.
+> 4. **At the end**: if any row consists of **all "$a$" symbols**, the decomposition is **lossless**; otherwise it is **lossy**.
+
+#### Intuition — what the "a" and "b" symbols actually mean
+
+An "$a_j$" in row $R_i$, column $A_j$ means "relation $R_i$ genuinely stores this attribute, so its value is a real, distinguishable value." A "$b_{ij}$" means "this attribute is missing from $R_i$'s projection, so when we reconstruct it via a join, this slot could, in principle, take *any* value consistent with the FDs." The chase process asks: as the FDs force rows to agree, can we ever *prove* that some row's projection, once joined back, reproduces a row identical to the original tuple in every attribute (all "$a$"s)? If yes, no information was lost; the "all-$a$" row **is** the witness that one piece of the decomposition, by itself, already carries enough information to reconstruct a full original tuple after joining.
+
+> [!example] The deck's full worked trace (deck p. 36–38)
+> $R = (\texttt{rollNo, name, advisor, advisorDept, course, grade})$
+> $F = \{\texttt{rollNo}\to\texttt{name};\ \texttt{rollNo}\to\texttt{advisor};\ \texttt{advisor}\to\texttt{advisorDept};\ \texttt{rollNo, course}\to\texttt{grade}\}$
+> $D: R_1=(\texttt{rollNo, name, advisor})$, $R_2=(\texttt{advisor, advisorDept})$, $R_3=(\texttt{rollNo, course, grade})$
+>
+> **Initial matrix:**
+>
+> | | rollNo | name | advisor | advisorDept | course | grade |
+> | --- | --- | --- | --- | --- | --- | --- |
+> | $R_1$ | $a_1$ | $a_2$ | $a_3$ | $b_{14}$ | $b_{15}$ | $b_{16}$ |
+> | $R_2$ | $b_{21}$ | $b_{22}$ | $a_3$ | $a_4$ | $b_{25}$ | $b_{26}$ |
+> | $R_3$ | $a_1$ | $b_{32}$ | $b_{33}$ | $b_{34}$ | $a_5$ | $a_6$ |
+>
+> **After enforcing $\texttt{rollNo}\to\texttt{name}$ and $\texttt{rollNo}\to\texttt{advisor}$** (rows $R_1$ and $R_3$ both have $a_1$ in the `rollNo` column, so they agree on $U=\texttt{rollNo}$; force agreement on `name` and `advisor`: $R_1$ already has "$a$" symbols there, $a_2$ and $a_3$, so $R_3$'s `name` and `advisor` cells are overwritten to match):
+>
+> | | rollNo | name | advisor | advisorDept | course | grade |
+> | --- | --- | --- | --- | --- | --- | --- |
+> | $R_1$ | $a_1$ | $a_2$ | $a_3$ | $b_{14}$ | $b_{15}$ | $b_{16}$ |
+> | $R_2$ | $b_{21}$ | $b_{22}$ | $a_3$ | $a_4$ | $b_{25}$ | $b_{26}$ |
+> | $R_3$ | $a_1$ | $b_{32}\to a_2$ | $b_{33}\to a_3$ | $b_{34}$ | $a_5$ | $a_6$ |
+>
+> **After enforcing $\texttt{advisor}\to\texttt{advisorDept}$** (rows $R_1$, $R_2$, $R_3$ all now have $a_3$ in `advisor`, so they agree on $U=\texttt{advisor}$; force agreement on `advisorDept`: $R_2$ already has "$a$" there, $a_4$, so $R_1$ and $R_3$'s `advisorDept` cells both become $a_4$):
+>
+> | | rollNo | name | advisor | advisorDept | course | grade |
+> | --- | --- | --- | --- | --- | --- | --- |
+> | $R_1$ | $a_1$ | $a_2$ | $a_3$ | $b_{14}\to a_4$ | $b_{15}$ | $b_{16}$ |
+> | $R_2$ | $b_{21}$ | $b_{22}$ | $a_3$ | $a_4$ | $b_{25}$ | $b_{26}$ |
+> | $R_3$ | $a_1$ | $a_2$ | $a_3$ | $b_{34}\to a_4$ | $a_5$ | $a_6$ |
+>
+> **No more changes possible.** Row $R_3$ now has **all "$a$" symbols** ($a_1, a_2, a_3, a_4, a_5, a_6$) — so the decomposition is **lossless**.
+
+> [!important] The shortcut test for binary decompositions
+> For a decomposition of $R$ into just two pieces $R_1, R_2$, the full tableau is overkill — the decomposition is lossless with respect to $F$ **if and only if** either
+> $$ R_1 \cap R_2 \to (R_1 - R_2) \in F^+ \qquad \text{or} \qquad R_1 \cap R_2 \to (R_2 - R_1) \in F^+ $$
+>
+> **Example**: `gradeInfo(rollNo, studName, course, grade)` with $F = \{\texttt{rollNo,course}\to\texttt{grade};\ \texttt{studName,course}\to\texttt{grade};\ \texttt{rollNo}\to\texttt{studName};\ \texttt{studName}\to\texttt{rollNo}\}$, decomposed into `grades(rollNo, course, grade)` and `studInfo(rollNo, studName)`. Here $R_1 \cap R_2 = \{\texttt{rollNo}\}$ and $R_2 - R_1 = \{\texttt{studName}\}$; since $\texttt{rollNo}\to\texttt{studName} \in F$, the binary test passes immediately — **lossless**.
+
+> [!note] A property of lossless joins — composability
+> If $D_1 = (R_1, \dots, R_k)$ is a lossless decomposition of $R$ with respect to $F$, and $D_2 = (R_{i1}, \dots, R_{ip})$ is itself a lossless decomposition of some piece $R_i$ with respect to $F_i = \pi_{R_i}(F)$, then replacing $R_i$ in $D_1$ by $D_2$'s pieces — giving $D = (R_1, \dots, R_{i-1}, R_{i1}, \dots, R_{ip}, R_{i+1}, \dots, R_k)$ — is **also** a lossless decomposition of $R$ with respect to $F$. This composability is precisely what makes the **recursive** BCNF algorithm of §6.14 correct: decomposing one piece further never undoes the losslessness already established for the pieces around it.
+
+### 6.14 Algorithm for BCNF decomposition
+
+> [!important] The BCNF decomposition algorithm
+> **Input**: schema $R$, FD set $F$.
+> ```
+> D = {R}                           // initial decomposition is just R itself
+> while there is a relation schema Ri in D that is not in BCNF do
+> {
+>    let X → A be the FD in Ri violating BCNF
+>    replace Ri by Ri1 = Ri − {A}  and  Ri2 = X ∪ {A}  in D
+> }
+> ```
+> **Output**: a **lossless** decomposition of $R$ into BCNF relations.
+
+**Why each replacement step is automatically lossless**: for the split $R_{i1} = R_i - \{A\}$, $R_{i2} = X \cup \{A\}$, we have $R_{i1} \cap R_{i2} = X$, $R_{i2} - R_{i1} = \{A\}$, and $X \to A$ holds by assumption (it's the violating FD) — so the binary lossless-join test of §6.13 is satisfied immediately at every step. By the composability property above, the whole recursive process stays lossless throughout, no matter how many times a piece gets split further.
+
+#### Intuition — BCNF decomposition is "peel off the offending dependency, repeat"
+
+Each time you find an FD $X \to A$ that breaks BCNF in some current piece ($X$ not a superkey), you carve $A$ out together with its determinant $X$ into a brand-new relation $(X \cup \{A\})$, and leave the rest of the attributes behind (minus $A$, which now lives safely in its own table, determined by a key there). You repeat this on *every* piece that still violates BCNF, until none do. Because each individual split is provably lossless, and losslessness composes, the end result — however many splits it took — is guaranteed lossless overall.
+
+### 6.15 Dependency preservation can fail under BCNF — two worked counterexamples
+
+> [!warning] Counterexample 1 — townInfo
+> Schema `townInfo(stateName, townName, distName)`, FDs $F$: $\texttt{ST} \to \texttt{D}$ (town names are unique **within** a state) and $\texttt{D} \to \texttt{S}$.
+>
+> Keys: $\texttt{ST}$ and $\texttt{DT}$ — **all attributes are prime**, so the relation is already in **3NF**. But it is **not** in BCNF, since $\texttt{D}\to\texttt{S}$ is non-trivial and $D$ alone is not a key.
+>
+> The BCNF algorithm decomposes it into $R_1 = \texttt{TD}$ and $R_2 = \texttt{DS}$. Checking dependency preservation: $\pi_{R_1}(F)$ contains only trivial dependencies; $\pi_{R_2}(F) = \{\texttt{D}\to\texttt{S}\}$. **The union of these does not imply $\texttt{ST}\to\texttt{D}$** — so this decomposition is **not** dependency preserving. $\texttt{ST}\to\texttt{D}$ (town names unique within a state) can no longer be checked without performing a **join**.
+
+> [!warning] Counterexample 2 — R(A, B, C) with AB→C and C→B
+> Schema $R(A,B,C)$, FDs $F = \{\texttt{AB}\to\texttt{C},\ \texttt{C}\to\texttt{B}\}$. Keys: $\texttt{AB}$ and $\texttt{AC}$ — **relation is in 3NF** (all attributes prime). Not in BCNF: $\texttt{C}\to\texttt{B}$ is non-trivial and $C$ alone is not a key.
+>
+> The BCNF algorithm decomposes it into $R_1 = \texttt{CB}$ and $R_2 = \texttt{AC}$. $\pi_{R_1}(F) = $ trivial dependencies only; $\pi_{R_2}(F) = \{\texttt{C}\to\texttt{B}\}$. The union **does not imply $\texttt{AB}\to\texttt{C}$** — not dependency preserving.
+>
+> **The deck checks every possible decomposition**: $\{AB,BC\}$, $\{BA,AC\}$, $\{AC,CB\}$ — **only the last** ($\{AC, CB\}$) is lossless. $\therefore$ **a lossless AND dependency-preserving decomposition into BCNF does not exist for this schema.**
+
+> [!important] The structural consequence — why 3NF exists at all
+> These two counterexamples are the reason the course bothers with 3NF as a distinct, weaker target: **BCNF guarantees losslessness but can sacrifice dependency preservation**; **3NF (via the synthesis algorithm of §6.17) always achieves both simultaneously**. Choosing BCNF over 3NF is a deliberate trade — stricter redundancy elimination, at the possible cost of needing a join just to check a business rule.
+
+### 6.16 Equivalent FD sets and canonical (minimal) covers
+
+> [!important] Definitions — cover, equivalence, minimal form
+> $F$ and $G$ are two FD sets on schema $R$. $F$ **covers** $G$ if $G \subseteq F^+$ (equivalently $G^+ \subseteq F^+$). $F$ is **equivalent** to $G$ if $F^+ = G^+$ (i.e. $F$ covers $G$ **and** $G$ covers $F$).
+>
+> *Shortcut for checking "F covers G"*: it suffices to show that for every FD $X \to Y$ in $G$, $Y \subseteq X^+_F$.
+>
+> A set of FDs $F$ is in **minimal form** (a **minimal / canonical cover**) if:
+> (i) the right-hand side of every FD in $F$ is a **single** attribute;
+> (ii) there are **no redundant FDs** — no FD $X \to A$ in $F$ such that $(F - \{X\to A\})$ is equivalent to $F$;
+> (iii) there are **no redundant attributes on the left-hand side** of any FD — no FD $X \to A$ in $F$ with a proper subset $Z \subset X$ such that $(F - \{X\to A\}) \cup \{Z \to A\}$ is equivalent to $F$.
+>
+> Minimal covers are the essential ingredient for obtaining a **lossless, dependency-preserving** decomposition of a schema into **3NF** relations (§6.17).
+
+> [!important] Algorithm — computing a minimal cover
+> **Input**: schema $R$ (attribute set), FD set $F$.
+> ```
+> Step 1: G := F
+> Step 2: replace every FD of the form X → A1 A2 … Ak in G
+>         by the k separate FDs:  X → A1 ;  X → A2 ; … ; X → Ak
+> Step 3: for each FD X → A in G do
+>            for each attribute B in X do
+>               if A ∈ (X − B)+ with respect to G then
+>                  replace X → A by (X − B) → A      // drop redundant LHS attribute
+> Step 4: for each FD X → A in G do
+>            if (G − {X → A})+ = G+ then
+>               replace G by G − {X → A}             // drop redundant FD entirely
+> ```
+
+### 6.17 3NF decomposition algorithm — synthesis guaranteeing both properties
+
+> [!important] The 3NF synthesis algorithm
+> **Input**: schema $R$, FD set $F$ **already in minimal cover form**.
+> 1. Use the **BCNF algorithm** to get a lossless decomposition $D = (R_1, \dots, R_k)$. *(Each $R_i$ produced this way is automatically in 3NF — in fact it's in BCNF.)*
+> 2. Let $G$ be the set of FDs from $F$ that are **not preserved** in $D$.
+> 3. For each FD $Z \to A \in G$: add a **new** relation scheme $S = (B_1, \dots, B_s, A)$ to $D$, where $Z = \{B_1, \dots, B_s\}$.
+>
+> **Output**: a decomposition that is both **lossless** and **dependency preserving**, with every piece in **3NF**.
+
+**Why every added scheme $S$ is automatically in 3NF**: since $F$ is a minimal cover, $Z \to A$ has no proper subset $X \subsetneq Z$ with $X \to A$ — so $Z$ is necessarily a **key** for $S$ (nothing smaller than $Z$ determines $A$, and $Z \cup \{A\} = S$ has no attributes outside $Z \cup \{A\}$ to worry about). Any *other* FD $X \to C$ that happens to hold on $S$ must have $C \in \{B_1,\dots,B_s\} = Z$ — meaning $C$ is part of $S$'s key $Z$, hence **prime** — so such FDs can never violate 3NF (the "or $A$ is prime" escape clause of §6.8 absorbs them). **$D$ remains lossless even after these new schemas are added**, since each addition only restores a projected FD that was already implied by $F$ on the original $R$.
+
+#### Intuition — why synthesis succeeds where BCNF decomposition can fail
+
+The BCNF algorithm *decomposes downward* from $R$, discarding information about any FD whose pieces end up split across two different relations with no shared superkey — that's exactly how dependency preservation gets lost (§6.15). The 3NF synthesis algorithm instead starts from a **minimal cover** and essentially *builds relations upward*, one per FD that would otherwise be lost, specifically so that FD is still checkable within a single relation. The cost is a milder normal form (3NF, not BCNF) — some redundancy from the "prime attribute" escape clause may survive — but you are guaranteed to **never** have to sacrifice dependency preservation to get there.
+
+### 6.18 Multivalued dependencies (MVDs)
+
+Not every bad design comes from a functional dependency — some redundancy arises only when **two unrelated multivalued facts** about one entity are forced into a single relation.
+
+> [!important] Definition — multivalued dependency (informal, via the deck's example)
+> `studCourseEmail(rollNo, courseNo, emailAddr)` — a student enrolls in several courses **and** has several email addresses, and these two facts are *independent* of each other.
+> $$ \texttt{rollNo} \twoheadrightarrow \texttt{courseNo} \qquad \text{(read "rollNo multi-determines courseNo")} $$
+>
+> If the data contains
+> `(CS05B007, CS370, shyam@gmail.com)` and `(CS05B007, CS376, shyam@yahoo.com)`,
+> then it **must also** contain
+> `(CS05B007, CS376, shyam@gmail.com)` and `(CS05B007, CS370, shyam@yahoo.com)` —
+> otherwise the data would be implying that having a gmail address has something to do with doing course CS370, which makes no sense since the two facts are unrelated. By symmetry, $\texttt{rollNo} \twoheadrightarrow \texttt{emailAddr}$ also holds.
+
+#### Why FDs alone cannot see this problem
+
+> [!example] Contrast: when a multivalued attribute does NOT create an MVD
+> `studCourseGrade(rollNo, courseNo, grade)`. Here $\texttt{rollNo}\twoheadrightarrow\texttt{courseNo}$ does **not** hold, even though `courseNo` is a multi-valued attribute of the student — because `grade` genuinely **depends on the pair** `(rollNo, courseNo)`. If `(CS05B007, CS370, A)` and `(CS05B007, CS376, B)` appear, swapping the grades to get `(CS05B007, CS376, A)` and `(CS05B007, CS370, B)` would **not** be forced to also appear — `grade` is a real, course-specific fact, not an independent multivalued attribute floating free of `courseNo`.
+>
+> `studCourseAdvisor(rollNo, courseNo, advisor)` — here $\texttt{rollNo}\twoheadrightarrow\texttt{courseNo}$ **does** hold: if `(CS05B007, CS370, Dr Ravi)` and `(CS05B007, CS376, Dr Ravi)` both appear, swapping `courseNo` values reproduces existing tuples only (since `advisor` is the same regardless). But since $\texttt{rollNo} \to \texttt{advisor}$ also holds here and `(rollNo, courseNo)` is the key, this case is **already caught by the 2NF test** — it never needed MVD theory to detect.
+>
+> **MVDs arise specifically when two *unrelated* multivalued attributes of an entity are represented together** in one relation — that is the one new failure mode functional dependencies cannot express.
+
+> [!important] Alternative (lossless-join) definition of MVD
+> Consider $R(X,Y,Z)$. Suppose $X \twoheadrightarrow Y$ holds, and (by symmetry of MVDs) $X \twoheadrightarrow Z$ also holds. Then the decomposition $D = (XY, XZ)$ should be **lossless**: for any instance $r$ on $R$,
+> $$ r = \pi_{XY}(r) \Join \pi_{XZ}(r) $$
+> This recasts the MVD definition purely in terms of a lossless-join guarantee, connecting it directly back to §6.11's machinery.
+
+### 6.19 Fourth Normal Form (4NF)
+
+> [!important] Definitions — trivial MVD and 4NF
+> An MVD $X \twoheadrightarrow Y$ on scheme $R$ is **trivial** if either $Y \subseteq X$ or $R = X \cup Y$; otherwise it is **non-trivial**.
+>
+> **4NF**: a relation $R$ is in **4NF** if it is in **BCNF** and, for every non-trivial MVD $X \twoheadrightarrow A$, $X$ **must be a superkey** of $R$.
+
+> [!example] studCourseEmail is not in 4NF
+> `studCourseEmail(rollNo, courseNo, emailAddr)` is **not** in 4NF: both $\texttt{rollNo}\twoheadrightarrow\texttt{courseNo}$ and $\texttt{rollNo}\twoheadrightarrow\texttt{emailAddr}$ are non-trivial MVDs, and `rollNo` alone is **not** a superkey of this relation (the key is the full triple). This is exactly the redundancy pattern shown in §6.18's first example — the fix (not shown in the deck beyond this point) follows the same idea as BCNF decomposition: split the two independent multivalued facts into separate relations, each keyed on `rollNo` alone together with one of the two multivalued attributes.
+
+> [!tip] Exam pointer — schema design and normal forms
+> Be ready to: (1) **name the three update anomalies** (insertion, deletion, update) from a redundant-schema example; (2) **state and apply all six of Armstrong's inference rules**, and know that only (1)–(3) are the sound-and-complete axioms; (3) **compute an attribute closure $X^+_F$** by hand using the iterative algorithm; (4) **test 2NF / 3NF / BCNF** on a given schema and FD set, citing the exact violating FD; (5) **run the tableau/chase test** for losslessness on a 3-relation decomposition, tracking every "$a$"/"$b$" cell change; (6) **state and apply the binary lossless-join shortcut** ($R_1\cap R_2 \to R_1-R_2$ or $R_1\cap R_2\to R_2-R_1$); (7) **run the BCNF decomposition algorithm** step by step, and explain *why* each step preserves losslessness; (8) **produce the two counterexamples** (townInfo; $R(A,B,C)$ with $AB\to C, C\to B$) showing BCNF can break dependency preservation, and explain why 3NF synthesis avoids that; (9) **compute a minimal cover**; (10) **recognize an MVD** from a worked example and distinguish it from an ordinary multivalued attribute that is actually functionally determined.
+
+---
 
 | Quantity | Expression | Notes / validity |
 | --- | --- | --- |
@@ -1917,9 +2435,18 @@ The deck gives a schedule (slide diagram) that produces the same outcome as the 
 | Set ops (sort-merge) | $b_r+b_s$ | both relations already sorted in the **same** order; add sort cost if not |
 | Set ops (hash) — method | partition both relations with the same $h$, then per-partition probe | $\cup$: add if absent · $\cap$: output if present · $-$: delete if present, output what remains |
 | Set ops (hash) — cost | $\approx 3(b_r+b_s)+\lvert result\rvert$ | partition read+write, probe read, write result; one partition pair must fit in memory; no sort |
+| FD closure ($F^+$) | $\lvert F^+\rvert$ can be $2^n$ | exponential in general; compute $X^+_F$ instead |
+| Attribute closure | $X_0=X;\ X_{i+1}=X_i\cup\{A\mid Y\to Z\in F, A\in Z, Y\subseteq X_i\}$ | iterate until $X_i=X_{i+1}$; result is $X^+_F$ |
+| Binary lossless-join test | $R_1\cap R_2\to(R_1-R_2)\in F^+$ or $R_1\cap R_2\to(R_2-R_1)\in F^+$ | sufficient and necessary for a 2-way decomposition |
+| Dependency preservation test | $(\pi_{R_1}(F)\cup\dots\cup\pi_{R_k}(F))^+ = F^+$ | checked on the projected FDs, never requires a join |
+| 2NF | every non-prime attribute fully functionally dependent on every key | violated by a *partial* dependency on a composite key |
+| 3NF | 2NF, and no non-prime attribute transitively dependent on any key | equiv.: every non-trivial $X\to A$ has $X$ superkey **or** $A$ prime |
+| BCNF | every non-trivial $X\to A$ has $X$ a superkey | no "or $A$ prime" exception; strictly stronger than 3NF |
+| 4NF | BCNF, and every non-trivial MVD $X\twoheadrightarrow A$ has $X$ a superkey | the MVD analogue of BCNF |
 
 > [!note] Source material and figures
 > **Topic 1.** All `DBMS - …excalidraw` drawings are original schematic reconstructions of the deck's diagrams and live in the vault-root `Excalidraw/` folder. The explanatory drawings *Index Types Compared*, *Extendible Hashing Trace*, *Linear Hashing Trace* and *Bplus Replicate vs Move* are teaching aids built from the deck's own numbers. Callouts titled "Illustrative example (not from the deck)" and the "Intuition" subsections in §1 are explanatory additions and are not lecture content. The `DBMS - … (deck pN).png` figures are page renders of [[file-management.pdf]], stored in `DBMS/images/`, and each is captioned with the slide it came from.
 > **Topic 2.** Content is compiled from [[algos.pdf]] (32 slides). The merge-phase figure *DBMS - External Sort Merge Phase (deck p10).png* is a page render of the deck stored in `DBMS/images/`. The "Illustrative example (not from the deck)" callouts in §2.4 and §2.8 are explanatory additions; all other numbers (8000-record selectivities, 5600/120/52-block join, the query-rewrite chain) come from the deck. **§2.18.1–§2.18.3 (sort-merge and hash based set operations)** are the one exception: the deck names only the two method families and defers the details ("Please study the details!"), so that content is compiled from [[silberschatz_dbms.pdf]] §15.6.3 instead — here the book is the primary source, not explanation-only, because the deck has no content of its own to be faithful to. The two worked traces in §2.18.1–§2.18.2 (the $\{2,3,4,4,7\}$ / $\{3,4,5,6\}$ example, the $b_r=500$ / $b_s=300$ counts) are explanatory teaching examples built on those rules, not numbers from the deck or the book; the schematic figures *DBMS - Set Operations Sort-Merge Scan* and *DBMS - Set Operations Hash Partition and Probe* are original Excalidraw reconstructions of the two procedures.
 > **Topic 3.** Content is compiled from [[transactions.pdf]] (Silberschatz, Korth and Sudarshan, *Database System Concepts*, 6th ed., Chapter 14). Where the deck presents schedules, state diagrams or graphs as slide diagrams, the notes record every fact, definition, property and result stated on the slides; diagram-only step layouts that were not recoverable from text extraction are described by the deck's stated outcomes and constraints rather than invented.
-> **General.** All numbers, conventions and worked traces come from the respective decks; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 13–14 and §24.5) was used for explanation only in topic 1.
+> **Topic 6.** Content is compiled from [[6_Relational_Schema_Design.pdf]] (52 slides) — a **pre-midsem** topic (see [[Syllabus]]). This deck is entirely textual (definitions, inference rules, proofs and worked numeric/symbolic examples) with no slide diagrams to extract, so no figures accompany this topic. Every definition, inference rule, algorithm, proof step and worked example (the soundness/completeness proof of Armstrong's Axioms, the rollNo/advisor tableau trace, the townInfo and $R(A,B,C)$ dependency-preservation counterexamples, the MVD examples) comes directly from the deck. The Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 7 "Relational Database Design") was used only for explanation: the `in_dep`/employee-Kim redundancy and lossy-decomposition examples in §6.1's book-connection callout, and the atomic-domains/1NF discussion in §6.2, are the book's own material, clearly marked as such and not presented as deck content.
+> **General.** All numbers, conventions and worked traces come from the respective decks; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 7, Ch. 13–14 and §24.5) was used for explanation only, in topics 1 and 6.
