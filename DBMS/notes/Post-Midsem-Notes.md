@@ -1144,10 +1144,10 @@ It impacts the performance of single loop join **when indexes are available on b
 
 **Deck's example.** Two options:
 
-| Option | Loop over | Probe using | Result |
-| --- | --- | --- | --- |
-| 1 | professor records | index on `hod` of department | **95% of probes don't give a match** |
-| 2 | department records | index on `empId` of professor | **all probes give a match** |
+| Option | Loop over          | Probe using                   | Result                               |
+| ------ | ------------------ | ----------------------------- | ------------------------------------ |
+| 1      | professor records  | index on `hod` of department  | **95% of probes don't give a match** |
+| 2      | department records | index on `empId` of professor | **all probes give a match**          |
 
 **Option 2 is the right choice.**
 
