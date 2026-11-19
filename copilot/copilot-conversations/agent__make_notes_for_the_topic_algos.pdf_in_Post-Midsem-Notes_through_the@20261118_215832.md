@@ -9,10 +9,10 @@ tags:
 usage: '{"usedTokens":104336,"contextWindow":1000000,"inputTokens":2,"outputTokens":811,"cacheReadTokens":98298,"cacheWriteTokens":5225,"updatedAt":1795019427600}'
 ---
 
-**user**: make notes for the topic [[algos.pdf]] in [[Post-Midsem-Notes]] through the help of [[context]] and  [[Syllabus]] .
+**user**: make notes for the topic [[algos.pdf]] in [[DBMS_Notes]] through the help of [[context]] and  [[Syllabus]] .
 [Timestamp: 2026/11/18 21:58:32]
 
-**ai**: Topic 2 is now written into the note. Next I'm updating the note's intro, tags, formula summary and source callout, then the Syllabus tracker.I wrote topic 2 (the algos deck) into [[Post-Midsem-Notes]] as `## 2. Query / Join Algorithms (algos)`. It sits between topics 1 and 3, in syllabus order, and follows the format in [[context]]. I haven't opened the note in Obsidian to check the rendering.
+**ai**: Topic 2 is now written into the note. Next I'm updating the note's intro, tags, formula summary and source callout, then the Syllabus tracker.I wrote topic 2 (the algos deck) into [[DBMS_Notes]] as `## 2. Query / Join Algorithms (algos)`. It sits between topics 1 and 3, in syllabus order, and follows the format in [[context]]. I haven't opened the note in Obsidian to check the rendering.
 
 **What §2 covers (22 sections, in slide order)**
 - **§2.1–2.5:** selection with equality conditions, predicate selectivity (the 450/8000, 1200/8000 and 1/8000 examples), selectivity estimation, and projection.

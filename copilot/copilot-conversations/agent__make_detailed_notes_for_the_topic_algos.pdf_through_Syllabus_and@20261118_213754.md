@@ -7,7 +7,7 @@ tags:
   - copilot-conversation
 ---
 
-**user**: make detailed notes for the topic [[algos.pdf]] through [[Syllabus]] and [[context]] in [[Post-Midsem-Notes]] .
+**user**: make detailed notes for the topic [[algos.pdf]] through [[Syllabus]] and [[context]] in [[DBMS_Notes]] .
 [Timestamp: 2026/11/18 21:37:54]
 
 **ai**: **Error:** Internal error: Timed out waiting for response headers

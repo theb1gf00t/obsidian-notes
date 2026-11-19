@@ -12,7 +12,7 @@ tags:
 
 # DBMS — Notes Format & Generation Rules
 
-This file is the **authoritative schema** for how notes are formed in the `DBMS` course folder. Read it before adding, extending or reformatting anything here — the formatting contract does not need to be re-specified in chat. It is modeled on [[CG_context]] and on the established convention of [[Post-Midsem-Notes]]; keep new material consistent with it.
+This file is the **authoritative schema** for how notes are formed in the `DBMS` course folder. Read it before adding, extending or reformatting anything here — the formatting contract does not need to be re-specified in chat. It is modeled on [[CG_context]] and on the established convention of [[DBMS_Notes]]; keep new material consistent with it.
 
 ---
 
@@ -33,10 +33,10 @@ One note file holds the whole block:
 
 | File | Block | Source decks |
 | --- | --- | --- |
-| [[Post-Midsem-Notes]] | **Post-midsem / end-sem** — file management, query algorithms, transactions | [[file-management.pdf]], [[algos.pdf]], [[transactions.pdf]] |
+| [[DBMS_Notes]] | **Post-midsem / end-sem** — file management, query algorithms, transactions | [[file-management.pdf]], [[algos.pdf]], [[transactions.pdf]] |
 
 > [!warning] Naming trap
-> The DBMS note is **[[Post-Midsem-Notes]]** in `DBMS/notes/`. Do not write DBMS material into the Computer Graphics, Phase Diagrams or Graph Theory folders. The rulebook is **[[context]]** here, not [[CG_context]].
+> The DBMS note is **[[DBMS_Notes]]** in `DBMS/notes/`. Do not write DBMS material into the Computer Graphics, Phase Diagrams or Graph Theory folders. The rulebook is **[[context]]** here, not [[CG_context]].
 
 ---
 

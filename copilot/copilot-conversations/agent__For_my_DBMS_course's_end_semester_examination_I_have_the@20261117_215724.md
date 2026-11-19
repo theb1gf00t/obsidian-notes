@@ -34,7 +34,7 @@ make the context file and the syllabus file.
 
 | File | What it holds |
 |---|---|
-| [[Post-Midsem-Notes\|DBMS/notes/Post-Midsem-Notes.md]] | Topic 1 (File Organization and Indexing) — 39 sections, §§1.1–1.39, plus a Formula Summary. Topics 2–3 are placeholders in syllabus order. |
+| [[DBMS_Notes\|DBMS/notes/Post-Midsem-Notes.md]] | Topic 1 (File Organization and Indexing) — 39 sections, §§1.1–1.39, plus a Formula Summary. Topics 2–3 are placeholders in syllabus order. |
 | [[context\|DBMS/notes/context.md]] | The authoritative DBMS note-making rulebook (modeled on [[CG_context]]), so instructions don't need repeating in chat. |
 | [[Syllabus\|DBMS/notes/Syllabus.md]] | Tracker mirroring [[CG_Syllabus]] — 3 topics (topic 1 ticked), live Dataview progress counter, a one-click section index for §§1.1–1.39, a figure list, and open gaps for topics 2–3. |
 

@@ -9,15 +9,15 @@ agentLabel: "Detailed Transactions Notes in Post-Midsem-Notes"
 usage: '{"usedTokens":73892,"contextWindow":200000,"updatedAt":1795011462293}'
 ---
 
-**user**: make detailed notes for [[transactions.pdf]] according to [[Syllabus]] and [[context]] in [[Post-Midsem-Notes]] .
+**user**: make detailed notes for [[transactions.pdf]] according to [[Syllabus]] and [[context]] in [[DBMS_Notes]] .
 [Timestamp: 2026/11/18 19:40:05]
 
-**ai**: ## Added transaction notes in [[Post-Midsem-Notes]]
+**ai**: ## Added transaction notes in [[DBMS_Notes]]
 
-Compiled **Topic 3 — Transactions** from [[transactions.pdf]] (36 slides, Silberschatz/Korth/Sudarshan, *Database System Concepts* 6th ed., Ch. 14) into [[Post-Midsem-Notes]], following [[context]] and the [[Syllabus]] structure.
+Compiled **Topic 3 — Transactions** from [[transactions.pdf]] (36 slides, Silberschatz/Korth/Sudarshan, *Database System Concepts* 6th ed., Ch. 14) into [[DBMS_Notes]], following [[context]] and the [[Syllabus]] structure.
 
 ### What was added
-- **[[Post-Midsem-Notes#3. Transactions|§3 Transactions]]** with deck compilation line, roadmap (`[!abstract]`), and 16 numbered sections in deck/slide order:
+- **[[DBMS_Notes#3. Transactions|§3 Transactions]]** with deck compilation line, roadmap (`[!abstract]`), and 16 numbered sections in deck/slide order:
   - **3.1** Transaction concept and fund-transfer example ($T_1$: $\texttt{read}(A), A:=A-50, \texttt{write}(A), \texttt{read}(B), B:=B+50, \texttt{write}(B)$; failure/concurrency issues)
   - **3.2** ACID properties (atomicity, consistency incl. explicit/implicit constraints and temporary inconsistency, isolation with the $T_1/T_2$ interleaving showing $A+B$ seen incorrectly, durability) + exam pointer
   - **3.3** Transaction states (Active, Partially committed, Failed, Aborted, Committed) and a full transition table including restart (only if no internal logical error) / kill from Aborted
@@ -37,7 +37,7 @@ Compiled **Topic 3 — Transactions** from [[transactions.pdf]] (36 slides, Silb
 - **Document updates:** frontmatter tag `transactions`; intro/info updated to reflect §3 written (36 slides) and topic 2 still open; end-of-note provenance updated to cover [[transactions.pdf]] and to state how deck diagrams were handled.
 
 ### Syllabus and tracking updates ([[Syllabus]])
-- Ticked **Topic 3** and linked it to [[Post-Midsem-Notes#3. Transactions|Notes → §3]] (16 sections).
+- Ticked **Topic 3** and linked it to [[DBMS_Notes#3. Transactions|Notes → §3]] (16 sections).
 - Added full **§3 section index** (3.1–3.16).
 - Updated scope warning, topic-3 exam pointer, self-check (transactions items), and open gaps (topic 2 remains; noted that some transaction schedules/state/precedence diagrams are graphic-only in the deck so §3 records the deck’s stated facts/outcomes where exact step layouts were not text-extractable).
 

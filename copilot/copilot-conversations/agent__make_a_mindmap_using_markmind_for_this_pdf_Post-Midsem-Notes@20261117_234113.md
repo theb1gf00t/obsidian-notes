@@ -9,7 +9,7 @@ tags:
 usage: '{"usedTokens":56581,"contextWindow":200000,"inputTokens":3,"outputTokens":1,"cacheReadTokens":54828,"cacheWriteTokens":1749,"updatedAt":1794939277849}'
 ---
 
-**user**: make a mindmap using markmind for this pdf [[Post-Midsem-Notes]]
+**user**: make a mindmap using markmind for this pdf [[DBMS_Notes]]
 [Timestamp: 2026/11/17 23:41:13]
 
 **ai**: Let me read the note first to understand its structure.I have the full content. Now I'll create a MarkMind mindmap file for this note. MarkMind uses a specific markdown format with `---` YAML frontmatter and a hierarchical bullet structure.The mindmap has been created at [[DBMS/notes/Post-Midsem-Mindmap.md]].
