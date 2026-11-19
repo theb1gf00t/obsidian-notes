@@ -1002,6 +1002,15 @@
       },
       "configuredModelId": "b3b26b25-a7f3-41d8-897a-dfe02373bf3a",
       "configuredAt": 1794825559401
+    },
+    {
+      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
+      "info": {
+        "id": "opencode/tidepool-alpha-free",
+        "displayName": "opencode/Tidepool Alpha Free"
+      },
+      "configuredModelId": "aad03c91-c3d0-4638-8a75-d6b45c27c2f6",
+      "configuredAt": 1795081022552
     }
   ],
   "backends": {
