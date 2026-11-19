@@ -915,6 +915,8 @@ Continuing from §1.36 (deck p. 57–59):
 
 ### 2.1 Relational query evaluation — the operators
 
+A SQL query is, under the hood, a tree of six relational-algebra (RA) operators. The DBMS does not "run SQL" — it picks a concrete implementation for each operator in that tree, on real files of blocks, and the implementation chosen determines how many block accesses the query costs. That is the whole subject of this topic.
+
 The operators whose implementation the deck studies are:
 
 - **Select, Project, Join**
@@ -922,7 +924,13 @@ The operators whose implementation the deck studies are:
 
 The deck's agenda for the topic is: *how to implement these*, **sorting**, **grouping and aggregation**, *how do indexes help?*, and *any other information that is helpful* (selectivity, file sizes, organization). Each of the following sections answers one of these questions.
 
+#### Intuition — a query is a shopping list, an algorithm is the route through the shop
+
+"Select the CSE students" tells you *what* you want, not *how* to get it. The RA tree says *what*, in order; everything from here on is *how* — is it faster to walk to the CSE shelf directly (use an index) or to walk every aisle (scan the file)? Every algorithm in this topic is a different route to the same shopping list, and the "cost" of a route is simply how many shelves (blocks) you had to visit.
+
 ### 2.2 Selection with equality conditions
+
+**Selection** picks the records of a file that satisfy a condition. There are exactly two ways to find them: walk every block of the file and test each record (a **file scan**), or, if the DBMS happens to have built an index on the tested attribute, jump straight to the matching records through it. Whether the shortcut is available depends on *how many* attributes the condition touches and *how* they are combined — which is why the deck lays out five cases rather than one rule:
 
 | Condition | Index available? | Method |
 | --- | --- | --- |
@@ -932,15 +940,21 @@ The deck's agenda for the topic is: *how to implement these*, **sorting**, **gro
 | Conjunction | No index on any $X_i$ | **File scan** |
 | Disjunction (several conditions joined by *or*) | Index on any *single* $X_i$ | **Not helpful** — a record may satisfy another disjunct, so the other disjuncts still need a full scan |
 
+The conjunction row is the interesting one: with `dept = "CSE" AND sex = "female"`, an index on just `dept` is enough — fetch every CSE record through it, then check `sex = "female"` on that (already small) set in memory. No index on `sex` is needed because the first index already did the expensive part: cutting down *which blocks* get touched.
+
 > [!note] Why disjunction is harder
 > In a conjunction, one indexed condition already narrows the candidates to a superset of the answer, and the rest are filters. In a disjunction, an index on one $X_i$ finds only the records satisfying *that* disjunct; records satisfying the others are missed. The deck's summary: *difficult compared to the conjunctive case*.
 
 ### 2.3 Predicate selectivity
 
+Section 2.2's conjunction row left one choice open: *which* indexed condition should be evaluated first, if more than one index is available? The answer needs a number that measures "how much does this condition narrow things down" — that number is **selectivity**.
+
 > [!important] Definition — selectivity
 > **Selectivity $s$ of a condition $C$**, with $0 \le s \le 1$:
 >
 > $$ \boxed{\ s = \frac{\text{No. of records satisfying } C}{\text{Total no. of records}}\ } $$
+
+In plain words, selectivity is just the *fraction of the file that survives* the condition. A condition that almost everyone fails (few survivors) is "selective" in the everyday sense of the word — it selects a small, exclusive group — which is exactly why a *low* $s$ is called *high* selectivity; read on before trusting your intuition on the direction of this scale.
 
 The deck's three examples on a student file of $8000$ records:
 
@@ -959,6 +973,8 @@ The deck's three examples on a student file of $8000$ records:
 
 ### 2.4 Selectivity estimation
 
+Selectivity for a *specific* literal like `rollNo = "CS10B032"` can only be known exactly by counting — but the optimizer must decide which condition to evaluate first *before* running the query, i.e. before it can count anything. So it falls back on two cheap estimates it can keep ready in advance, one for keys and one for ordinary attributes.
+
 Selectivity estimates are **maintained in the DB catalog** and **used by the query optimizer**.
 
 | Condition type | Estimate |
@@ -973,11 +989,15 @@ Sometimes **histograms** are also maintained: for each distinct value or value r
 
 ### 2.5 Project operation
 
+**Projection** keeps only some columns of a record — conceptually the opposite of selection, which keeps only some rows. The procedure is unavoidably exhaustive:
+
 For every record in the operand: **access it, take the required attribute values, and construct the result record**.
 
 - **Duplicate elimination** is **costly**; **sort-based or hash-based** methods are used (§2.6–§2.8 for sorting).
 - A **file scan becomes essential** — every record must be visited.
 - **Apply project after selection, if possible**, to reduce the input to project.
+
+Selection can use an index to touch *only* the qualifying blocks, but projection has no such shortcut — dropping columns from a record still requires visiting that record, so a project always costs a full scan of its input. That asymmetry is exactly why the heuristic is "select first, then project": shrinking the row count *before* the unavoidable full scan means the scan has fewer rows to walk over. Projection can also introduce duplicate result rows (two records differing only in the dropped columns become identical), and removing those duplicates needs the same machinery as a full sort or a hash pass — hence the pointer to §2.6–§2.8.
 
 > [!tip] Exam pointer — selection and projection
 > Know the three selection cases (single, conjunctive, disjunctive) and why an index helps only the first two; define selectivity with the 450/8000, 1200/8000, 1/8000 numbers; state the two catalog estimates; and say why project follows select.
@@ -990,6 +1010,10 @@ For every record in the operand: **access it, take the required attribute values
 | --- | --- | --- |
 | **Sort phase** | read part of the data, sort it, write it | many sorted files called **runs** |
 | **Merge phase** | merge some sorted files and write | repeat **till only one sorted file is left** |
+
+#### Intuition — sorting a stack of exam papers you can't hold all at once
+
+You have 1000 answer sheets but your desk (memory) only fits 5 at a time. You cannot sort all 1000 in one go, so instead: pick up 5, sort that small pile, set it down as a neat stack — a **run** — and repeat until every sheet has been through your desk once (**sort phase**). You are now left with many small sorted stacks instead of one big jumbled one. Then you merge stacks pairwise (or a few at a time) into bigger sorted stacks, repeating until only one giant sorted stack remains (**merge phase**). The algorithm never needs your whole desk to hold more than a handful of sheets — that is the entire point of doing it in two phases instead of one.
 
 ### 2.7 Algorithm — sort phase
 
@@ -1031,6 +1055,9 @@ $$ \boxed{\ \text{Overall} = 2n + 2n\left\lceil \log_d r \right\rceil \text{ blo
 > [!tip] Exam pointer — external sorting
 > State the two phases, $r=\lceil n/m\rceil$, $2\le d\le m-1$, and the overall cost $2n + 2n\lceil\log_d r\rceil$; remember that every merge sub-phase reads *and* writes the whole file.
 
+> [!note] Why the merge phase needs more than one buffer sub-phase
+> With only $d=2$ (merging two runs at a time), 200 runs would need $\lceil \log_2 200\rceil = 8$ passes over the whole file; with $d=4$ it drops to 4 passes (§2.8's worked example). Every pass is a full read-plus-write of $n$ blocks, so maximizing $d$ — the number of runs merged simultaneously — is the single biggest lever on sorting cost once $n$ and $m$ are fixed.
+
 ### 2.9 Join processing
 
 **Join** is a very important operation. A **2-way join** takes two files of records and a given join condition; a **multi-way join** involves more files. The **choice of algorithm** depends on:
@@ -1040,9 +1067,13 @@ $$ \boxed{\ \text{Overall} = 2n + 2n\left\lceil \log_d r \right\rceil \text{ blo
 - the **availability of indices**,
 - the **selectivity of the join condition**, etc.
 
+#### Intuition — why join gets five different algorithms
+
+Selection had one shortcut (an index) and one fallback (a scan). Join is harder because it compares *two* files against each other, so there are many more ways to be clever about it: skip comparisons using an index (§2.13), bucket records so only same-bucket pairs are ever compared (§2.15–§2.16), or line both files up in sorted order and sweep through them together like merging two sorted stacks of cards (§2.17). Which one wins depends on sizes and indexes, exactly as the deck's four bullets say — there is no single best join algorithm, only a best one for the situation at hand, echoing §1.7's point about file organizations.
+
 ### 2.10 Nested loop join (block nested loop join)
 
-The **brute-force join**:
+The **brute-force join** — compare every record of one file against every record of the other, exactly as a join is defined:
 
 ```
 for each record x in R do
@@ -1056,6 +1087,10 @@ for each record x in R do
 
 For each set of $(m-2)$ blocks of $R$ read in: for each block of $S$, read it in, compute the join and write to the result block; **write the result block to disk whenever it fills up.**
 
+#### Intuition — why block, not record
+
+A naive description compares every *record* of $R$ with every *record* of $S$, but a disk only moves whole blocks, so there is no point reading a block and using only one of its records. The algorithm therefore loads as many blocks of the outer file as memory allows ($m-2$ of them) and, for each block of the inner file, compares it against *every record currently sitting in memory* from the outer side — getting $(m-2)$ blocks' worth of comparisons out of every single read of an inner block. That is the entire reason this is called *block* nested loop, not plain nested loop: it is the same brute-force idea, paid for in blocks rather than records.
+
 ### 2.11 Nested loop join — time taken
 
 - The **outer file** is read once: $b_1$ block accesses.
@@ -1067,6 +1102,8 @@ the second form when $S$ is in the outer loop and $R$ inside.
 
 > [!important] Which file goes in the outer loop?
 > **The one with fewer blocks.**
+
+The inner file is the one that gets re-read over and over — $\lceil b_1/(m-2)\rceil$ times — so putting the *larger* file inside would multiply the bigger number, not the smaller one. Keeping the small file as the inner file, re-read though it is, minimizes how much data gets dragged off disk repeatedly. §2.12 makes the saving concrete.
 
 ### 2.12 Nested loop join — worked example
 
@@ -1092,6 +1129,10 @@ $$ \boxed{\ \text{Time taken} = b_1 \cdot h_B(S)\ } $$
 
 where $h_B(S)$ is the number of block accesses of the index on $B$ for $S$.
 
+#### Intuition — turning two loops into one
+
+Nested loop join's inner loop exists only to *search* $S$ for matches — exactly the job an index already does in a handful of block accesses (§1.23–§1.30). So instead of rescanning blocks of $S$, each record of $R$ is used as a *key* fed straight into the index, which jumps to the matching records of $S$ directly. The "single loop" in the name is the loop over $R$ — the loop over $S$ has been replaced entirely by an index probe, which is why the formula has no $b_2$ in it at all: $S$'s size no longer matters, only how deep its index is ($h_B(S)$).
+
 ### 2.14 Join selection factor
 
 > [!important] Definition — join selection factor
@@ -1110,6 +1151,8 @@ It impacts the performance of single loop join **when indexes are available on b
 
 **Option 2 is the right choice.**
 
+Single loop join pays $h_B(S)$ *per record of the outer file*, whether or not that record finds a match — a probe that returns nothing still costs a full index descent. Looping over professors wastes 95% of those descents on dead ends; looping over departments spends every descent productively, because every department row is guaranteed a match. Loop over the file whose rows are *likely to find something* — that is what "high join selection factor" means in practice.
+
 ### 2.15 Hash join
 
 Consider a 2-way equi-join $R \bowtie_{R.A = S.B} S$ and **assume that $S$ fits into memory.**
@@ -1118,9 +1161,15 @@ Consider a 2-way equi-join $R \bowtie_{R.A = S.B} S$ and **assume that $S$ fits 
 2. To compute the join result, **hash the records of $R$ one by one using the $A$-values**, with **the same $M$ buckets and the same hash function $h$**.
 3. **Matching pairs of records hash to the same bucket**, so each $R$ record is compared only with the records of one bucket.
 
+#### Intuition — sorting mail into pigeonholes before comparing
+
+Instead of checking an $R$ record against every $S$ record (nested loop's approach), first drop every $S$ record into one of $M$ labelled pigeonholes by its join-attribute value — two values that are equal always land in the *same* hole, because they hash identically. Now, for each $R$ record, compute which hole it would land in and look *only* there. Records in different holes can never match (their hash values differ, so their join values differ), so the comparison work shrinks from "every $R$ against every $S$" to "every $R$ against the one hole of $S$ it hashes to" — roughly a factor of $M$ fewer comparisons, for free, as long as $S$ fits in memory so every hole is already sitting there waiting.
+
 ### 2.16 Partition hash join
 
 Consider $R \bowtie_{R.A=S.B} S$ when **neither $R$ nor $S$ fits into memory**.
+
+Hash join's trick needed $S$ to fit entirely in memory so every pigeonhole was available at once. When *neither* file fits, the pigeonholing idea is applied in two rounds instead of one: first split both files into smaller pigeonholes small enough that *matching* pigeonhole pairs do fit in memory, then run the ordinary in-memory hash join (or, failing that, a nested loop) on each pair separately.
 
 **Partition phase** — use a hash function $h$:
 
@@ -1150,6 +1199,10 @@ Consider $R \bowtie_{R.A=S.B} S$.
 - If **only one of them is sorted** on the join attribute: **sorting the other and merging may be cost-effective**.
 - Of course, we can **sort $R$ on $A$, sort $S$ on $B$ and use merge** — but the **cost might be high** (the external sort of §2.8 is added).
 
+#### Intuition — merging two sorted stacks of cards
+
+If both files are already sorted on the join column, finding matches needs no searching at all: keep one pointer into each file, always advance the pointer with the *smaller* current value, and whenever the two pointers land on equal values, that is a match — exactly like merging two sorted decks of cards into one, a single linear pass over both (this is the same merge idea as the external-sort merge phase of §2.8, here comparing two files for equality instead of combining runs). The catch is the opening condition: both files must *already* be sorted on the join column, which will usually not be true by accident, so the deck's three bullets simply weigh whether paying to sort first (one file, or both) is still cheaper than not sorting at all — nested loop or hash join being the alternative.
+
 ### 2.18 Set operations
 
 **Union, Intersect and Difference** can be computed by adapting:
@@ -1164,10 +1217,14 @@ The deck leaves the details to the student: *"Please study the details!"*
 
 ### 2.19 Query optimization — overview
 
+Sections 2.2–2.18 gave a toolbox of algorithms with their costs. Query optimization is where that toolbox gets *used*: a query written as a straightforward RA tree is rewritten into an equivalent but cheaper tree, and then each node of that tree is assigned the cheapest algorithm from the toolbox.
+
 An **SQL query is converted to an RA expression tree.** Two stages follow:
 
 1. The initial RA expression is **rewritten using heuristic and algebraic transformation rules**; the final RA expression tree is generated. This is called **algebraic optimization**.
 2. **Cost-based query optimization:** the **cost estimates of the methods for the RA operators are computed**, and the **execution plan with the least estimated cost is chosen**.
+
+The two stages are deliberately sequential: algebraic optimization is cheap (symbolic rewriting, no file access) and prunes away obviously wasteful plans — e.g. computing a product of two whole tables and filtering afterward — *before* the expensive step of actually estimating costs for what remains. Running cost-based optimization on the naive, unrewritten tree would mean costing out plans nobody would ever want.
 
 ### 2.20 Heuristic optimization
 
@@ -1184,6 +1241,8 @@ The optimizer makes use of **relational algebraic laws**:
 | **Associative** | join, union, intersect |
 
 and there are many more.
+
+These laws are what makes "apply select and project before other operations" a legal rewrite rather than a guess: because select commutes past join, $\sigma(R \bowtie S)$ can be rewritten as $\sigma(R) \bowtie S$ whenever $\sigma$ only touches $R$'s attributes, without changing the answer — and the rewritten form joins a *smaller* $R$. Associativity of join similarly lets the optimizer reorder a chain of joins (professor ⋈ teaching ⋈ enrollment, as in §2.22) to decide *which pair* gets joined first, since the final result is the same regardless of order but the intermediate sizes are not.
 
 ### 2.21 Cost-based optimization
 

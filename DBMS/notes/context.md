@@ -26,6 +26,9 @@ Act as an expert database tutor and technical writer for an engineering undergra
 - **Visual** — every geometric or structural idea a figure carries gets a figure: an original Excalidraw reconstruction for **schematic** diagrams, or a page render lifted from the deck for figures that are already drawn there.
 - **Explained** — prose says *why* a structure exists and *what problem* it fixes, in plain language, before the formal definition. The book is consulted for clarity, never as a second source of exam facts.
 
+> [!important] The note is not a reformatted deck
+> Reproducing the deck's text with nicer headings, bold terms and tables is **not sufficient** — it only satisfies "faithful", not "explained". Every H3 section needs a layer of plain-language understanding on top of the deck's facts: say in your own words why the thing exists, what breaks without it, or what everyday situation it resembles, before or alongside the formal statement. The deck's wording, the book's wording, or genuinely original phrasing are all fair game for this layer — what matters is that the reader finishes the section *understanding* the idea, not merely having read a tidier version of the slide. See §5a for the required shape.
+
 One note file holds the whole block:
 
 | File | Block | Source decks |
@@ -137,6 +140,18 @@ Style of prose:
 - *Italics* for the operative word of a definition and for emphasis.
 - Concrete numbers over abstraction: this course's marks sit on traces and block counts.
 - Keep the lecturer's conventions **exactly** (trailing-bit suffix in extendible hashing, $C = rM$, the deck's split-pointer labels, the deck's reported block-access counts) and state each once, explicitly, in a callout.
+
+---
+
+## 5a. Explanation Is Mandatory, Not Optional Depth
+
+This is the rule the rest of the file assumes but does not spell out: **a section that only restates the deck is incomplete**, even if every fact is present and the formatting is perfect.
+
+- **Every H3 section carries an explanatory layer.** Before, interleaved with, or right after the formal definition/table/formula, write in plain language *why the structure exists* or *what problem it solves* — not a restatement of the slide's wording, an actual explanation a student could follow without having seen the deck.
+- **The explanation can draw on the deck, the book, or original phrasing** — whichever makes the idea clearest. Attribute book-only reasoning as such (per §1's "book consulted for clarity" rule); original analogies need no attribution, they are enrichment.
+- **An `#### Intuition — <short analogy name>` subsection is the default device** for this layer when the idea has a natural everyday analogue (a restaurant kitchen for buffer flushing, a phone book for extendible hashing's directory, pigeonholes for hash join). Use one whenever a comparison makes the mechanism click faster than the formal definition alone. Not mandatory on *every* section — a one-line "why" woven into the prose is enough for simple ideas — but a topic with zero explanatory prose anywhere is a sign the section was transcribed, not written.
+- **Litmus test before closing a section:** could a reader who has not opened the deck follow *why* this structure/algorithm/rule is shaped the way it is, from the note alone? If the answer is "only if they already know the slide," add the missing explanation.
+- **Zero omission still applies.** This rule adds explanation on top of the deck's content — it never licenses cutting a formula, table, worked number or convention to make room for prose.
 
 ---
 
@@ -289,6 +304,7 @@ Tables are the default for classifications and traces:
 
 ### Checklist before finishing
 
+- [ ] Every H3 section has an explanatory layer (§5a) — not just the deck's facts reformatted. Run the litmus test: could a reader who never opened the deck follow *why*, not just *what*?
 - [ ] H2 number matches the deck's syllabus position; H3 numbers run continuously.
 - [ ] Every worked example has setup, a step-by-step table, the arithmetic and the trap.
 - [ ] Every schematic is an Excalidraw drawing; every deck figure is a PNG with a width and italic caption.
