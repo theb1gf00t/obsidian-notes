@@ -1210,10 +1210,58 @@ If both files are already sorted on the join column, finding matches needs no se
 - the **hash-based join method**, and
 - the **sort-merge method**.
 
-The deck leaves the details to the student: *"Please study the details!"*
+The deck leaves the details to the student: *"Please study the details!"* — the algos deck names the two methods but does not work them out. The deck's implementations are not recoverable from it, so §2.18.1–§2.18.3 below are compiled from Silberschatz, Korth and Sudarshan, *Database System Concepts*, 7th ed., §15.6.3 "Set Operations" ([[silberschatz_dbms.pdf]]), which develops exactly this gap.
+
+#### Intuition — union, intersect and difference are all "compare and decide"
+
+$R \cup S$, $R \cap S$ and $R - S$ all ask the same underlying question for every tuple: *does it occur in $R$, in $S$, or in both?* Once that question can be answered for every tuple cheaply, each operator just applies a different rule to the answer — keep it once if it's in either (union), keep it only if it's in both (intersect), keep it only if it's in $R$ but not $S$ (difference). The two families of algorithm below — sort-merge and hash — are simply two different cheap ways of answering "which tuples match across the two relations", reusing almost exactly the machinery already built for sort-merge join (§2.17) and hash join (§2.15–§2.16).
+
+### 2.18.1 Sort-merge based set operations
+
+*Source: [[silberschatz_dbms.pdf]] §15.6.3, "We can implement the union, intersection, and set-difference operations by first sorting both relations, and then scanning once through each of the sorted relations to produce the result."*
+
+**Setup.** Both relations $r$ and $s$ are sorted on the **same attributes** (all attributes, since these are whole-tuple comparisons) — exactly the pre-condition sort-merge join needed in §2.17. A **single concurrent scan** — one pointer into each sorted relation, advanced in step — is then enough to compute all three operations:
+
+| Operation | Rule during the concurrent scan |
+| --- | --- |
+| $r \cup s$ | When the same tuple appears in **both** files at the current scan position, keep **only one** copy. Every tuple that appears in either file ends up in the result exactly once. |
+| $r \cap s$ | Keep a tuple **only if it appears in both** relations. |
+| $r - s$ | Keep a tuple of $r$ **only if it is absent from $s$**. |
+
+> [!important] Why sortedness is enough for one single pass
+> Because both relations are sorted in the *same* order, equal tuples are guaranteed to meet at the *same point* of the concurrent scan — there is no need to search backward or hold anything beyond the current position of each pointer. This is the same guarantee that made merge join "very efficient, linear" in §2.17; here it is applied to whole-tuple equality instead of a join condition.
+
+**Cost.** With $b_r$ and $b_s$ the block counts of the (already sorted) relations:
+
+$$ \boxed{\ \text{Cost (already sorted, same order)} = b_r + b_s \text{ block transfers}\ } $$
+
+Assuming the worst case of **one buffer block per relation**, the scan also needs $b_r + b_s$ **disk seeks** (one seek per block read, because consecutive blocks are not guaranteed contiguous once two files are being read in lock-step); **allocating extra buffer blocks reduces the number of seeks**, since more of each relation can be read contiguously per seek.
+
+> [!warning] If the relations are not already sorted
+> If $r$ and $s$ do not arrive pre-sorted, the **cost of sorting must be added** (the external-sort cost of §2.6–§2.8, $2b + 2b\lceil\log_d r_{\text{runs}}\rceil$ for each relation). **Any common sort order works** — the two relations only need to agree with *each other's* order, not with some canonical order; a sort order chosen for another part of the query plan (e.g. because a later operator needs it too) can be reused here for free.
+
+### 2.18.2 Hash based set operations
+
+*Source: [[silberschatz_dbms.pdf]] §15.6.3, "Hashing provides another way to implement these set operations."*
+
+**Partition phase** — exactly as in partition hash join (§2.16): use one hash function $h$ to split **both** relations on the whole tuple into the same $n_h{+}1$ partitions, $r_0,r_1,\dots,r_{n_h}$ and $s_0,s_1,\dots,s_{n_h}$. A tuple occurring in both $r$ and $s$ is guaranteed to land in **partitions with the same index** $i$ in both files — so, exactly as in partition hash join, the operation can now be computed **one matching pair of partitions at a time**: $r_i$ against $s_i$, never $r_i$ against $s_j$ for $j \ne i$.
+
+**Probe phase** — for each $i = 0, 1, \dots, n_h$, build an **in-memory hash index on $r_i$**, then:
+
+| Operation | Steps on each partition pair $(r_i, s_i)$ |
+| --- | --- |
+| $r \cup s$ | 1. Build an in-memory hash index on $r_i$.  2. Add the tuples of $s_i$ to that hash index **only if not already present**.  3. Add every tuple now in the hash index to the result. |
+| $r \cap s$ | 1. Build an in-memory hash index on $r_i$.  2. For each tuple of $s_i$, **probe** the hash index; output the tuple **only if it is already present**. |
+| $r - s$ | 1. Build an in-memory hash index on $r_i$.  2. For each tuple of $s_i$, probe the hash index; if present, **delete it** from the hash index.  3. Add every tuple **remaining** in the hash index to the result. |
+
+> [!note] Why this is the hash-join idea, not a new algorithm
+> Compare this table with partition hash join's probe phase (§2.16): there, matching $R_i$/$S_i$ records were paired up by their join key; here, "matching" means the tuples are *identical*, so the whole tuple plays the role the join key played before. $r \cap s$'s "probe and output if present" is the same shape as a hash-join probe step that simply discards the non-matching attributes. $r - s$'s "probe and delete" is new to this operation — there is no equivalent step in a join, because a join never needs to know which build-side tuples went *unmatched*.
+
+> [!tip] Exam pointer — set operations
+> Name the two families (sort-merge, hash) and, for each, state the cost driver: sort-merge needs both relations in the **same sort order** and costs $b_r+b_s$ once sorted; hash needs both relations **partitioned by the same hash function** and reuses hash join's probe-phase shape, with a distinct per-tuple rule for $\cup$ (add if absent), $\cap$ (output if present) and $-$ (delete if present, output what remains).
 
 > [!tip] Exam pointer — joins and set operations
-> Be able to write the four cost formulas: nested loop $b_1+\lceil b_1/(m-2)\rceil b_2$ (smaller file outside), single loop $b_1\cdot h_B(S)$ (loop over the file with the high join selection factor), partition hash $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$, and sort-merge (linear after sorting). Reproduce the 19040 vs 16920 example.
+> Be able to write the four join cost formulas: nested loop $b_1+\lceil b_1/(m-2)\rceil b_2$ (smaller file outside), single loop $b_1\cdot h_B(S)$ (loop over the file with the high join selection factor), partition hash $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$, and sort-merge (linear after sorting). Reproduce the 19040 vs 16920 example.
 
 ### 2.19 Query optimization — overview
 
@@ -1727,9 +1775,11 @@ The deck gives a schedule (slide diagram) that produces the same outcome as the 
 | Nested loop join | $b_1 + \lceil b_1/(m-2)\rceil\, b_2$ | $R$ outer; put the file with fewer blocks outside |
 | Single loop join | $b_1\cdot h_B(S)$ | index on $B$ of $S$; loop over the file with high join selection factor |
 | Partition hash join | $3(\lvert R\rvert+\lvert S\rvert)+\lvert result\rvert$ | one of $R_i,S_i$ fits in memory; else $2(\lvert R\rvert+\lvert S\rvert)$ + nested loop cost |
+| Set ops (sort-merge) | $b_r+b_s$ | both relations already sorted in the **same** order; add sort cost if not |
+| Set ops (hash) | partition both relations with the same $h$, then per-partition probe | $\cup$: add if absent · $\cap$: output if present · $-$: delete if present, output what remains |
 
 > [!note] Source material and figures
 > **Topic 1.** All `DBMS - …excalidraw` drawings are original schematic reconstructions of the deck's diagrams and live in the vault-root `Excalidraw/` folder. The explanatory drawings *Index Types Compared*, *Extendible Hashing Trace*, *Linear Hashing Trace* and *Bplus Replicate vs Move* are teaching aids built from the deck's own numbers. Callouts titled "Illustrative example (not from the deck)" and the "Intuition" subsections in §1 are explanatory additions and are not lecture content. The `DBMS - … (deck pN).png` figures are page renders of [[file-management.pdf]], stored in `DBMS/images/`, and each is captioned with the slide it came from.
-> **Topic 2.** Content is compiled from [[algos.pdf]] (32 slides). The merge-phase figure *DBMS - External Sort Merge Phase (deck p10).png* is a page render of the deck stored in `DBMS/images/`. The "Illustrative example (not from the deck)" callouts in §2.4 and §2.8 are explanatory additions; all other numbers (8000-record selectivities, 5600/120/52-block join, the query-rewrite chain) come from the deck.
+> **Topic 2.** Content is compiled from [[algos.pdf]] (32 slides). The merge-phase figure *DBMS - External Sort Merge Phase (deck p10).png* is a page render of the deck stored in `DBMS/images/`. The "Illustrative example (not from the deck)" callouts in §2.4 and §2.8 are explanatory additions; all other numbers (8000-record selectivities, 5600/120/52-block join, the query-rewrite chain) come from the deck. **§2.18.1–§2.18.2 (sort-merge and hash based set operations)** are the one exception: the deck names only the two method families and defers the details ("Please study the details!"), so that content is compiled from [[silberschatz_dbms.pdf]] §15.6.3 instead — here the book is the primary source, not explanation-only, because the deck has no content of its own to be faithful to.
 > **Topic 3.** Content is compiled from [[transactions.pdf]] (Silberschatz, Korth and Sudarshan, *Database System Concepts*, 6th ed., Chapter 14). Where the deck presents schedules, state diagrams or graphs as slide diagrams, the notes record every fact, definition, property and result stated on the slides; diagram-only step layouts that were not recoverable from text extraction are described by the deck's stated outcomes and constraints rather than invented.
 > **General.** All numbers, conventions and worked traces come from the respective decks; the Silberschatz textbook ([[silberschatz_dbms.pdf]], Ch. 13–14 and §24.5) was used for explanation only in topic 1.
