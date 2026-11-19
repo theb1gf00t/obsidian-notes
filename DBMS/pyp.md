@@ -268,6 +268,134 @@ tags:
 > Assume that block pointer and record pointer are of the same size, order $m$ is 3 and $m_{leaf}$ is 2. Insert the following elements into a B+ tree (one illustration for each insertion): 70, 19, 22, 3, 19, 17, 2, 83, 11, 39, 94, 69 and 61.
 >
 > Followed by delete the elements till a **level drop** (one illustration for each deletion).
+>
+> > [!info]- Theory: B+ tree structure and split/merge rules (click to expand)
+> > A **B+ tree** of order $m$ (internal fanout) and leaf order $m_{leaf}$ stores all actual keys in the **leaf nodes**, which are chained left-to-right via next-pointers for fast range scans. Internal nodes hold only routing keys (copies), never data.
+> >
+> > **Capacities** (as given: $m = 3$, $m_{leaf} = 2$):
+> > - **Leaf node**: holds at most $m_{leaf} = 2$ keys, at least $\lceil m_{leaf}/2 \rceil = 1$ key.
+> > - **Internal node**: holds at most $m - 1 = 2$ keys (equivalently at most $m = 3$ child pointers), at least $\lceil m/2 \rceil - 1 = 1$ key (2 child pointers).
+> >
+> > **Insertion — leaf overflow (3rd key inserted into a full 2-key leaf):** split into two leaves — left keeps the smaller $\lceil (m_{leaf}+1)/2 \rceil = 2$ keys, right keeps the remaining 1 key. The **smallest key of the right leaf is copied up** (not moved — it still physically stays in the right leaf, since it's real data) to the parent as the new separator. Leaf chain pointers are relinked so the new right leaf is spliced in.
+> >
+> > **Insertion — internal overflow (3rd key pushed into a full 2-key internal node):** split into two internal nodes — left keeps 1 key, right keeps 1 key, and the **middle key is moved up** (not copied — internal keys are only routing information, so it does not remain in either child) to the parent. If the node that overflows is the root, a brand-new root is created holding just the promoted key, increasing the tree's height by one level.
+> >
+> > **Deletion — underflow (a node drops below its minimum key count):**
+> > 1. **Try to borrow (redistribute)** one key from an adjacent sibling that has *more than* the minimum — shift a key through the parent (update the separator) so both nodes meet the minimum.
+> > 2. **If no sibling can lend** (every sibling is exactly at the minimum), **merge** the underflowing node with a sibling: combine their keys into one node, and **pull the separator key down from the parent** into the merged node (for leaf merges, the separator is simply discarded, since it was only a copy; for internal merges, the separator is a real routing key and must be retained in the merged node).
+> > 3. Removing a key and a child pointer from the parent (as part of the merge) can itself cause the **parent** to underflow — this **cascades upward**, repeating the borrow/merge check one level at a time.
+> > 4. If the cascade reaches the **root** and the root is left with **0 keys and exactly 1 child**, that single child is **promoted to become the new root**, and the tree's height decreases by one — this is the **level drop**.
+>
+> **Setup:** block pointer size = record pointer size (so leaf and internal capacity formulas use the same pointer size throughout, matching the order values given). Order $m=3$, $m_{leaf}=2$.
+>
+> ---
+>
+> ### Insertions — state after every step
+>
+> Insert sequence: 70, 19, 22, 3, 19, 17, 2, 83, 11, 39, 94, 69, 61.
+>
+> > [!warning] Duplicate key in the insertion list
+> > The sequence repeats **19** (5th element). A B+ tree indexes unique keys (or treats duplicates as "already present, nothing to insert"), so the second **19** is a no-op — it is already in the tree from the first insertion and is simply skipped. 12 distinct keys are actually inserted.
+>
+> **1. Insert 70.** Tree is empty → create a single leaf (this is also the root). Leaf: **[70]**.
+>
+> **2. Insert 19.** Fits in the same leaf (1 key < 2 max). Root leaf: **[19, 70]**.
+>
+> **3. Insert 22.** Leaf would become [19, 22, 70] — 3 keys, overflow (max 2). **Split**: left leaf keeps the 2 smallest → **[19, 22]**; right leaf keeps the rest → **[70]**. Copy up the smallest key of the right leaf (70) as the new root's only key.
+> State: Root (internal) **[70]**, left child leaf **[19, 22]**, right child leaf **[70]**. Leaf chain: [19,22] → [70].
+>
+> **4. Insert 3.** 3 < 70, goes to left leaf [19, 22] → becomes [3, 19, 22], overflow. **Split**: left **[3, 19]**, right **[22]**. Copy up 22.
+> Root now needs a 2nd key: Root **[22, 70]** with three children — leaf **[3, 19]**, leaf **[22]**, leaf **[70]**. Leaf chain: [3,19] → [22] → [70].
+>
+> **5. Insert 19 (duplicate).** 19 is already present in the leftmost leaf. **Skip — no change.**
+>
+> **6. Insert 17.** 17 < 22, goes to leftmost leaf [3, 19] → becomes [3, 17, 19], overflow. **Split**: left **[3, 17]**, right **[19]**. Copy up 19.
+> Root would need to hold [19, 22, 70] — 3 keys, overflow (max 2 for internal). **Root splits too**: left internal key **[19]** (children: leaf [3,17], leaf [19]); right internal key **[70]** (children: leaf [22], leaf [70]); the middle key **22 moves up** into a brand-new root. Tree height increases to 3 levels.
+> State: Root **[22]** → left child internal **[19]** (→ leaf [3,17], leaf [19]) | right child internal **[70]** (→ leaf [22], leaf [70]). Leaf chain: [3,17] → [19] → [22] → [70].
+>
+> **7. Insert 2.** 2 < 22 → left subtree; 2 < 19 → leftmost leaf [3, 17] → becomes [2, 3, 17], overflow. **Split**: left **[2, 3]**, right **[17]**. Copy up 17.
+> Parent internal node [19] gains key 17 → becomes **[17, 19]** (2 keys, fits, no further split). Its children, left to right: leaf **[2, 3]**, leaf **[17]**, leaf **[19]**.
+> State: Root **[22]** → left child internal **[17, 19]** (→ leaf [2,3], leaf [17], leaf [19]) | right child internal **[70]** (→ leaf [22], leaf [70]). Leaf chain: [2,3] → [17] → [19] → [22] → [70].
+>
+> **8. Insert 83.** 83 ≥ 22 → right subtree; 83 ≥ 70 → rightmost leaf [70] → becomes [70, 83] (2 keys, fits, no split).
+> State: Root **[22]** → left child internal **[17, 19]** (→ [2,3], [17], [19]) | right child internal **[70]** (→ leaf [22], leaf [70, 83]). Leaf chain: [2,3] → [17] → [19] → [22] → [70,83].
+>
+> **9. Insert 11.** 11 < 22 → left subtree; 11 < 17 → leftmost leaf [2, 3] → becomes [2, 3, 11], overflow. **Split**: left **[2, 3]**, right **[11]**. Copy up 11.
+> Parent internal node [17, 19] gains key 11 → would become [11, 17, 19] — 3 keys, overflow. **Internal split**: left key **[11]** (children: leaf [2,3], leaf [11]); right key **[19]** (children: leaf [17], leaf [19]); middle key **17 moves up** to the root.
+> Root [22] gains key 17 → becomes **[17, 22]** (2 keys, fits).
+> State: Root **[17, 22]** → child A: internal **[11]** (→ leaf [2,3], leaf [11]) | child B: internal **[19]** (→ leaf [17], leaf [19]) | child C: internal **[70]** (→ leaf [22], leaf [70,83]). Leaf chain: [2,3] → [11] → [17] → [19] → [22] → [70,83].
+>
+> **10. Insert 39.** 39 ≥ 22 → child C subtree [70]; 39 < 70 → its left leaf [22] → becomes [22, 39] (fits, no split).
+> State: Root **[17, 22]** → child A **[11]**(→[2,3],[11]) | child B **[19]**(→[17],[19]) | child C **[70]**(→ leaf **[22, 39]**, leaf [70,83]). Leaf chain: [2,3] → [11] → [17] → [19] → [22,39] → [70,83].
+>
+> **11. Insert 94.** 94 ≥ 22 → child C subtree [70]; 94 ≥ 70 → right leaf [70, 83] → becomes [70, 83, 94], overflow. **Split**: left **[70, 83]**, right **[94]**. Copy up 94.
+> Internal node [70] gains key 94 → becomes **[70, 94]** (fits, 2 keys). Its children: leaf [22,39], leaf [70,83], leaf [94].
+> State: Root **[17, 22]** → child A **[11]**(→[2,3],[11]) | child B **[19]**(→[17],[19]) | child C **[70, 94]**(→ leaf [22,39], leaf [70,83], leaf [94]). Leaf chain: [2,3]→[11]→[17]→[19]→[22,39]→[70,83]→[94].
+>
+> **12. Insert 69.** 69 ≥ 22 → child C subtree [70, 94]; 69 < 70 → its **first** leaf [22, 39] (the child before key 70) → becomes [22, 39, 69], overflow. **Split**: left **[22, 39]**, right **[69]**. Copy up 69.
+> Internal node [70, 94] gains key 69, inserted before 70 → would become [69, 70, 94] — 3 keys, overflow. **Internal split**: left key **[69]** (children: leaf [22,39], leaf [69]); right key **[94]** (children: leaf [70,83], leaf [94]); middle key **70 moves up** to the root.
+> Root [17, 22] gains key 70 → would become [17, 22, 70] — 3 keys, overflow (internal max is 2). **Root splits again**: left key **[17]** (children: internal [11], internal [19]); right key **[70]** (children: internal [69], internal [94]); middle key **22 moves up** into a brand-new root. Tree height increases to 4 levels.
+> State: Root **[22]** → left child internal **[17]** (→ internal [11] (→leaf[2,3],leaf[11]), internal [19] (→leaf[17],leaf[19])) | right child internal **[70]** (→ internal [69] (→leaf[22,39],leaf[69]), internal [94] (→leaf[70,83],leaf[94])). Leaf chain: [2,3]→[11]→[17]→[19]→[22,39]→[69]→[70,83]→[94].
+>
+> **13. Insert 61.** 61 ≥ 22 → right subtree [70]; 61 < 70 → internal [69]; 61 < 69 → its first leaf [22, 39] → becomes [22, 39, 61], overflow. **Split**: left **[22, 39]**, right **[61]**. Copy up 61.
+> Internal node [69] gains key 61, inserted before 69 → becomes **[61, 69]** (2 keys, fits, no further split). Its children: leaf [22,39], leaf [61], leaf [69].
+>
+> **Final tree after all 12 insertions** (4 levels — root, two internal levels, leaf level):
+>
+> - **Root**: **[22]** — 2 children.
+> - **Level 2** (children of root): left = internal **[17]**; right = internal **[70]**.
+> - **Level 3** (children of level 2 — these are the leaves' direct parents):
+>   - under left **[17]**: internal **[11]** and internal **[19]**.
+>   - under right **[70]**: internal **[61, 69]** and internal **[94]**.
+> - **Leaves** (left to right, chained): **[2, 3]** — **[11]** — **[17]** — **[19]** — **[22, 39]** — **[61]** — **[69]** — **[70, 83]** — **[94]**.
+> - Parent-of-leaf assignment: [11] → leaves [2,3], [11]. [19] → leaves [17], [19]. [61,69] → leaves [22,39], [61], [69]. [94] → leaves [70,83], [94].
+>
+> ```
+>                                        [22]                                           ← Root
+>                    ┌───────────────────────┴───────────────────────┐
+>                 [17]                                              [70]                ← Level 2
+>            ┌──────┴──────┐                               ┌──────────┴──────────┐
+>         [11]            [19]                          [61, 69]                [94]    ← Level 3
+>        ┌───┴───┐      ┌───┴───┐              ┌────────────┼────────┐      ┌─────┴─────┐
+>     [2,3]    [11]   [17]    [19]         [22,39]        [61]      [69]  [70,83]      [94]  ← Leaves
+> ```
+>
+> ---
+>
+> ### Deletions — state after every step, until the first level drop
+>
+> Delete sequence (same order as insertion, duplicate 19 skipped again since it's not a distinct key): 70, 19, 22, 3, 17, 2, …
+>
+> **1. Delete 70.** 70 is in leaf [70, 83]. Remove it → leaf becomes **[83]** (1 key, meets the minimum). No underflow, no further change. Rest of the tree unchanged.
+>
+> **2. Delete 19.** 19 is in leaf [19] (the right child of internal node [19], whose left child is leaf [17]). Removing it empties the leaf → **0 keys, underflow** (below minimum of 1).
+> - Check its sibling leaf [17]: it has exactly 1 key — already at the minimum, **nothing to lend**. So **merge**: combine the empty leaf with [17] → merged leaf **[17]**. The separator key (19) in the parent is discarded (it was only a routing copy). Parent internal node [19] loses its only key and one child pointer → becomes **0 keys, 1 child** — **underflow propagates to the parent**.
+> - That parent (call it node A) sits under internal node [17], alongside sibling internal [11]. Sibling [11] has exactly 1 key — **nothing to lend**. **Merge**: combine node A (now just the single merged leaf [17] as its only child) with [11], pulling down the separator key **17** from their parent into the merged node. Merged internal node: **[11, 17]**, with three children — leaf [2,3], leaf [11], leaf [17]. The grandparent (internal node [17], which held key 17 and pointed to [11] and A) loses its only key and one child → becomes **0 keys, 1 child** — **underflow propagates again, up to the root**.
+> - At the root: Root **[22]** has two children — the node that just collapsed to 0 keys/1 child (call it node B, whose single remaining child is the merged **[11, 17]** node), and sibling internal **[70]**. Sibling [70] has exactly 1 key — **nothing to lend**. **Merge**: combine B and [70], pulling down the root's separator key **22**. Merged internal node: **[22, 70]**, with three children — the **[11, 17]** node, internal **[61, 69]**, internal **[94]**. The root loses its only key and one child → **root now has 0 keys and exactly 1 child**.
+> - **A root with 0 keys and 1 child is replaced by that single child — this is the level drop.** The merged node **[22, 70]** becomes the new root. Tree height drops from 4 levels to **3 levels**.
+>
+> **Tree immediately after deleting 19 — the level-drop state:**
+>
+> - **New Root**: **[22, 70]** — 3 children.
+> - **Level 2** (children of root, these are the leaves' direct parents):
+>   - internal **[11, 17]** (leftmost child) → leaves [2,3], [11], [17].
+>   - internal **[61, 69]** (middle child) → leaves [22,39], [61], [69].
+>   - internal **[94]** (rightmost child) → leaves [83], [94]. *(leaf [70,83] lost its 70 in step 1, so it is now just [83])*
+> - **Leaves** (left to right, chained): **[2, 3]** — **[11]** — **[17]** — **[22, 39]** — **[61]** — **[69]** — **[83]** — **[94]**.
+>
+> ```
+>                           [22, 70]                                        ← Root (height dropped: was level-1 of 4, now level-1 of 3)
+>            ┌─────────────────┼──────────────────┐
+>        [11, 17]           [61, 69]              [94]                      ← Level 2 (leaves' parents)
+>       ┌────┼────┐       ┌─────┼─────┐         ┌───┴───┐
+>    [2,3] [11]  [17]  [22,39] [61]  [69]      [83]    [94]                 ← Leaves
+> ```
+>
+> > [!warning] Stop here — this is the requested level drop
+> > The question asks to delete elements **"till a level drop"** — the deletion of **19** (the second item in the delete sequence) is exactly the operation that triggers it, collapsing the tree from 4 levels to 3. Per the question's instruction, the deletion sequence stops at this point; the three-level cascade above (leaf merge → internal merge → root collapse) is itself the full worked illustration of *why* this particular deletion is the one that drops a level — merely deleting 70 first was absorbed with no underflow at all, so 19 is the first deletion whose underflow cascades all the way to the root.
+>
+> > [!tip] Exam pointer
+> > The trap in this problem is stopping the underflow cascade too early. After every merge, **always re-check the parent's new key count** — a node reduced to 0 keys with 1 child is invalid and must itself be resolved one level up, all the way to the root if necessary. Markers specifically look for the explicit statement "root has 0 keys, 1 child → promote that child → height decreases by 1" as the definition of a level drop, not just "the tree got smaller."
 
 > [!question] Q6: Weak entity vs. composite multi-valued attribute (10M)
 > Discuss with an illustration the design choice between a weak entity and a composite multi-valued attribute.
@@ -339,3 +467,21 @@ tags:
 
 > [!question] Q7: Unsafe TRC expression (2M)
 > Give an example of an unsafe TRC expression.
+>
+> > [!info]- Theory: safety in Tuple Relational Calculus (click to expand)
+> > Tuple Relational Calculus (TRC) expressions have the form $\{\, t \mid P(t) \,\}$ — "the set of all tuples $t$ such that predicate $P$ holds for $t$." Because $t$ is not bound to any specific finite relation by the syntax alone, nothing stops $P$ from describing an **infinite** set of tuples, or tuples drawn from values that never appear anywhere in the database.
+> >
+> > An expression is **safe** if every value appearing in its result is guaranteed to come from $dom(P)$ — the **active domain** of $P$, i.e. the finite set of all values that either appear explicitly as constants in $P$ or appear in some tuple of some relation referenced by $P$. Safety guarantees the result is always a well-defined, finite relation. An expression that cannot make this guarantee is **unsafe**, and query processors reject it (it is not evaluable).
+>
+> **Example of an unsafe TRC expression:**
+>
+> $$ \{\, t \mid \lnot (t \in r) \,\} $$
+>
+> i.e. "all tuples $t$ that are **not** in relation $r$."
+>
+> **Why it's unsafe:** $t$ ranges over the entire universe of possible tuples of that arity — every possible combination of values from the (conceptually infinite) domains of its attributes (all possible strings, all possible integers, etc.) — minus only the finitely many tuples that happen to be in $r$. Since the universe of possible attribute values is unbounded, the result $\{t \mid \lnot(t\in r)\}$ is an **infinite relation**, which cannot be computed or stored. The predicate never restricts $t$ to values drawn from any actual relation's active domain, so the safety condition fails.
+>
+> A second common unsafe pattern is an unbounded comparison with no grounding relation, e.g. $\{\, t \mid t.A > 5 \,\}$ with no reference to any finite relation constraining the domain of $t.A$ — infinitely many values (6, 7, 8, … without bound) satisfy this.
+>
+> > [!tip] Exam pointer
+> > The complement example ($\lnot(t\in r)$) is the canonical textbook answer — state the definition of safety (result values must come from $dom(P)$) before the example, since "define unsafe, then give the example" is what the 2 marks are actually checking.

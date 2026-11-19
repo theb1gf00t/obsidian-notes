@@ -6,7 +6,7 @@ sessionId: "867a1389-fbbf-49d7-b098-ed4eb193b3d8"
 agentLabel: "make a new markdown file named pyp.md and in it note down qu…"
 tags:
   - copilot-conversation
-usage: '{"usedTokens":81021,"contextWindow":1000000,"inputTokens":2,"outputTokens":1,"cacheReadTokens":80458,"cacheWriteTokens":560,"updatedAt":1795096979106}'
+usage: '{"usedTokens":102769,"contextWindow":1000000,"inputTokens":2,"outputTokens":2,"cacheReadTokens":96055,"cacheWriteTokens":6710,"updatedAt":1795097169164}'
 ---
 
 **user**: make a new markdown file named pyp.md and in it note down questions from [[prev_year.pdf]] . this is the pdf of the previous year question paper.
@@ -139,5 +139,15 @@ So my trace diverges from the agent's at this point: I believe **delete 19 propa
 Let me hold off finalizing exact instruction orderings until I write directly into the file, to avoid rework. I'll wait for the B+ tree fork now.I'm waiting for the B+ tree deletion-cascade re-verification fork to complete before writing Q5 — I don't want to transcribe a cascade I've already flagged as possibly wrong. I'll hold here until that notification arrives.
 [Timestamp: 2026/11/19 19:31:56]
 
-**ai**: Good — my suspicion was confirmed. The level drop happens at **deletion of key 19**, not key 2. The deletion sequence stops there since that's the first level-drop event. Now I have everything needed to write the full detailed answer. Let me compose all five
+**ai**: Good — my suspicion was confirmed. The level drop happens at **deletion of key 19**, not key 2. The deletion sequence stops there since that's the first level-drop event. Now I have everything needed to write the full detailed answer. Let me compose all five answers and write them into pyp.md.Now Q3 — query optimization steps.Now Q4 — view/conflict serializability with concrete transactions and schedules.Now Q6 — weak entity vs composite multivalued attribute.Now Q7 — unsafe TRC expression.Now Q5 — the B+ tree. This needs the most careful write-up since the user explicitly asked for text-only descriptions detailed enough to draw from, instead of diagrams. I'll use the verified trace (with the corrected level-drop at deletion of 19).All five questions (Q2, Q3, Q4, Q5, Q6, Q7 — six total, matching what you asked) are now written into `DBMS/pyp.md` with collapsible `[!info]-` theory dropdowns before each answer, per your instructions.
+
+Summary of what's in the note now:
+- **Q2**: Full lossless-join / dependency-preservation proofs-by-counterexample, with worked FD closures.
+- **Q3**: Complete heuristic query-optimization trace (selection split → pushdown → join combine → projection pushdown → final tree).
+- **Q4**: Four concrete transactions, a conflict-serializable schedule and a non-conflict-serializable schedule, each with full conflict-pair derivation and precedence-graph diagrams.
+- **Q5**: Full B+ tree insertion trace (all 13 steps, including the duplicate-19 no-op) and deletion trace in exhaustive text form — I independently re-derived and cross-checked the cascade twice via two separate verification passes, since my first pass disagreed with a background research agent's initial trace. The correct result: the **level drop occurs at deletion of key 19** (not key 2, as a flawed first pass suggested) — the note stops there per the question's instruction, with the full merge cascade spelled out.
+- **Q6**: Weak entity vs. composite multivalued attribute, with the standard EMPLOYEE/DEPENDENT example, ASCII ER diagrams for both options, and a trade-off table.
+- **Q7**: Unsafe TRC definition plus the canonical $\{t \mid \lnot(t \in r)\}$ example.
+
+Q1 (the 40-mark normalization/ER design question) was left as-is since you only asked for 2–7.
 [Timestamp: 2026/11/19 19:33:09]

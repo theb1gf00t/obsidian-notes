@@ -39,7 +39,7 @@ WHERE file.path = this.file.path
 
 ## Post-Midsem — 3 topics
 
-- [ ] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections)
+- [x] **1 · File Organization and Indexing** — [[file-management.pdf|PDF]] · [[Post-Midsem-Notes#1. File Organization and Indexing|Notes → §1]] (39 sections) ✅ 2026-11-19
 - [x] **2 · Query / Join Algorithms (algos)** — [[algos.pdf|PDF]] · [[Post-Midsem-Notes#2. Query / Join Algorithms (algos)|Notes → §2]] (22 sections)
 - [x] **3 · Transactions** — [[transactions.pdf|PDF]] · [[Post-Midsem-Notes#3. Transactions|Notes → §3]] (16 sections)
 
