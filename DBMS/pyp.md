@@ -4,7 +4,7 @@ tags:
   - dbms
   - pyp
 ---
-
+	
 # DBMS — Previous Year Question Paper
 
 *Source: [[prev_year.pdf]] — Max Marks: 100, Max Time: 180 Min.*
