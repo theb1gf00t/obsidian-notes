@@ -6,7 +6,7 @@ sessionId: "ses_e0573cd8bffeHDtk2pgjaALJZN"
 tags:
   - copilot-conversation
 agentLabel: "Computer Graphics formula sheet in cheat_sheet.md"
-usage: '{"usedTokens":129672,"contextWindow":200000,"updatedAt":1795205400764}'
+usage: '{"usedTokens":34173,"contextWindow":200000,"updatedAt":1795206828398}'
 ---
 
 **user**: make a formula sheet/cheat sheet for all the pdfs in {Computer Graphics/pdfs} .
@@ -28,5 +28,18 @@ make it in a separate file in {Computer Graphics/notes} named cheat_sheet.md
 **user**: now make a pdf file such that its contents should be exactly the same as [[cheat_sheet]]
 [Timestamp: 2026/11/21 01:57:06]
 
-**ai**: I'll generate a PDF that faithfully reproduces the note — including rendered LaTeX, tables, and callouts. First let me see what conversion tools are available.The environment has Electron and a local MathJax install — that can render the note faithfully to PDF. Let me check the details.I found a workable pipeline: convert the note to HTML with a small local script, render math with the local MathJax, then print to PDF with the installed Electron binary. Let me set that up in `/tmp` (keeping scratch out of the vault).Now I'll write the converter and print scripts.
+**ai**: I'll generate a PDF that faithfully reproduces the note — including rendered LaTeX, tables, and callouts. First let me see what conversion tools are available.The environment has Electron and a local MathJax install — that can render the note faithfully to PDF. Let me check the details.I found a workable pipeline: convert the note to HTML with a small local script, render math with the local MathJax, then print to PDF with the installed Electron binary. Let me set that up in `/tmp` (keeping scratch out of the vault).Now I'll write the converter and print scripts.HTML looks correct. Now let's print it to PDF with Electron.The PDF rendered (357 equations, 21 tables). A CLI flag got mistaken for the output path — let me fix that and re-run cleanly.The script overwrote itself with the PDF bytes. Let me rewrite it using an environment variable for the output path.9-page PDF generated. Let me verify the rendering visually and check that no content was lost.I can't view images directly in this session, so I'll verify structurally instead — checking that every heading/table made it in and that no raw LaTeX or MathJax errors leaked through.Found a real issue: two math cells contain literal `<`, which the browser parsed as HTML tags. Let me escape math bodies properly and regenerate.All 360 equations now render, with no raw TeX delimiters left. Let me run final completeness and overflow checks.Checks pass — no clipped text, and the two "missing" phrases were just my test strings that aren't in the note. Now let me place the finished PDF next to the note in the vault.Created `[[cheat_sheet.pdf]]` in `Computer Graphics/notes/`, alongside the source note.
+
+**What it contains**
+- The full visible content of `cheat_sheet.md` — all 21 topic sections, 21 formula tables, both callouts, and the "Last-minute recall" section.
+- 360 LaTeX expressions rendered as real math (via MathJax), including matrices, cases, and aligned equations.
+- Wikilinks shown as their display text, matching how they read in Obsidian. The YAML frontmatter is omitted since it isn't visible in reading view.
+
+**Format**
+- 9 pages, A4 landscape, with styled headers, table shading, and coloured callouts.
+
+**Verified**
+- Every heading from the note appears in the PDF; no raw TeX delimiters or MathJax errors leaked through; no words fall outside the page bounds.
+
+The original `cheat_sheet.md` was left unchanged.
 [Timestamp: 2026/11/21 01:57:06]
