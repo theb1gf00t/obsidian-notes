@@ -99,7 +99,7 @@
   "convertedDocOutputFolder": "",
   "agentMode": {
     "byok": {},
-    "activeBackend": "claude",
+    "activeBackend": "opencode",
     "backends": {
       "codex": {
         "defaultModel": {
@@ -942,15 +942,6 @@
       },
       "configuredModelId": "a144507b-312a-4d88-be75-c68ee5eb3687",
       "configuredAt": 1794125924298
-    },
-    {
-      "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
-      "info": {
-        "id": "opencode/inkling-2-small-free",
-        "displayName": "opencode/Inkling 2 Small Free"
-      },
-      "configuredModelId": "3639e392-d393-42c3-809c-8a751a99fd80",
-      "configuredAt": 1794125924299
     },
     {
       "providerId": "784cdc06-44d5-4b94-a05d-2c274d9ce798",
