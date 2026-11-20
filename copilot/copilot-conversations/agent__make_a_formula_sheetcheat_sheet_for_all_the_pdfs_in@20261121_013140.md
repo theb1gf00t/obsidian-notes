@@ -24,3 +24,9 @@ make it in a separate file in {Computer Graphics/notes} named cheat_sheet.md
 
 **Conventions followed:** frontmatter + tags, `| Quantity | Expression | Notes |` tables with validity notes, `$inline$` LaTeX, bmatrix matrices, strict `[!type]` callout syntax, wikilinks to each deck, and the em/en-dash and terminology rules from [[CG_context]]. Validated that every line has balanced `$` and no stray pipes inside inline math, so tables and equations render cleanly.
 [Timestamp: 2026/11/21 01:31:40]
+
+**user**: now make a pdf file such that its contents should be exactly the same as [[cheat_sheet]]
+[Timestamp: 2026/11/21 01:57:06]
+
+**ai**: I'll generate a PDF that faithfully reproduces the note — including rendered LaTeX, tables, and callouts. First let me see what conversion tools are available.The environment has Electron and a local MathJax install — that can render the note faithfully to PDF. Let me check the details.I found a workable pipeline: convert the note to HTML with a small local script, render math with the local MathJax, then print to PDF with the installed Electron binary. Let me set that up in `/tmp` (keeping scratch out of the vault).Now I'll write the converter and print scripts.
+[Timestamp: 2026/11/21 01:57:06]
