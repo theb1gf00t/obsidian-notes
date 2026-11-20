@@ -112,7 +112,7 @@
           "baseModelId": "claude-sonnet-4-6",
           "effort": "low"
         },
-        "defaultMode": "auto"
+        "defaultMode": "plan"
       },
       "opencode": {
         "defaultModel": {
